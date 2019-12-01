@@ -1,2 +1,21 @@
-# AzurLane
-A tool for AzurLane to farm automatically. 
+# Azur Lane
+A tool for AzurLane to farm automatically.
+
+**It only works on taiwan server due to it search for chinese text.**
+
+
+# Requirements
+1. Windows10
+2. AutoHotKey (Or run an EXE file directly)
+3. LD android player 3.70 or newer with resolution 1280x720 and DPI 240.
+4. Nvdia video card.
+
+# How to use
+1. ![Download](https://github.com/panex0845/AzurLane/archive/master.zip)
+2. Run AzurLane.exe or .ahk file
+3. Choose the function what you want.
+4. Click start button.
+5. Enjoy.
+
+# Note
+1. All of the code is for academic exchange only.  Use at your own risk.
