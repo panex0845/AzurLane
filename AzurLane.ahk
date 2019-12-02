@@ -514,7 +514,7 @@ text6 := DwmGetPixel(485, 21)
 text11 := Dwmcheckcolor(1300, 681, 16777215)
 text22 := Dwmcheckcolor(12, 24, 16041247)
 text33 := Dwmcheckcolor(1, 35, 2633790)
-WinGet, UniqueID, ,Azur Lane
+WinGet, UniqueID, ,Azur Lane - %title%
 Global UniqueID 
 gui, Color, FF0000
 sleep 100
@@ -1094,6 +1094,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 	Random, y, 656, 690
 	C_Click(x, y) ;於編隊頁面點擊右下 "出擊"
 	shipsfull(StopAnchor)
+	IsDetect := VarSetCapacity
     TargetFailed := VarSetCapacity
     TargetFailed2 := VarSetCapacity
     TargetFailed3 := VarSetCapacity
@@ -1194,7 +1195,8 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 gosub BtnCheck
 if (Withdraw and Switchover )
 {
-	LogShow("偵查中。")
+	if (IsDetect<1)
+		LogShow("偵查中。")
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch2(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
@@ -1224,7 +1226,7 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
-		if (GdipImageSearch2(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch2(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;
+		if (GdipImageSearch2(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch2(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;只有在彈藥歸零時才會拾取
 		{
 			LogShow("嗶嗶嚕嗶～發現：子彈補給！")
 			xx := x 
@@ -1270,7 +1272,7 @@ if (Withdraw and Switchover )
 			LogShow("嗶嗶嚕嗶～發現：神秘物資！")
 			xx := x
 			yy := y + 70
-			Loop, 3
+			Loop, 4
 			{
 				if (xx<290 and yy<193)
 				{
@@ -1292,7 +1294,7 @@ if (Withdraw and Switchover )
 					}
 					sleep 2000
 				}
-				if (DwmCheckcolor(1235, 652, 16777215)) ;規避失敗
+				if (DwmCheckcolor(1235, 652, 16777215)) ;規避失敗，進入編隊畫面
 				{
 					Break
 				}
@@ -1305,6 +1307,8 @@ if (Withdraw and Switchover )
 				BackAttack()
 				sleep 1000
 			}
+			IsDetect := 1
+			return
 		}
 		if (GdipImageSearch2(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1) and (Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍" or Bossaction="撤退") ;ＢＯＳＳ
 		{
@@ -1388,7 +1392,16 @@ if (Withdraw and Switchover )
 					TargetFailed2 := 1
 					TargetFailed3 := 1
 					TargetFailed4 := 1
-					C_Click(1035, 715) ;切換隊伍
+					Loop, 15
+					{
+						boss := Dwmgetpixel(x, y)
+						if (Dwmgetpixel(x, y)=boss)
+						{
+							C_Click(1035, 715) ;切換隊伍
+							break
+						}
+						sleep 300
+					}
 				}
 				else
 				{
@@ -2399,8 +2412,8 @@ BtnCheck:
     Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
     Switchover := DwmCheckcolor(1025, 697,9212581)  ;Checkcolor(1025, 697, 4287402661) 切換
     Offensive := DwmCheckcolor(1234, 703, 16239426) ;Checkcolor(1234, 703, 4294429506)
-    WeighAnchor1 := DwmCheckcolor(160, 71, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
-    WeighAnchor2 := DwmCheckcolor(131, 58, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
+    WeighAnchor1 := DwmCheckcolor(132, 54, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
+    WeighAnchor2 := DwmCheckcolor(160, 73, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
 return 
 
 OperationSub:
@@ -4321,8 +4334,9 @@ A_Swipe(x1,y1,x2,y2,swipetime="")
 
 A_SwipeFast(x1,y1,x2,y2,swipetime="")
 {
+	sleep 50
 	runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
-	sleep 200
+	sleep 250
 }
 
 
