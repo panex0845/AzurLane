@@ -2698,6 +2698,8 @@ if  (DailyGoalSub and DailyDone<1)
 							}
 							sleep 500
 						}
+						DailyDone := 1
+						DailyBreak := 1
 					}
 				}
 				if (DailyBreak=1)
@@ -3272,7 +3274,13 @@ if (DormDone<1) ;後宅發現任務
 		else if (DormFood and DormFoodDone<1)
 		{
 			FoodX := (550-30)*(DormFoodBar/100)+30
-			FoodCheck := DwmCheckcolor(FoodX, 723, 4343106) ;存糧進度條
+			if (DwmGetpixel(FoodX, 725)<8000000) ;存糧進度條
+			{
+				FoodCheck := 1
+			} else {
+				FoodCheck := 0
+			}
+			;~ FoodCheck := DwmCheckcolor(FoodX, 729, 5394770) 
 			FoodCheck2 := DwmCheckcolor(48, 686, 16764746) ;左下黃十字
 			if (FoodCheck and FoodCheck2)
 			{
@@ -3850,13 +3858,35 @@ shipsfull(byref StopAnchor)
 		{
 			LogShow("船䲧已滿：開始整理。")
 			C_Click(437, 539)
-			sleep 1000
+			Loop ;等待進入船䲧畫面
+			{
+				sleep 400
+				shipcount++
+				if (shipcount>50)
+				{
+					LogShow("等待進入船䲧的過程中發生錯誤")
+					StopAnchor := 1 ;不再出擊
+					return
+				}
+			} until DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215) and DwmCheckcolor(1, 35, 2633790)
+			shipcount := VarSetCapacity
 			Loop
 			{
 				if (DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215))
 				{
 					C_Click(1136, 64) ;開啟篩選
-					sleep 1000
+					Loop
+					{
+						sleep 400
+						shipcount++
+						if (shipcount>50)
+						{
+							LogShow("等待進入篩選清單的過程中發生錯誤")
+							StopAnchor := 1 ;不再出擊
+							return
+						}
+					} until DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(1, 35, 2633790)
+					shipcount := VarSetCapacity
 					C_Click(502, 129) ;排序 等級
 					C_Click(363, 266) ;索引 全部
 					C_Click(363, 397)  ;陣營全 陣營
@@ -3949,7 +3979,7 @@ shipsfull(byref StopAnchor)
 					{
 						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
 						DockCount := VarSetCapacity
-						Logshow("退役結束")
+						Logshow("發生一些問題，退役結束")
 						break
 					}
 					else
