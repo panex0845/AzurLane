@@ -82,9 +82,10 @@ Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
 Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整視窗
 Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
-
-Gui, Add, text, x480 y20 w400 h20 vstarttext  , 
-Gui, Add, ListBox, x480 y45 w400 h415 ReadOnly vListBoxLog
+Gui, Add, text, x480 y20 w400 h20 vstarttext, 
+Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
+;~ Gui, Add, text, x650 y50 w150 h20 vAnchorFailedText, 旗艦大破：0 次
+Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
 Gui,Add,Tab, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|學　院|後　宅|任　務|其　他|
@@ -111,11 +112,11 @@ Tab1_Y -= 5
 if AnchorChapter=紅染1
 	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1||紅染2|S.P.|
 else if AnchorChapter=紅染2
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2|||S.P.|
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2||S.P.|
 else if AnchorChapter=S.P.
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2||S.P.||
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2|S.P.||
 else
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1||2|3|4|5|6|7|紅染1|紅染2||S.P.|
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1||2|3|4|5|6|7|紅染1|紅染2|S.P.|
 Tab1_Y += 5
 Gui, Add, text, x270 y%Tab1_Y% w40 h20  , 章 第
 Gui, Add, DropDownList, x310 y115 w40 h100 vAnchorChapter2 gAnchorsettings Choose%AnchorChapter2% , 1||2|3|4|
@@ -1089,6 +1090,8 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 			}	
 		}
 	}
+	AnchorTimes++ ;統計出擊次數
+	GuiControl, ,AnchorTimesText, 出擊次數：%AnchorTimes% 次。
 	LogShow("出擊～！")
     Random, x, 1056, 1225
 	Random, y, 656, 690
@@ -3654,6 +3657,16 @@ Loop, 30  ;等待選單開啟
 
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
+	;~ Global
+	;~ if (DwmCheckcolor(197, 311, 15200231) and DwmCheckcolor(550, 321, 13029318) and DwmCheckcolor(664, 346, 14608350))
+	;~ {
+		;~ AnchorFailedTimes++
+		;~ Guicontrol, ,AnchorFailedText, 旗艦大破：%AnchorFailedTimes% 次。
+		;~ LogShow("======旗艦大破======")
+		;~ Random, x, 100, 1000
+		;~ Random, y, 100, 600
+		;~ C_Click(x, y)
+	;~ }
 	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(1, 35, 2633790) ;點擊繼續
 	{
 		LogShow("艦已靠港。")
