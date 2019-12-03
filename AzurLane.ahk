@@ -100,9 +100,11 @@ Gui, Add, text, x30 y%Tab1_Y% w80 h20  , 選擇地圖：
 Tab1_Y -= 5
 iniread, AnchorMode, settings.ini, Battle, AnchorMode, 普通
 if AnchorMode=普通
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通||困難|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通||困難|停用|
 else if AnchorMode=困難
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通|困難||
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通|困難||停用|
+else if AnchorMode=停用
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通|困難|停用||
 
 iniread, AnchorChapter, settings.ini, Battle, AnchorChapter
 iniread, AnchorChapter2, settings.ini, Battle, AnchorChapter2
@@ -2009,7 +2011,28 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			}
 		}
 	}
-	if AnchorMode=普通
+	if AnchorMode=停用
+	{
+		StopAnchor := 1
+		LogShow("選擇地圖已停用，停止出擊到永遠。")
+		sleep 1000
+		C_Click(1228, 68)
+		sleep 1000
+		Loop, 20
+		{
+			if (DwmCheckcolor(132, 54, 14085119) and DwmCheckcolor(160, 72, 14085119)) ;如果還在出擊頁面
+			{
+				C_Click(1228, 68)
+			}
+			else if (DwmCheckcolor(12, 201, 16777215)) ;成功回到首頁
+			{
+				Break
+			}
+			sleep 350
+		}
+		return
+	}
+	else if AnchorMode=普通
 	{
 		LogShow("選擇攻略地圖，難度：普通")
 		if (DwmCheckcolor(58, 681, 16777215) or DwmCheckcolor(51, 684, 16777215)) ;一般關卡的困難 OR 活動難度的困難
