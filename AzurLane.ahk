@@ -3889,7 +3889,7 @@ shipsfull(byref StopAnchor)
 				{
 					LogShow("等待進入船䲧的過程中發生錯誤")
 					StopAnchor := 1 ;不再出擊
-					return
+					return StopAnchor
 				}
 			} until DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215) and DwmCheckcolor(1, 35, 2633790)
 			shipcount := VarSetCapacity
@@ -3906,7 +3906,7 @@ shipsfull(byref StopAnchor)
 						{
 							LogShow("等待進入篩選清單的過程中發生錯誤")
 							StopAnchor := 1 ;不再出擊
-							return
+							return StopAnchor
 						}
 					} until DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(1, 35, 2633790)
 					shipcount := VarSetCapacity
@@ -3995,7 +3995,7 @@ shipsfull(byref StopAnchor)
 					Logshow("退役結束")
 					break
 				}
-				else if !(DwmCheckcolor(166, 720, 123)) ;第一位還沒被退役
+				else if (!(DwmCheckcolor(266, 403, 16777215) and DwmCheckcolor(1141, 388, 9718090)) and DwmCheckcolor(879, 709, 16777215)) ;第一位還沒被退役
 				{
 					DockCount++
 					if (DockCount>20 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
