@@ -434,7 +434,7 @@ Gui, Add, CheckBox, x30 y180 w120 h20 gAcademysettings vAcademyTactics checked%A
 iniread, 150expbookonly, settings.ini, Academy, 150expbookonly, 1
 Gui, Add, CheckBox, x160 y180 w200 h20 gAcademysettings v150expbookonly checked%150expbookonly%, 僅使用150`%經驗的課本
 iniread, AcademyShop, settings.ini, Academy, AcademyShop, 1
-Gui, Add, CheckBox, x30 y210 w200 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 商店刷新時自動購物`(金幣)
+Gui, Add, CheckBox, x30 y210 w220 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 軍火商刷新時進行購物`(金幣)
 iniread, SkillBook_ATK, settings.ini, Academy, SkillBook_ATK
 iniread, SkillBook_DEF, settings.ini, Academy, SkillBook_DEF
 iniread, SkillBook_SUP, settings.ini, Academy, SkillBook_SUP
@@ -442,7 +442,7 @@ iniread, Cube, settings.ini, Academy, Cube
 Gui, Add, CheckBox, x50 y240 w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
 Gui, Add, CheckBox, x140 y240 w80 h20 gAcademysettings vSkillBook_DEF checked%SkillBook_DEF%, 防禦教材
 Gui, Add, CheckBox, x230 y240 w80 h20 gAcademysettings vSkillBook_SUP checked%SkillBook_SUP%, 輔助教材
-Gui, Add, CheckBox, x310 y240 w80 h20 gAcademysettings vCube checked%Cube%, 心智魔方
+Gui, Add, CheckBox, x320 y240 w80 h20 gAcademysettings vCube checked%Cube%, 心智魔方
 
 Gui, Tab, 後　宅
 iniread, DormSub, settings.ini, Dorm, DormSub
@@ -3868,7 +3868,18 @@ shipsfull(byref StopAnchor)
 					StopAnchor := 1 ;不再出擊
 					Break
 				}
+				else
+				{
+					BreakShipsfailed++
+					if (BreakShipsfailed>=50)
+					{
+						StopAnchor := 1 ;不再出擊
+						Break
+					}
+				}
+				sleep 300
 			}
+			BreakShipsfailed := VarSetCapacity
 		}
 		else if shipsfull=關閉遊戲
 		{
