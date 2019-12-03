@@ -19,3 +19,11 @@ A tool for AzurLane to farm automatically.
 
 # Note
 1. All of the code is for academic exchange only.  Use at your own risk.
+2. If it running, **DO NOT:**
+    * Minimizing/Maximizing/Resizing the window.<br>
+    * Moving the window to outer desktop.<br>
+    ![](https://i.imgur.com/gOlcTii.png)
+    * Showing the OSD ware on the window like MSI afterburner.<br>
+    ![](https://i.imgur.com/x8QOKxD.png)
+    
+
