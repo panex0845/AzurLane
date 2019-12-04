@@ -1458,6 +1458,10 @@ if (Withdraw and Switchover )
 						if (Dwmgetpixel(x, y)=boss)
 						{
 							C_Click(1035, 715) ;切換隊伍
+							if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
+							{
+								Break
+							}
 							sleep 1000
 							if (Dwmgetpixel(x, y)!=boss)
 							{
