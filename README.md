@@ -22,7 +22,7 @@ A tool for AzurLane to farm automatically.
 2. If it running, **DO NOT:**
     * Minimizing/Maximizing/Resizing the window.<br>
     * Moving the window to outer desktop.<br>
-    ![](https://i.imgur.com/EiEEF5K.png)
+    ![](https://i.imgur.com/73M1fDU.png)
     * Showing the OSD ware on the window like MSI afterburner.<br>
     ![](https://i.imgur.com/lW6fbwp.png)
     * Running the other program as full-screen mode.<br>
