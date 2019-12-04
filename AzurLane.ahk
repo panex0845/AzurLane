@@ -1203,10 +1203,10 @@ if (Withdraw and Switchover )
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
-	if (AlignCenter) and !(GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch2(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
+	if (AlignCenter) and !(GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch2(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		sleep 500
 		A_SwipeFast(164, 218, 1235, 646)
+		sleep 300
 		Loop
 		{
 			x := 350, y := 220
@@ -1216,7 +1216,7 @@ if (Withdraw and Switchover )
 			x2 := x1-145, y2 := y1-100
 			A_SwipeFast(x1, y1, x2, y2)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
+		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y-1
 		y2 := y+1
 		AlignCenterCount := VarSetCapacity
@@ -1225,7 +1225,7 @@ if (Withdraw and Switchover )
 			Random, y, 180, 650
 			A_SwipeFast(650, y, 430, y)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 125, y1, 265, y2)) or AlignCenterCount>10
+		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 270, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
 	}
 	Loop, 100
