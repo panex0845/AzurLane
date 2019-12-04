@@ -464,7 +464,7 @@ iniread, MissionSub, settings.ini, MissionSub, MissionSub
 Gui, Add, CheckBox, x30 y90 w150 h20 gMissionsettings vMissionSub checked%MissionSub% +c4400FF, 啟動自動接收任務
 
 Gui, Tab, 其　他
-Gui, Add, button, x30 y90 w120 h20 gDebug2, 除錯
+Gui, Add, button, x30 y90 w120 h20 vdebug gDebug2, 除錯
 Gui, Add, button, x180 y90 w200 h20 gForumSub, Bug回報、功能建議討論區
 Gui, Add, button, x180 y120 w200 h20 gDiscordSub, Discord
 Gui, Add, button, x30 y120 w120 h20 gDailyGoalSub2, 執行每日任務
@@ -508,6 +508,10 @@ if (Autostart)
 return
 
 Debug2:
+LogShow("檢測中")
+GuiControl, disable, debug
+WinRestore,  %title%
+WinMove,  %title%, , , , 1318, 758
 text1 := GdiGetPixel(12, 24)
 text2 := DwmGetPixel(12, 24)
 text3 := GdiGetPixel(1300, 681)
@@ -517,6 +521,27 @@ text6 := DwmGetPixel(485, 21)
 text11 := Dwmcheckcolor(1300, 681, 16777215)
 text22 := Dwmcheckcolor(12, 24, 16041247)
 text33 := Dwmcheckcolor(1, 35, 2633790)
+SysGet, VirtualWidth, 78
+SysGet, VirtualHeight, 79
+WinGetPos, X, Y, Width, Height, %title%
+debug_Y := 1
+Loop
+{
+	DwmCheckcolor(1, debug_Y, 2633790)
+	debug_Y++
+	debug_YY++
+	if (debug_YY>60)
+		debug_Y := debug_Y_Failed
+} until !DwmCheckcolor(1, debug_Y, 2633790) or debug_YY>60
+debug_X := 1
+Loop
+{
+	DwmCheckcolor(debug_X, 16, 2633790)
+	debug_X++
+	debug_XX++
+	if (debug_XX>60)
+		debug_X := debug_X_Failed or debug_XX>60
+} until !DwmCheckcolor(debug_X, 16, 2633790)
 WinGet, UniqueID, ,Azur Lane - %title%
 Global UniqueID 
 gui, Color, FF0000
@@ -540,9 +565,11 @@ sleep 100
 Black := DwmGetPixel(336, 456)
 sleep 200
 gui, Color, Default
-Msgbox, Red: %Red% `nGreen:%Green%`nBlue: %Blue%`nWhite: %White%`nBlack:%Black%`n`nGdiGetPixel(211, 17)：%text1% and 4294231327`nDwmGetPixel(211, 17)：%text2% and %text22%`nGdiGetPixel(1300, 681)：%text3% and 4294967295`nDwmGetPixel(1300, 681)：%text4% and %text11%`nGdiGetPixel(485, 21)：%text5% and 4280823870`nDwmGetPixel(485, 21)：%text6% and %text33%
+Msgbox, Red: %Red% `nGreen:%Green%`nBlue: %Blue%`nWhite: %White%`nBlack:%Black%`n`nGdiGetPixel(211, 17)：%text1% and 4294231327`nDwmGetPixel(211, 17)：%text2% and %text22%`nGdiGetPixel(1300, 681)：%text3% and 4294967295`nDwmGetPixel(1300, 681)：%text4% and %text11%`nGdiGetPixel(485, 21)：%text5% and 4280823870`nDwmGetPixel(485, 21)：%text6% and %text33%`n`ndebug_Y: %debug_Y%`ndebug_X: %debug_X%`n`nWin_Width: %Width%`nWin_Height: %Height%`n`nScreenWidth: %VirtualWidth% `nScreenHeight: %VirtualHeight%`nWin_X: %X%`nWin_Y: %Y%`n`n請對此視窗截圖("Alt+PrintScreen")
 Winget, UniqueID,, %title%
 Global UniqueID
+GuiControl,enable, debug
+GuiControl,, ListBoxLog, |
 return
 
 TabFunc: ;切換分頁讀取GUI設定，否則可能導致選項失效
@@ -1227,7 +1254,7 @@ if (Withdraw and Switchover )
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch2(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		A_SwipeFast(164, 218, 1235, 646)
+		A_SwipeFast(164, 218, 1235, 646, 600)
 		sleep 300
 		Loop
 		{
@@ -1236,7 +1263,7 @@ if (Withdraw and Switchover )
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
 			x2 := x1-145, y2 := y1-100
-			A_SwipeFast(x1, y1, x2, y2)
+			A_SwipeFast(x1, y1, x2, y2, 350)
 			AlignCenterCount++
 		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y-1
@@ -1244,8 +1271,10 @@ if (Withdraw and Switchover )
 		AlignCenterCount := VarSetCapacity
 		Loop 
 		{
+			if (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 270, y2))
+				break
 			Random, y, 180, 650
-			A_SwipeFast(650, y, 430, y)
+			A_SwipeFast(650, y, 430, y, 350)
 			AlignCenterCount++
 		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 270, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
@@ -1264,7 +1293,7 @@ if (Withdraw and Switchover )
 			yy := y + 80
 			Loop, 3
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1305,7 +1334,7 @@ if (Withdraw and Switchover )
 			yy := y + 70
 			Loop, 4
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1478,7 +1507,7 @@ if (Withdraw and Switchover )
 			yy := y 
 			Loop, 15
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1511,7 +1540,7 @@ if (Withdraw and Switchover )
 			yy := y 
 			Loop, 15
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1544,7 +1573,7 @@ if (Withdraw and Switchover )
 			yy := y
 			Loop, 15
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1578,7 +1607,7 @@ if (Withdraw and Switchover )
 			yy := y 
 			Loop, 15
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1611,7 +1640,7 @@ if (Withdraw and Switchover )
 			yy := y 
 			Loop, 15
 			{
-				if (xx<290 and yy<193)
+				if (xx<360 and yy<195)
 				{
 					A_Swipe(138,215,148,300)
 					break
@@ -1641,7 +1670,7 @@ if (Withdraw and Switchover )
 		{
 			xx := x 
 			yy := y 
-			if (xx<290 and yy<193)
+			if (xx<360 and yy<195)
 			{
 				A_Swipe(138,215,148,300)
 				return
