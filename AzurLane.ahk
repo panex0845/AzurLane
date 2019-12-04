@@ -2825,7 +2825,7 @@ if  (DailyGoalSub and DailyDone<1)
 				{
 					Logshow("石油不足，停止每日任務。")
 					StopAnchor := 1
-					Loop
+					Loop, 20
 					{
 						if (DwmCheckcolor(133, 56, 15201279) and DwmCheckcolor(133, 56, 15201279)) ;檢查"編隊"
 						{
