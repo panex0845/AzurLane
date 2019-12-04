@@ -816,7 +816,7 @@ Settimer, Mainsub, 2500
 Settimer, WinSub, 3200
 if (EmulatorCrushCheck)
 {
-	Settimer, EmulatorCrushCheckSub, 600000
+	Settimer, EmulatorCrushCheckSub, 300000
 }
 return
 
@@ -829,27 +829,49 @@ Run, https://discord.gg/GFCRSap
 return
 
 EmulatorCrushCheckSub:
-CheckPostion1 := DwmGetpixel(56, 84)
-CheckPostion2 := DwmGetpixel(313, 515)
-CheckPostion3 := DwmGetpixel(938, 235)
-CheckPostion4 := DwmGetpixel(163, 357)
-CheckPostion5 := DwmGetpixel(513, 66)
-Withdraw := DwmCheckcolor(772, 706, 12996946) 
-sleep 1000
-if (DwmGetpixel(56, 84)=CheckPostion1 and DwmGetpixel(313, 515)=CheckPostion2 and DwmGetpixel(938, 235)=CheckPostion3 and DwmGetpixel(163, 357)=CheckPostion4 and DwmGetpixel(513, 66)=CheckPostion5 and !Withdraw and DwmCheckcolor(1225, 83, 16249847) and DwmCheckcolor(1240, 83, 16249847))
+if (EmulatorCrushCheckCount<1) ;檢查6個點
 {
-	sleep 1000
-	if (DwmGetpixel(56, 84)=CheckPostion1 and DwmGetpixel(313, 515)=CheckPostion2 and DwmGetpixel(938, 235)=CheckPostion3 and DwmGetpixel(163, 357)=CheckPostion4 and DwmGetpixel(513, 66)=CheckPostion5 and !Withdraw and DwmCheckcolor(1225, 83, 16249847) and DwmCheckcolor(1240, 83, 16249847))
+	CheckPostion1 := DwmGetpixel(50, 95)
+	CheckPostion2 := DwmGetpixel(582, 74)
+	CheckPostion3 := DwmGetpixel(961, 242)
+	CheckPostion4 := DwmGetpixel(320, 215)
+	CheckPostion5 := DwmGetpixel(778, 583)
+	CheckPostion6 := DwmGetpixel(312, 446)
+}
+EmulatorCrushCheckCount++
+if (EmulatorCrushCheckCount>1)
+{
+	if (DwmCheckcolor(432, 115, 907775) and DwmCheckcolor(446, 116, 16768000) and DwmCheckcolor(441, 120, 16201485) and DwmCheckcolor(633, 596, 16777215)) ;遊戲閃退 位於模擬器桌面
+	{
+		LogShow("=========遊戲閃退，重啟=========")
+		EmulatorCrushCheckCount := VarSetCapacity
+		iniwrite, 1, settings.ini, OtherSub, Autostart
+		runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+		sleep 10000
+		goto, startemulatorSub
+	}
+	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmCheckcolor(1, 35, 2633790))  ;如果6個點顏色相同，推定當機
 	{
 		sleep 1000
-		if (DwmGetpixel(56, 84)=CheckPostion1 and DwmGetpixel(313, 515)=CheckPostion2 and DwmGetpixel(938, 235)=CheckPostion3 and DwmGetpixel(163, 357)=CheckPostion4 and DwmGetpixel(513, 66)=CheckPostion5 and !Withdraw and DwmCheckcolor(1225, 83, 16249847) and DwmCheckcolor(1240, 83, 16249847))
+		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6) ;再檢查一次
 		{
-			LogShow("=====模擬器當機=====")
-			iniwrite, 1, settings.ini, OtherSub, Autostart
-			runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
-			sleep 10000
-			goto, startemulatorSub
+			sleep 1000
+			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6) ;再檢查一次
+			{
+				LogShow("=========模擬器當機，重啟=========")
+				EmulatorCrushCheckCount := VarSetCapacity
+				iniwrite, 1, settings.ini, OtherSub, Autostart
+				runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+				sleep 10000
+				goto, startemulatorSub
+			}
 		}
+		EmulatorCrushCheckCount := VarSetCapacity	
+	}
+	else
+	{
+		;~ LogShow("=====沒事兒=====")
+		EmulatorCrushCheckCount := VarSetCapacity
 	}
 }
 return
@@ -1401,13 +1423,17 @@ if (Withdraw and Switchover )
 					TargetFailed2 := 1
 					TargetFailed3 := 1
 					TargetFailed4 := 1
-					Loop, 15
+					Loop, 20
 					{
 						boss := Dwmgetpixel(x, y)
 						if (Dwmgetpixel(x, y)=boss)
 						{
 							C_Click(1035, 715) ;切換隊伍
-							break
+							sleep 1000
+							if (Dwmgetpixel(x, y)!=boss)
+							{
+								break
+							}
 						}
 						sleep 300
 					}
@@ -1779,6 +1805,15 @@ if (Withdraw and Switchover )
 				TargetFailed4 := VarSetCapacity
 				Plane_TargetFailed1 := VarSetCapacity
 			}
+			if (SearchLoopcountFailed2>40 and ChooseParty2!="不使用")
+			{
+					LogShow("無法偵測到任何目標，嘗試切換隊伍")
+					SwitchParty := 1
+					Random, x, 963, 1096
+					Random, y, 701, 728
+					C_Click(x,y) ;點擊"切換"
+			}
+			return
 			if (SearchLoopcountFailed2>60)
 			{
 				LogShow("重複60次未能偵查到目標，撤退")
