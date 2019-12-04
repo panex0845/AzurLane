@@ -1209,10 +1209,14 @@ if (Withdraw and Switchover )
 		A_SwipeFast(164, 218, 1235, 646)
 		Loop
 		{
-			Random, x, 165, 1000
-			A_SwipeFast(x, 600, x, 500)
+			x := 350, y := 220
+			Random, xx, 0, 750
+			Random, yy, 0, 400
+			x1 := x+xx, y1 := y+yy
+			x2 := x1-135, y2 := y1-100
+			A_SwipeFast(x1, y1, x2, y2)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 600, 550, 1270, 670)) or AlignCenterCount>10
+		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y - 5
 		y2 := y + 5
 		AlignCenterCount := VarSetCapacity
