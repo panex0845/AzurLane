@@ -1213,19 +1213,19 @@ if (Withdraw and Switchover )
 			Random, xx, 0, 750
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
-			x2 := x1-135, y2 := y1-100
+			x2 := x1-155, y2 := y1-90
 			A_SwipeFast(x1, y1, x2, y2)
 			AlignCenterCount++
 		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
-		y1 := y - 5
-		y2 := y + 5
+		y1 := y-1
+		y2 := y+1
 		AlignCenterCount := VarSetCapacity
 		Loop 
 		{
 			Random, y, 180, 650
 			A_SwipeFast(650, y, 430, y)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 125, y1, 220, y5)) or AlignCenterCount>10
+		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 125, y1, 265, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
 	}
 	Loop, 100
