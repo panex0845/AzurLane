@@ -1213,7 +1213,7 @@ if (Withdraw and Switchover )
 			Random, xx, 0, 750
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
-			x2 := x1-155, y2 := y1-90
+			x2 := x1-145, y2 := y1-100
 			A_SwipeFast(x1, y1, x2, y2)
 			AlignCenterCount++
 		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 0, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
