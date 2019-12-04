@@ -26,7 +26,7 @@ A tool for AzurLane to farm automatically.
     * Showing the OSD ware on the window like MSI afterburner.<br>
     ![](https://i.imgur.com/lW6fbwp.png)
     * Running the other program as full-screen mode.<br>
-      (Recommended run as borderless windowed mode or move the window to virual desktop)<br>
+      (Recommended run as borderless windowed mode or move the window to virtual desktop)<br>
        Hotkey: Win+Tab / Ctrl+Win+ ← or →
     ![](https://i.imgur.com/7T04aN4.png)
       
