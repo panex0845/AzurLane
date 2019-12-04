@@ -1805,7 +1805,7 @@ if (Withdraw and Switchover )
 				TargetFailed4 := VarSetCapacity
 				Plane_TargetFailed1 := VarSetCapacity
 			}
-			if (SearchLoopcountFailed2>40 and ChooseParty2!="不使用")
+			if (SearchLoopcountFailed2>45 and ChooseParty2!="不使用" and SwitchParty<1)
 			{
 					LogShow("無法偵測到任何目標，嘗試切換隊伍")
 					SwitchParty := 1
@@ -1813,7 +1813,6 @@ if (Withdraw and Switchover )
 					Random, y, 701, 728
 					C_Click(x,y) ;點擊"切換"
 			}
-			return
 			if (SearchLoopcountFailed2>60)
 			{
 				LogShow("重複60次未能偵查到目標，撤退")
