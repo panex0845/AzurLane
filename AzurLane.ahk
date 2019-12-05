@@ -4063,7 +4063,7 @@ shipsfull(byref StopAnchor)
 					C_Click(1014,677)  ;退役確定
 				else if (DwmCheckcolor(330, 208, 16777215) and DwmCheckcolor(523, 546, 16777215) and DwmCheckcolor(811, 555, 16777215)) ;如果有角色等級不為1(確定)
 					C_Click(787,546)  
-				else if (DwmGetPixel(711, 261)=16777215 and DwmGetPixel(575, 258)=16777215) ;獲得道具
+				else if (DwmCheckcolor(711, 261,16777215) and DwmCheckcolor(575, 258,16777215)) ;獲得道具
 					C_Click(636, 91)
 				else if (DwmCheckcolor(712, 182, 16777215) and DwmCheckcolor(576, 188, 16777215)) ;獲得道具
 					C_Click(636, 91)
@@ -4071,7 +4071,7 @@ shipsfull(byref StopAnchor)
 					C_Click(979, 580)
 				else if (DwmCheckcolor(211, 153, 16777215) and DwmCheckcolor(828, 615, 16777215)) ;將獲得以下材料
 					C_Click(805, 605)
-				else if (DwmCheckcolor(1102, 705, 10856101) and DwmCheckcolor(1142, 386, 9718090) and DwmCheckcolor(111, 448, 9208460)) ;暫無符合條件的艦船
+				else if (DwmCheckcolor(102, 408, 16777215) and DwmCheckcolor(184, 403, 16777215) and DwmCheckcolor(386, 405, 16777215)) ;暫無符合條件的艦船
 				{
 					C_Click(64, 91)
 					Logshow("退役結束")
@@ -4111,8 +4111,21 @@ shipsfull(byref StopAnchor)
 						C_Click(1078,702)  ;確定
 					}
 				}
+				else
+				{
+					IsDockCount++
+					if (IsDockCount>200 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
+					{
+						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
+						IsDockCount := VarSetCapacity
+						Logshow("發生一些問題，退役結束2")
+						break
+					}
+				}
 				sleep 500
-			}  
+			}
+			DockCount := VarSetCapacity
+			IsDockCount  := VarSetCapacity
 		}
 	}
 }
