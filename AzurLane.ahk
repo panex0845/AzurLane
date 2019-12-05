@@ -500,8 +500,7 @@ LogShow("啟動完畢，等待開始")
 Gosub, whitealbum
 Settimer, whitealbum, 10000 ;很重要!
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
-if (Autostart)
-{
+if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
 	Goto, Start
 }
@@ -519,29 +518,27 @@ text4 := DwmGetPixel(1300, 681)
 text5 := GdiGetPixel(485, 21)
 text6 := DwmGetPixel(485, 21)
 text11 := Dwmcheckcolor(1300, 681, 16777215)
-text22 := Dwmcheckcolor(12, 24, 16041247)
+text22 := Dwmcheckcolor(13, 25, 16041247)
 text33 := DwmCheckcolor(13, 25, 16041247)
 SysGet, VirtualWidth, 78
 SysGet, VirtualHeight, 79
 WinGetPos, X, Y, Width, Height, %title%
 debug_Y := 1
-Loop
-{
-	DwmCheckcolor(1, debug_Y, 2633790)
+Loop {
+	DwmCheckcolor(1, debug_Y, 1250067)
 	debug_Y++
 	debug_YY++
 	if (debug_YY>60)
 		debug_Y := debug_Y_Failed
-} until !DwmCheckcolor(1, debug_Y, 2633790) or debug_YY>60
+} until !DwmCheckcolor(1, debug_Y, 1250067) or debug_YY>60
 debug_X := 1
-Loop
-{
-	DwmCheckcolor(debug_X, 16, 2633790)
+Loop {
+	DwmCheckcolor(debug_X, 16, 1250067)
 	debug_X++
 	debug_XX++
 	if (debug_XX>60)
 		debug_X := debug_X_Failed or debug_XX>60
-} until !DwmCheckcolor(debug_X, 16, 2633790)
+} until !DwmCheckcolor(debug_X, 16, 1250067)
 WinGet, UniqueID, ,Azur Lane - %title%
 Global UniqueID 
 gui, Color, FF0000
@@ -591,14 +588,13 @@ Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
 return
 
 Anchorsettings: ;出擊設定
-Guicontrolget, AnchorSub
+;///////////////TAB1//////////////
+Guicontrolget, AnchorSub,
 Guicontrolget, AnchorMode
-Guicontrolget, ChapterMode
 Guicontrolget, AnchorChapter 
 Guicontrolget, AnchorChapter2
 Guicontrolget, Assault
 Guicontrolget, mood
-Guicontrolget, moodtime
 Guicontrolget, Autobattle
 Guicontrolget, BossAction
 Guicontrolget, Shipsfull
@@ -625,12 +621,10 @@ Guicontrolget, StopBattleTime2
 Guicontrolget, StopBattleTime3
 Iniwrite, %AnchorSub%, settings.ini, Battle, AnchorSub
 Iniwrite, %AnchorMode%, settings.ini, Battle, AnchorMode
-Iniwrite, %ChapterMode%, settings.ini, Battle, ChapterMode
 Iniwrite, %AnchorChapter%, settings.ini, Battle, AnchorChapter
 Iniwrite, %AnchorChapter2%, settings.ini, Battle, AnchorChapter2
 Iniwrite, %Assault%, settings.ini, Battle, Assault
 Iniwrite, %mood%, settings.ini, Battle, mood
-Iniwrite, %moodtime%, settings.ini, Battle, moodtime
 Iniwrite, %Autobattle%, settings.ini, Battle, Autobattle
 Iniwrite, %BossAction%, settings.ini, Battle, BossAction
 Iniwrite, %Shipsfull%, settings.ini, Battle, Shipsfull
@@ -656,8 +650,8 @@ Iniwrite, %StopBattleTime%, settings.ini, Battle, StopBattleTime
 Iniwrite, %StopBattleTime2%, settings.ini, Battle, StopBattleTime2
 Iniwrite, %StopBattleTime3%, settings.ini, Battle, StopBattleTime3
 Global Assault, Autobattle, shipsfull, ChooseParty1, ChooseParty2, AnchorMode, SwitchPartyAtFirstTime, WeekMode, AnchorChapter, AnchorChapter2
-FirstChooseParty := 0
-;////出擊2///////
+
+;////出擊2/////// TAB2
 Guicontrolget, IndexAll
 Guicontrolget, Index1
 Guicontrolget, Index2
@@ -931,7 +925,7 @@ GuiControl, Enable, ResetOperation
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := DwmCheckcolor(13, 17, 16041247)
+LDplayerCheck := DwmCheckcolor(13, 25, 16041247)
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -949,7 +943,7 @@ else if LDplayerCheck
 	MainCheck := CheckArray(MainCheck*)
 	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
 	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
-	LDtitlebar := DwmCheckcolor(13, 17, 16041247)
+	LDtitlebar := DwmCheckcolor(13, 25, 16041247)
 	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
 	if (MissionSub and MissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar) ;任務
 	{
@@ -2500,7 +2494,7 @@ return
 ;~ Random, SearchDirection, 1, 8
 ;~ g := Gdip_PixelSearch(pBitmap, 4287894561,  x,  y)
 ;~ g := Gdip_PixelSearch2( x,  y, 0, 0, MapX2, MapY2, 4286845976, 0)
-;~ g := GdipImageSearch2(x, y, "img/Map_Lower.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2)
+;~ g := GdipImageSearch2(x, y, "img/button/BTN_Weigh_Anchor.png", 20, SearchDirection, MapX1, MapY1, MapX2, MapY2)
 ;~ tooltip x%x% y%y% g%g%
 ;~ C_Click(x,y)
 ;~ return
@@ -2697,8 +2691,6 @@ else
 	goto, start
 }
 return
-
-
 
 DailyGoalSub:
 WinRestore,  %title%
@@ -3769,7 +3761,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		;~ Random, y, 100, 600
 		;~ C_Click(x, y)
 	;~ }
-	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(13, 17, 16041247) ;點擊繼續
+	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(13, 25, 16041247) ;點擊繼續
 	{
 		LogShow("艦已靠港。")
 		Random, x, 100, 1000
@@ -3860,7 +3852,7 @@ UnknowWife()
 
 Battle_End()
 {
-	if (DwmGetPixel(1108, 699)=16777215 and DwmGetPixel(914, 680)=16777215 and DwmGetPixel(98, 242)=16777215) and DwmCheckcolor(13, 17, 16041247) ;確定
+	if (DwmGetPixel(1108, 699)=16777215 and DwmGetPixel(914, 680)=16777215 and DwmGetPixel(98, 242)=16777215) and DwmCheckcolor(13, 25, 16041247) ;確定
 	{
 		LogShow("結算畫面，點擊確定！")
 		Random, x, 1015, 1160
@@ -4431,22 +4423,10 @@ GuLuGuLuLu()
 {
 	if (DwmCheckcolor(355, 206, 16776183) and DwmCheckcolor(355, 206, 16776183) and DwmCheckcolor(468, 561, 16764787) and DwmCheckcolor(794, 564, 16755282))
 	{
-		;~ if !DormFood
-		;~ {
 			LogShow("提督SAMA人家不給吃飯飯！")
 			Random, x, 446, 588
 			Random, y, 541, 576
 			C_Click(x, y)
-		;~ }
-		;~ else if DormFood
-		;~ {
-			;~ LogShow("HEHE，吃飯飯！")
-			;~ C_Click(757,557)
-		;~ }
-		;~ else 
-		;~ {
-			;~ Msgbox, GuLuGuLuLu出現錯誤
-		;~ }
 	}
 }
 
@@ -4500,7 +4480,6 @@ A_SwipeFast(x1,y1,x2,y2,swipetime="")
 	sleep 250
 }
 
-
 A_Swipe2(x1,y1,x2,y2,swipetime="")
 {
 	Run,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
@@ -4508,16 +4487,20 @@ A_Swipe2(x1,y1,x2,y2,swipetime="")
 
 A_Click(x,y)
 {
-	sleep 400
+	Random, randomsleep, 300, 500
+	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
+	random , y, PosY - 2, PosY + 2
+	sleep %randomsleep%
 	Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
 	sleep 500
 }
 
 C_Click(PosX, PosY)
 {
-	sleep 600
+	Random, randomsleep, 400, 600
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
+	sleep %randomsleep%
 	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
 	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
 	sleep 500
@@ -4529,23 +4512,6 @@ GdiGetPixel( x, y)
     Argb := Gdip_GetPixel(pBitmap, x, y)
     Gdip_DisposeImage(pBitmap)
     return ARGB
-}
-
-Checkcolor( x, y, color="")
-{
-    pBitmap:= Gdip_BitmapFromHWND(UniqueID)
-    Argb := Gdip_GetPixel(pBitmap, x, y)
-    Gdip_DisposeImage(pBitmap)
-    if  (color=Argb)
-    {
-        Argb = 1
-        return ARGB
-    }
-    else if (Color!=Argb)
-    {
-        Argb = 0
-        return ARGB
-    }
 }
 
 Capture() 
@@ -4570,42 +4536,28 @@ Gdip_DisposeImage(pBitmap)
 Gdip_DisposeImage(pBitmap_part)
 }
 
-AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
-{
-	defaultX1 := x1
-	defaultY1 := y1
-	y := y1
-	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-	Loop
-	{
-		x1 := x1 +1
-		x := x1
-		if (x1=x2)
-		{
-			x1 := defaultX1
-			y1 := y1 +1
-			y := y1
-		}
-	   pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-	   pix := ConvertColor(pix)
-	} until pix=color or y=y2
-	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
-	DllCall("gdi32.dll\DeleteDC", "UInt", hDC)
-	if (pix=color)
-	{
-		x := x
-		y := y
-		a := 1
-		return a
-	}
-	else
-	{
-		x :=
-		y :=
-		a := 0
-		return a
-	}
-}
+;~ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
+;~ {
+	;~ defaultX1 := x1, defaultY1 := y1, y := y1
+	;~ hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+	;~ Loop {
+		;~ x1 := x1 +1, x := x1
+		;~ if (x1=x2) {
+			;~ x1 := defaultX1,	y1 := y1 +1, y := y1
+		;~ }
+		;~ pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+		;~ pix := ConvertColor(pix)
+	;~ } until pix=color or y=y2
+	;~ DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+	;~ DllCall("gdi32.dll\DeleteDC", "UInt", hDC)
+	;~ if (pix=color) {
+		;~ x := x,	y := y, a := 1
+		;~ return a
+	;~ } else {
+		;~ x :="" , y :="", a := 0
+		;~ return a
+	;~ }
+;~ }
 
 DwmCheckcolor(x, y, color="")
 {
@@ -4620,42 +4572,11 @@ DwmCheckcolor(x, y, color="")
     DllCall("DeleteObject", "UInt", pc_hBmp)
     DllCall("DeleteDC", "UInt", pc_hCDC)
     DllCall("ReleaseDC", "UInt", UniqueID, "UInt", pc_hDC)
-   if (Allowance>=(abs(color-pc_c)))
-    {
-        pc_c = 1
-        return pc_c
-    }
+	;~ PixelGetColor, pc_c, X, Y , RGB
+   if (Allowance>=abs(color-pc_c))
+        return 1
     else 
-    {
-        pc_c = 0
-        return pc_c
-    }  
-}
-
-debugmode()
-{
-    List = 0
-    Msgbox, 即將點擊%List%
-    return List
-}
-
-GetPixel(x, y)
-{
-    pBitmap:= Gdip_BitmapFromHWND(UniqueID)
-    Argb := Gdip_GetPixel(pBitmap, x, y)
-    Gdip_DisposeImage(pBitmap)
-    return ARGB
-}
-
-FindThenClickColor(ARGB, delay="")
-{
-    pBitmap:= Gdip_BitmapFromHWND(UniqueID)
-    Gdip_PixelSearch(pBitmap, ARGB, x, y)
-    Random, rands, delay1, delay2
-	sleep, %rands%
-    ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA
-    Gdip_DisposeImage(pBitmap)
-    sleep %delay%
+        return 0
 }
 
 GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1) 
@@ -4712,22 +4633,6 @@ DwmGetPixel(x, y)
     DllCall("ReleaseDC", "UInt", UniqueID, "UInt", pc_hDC)
     Return pc_c
 }
-
-;~ PixelColor(pc_x, pc_y)
-;~ {	
-    ;~ pc_hDC := DllCall("GetDC", "UInt", UniqueID)
-    ;~ pc_hCDC := DllCall("CreateCompatibleDC", "UInt", pc_hDC)
-    ;~ pc_hBmp := DllCall("CreateCompatibleBitmap", "UInt", pc_hDC, "Int", 1318, "Int", 758)
-    ;~ pc_hObj := DllCall("SelectObject", "UInt", pc_hCDC, "UInt", pc_hBmp)
-    ;~ DllCall("PrintWindow", "UInt", UniqueID, "UInt", pc_hCDC, "UInt", 0)
-    ;~ pc_c := DllCall("GetPixel", "UInt", pc_hCDC, "Int", pc_x, "Int", pc_y, "UInt")
-    ;~ pc_c := pc_c >> 16 & 0xff | pc_c & 0xff00 | (pc_c & 0xff) << 16
-    ;~ pc_c .= ""
-    ;~ DllCall("DeleteObject", "UInt", pc_hBmp)
-    ;~ DllCall("DeleteDC", "UInt", pc_hCDC)
-    ;~ DllCall("ReleaseDC", "UInt", UniqueID, "UInt", pc_hDC)
-    ;~ Return pc_c
-;~ }
 
 DecToHex(dec)
 {
