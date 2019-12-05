@@ -520,7 +520,7 @@ text5 := GdiGetPixel(485, 21)
 text6 := DwmGetPixel(485, 21)
 text11 := Dwmcheckcolor(1300, 681, 16777215)
 text22 := Dwmcheckcolor(12, 24, 16041247)
-text33 := Dwmcheckcolor(1, 35, 2633790)
+text33 := DwmCheckcolor(13, 25, 16041247)
 SysGet, VirtualWidth, 78
 SysGet, VirtualHeight, 79
 WinGetPos, X, Y, Width, Height, %title%
@@ -565,7 +565,7 @@ sleep 100
 Black := DwmGetPixel(336, 456)
 sleep 200
 gui, Color, Default
-Msgbox, Red: %Red% `nGreen:%Green%`nBlue: %Blue%`nWhite: %White%`nBlack:%Black%`n`nGdiGetPixel(211, 17)：%text1% and 4294231327`nDwmGetPixel(211, 17)：%text2% and %text22%`nGdiGetPixel(1300, 681)：%text3% and 4294967295`nDwmGetPixel(1300, 681)：%text4% and %text11%`nGdiGetPixel(485, 21)：%text5% and 4280823870`nDwmGetPixel(485, 21)：%text6% and %text33%`n`ndebug_Y: %debug_Y%`ndebug_X: %debug_X%`n`nWin_Width: %Width%`nWin_Height: %Height%`n`nScreenWidth: %VirtualWidth% `nScreenHeight: %VirtualHeight%`nWin_X: %X%`nWin_Y: %Y%`n`n請對此視窗截圖("Alt+PrintScreen")
+Msgbox, Red: %Red% `nGreen:%Green%`nBlue: %Blue%`nWhite: %White%`nBlack:%Black%`n`nGdiGetPixel(12, 24)：%text1% and 4294231327`nDwmGetPixel(12, 24)：%text2% and %text22%`nGdiGetPixel(1300, 681)：%text3% and 4294967295`nDwmGetPixel(1300, 681)：%text4% and %text11%`nGdiGetPixel(485, 21)：%text5% and 4280823870`nDwmGetPixel(485, 21)：%text6% and %text33%`n`ndebug_Y: %debug_Y%`ndebug_X: %debug_X%`n`nWin_Width: %Width%`nWin_Height: %Height%`n`nScreenWidth: %VirtualWidth% `nScreenHeight: %VirtualHeight%`nWin_X: %X%`nWin_Y: %Y%`n`n請對此視窗截圖("Alt+PrintScreen")
 Winget, UniqueID,, %title%
 Global UniqueID
 GuiControl,enable, debug
@@ -877,7 +877,7 @@ if (EmulatorCrushCheckCount>1)
 		sleep 10000
 		goto, startemulatorSub
 	}
-	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmCheckcolor(1, 35, 2633790))  ;如果6個點顏色相同，推定當機
+	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmCheckcolor(13, 25, 16041247))  ;如果6個點顏色相同，推定當機
 	{
 		sleep 1000
 		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6) ;再檢查一次
@@ -931,7 +931,7 @@ GuiControl, Enable, ResetOperation
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := DwmCheckcolor(1, 35, 2633790) 
+LDplayerCheck := DwmCheckcolor(13, 17, 16041247)
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -949,7 +949,7 @@ else if LDplayerCheck
 	MainCheck := CheckArray(MainCheck*)
 	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
 	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
-	LDtitlebar := DwmCheckcolor(1, 35, 2633790) ;
+	LDtitlebar := DwmCheckcolor(13, 17, 16041247)
 	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
 	if (MissionSub and MissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar) ;任務
 	{
@@ -2654,14 +2654,14 @@ Allowance = %AllowanceValue%
 Global UniqueID, Allowance
 Loop
 {
-	if (DwmCheckcolor(1259, 695, 16777215) and DwmCheckcolor(1240, 700, 22957) and DwmCheckcolor(1, 35, 2633790))
+	if (DwmCheckcolor(1259, 695, 16777215) and DwmCheckcolor(1240, 700, 22957) and DwmCheckcolor(13, 25, 16041247))
 	{
 		LogShow("位於遊戲首頁，自動登入")
 		sleep 5000
 		C_Click(642, 420)
 		sleep 5000
 	}
-	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(1, 35, 2633790))
+	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(13, 25, 16041247))
 	{
 		LogShow("出現系統公告，不再顯示")
 		if !(DwmCheckcolor(212, 67, 2171953))
@@ -2718,7 +2718,7 @@ if  (DailyGoalSub and DailyDone<1)
 				LogShow("返回主選單。")
 				C_Click(1242, 69)
 			}
-			if (DwmCheckcolor(12, 201, 16777215) and DwmCheckcolor(1, 35, 2633790)) ;如果成功返回主選單 
+			if (DwmCheckcolor(12, 201, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;如果成功返回主選單 
 			{
 				Break
 			}
@@ -3269,7 +3269,7 @@ AcademyDone := VarSetCapacity
 return
 
 WinSub:
-LDplayerCheck := DwmCheckcolor(1, 35, 2633790)
+LDplayerCheck := DwmCheckcolor(13, 25, 16041247)
 if !LDplayerCheck
 {
 	WinGet, Wincheck, MinMax, %title%
@@ -3769,7 +3769,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		;~ Random, y, 100, 600
 		;~ C_Click(x, y)
 	;~ }
-	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(1, 35, 2633790) ;點擊繼續
+	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(13, 17, 16041247) ;點擊繼續
 	{
 		LogShow("艦已靠港。")
 		Random, x, 100, 1000
@@ -3803,12 +3803,12 @@ GetItem2()
 
 GetCard()
 {
-	if (DwmCheckcolor(71, 412, 16777215) and DwmCheckcolor(57, 514, 16777215) and DwmCheckcolor(70, 607, 16777215) and DwmCheckcolor(52, 694, 16777215) and DwmCheckcolor(1, 35, 2633790)) ;獲得新卡片
+	if (DwmCheckcolor(71, 412, 16777215) and DwmCheckcolor(57, 514, 16777215) and DwmCheckcolor(70, 607, 16777215) and DwmCheckcolor(52, 694, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;獲得新卡片
 	{
 		sleep 1500
 		Capture() ;拍照
 		C_Click(604, 349) ;離開介面
-		if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(811, 546, 16777215) and DwmCheckcolor(1, 35, 2633790))
+		if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(811, 546, 16777215) and DwmCheckcolor(13, 25, 16041247))
 		{
 			LogShow("獲得新卡片，自動上鎖！")
 			C_Click(791, 543) ;上鎖
@@ -3818,7 +3818,7 @@ GetCard()
 
 NewWife()
 {
-	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(718, 388, 16777207) and DwmCheckcolor(1, 35, 2633790)) ;訊息自動確認
+	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(718, 388, 16777207) and DwmCheckcolor(13, 25, 16041247)) ;訊息自動確認
 	{
 		LogShow("撿到老婆，簽字簽字！")
 		C_Click(788, 545)
@@ -3842,7 +3842,7 @@ Message_Center()
 
 Message_Normal()
 {
-	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(1, 35, 2633790)) ;訊息自動確認
+	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;訊息自動確認
 	{
 		LogShow("出現訊息，點擊取消！")
 		C_Click(490, 548)
@@ -3860,7 +3860,7 @@ UnknowWife()
 
 Battle_End()
 {
-	if (DwmGetPixel(1108, 699)=16777215 and DwmGetPixel(914, 680)=16777215 and DwmGetPixel(98, 242)=16777215) and DwmCheckcolor(1, 35, 2633790)  ;確定
+	if (DwmGetPixel(1108, 699)=16777215 and DwmGetPixel(914, 680)=16777215 and DwmGetPixel(98, 242)=16777215) and DwmCheckcolor(13, 17, 16041247) ;確定
 	{
 		LogShow("結算畫面，點擊確定！")
 		Random, x, 1015, 1160
@@ -3910,7 +3910,7 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(865, 557, 16777215) and DwmCheckcolor(463, 541, 16777215) and DwmCheckcolor(615, 533, 16777215) and DwmCheckcolor(402, 527, 3761564) and DwmCheckcolor(1, 35, 2633790))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(865, 557, 16777215) and DwmCheckcolor(463, 541, 16777215) and DwmCheckcolor(615, 533, 16777215) and DwmCheckcolor(402, 527, 3761564) and DwmCheckcolor(13, 25, 16041247))
 	{
 		if shipsfull=停止出擊
 		{
@@ -3973,7 +3973,7 @@ shipsfull(byref StopAnchor)
 					StopAnchor := 1 ;不再出擊
 					return StopAnchor
 				}
-			} until DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215) and DwmCheckcolor(1, 35, 2633790)
+			} until DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215) and DwmCheckcolor(13, 25, 16041247)
 			shipcount := VarSetCapacity
 			Loop
 			{
@@ -3990,7 +3990,7 @@ shipsfull(byref StopAnchor)
 							StopAnchor := 1 ;不再出擊
 							return StopAnchor
 						}
-					} until DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(1, 35, 2633790)
+					} until DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(13, 25, 16041247)
 					shipcount := VarSetCapacity
 					C_Click(502, 129) ;排序 等級
 					C_Click(363, 266) ;索引 全部
@@ -4461,7 +4461,7 @@ CloseEventList()
 
 SystemNotify()
 {
-	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(1, 35, 2633790))
+	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(13, 25, 16041247))
 	{
 		LogShow("出現系統公告，不再顯示")
 		if !(DwmCheckcolor(997, 109, 8716180))
