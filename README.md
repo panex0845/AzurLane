@@ -7,7 +7,7 @@ A tool for AzurLane to farm automatically.
 # Requirements
 1. Windows10
 2. AutoHotKey (Or run an EXE file directly)
-3. LD android player 3.70 or newer with resolution 1280x720 and DPI 240.
+3. ![LD android player](https://www.ldplayer.tw/) v3.70 or newer with resolution 1280x720 (DPI 240).
 4. Nvdia video card.
 
 # How to use
