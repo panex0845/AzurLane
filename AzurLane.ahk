@@ -1,7 +1,7 @@
 ﻿/* Free to use, Free for life.
 	Made by panex0845 
-*/
-
+*/ 
+Version = 1001
 ;@Ahk2Exe-SetName AzurLane Helper
 ;@Ahk2Exe-SetDescription AzurLane Helper
 ;@Ahk2Exe-SetVersion 1.0.0.1
@@ -855,7 +855,30 @@ Run, https://discord.gg/GFCRSap
 return
 
 IsUpdate:
-Run, https://github.com/panex0845/AzurLane
+If (FileExist(ThisVersion.txt))
+	FileDelete ThisVersion.txt
+UrlDownloadToFile, https://github.com/panex0845/AzurLane/blob/master/AzurLane.ahk, ThisVersion.txt
+FileReadLine, oldversion, AzurLane.ahk, 4
+Loop, Parse, oldversion 
+{
+	If A_LoopField is Number
+	newver .= A_LoopField
+}
+if newver!=Version
+{
+	LogShow("檢查中，請稍後")
+	Msgbox, 4, ,　　　檢查到更新，是否自動下載？
+	IfMsgBox Yes
+		UrlDownloadToFile, https://github.com/panex0845/AzurLane/archive/master.zip, AzurLane v%newver%.zip
+	else
+		LogShow("取消更新")
+}
+else if newver=Version
+{
+	LogShow("沒有更新")
+}
+FileDelete ThisVersion.txt
+newver := ""
 return
 
 EmulatorCrushCheckSub:
