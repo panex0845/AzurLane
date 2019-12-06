@@ -964,7 +964,7 @@ else if LDplayerCheck
 	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
 	LDtitlebar := DwmCheckcolor(13, 25, 16041247)
 	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
-	if (MissionSub and MissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar) ;任務
+	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
 	{
 		gosub, MissionSub
 		sleep 3000
@@ -4518,7 +4518,7 @@ A_Swipe2(x1,y1,x2,y2,swipetime="")
 
 A_Click(x,y)
 {
-	Random, randomsleep, 300, 500
+	Random, randomsleep, 400, 550
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
 	sleep %randomsleep%
