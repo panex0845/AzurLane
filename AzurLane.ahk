@@ -4173,47 +4173,47 @@ ChooseParty(Byref StopAnchor)
 	if (DwmCheckcolor(991, 619, 14586450) and DwmCheckcolor(1167, 636, 16238402) and DwmCheckcolor(1174, 617, 16777215))
 	{
 		LogShow("選擇出擊艦隊中。")
-		if FirstChooseParty<1 ;只在第一次啟動選擇隊伍 直到選項變更
+		if (AnchorMode="普通") and !(AnchorChapter="S.P.")
 		{
-			if (AnchorMode="普通") and !(AnchorChapter="S.P.")
+			C_Click(1142, 370) ;先清掉第二艦隊
+			sleep 300
+			C_Click(1060, 230) ;開啟第一艦隊的選擇選單
+			sleep 500
+			if (DwmCheckcolor(1061, 343, 12422738)) ;如果選單沒有正確開啟
+				return
+			if ChooseParty1=第一艦隊
+				C_Click(1093, 296) 
+			else if ChooseParty1=第二艦隊
+				C_Click(1093, 340) 
+			else if ChooseParty1=第三艦隊
+				C_Click(1093, 382) 
+			else if ChooseParty1=第四艦隊
+				C_Click(1098, 424) 
+			else if ChooseParty1=第五艦隊
+				C_Click(1098, 466) 
+			else if ChooseParty1=第六艦隊
+				C_Click(1098, 506) 
+			if ChooseParty2!=不使用
 			{
-				C_Click(1142, 370) ;先清掉第二艦隊
-				sleep 300
-				C_Click(1060, 230) ;開啟第一艦隊的選擇選單
-				sleep 300
-				if ChooseParty1=第一艦隊
-					C_Click(1093, 296) 
-				else if ChooseParty1=第二艦隊
-					C_Click(1093, 340) 
-				else if ChooseParty1=第三艦隊
-					C_Click(1093, 382) 
-				else if ChooseParty1=第四艦隊
-					C_Click(1098, 424) 
-				else if ChooseParty1=第五艦隊
-					C_Click(1098, 466) 
-				else if ChooseParty1=第六艦隊
-					C_Click(1098, 506) 
-				if ChooseParty2!=不使用
-				{
-					sleep 500
-					C_Click(1053, 368)	;開啟第二艦隊的選擇選單
-					sleep 500
-				}
-				if ChooseParty2=第一艦隊
-					C_Click(1103, 431)
-				else if ChooseParty2=第二艦隊
-					C_Click(1103, 472)
-				else if ChooseParty2=第三艦隊
-					C_Click(1103, 514)
-				else if ChooseParty2=第四艦隊
-					C_Click(1103, 556)
-				else if ChooseParty2=第五艦隊
-					C_Click(1103, 600)
-				else if ChooseParty2=第六艦隊
-					C_Click(1103, 641)
-				sleep 300
-				FirstChooseParty := 1
+				sleep 500
+				C_Click(1053, 368)	;開啟第二艦隊的選擇選單
+				sleep 500
+				if (DwmCheckcolor(1059, 624, 16777215)) ;如果選單沒有正確開啟
+					return
 			}
+			if ChooseParty2=第一艦隊
+				C_Click(1103, 431)
+			else if ChooseParty2=第二艦隊
+				C_Click(1103, 472)
+			else if ChooseParty2=第三艦隊
+				C_Click(1103, 514)
+			else if ChooseParty2=第四艦隊
+				C_Click(1103, 556)
+			else if ChooseParty2=第五艦隊
+				C_Click(1103, 600)
+			else if ChooseParty2=第六艦隊
+				C_Click(1103, 641)
+			sleep 300
 		}
 		Random, x, 1000, 1150
 		Random, y, 620, 655
