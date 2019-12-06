@@ -894,6 +894,7 @@ if (EmulatorCrushCheckCount<1) ;檢查6個點
 	CheckPostion4 := DwmGetpixel(320, 215)
 	CheckPostion5 := DwmGetpixel(778, 583)
 	CheckPostion6 := DwmGetpixel(312, 446)
+	CheckPostion7 := DwmGetpixel(164, 173)
 }
 EmulatorCrushCheckCount++
 if (EmulatorCrushCheckCount>1)
@@ -907,20 +908,20 @@ if (EmulatorCrushCheckCount>1)
 		sleep 10000
 		goto, startemulatorSub
 	}
-	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmCheckcolor(13, 25, 16041247))  ;如果6個點顏色相同，推定當機
+	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7 and DwmCheckcolor(13, 25, 16041247))  ;如果6個點顏色相同，推定當機
 	{
 		sleep 1000
-		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6) ;再檢查一次
+		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 		{
 			sleep 1000
-			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6) ;再檢查一次
+			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 			{
 				LogShow("=========模擬器當機，重啟=========")
 				EmulatorCrushCheckCount := VarSetCapacity
 				iniwrite, 1, settings.ini, OtherSub, Autostart
 				runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
 				sleep 10000
-				goto, startemulatorSub
+				reload
 			}
 		}
 		EmulatorCrushCheckCount := VarSetCapacity	
@@ -940,24 +941,6 @@ iniWrite, 0, settings.ini, Battle, OperationYesterday
 LogShow("演習已被重置")
 sleep 200
 GuiControl, Enable, ResetOperation
-;~ if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(1144, 440, 14592594)) ;如果位於首頁
-;~ {
-	;~ Random, x, 1018, 1144
-	;~ Random, y, 339, 455
-	;~ C_Click(x, y) ;點擊出擊
-	;~ Loop
-	;~ {
-		;~ if (DwmCheckcolor(794, 710, 16777215) and DwmCheckcolor(812, 699, 13000026)) ;如果在現實地圖(關卡)
-		;~ {
-			;~ C_Click(54, 88) ;回到上一頁
-		;~ }
-		;~ else if (DwmCheckcolor(750, 719, 10864623) and DwmCheckcolor(132, 63, 14085119)) ;在關卡選擇頁面
-		;~ {
-			;~ Break
-		;~ }
-		;~ sleep 300
-	;~ }
-;~ }
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
@@ -1034,95 +1017,9 @@ Guicontrol, enable, ReAnchorSub
 return
 
 AnchorSub: ;出擊
-if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;在主選單偵測到軍事任務已完成
-{
-	LogShow("執行軍事委託")
-	C_Click(20, 200)
-	Loop
-	{
-		if (DwmCheckcolor(495, 321, 15704642)) ;出現選單
-		{
-			C_Click(444, 318) ;點擊軍事委託完成
-			sleep 2500
-		}
-		else if (DwmCheckcolor(1216, 75, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;出現委託成功S頁面
-		{
-			break
-		}
-		sleep 500
-	}
-	Loop
-	{
-		sleep 1000
-		if (DwmCheckcolor(1226, 74, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;委託成功 S
-		{
-			C_Click(639, 141) ;隨便點
-			sleep 1000
-		}
-		else if (DwmCheckcolor(461, 316, 16777215) and DwmCheckcolor(432, 321, 16777215) and DwmCheckcolor(268, 348, 9240551) and DwmCheckcolor(237, 355, 9240551)) ;如果已經"空閒"
-		{
-			C_Click(441, 314)
-			sleep 1500
-		}
-		else if (DwmCheckcolor(135, 57, 15726591) and DwmCheckcolor(167, 59, 16251903)) ;成功進入委託頁面
-		{
-			Rmenu := 1
-			break
-		}
-		else
-		{
-			LoopVar++
-			if (LoopVar>100)
-			{
-				LogShow("軍事委託出現錯誤")
-				LoopVar := VarSetCapacity
-				Rmenu := VarSetCapacity
-				Break
-			}
-		}
-		GetItem()
-		GetItem2()
-	}
-	LoopVar := VarSetCapacity
-	if (Rmenu=1)
-	{
-		Rmenu := VarSetCapacity
-		DelegationMission()
-		Loop, 50
-		{
-			if DwmCheckcolor(109, 172, 4876692)
-			{
-				C_Click(1246, 89)
-				sleep 2000
-			}
-			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
-			{
-				break
-			}
-			sleep 300
-		}
-	}
-	else
-	{
-		Loop
-		{
-			if DwmCheckcolor(109, 172, 4876692)
-			{
-				C_Click(1246, 89)
-				sleep 2000
-			}
-			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
-			{
-				break
-			}
-			sleep 500
-		}
-	}
-	LogShow("軍事委託結束")
-}
 AnchorCheck := DwmCheckcolor(1036, 346, 16777215)
 AnchorCheck2 := DwmCheckcolor(1096, 331, 16769924)
-MainCheck := [DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871)] ;主選單圖示
+MainCheck := [DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871)]  ;主選單圖示
 MainCheck := CheckArray(MainCheck*)
 if (AnchorCheck and AnchorCheck2 and MainCheck and StopAnchor<1)
 {
@@ -1130,7 +1027,7 @@ if (AnchorCheck and AnchorCheck2 and MainCheck and StopAnchor<1)
 	Random, y, 356, 453
 	C_Click(x,y) ;於首頁點擊點擊右邊"出擊"
 }
-if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) and DwmCheckcolor(1109, 605, 3224625) and  DwmCheckcolor(31, 621, 16777215)) ;右下出擊
+if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) and DwmCheckcolor(1109, 605, 3224625) and  DwmCheckcolor(31, 621, 16777215)) ;在出擊的編隊頁面
 {
 	sleep 300
     if (DwmCheckcolor(773, 155, 15695211) and Autobattle="自動") ;Auto Battle >> ON
@@ -1312,7 +1209,7 @@ if (Withdraw and Switchover )
 	Loop, 100
 	{
 		sleep 300
-		MapX1 := 125, MapY1 := 125, MapX2 :=1180, MapY2 := 650 ; //////////檢查敵方艦隊的範圍////////// MapX1, MapY1 always be 0 or 100 
+		MapX1 := 125, MapY1 := 125, MapX2 :=1180, MapY2 := 650 ; //////////檢查敵方艦隊的範圍//////////
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
@@ -1700,7 +1597,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if (Bossaction!="能不攻擊就不攻擊" or SearchLoopcount>15) and (GdipImageSearch2(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1 ) ;ＢＯＳＳ
+		if (Bossaction!="能不攻擊就不攻擊" and SearchLoopcount>15) and (GdipImageSearch2(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1 ) ;ＢＯＳＳ
 		{
 			xx := x 
 			yy := y 
@@ -1905,7 +1802,7 @@ if (Withdraw and Switchover )
 }
 else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 {
-	if (DwmCheckcolor(1063, 684, 16774127) and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
+	if (MissionSub and DwmCheckcolor(1063, 684, 16774127) and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
 	{
 		LogShow("執行軍事委託任務！")
 		C_Click(1006, 712)
@@ -2583,6 +2480,10 @@ Loop
 			{
 				C_Click(940, 280)
 			}
+			else
+			{
+				C_Click(218, 280) ;判斷失敗 打左邊第一個
+			}
 			enemy1 := VarSetCapacity
 			enemy2 := VarSetCapacity
 			enemy3 := VarSetCapacity
@@ -2993,6 +2894,92 @@ if (MissionCheck and MainCheck) ;如果有任務獎勵
         }
         sleep 400
     } 
+}
+if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;在主選單偵測到軍事任務已完成
+{
+	LogShow("執行軍事委託")
+	C_Click(20, 200)
+	Loop
+	{
+		if (DwmCheckcolor(495, 321, 15704642)) ;出現選單
+		{
+			C_Click(444, 318) ;點擊軍事委託完成
+			sleep 2500
+		}
+		else if (DwmCheckcolor(1216, 75, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;出現委託成功S頁面
+		{
+			break
+		}
+		sleep 500
+	}
+	Loop
+	{
+		sleep 1000
+		if (DwmCheckcolor(1226, 74, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;委託成功 S
+		{
+			C_Click(639, 141) ;隨便點
+			sleep 1000
+		}
+		else if (DwmCheckcolor(461, 316, 16777215) and DwmCheckcolor(432, 321, 16777215) and DwmCheckcolor(268, 348, 9240551) and DwmCheckcolor(237, 355, 9240551)) ;如果已經"空閒"
+		{
+			C_Click(441, 314)
+			sleep 1500
+		}
+		else if (DwmCheckcolor(135, 57, 15726591) and DwmCheckcolor(167, 59, 16251903)) ;成功進入委託頁面
+		{
+			Rmenu := 1
+			break
+		}
+		else
+		{
+			LoopVar++
+			if (LoopVar>100)
+			{
+				LogShow("軍事委託出現錯誤")
+				LoopVar := VarSetCapacity
+				Rmenu := VarSetCapacity
+				Break
+			}
+		}
+		GetItem()
+		GetItem2()
+	}
+	LoopVar := VarSetCapacity
+	if (Rmenu=1)
+	{
+		Rmenu := VarSetCapacity
+		DelegationMission()
+		Loop, 50
+		{
+			if DwmCheckcolor(109, 172, 4876692)
+			{
+				C_Click(1246, 89)
+				sleep 2000
+			}
+			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
+			{
+				break
+			}
+			sleep 300
+		}
+	}
+	else
+	{
+		Loop
+		{
+			if DwmCheckcolor(109, 172, 4876692)
+			{
+				C_Click(1246, 89)
+				sleep 2000
+			}
+			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
+			{
+				break
+			}
+			sleep 500
+		}
+	}
+	LogShow("軍事委託結束")
 }
 return
 
@@ -3875,6 +3862,13 @@ Message_Normal()
 		LogShow("出現訊息，點擊取消！")
 		C_Click(490, 548)
 	}
+	else if (DwmCheckcolor(329, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(758, 544, 16777215) and DwmCheckcolor(721, 523, 3760532))
+	{
+		LogShow("出現訊息，點擊取消2！")
+		Random, x, 417, 565
+		Random, y, 528, 565
+		C_Click(x, y)
+	}
 }
 
 UnknowWife()
@@ -4283,7 +4277,7 @@ Battle_Operation()
 					Break
 				}
 			}
-			if (Leave_Operatio) ;快輸了自動離開
+			if (Leave_Operatio and IsChanged<6) ;快輸了自動離開
 			{
 				if (DwmCheckcolor(584, 87, 15672353) and !DwmCheckcolor(499, 86, 15671312) and !DwmCheckcolor(1196, 654, 16777215) and !DwmCheckcolor(1043, 650, 16777215) and !DwmCheckcolor(897, 660, 16777215))  
 				{
@@ -4315,6 +4309,7 @@ Battle_Operation()
 							else if (DwmCheckcolor(153, 69, 14609407) and DwmCheckcolor(170, 70, 14609407)) ;回到演習頁面
 							{
 								C_Click(1142, 395) ;更換對手
+								IsChanged++
 								Break
 							}
 							else if (DwmCheckcolor(1221, 73, 16777215)) ;太慢退出
