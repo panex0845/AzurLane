@@ -855,10 +855,14 @@ Run, https://discord.gg/GFCRSap
 return
 
 IsUpdate:
-If (FileExist(ThisVersion.txt))
-	FileDelete ThisVersion.txt
-UrlDownloadToFile, https://github.com/panex0845/AzurLane/blob/master/AzurLane.ahk, ThisVersion.txt
-FileReadLine, oldversion, AzurLane.ahk, 4
+Run, https://github.com/panex0845/AzurLane
+return
+
+IsUpdate2:
+If (FileExist(ThisVersion.ahk))
+	FileDelete ThisVersion.ahk
+UrlDownloadToFile, https://github.com/panex0845/AzurLane/blob/master/AzurLane.ahk, ThisVersion.ahk
+FileReadLine, oldversion, ThisVersion.ahk, 4
 Loop, Parse, oldversion 
 {
 	If A_LoopField is Number
@@ -867,7 +871,7 @@ Loop, Parse, oldversion
 if newver!=Version
 {
 	LogShow("檢查中，請稍後")
-	Msgbox, 4, ,　　　檢查到更新，是否自動下載？
+	Msgbox, 4, ,　　檢查到更新，是否自動下載？
 	IfMsgBox Yes
 		UrlDownloadToFile, https://github.com/panex0845/AzurLane/archive/master.zip, AzurLane v%newver%.zip
 	else
@@ -877,7 +881,7 @@ else if newver=Version
 {
 	LogShow("沒有更新")
 }
-FileDelete ThisVersion.txt
+FileDelete ThisVersion.ahk
 newver := ""
 return
 
