@@ -27,15 +27,20 @@ SetTitleMatchMode, 3
 Menu, Tray, NoStandard
 Menu, tray, add, &顯示介面, Showsub
 Menu, tray, add,  , 
+Menu, tray, add, 檢查更新, IsUpdate
+Menu, tray, add,  , 
 Menu, Tray, Default, &顯示介面
 Menu, tray, add, 結束, Exitsub
 Menu, Tray, Icon , img\01.ico,,, 1
 Gui, font, s11 Q0, 新細明體
 
-RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir
+RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir ; Ldplayer 3.76以下版本
 if (ldplayer="") {
-	Msgbox, 未偵測到雷電模擬器已被安裝，請嘗試重新安裝。
+	RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
+	if (ldplayer="") {
+		Msgbox, 未偵測到雷電模擬器已被安裝，請嘗試重新安裝。
 	Exitapp
+	}
 }
 Global ldplayer
 Gui Add, Text,  x15 y20 w100 h20 , 模擬器標題：
@@ -847,6 +852,10 @@ return
 
 DiscordSub:
 Run, https://discord.gg/GFCRSap
+return
+
+IsUpdate:
+Run, https://github.com/panex0845/AzurLane
 return
 
 EmulatorCrushCheckSub:
