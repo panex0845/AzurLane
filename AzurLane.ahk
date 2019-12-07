@@ -4746,18 +4746,11 @@ return
 
 DwmGetPixel(x, y)
 {
-    pc_hDC := DllCall("GetDC", "UInt", UniqueID)
-    pc_hCDC := DllCall("CreateCompatibleDC", "UInt", pc_hDC)
-    pc_hBmp := DllCall("CreateCompatibleBitmap", "UInt", pc_hDC, "Int", 1318, "Int", 758)
-    pc_hObj := DllCall("SelectObject", "UInt", pc_hCDC, "UInt", pc_hBmp)
-    DllCall("PrintWindow", "UInt", UniqueID, "UInt", pc_hCDC, "UInt", 0)
-    pc_c := DllCall("GetPixel", "UInt", pc_hCDC, "Int", x, "Int", y, "UInt")
-    pc_c := pc_c >> 16 & 0xff | pc_c & 0xff00 | (pc_c & 0xff) << 16
-    pc_c .= ""
-    DllCall("DeleteObject", "UInt", pc_hBmp)
-    DllCall("DeleteDC", "UInt", pc_hCDC)
-    DllCall("ReleaseDC", "UInt", UniqueID, "UInt", pc_hDC)
-    Return pc_c
+	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+	pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+	pix := ConvertColor(pix)
+    Return pix
 }
 
 DecToHex(dec)
