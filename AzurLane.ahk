@@ -43,6 +43,7 @@ if (ldplayer="") {
 	}
 }
 Global ldplayer
+
 Gui Add, Text,  x15 y20 w100 h20 , 模擬器標題：
 IniRead, title, settings.ini, emulator, title, 
 if (title="") or (title="ERROR") {
@@ -494,6 +495,7 @@ if azur_x=
 	azur_x := 0
 if azur_y=
 	azur_y := 0
+Gui, +OwnDialogs
 Gui Show, w900 h500 x%azur_x% y%azur_y%, Azur Lane - %title%
 Menu, Tray, Tip , Azur Lane `(%title%)
 #include Gdip.dll
@@ -510,6 +512,41 @@ if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
 	Goto, Start
 }
+;//////////////刪除雷電模擬器可能的惡意廣告檔案//////////////////
+DefaultDir = %A_WorkingDir%
+SetWorkingDir, %ldplayer%
+OnMessage(0x53, "WM_HELP")
+if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
+{
+	MsgBox, 24628, 敬告, 發現雷電模擬器中可能的惡意廣告軟體，是否自動刪除？
+	IfMsgBox Yes
+	{
+		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
+		{
+			WinClose, ahk_exe fynews.exe
+			WinClose, ahk_exe fyservice.exe
+			WinClose, ahk_exe ldnews.exe
+			FileDelete, fynews.exe
+			FileDelete, fyservice.exe
+			FileDelete, ldnews.exe
+		}
+		SetWorkingDir, %A_temp%
+		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
+		{
+			WinClose, ahk_exe fynews.exe
+			WinClose, ahk_exe fyservice.exe
+			WinClose, ahk_exe ldnews.exe
+			FileDelete, fynews.exe
+			FileDelete, fyservice.exe
+			FileDelete, ldnews.exe
+		}
+		LogShow("可能的廣告檔案刪除成功")
+	}
+	else IfMsgBox No 
+	{
+	}
+}
+SetWorkingDir, %DefaultDir%
 return
 
 Debug2:
@@ -2450,11 +2487,11 @@ return
 
 ;~ F3::
 ;~ pBitmap := Gdip_BitmapFromHWND(UniqueID), Gdip_GetDimensions(pBitmap, w, h)
-;~ MapX1 := 0, MapY1 := 0, MapX2 := 1000, MapY2 := 745
+;~ MapX1 := 0, MapY1 := 0, MapX2 := 1280, MapY2 := 745
 ;~ Random, SearchDirection, 1, 8
 ;~ g := Gdip_PixelSearch(pBitmap, 4287894561,  x,  y)
 ;~ g := Gdip_PixelSearch2( x,  y, 0, 0, MapX2, MapY2, 4286845976, 0)
-;~ g := GdipImageSearch2(x, y, "img/button/BTN_Weigh_Anchor.png", 20, SearchDirection, MapX1, MapY1, MapX2, MapY2)
+;~ g := GdipImageSearch2(x, y, "img/Item_Tempura.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2)
 ;~ tooltip x%x% y%y% g%g%
 ;~ C_Click(x,y)
 ;~ return
@@ -4777,4 +4814,11 @@ MinMax(type := "max", values*) {
 			x .= (k = values.MaxIndex() ? v : v ";"), ++c, y += v 
 	Sort, x, % "d`; N" (type = "max" ? " R" : "")
 	return type = "avg" ? y/c : SubStr(x, 1, InStr(x, ";") - 1)
+}
+
+WM_HELP()
+{
+	Run, https://www.reddit.com/r/RagnarokMobile/comments/e6cccx/tech_support_ldplayer_update_added_shady/
+	sleep 1000
+	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
