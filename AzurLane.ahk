@@ -382,7 +382,7 @@ else if DailyParty=第五艦隊
 	Gui, Add, DropDownList, x240 y%Tab2_Y% w90 h150 vDailyParty gAnchorsettings, 第一艦隊|第二艦隊|第三艦隊|第四艦隊|第五艦隊||
 iniread, DailyGoalRed, settings.ini, Battle, DailyGoalRed, 1
 iniread, DailyGoalRedAction, settings.ini, Battle, DailyGoalRedAction
-Tab2_Y+=28
+Tab2_Y+=30
 Gui, Add, CheckBox, x50 y%Tab2_Y% w110 h20 gAnchorsettings vDailyGoalRed checked%DailyGoalRed% , 斬首行動：第
 Tab2_Y-=2
 Gui, Add, DropDownList, x160 y%Tab2_Y% w40 h100 vDailyGoalRedAction gAnchorsettings Choose%DailyGoalRedAction% , 1||2|3|4|
@@ -426,8 +426,19 @@ else
 
 Gui, Add, button, x355 y%Tab2_Y% w100 h24 gResetOperationSub vResetOperation, 重置演習 
 iniread, Leave_Operatio, settings.ini, Battle, Leave_Operatio
-Tab2_Y+=28
-Gui, Add, CheckBox, x50 y%Tab2_Y% w110 h20 gAnchorsettings vLeave_Operatio checked%Leave_Operatio% , 血量過低撤退
+Tab2_Y+=30
+Gui, Add, CheckBox, x50 y%Tab2_Y% w100 h20 gAnchorsettings vLeave_Operatio checked%Leave_Operatio% , 我方血量＜
+IniRead, OperatioMyHpBar, settings.ini, Battle, OperatioMyHpBar, 25
+Gui, Add, Slider, x140 y%Tab2_Y% w50 h30 gAnchorsettings vOperatioMyHpBar range20-50 +ToolTip , %OperatioMyHpBar%
+Tab2_Y+=2
+Gui, Add, Text, x190 y%Tab2_Y% w20 h20 vOperatioMyHpBarUpdate , %OperatioMyHpBar% 
+Gui, Add, Text, x210 y%Tab2_Y% w110 h20 vOperatioMyHpBarPercent, `%，敵艦血量＞
+Tab2_Y-=2
+IniRead, OperatioEnHpBar, settings.ini, Battle, OperatioEnHpBar, 30
+Gui, Add, Slider, x310 y%Tab2_Y% w50 h30 gAnchorsettings vOperatioEnHpBar range10-50 +ToolTip , %OperatioEnHpBar%
+Tab2_Y+=2
+Gui, Add, Text, x360 y%Tab2_Y% w20 h20 vOperatioEnHpBarUpdate , %OperatioEnHpBar% 
+Gui, Add, Text, x380 y%Tab2_Y% w80 h20 vOperatioEnHpBarPercent, `%，時撤退
 
 Gui, Tab, 學　院
 iniread, AcademySub, settings.ini, Academy, AcademySub
@@ -499,7 +510,11 @@ Gui, +OwnDialogs
 Gui Show, w900 h500 x%azur_x% y%azur_y%, Azur Lane - %title%
 Menu, Tray, Tip , Azur Lane `(%title%)
 #include Gdip.dll
-pToken := Gdip_Startup()　
+If !pToken := Gdip_Startup()
+{
+   MsgBox "Gdiplus failed to start. Please ensure you have gdiplus on your system"
+   ExitApp
+}
 Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
 Global UniqueID
@@ -730,6 +745,10 @@ Guicontrolget, DailyGoalBlueAction
 Guicontrolget, OperationSub
 Guicontrolget, Operationenemy
 Guicontrolget, Leave_Operatio
+Guicontrolget, OperatioMyHpBar
+Guicontrolget, OperatioMyHpBarUpdate
+Guicontrolget, OperatioEnHpBar
+Guicontrolget, OperatioEnHpBarUpdate
 Iniwrite, %IndexAll%, settings.ini, Battle, IndexAll ;全部
 Iniwrite, %Index1%, settings.ini, Battle, Index1 ;前排先鋒
 Iniwrite, %Index2%, settings.ini, Battle, Index2 ;後排主力
@@ -765,7 +784,11 @@ Iniwrite, %DailyGoalBlueAction%, settings.ini, Battle, DailyGoalBlueAction
 Iniwrite, %OperationSub%, settings.ini, Battle, OperationSub ;自動執行演習
 Iniwrite, %Operationenemy%, settings.ini, Battle, Operationenemy
 Iniwrite, %Leave_Operatio%, settings.ini, Battle, Leave_Operatio
-Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio
+Iniwrite, %OperatioMyHpBar%, settings.ini, Battle, OperatioMyHpBar ;演習時的我方血量
+Iniwrite, %OperatioEnHpBar%, settings.ini, Battle, OperatioEnHpBar ;演習時的敵方血量
+Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
+Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
+Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar
 return
 
 Academysettings: ;學院設定
@@ -1243,7 +1266,7 @@ if (Withdraw and Switchover )
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
-	if (AlignCenter) and !(GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch2(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
+	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
 		A_SwipeFast(164, 218, 1235, 646, 500)
 		sleep 300
@@ -1256,18 +1279,18 @@ if (Withdraw and Switchover )
 			x2 := x1-145, y2 := y1-100
 			A_SwipeFast(x1, y1, x2, y2, 300)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
+		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y-1
 		y2 := y+1
 		AlignCenterCount := VarSetCapacity
 		Loop 
 		{
-			if (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
+			if (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
 				break
 			Random, y, 180, 650
 			A_SwipeFast(650, y, 430, y, 300)
 			AlignCenterCount++
-		} until (GdipImageSearch2(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
+		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
 	}
 	Loop, 100
@@ -1277,7 +1300,7 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
-		if (GdipImageSearch2(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch2(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;只有在彈藥歸零時才會拾取
+		if (GdipImageSearch(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;只有在彈藥歸零時才會拾取
 		{
 			LogShow("嗶嗶嚕嗶～發現：子彈補給！")
 			xx := x 
@@ -1318,7 +1341,7 @@ if (Withdraw and Switchover )
 			}
 			bulletFailed++
 		}
-		if (GdipImageSearch2(x, y, "img/quest.png", 8, SearchDirection, MapX1, MapY1, MapX2, MapY2) and questFailed<1 and Item_Quest) ;
+		if (GdipImageSearch(x, y, "img/quest.png", 8, SearchDirection, MapX1, MapY1, MapX2, MapY2) and questFailed<1 and Item_Quest) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：神秘物資！")
 			xx := x
@@ -1361,7 +1384,7 @@ if (Withdraw and Switchover )
 			IsDetect := 1
 			return
 		}
-		if (GdipImageSearch2(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1) and (Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍" or Bossaction="撤退") ;ＢＯＳＳ
+		if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1) and (Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍" or Bossaction="撤退") ;ＢＯＳＳ
 		{
 			if Bossaction=撤退
 			{
@@ -1495,7 +1518,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if ((GdipImageSearch2(x, y, "img/target2_1.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target2_2.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target2_3.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed2<1 and (Ship_Target2 or SearchLoopcount>9)) ;
+		if ((GdipImageSearch(x, y, "img/target2_1.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_2.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_3.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed2<1 and (Ship_Target2 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：運輸艦隊！")
 			xx := x 
@@ -1528,7 +1551,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if ((GdipImageSearch2(x, y, "img/target_1.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target_2.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target_3.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
+		if ((GdipImageSearch(x, y, "img/target_1.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_2.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_3.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：航空艦隊！")
 			xx := x 
@@ -1561,7 +1584,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if ((GdipImageSearch2(x, y, "img/target4_1.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target4_2.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target4_3.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed4<1 and (Ship_Target4 or SearchLoopcount>9)) 
+		if ((GdipImageSearch(x, y, "img/target4_1.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target4_2.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target4_3.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed4<1 and (Ship_Target4 or SearchLoopcount>9)) 
 		{
 			LogShow("嗶嗶嚕嗶～發現：偵查艦隊！")
 			xx := x
@@ -1594,7 +1617,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if ((GdipImageSearch2(x, y, "img/target3_1.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target3_2.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch2(x, y, "img/target3_3.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed3<1 and (Ship_Target3 or SearchLoopcount>9)) 
+		if ((GdipImageSearch(x, y, "img/target3_1.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target3_2.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target3_3.png", 45, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed3<1 and (Ship_Target3 or SearchLoopcount>9)) 
 		;~ else if (Gdip_PixelSearch2( x,  y, MapX1, MapY1, MapX2, MapY2, Mainfleet, 0) and TargetFailed3<1) 
 		{
 			LogShow("嗶嗶嚕嗶～發現：主力艦隊！")
@@ -1628,7 +1651,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if ((Plane_Target1 or SearchLoopcount>9) and GdipImageSearch2(x, y, "img/target_plane1.png", 25, SearchDirection, MapX1, MapY1, MapX2, MapY2) and Plane_TargetFailed1<1) ;航空器
+		if ((Plane_Target1 or SearchLoopcount>9) and GdipImageSearch(x, y, "img/target_plane1.png", 25, SearchDirection, MapX1, MapY1, MapX2, MapY2) and Plane_TargetFailed1<1) ;航空器
 		{
 			LogShow("嗶嗶嚕嗶～發現：航空器！")
 			xx := x 
@@ -1661,7 +1684,7 @@ if (Withdraw and Switchover )
 			}
 			return
 		}
-		if (Bossaction!="能不攻擊就不攻擊" and SearchLoopcount>15) and (GdipImageSearch2(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1 ) ;ＢＯＳＳ
+		if (Bossaction!="能不攻擊就不攻擊" and SearchLoopcount>15) and (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1 ) ;ＢＯＳＳ
 		{
 			xx := x 
 			yy := y 
@@ -1759,7 +1782,7 @@ if (Withdraw and Switchover )
 			sleep 300
 			SearchLoopcountFailed++
 			SearchLoopcountFailed2++
-			if (GdipImageSearch2(x, y, "img/Myposition.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and SearchLoopcountFailed>2)
+			if (GdipImageSearch(x, y, "img/Myposition.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and SearchLoopcountFailed>2)
 			{
 				Random, xx, 1, 3
 				if xx=1
@@ -2491,7 +2514,7 @@ return
 ;~ Random, SearchDirection, 1, 8
 ;~ g := Gdip_PixelSearch(pBitmap, 4287894561,  x,  y)
 ;~ g := Gdip_PixelSearch2( x,  y, 0, 0, MapX2, MapY2, 4286845976, 0)
-;~ g := GdipImageSearch2(x, y, "img/Item_Tempura.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2)
+;~ g := GdipImageSearch(x, y, "img/Item_Tempura.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2)
 ;~ tooltip x%x% y%y% g%g%
 ;~ C_Click(x,y)
 ;~ return
@@ -3072,13 +3095,13 @@ if (AcademyDone<1)
 	Academycount := VarSetCapacity
 	Loop
 	{
-		 if (GdipImageSearch2(x, y, "img/AcademyOil.png", 100, 8, 95, 298, 542, 723) and AcademyOil and GetOil<1) ;
+		 if (GdipImageSearch(x, y, "img/AcademyOil.png", 100, 8, 95, 298, 542, 723) and AcademyOil and GetOil<1) ;
 		{
 			LogShow("發現石油，高雄發大財！")
 			GetOil := 1
 			C_Click(x, y)
 		}
-		if (GdipImageSearch2(x, y, "img/AcademyCoin.png", 100, 8, 450, 411, 843, 748) and AcademyCoin and fullycoin<1) ;
+		if (GdipImageSearch(x, y, "img/AcademyCoin.png", 100, 8, 450, 411, 843, 748) and AcademyCoin and fullycoin<1) ;
 		{
 			LogShow("發現金幣，高雄發大財！")
 			C_Click(x, y)
@@ -3099,7 +3122,7 @@ if (AcademyDone<1)
 			ShopX1 := 430, ShopY1 := 150, ShopX2 := 1250, ShopY2 := 620
 			Loop
 			{
-				if (GdipImageSearch2(x, y, "img/SkillBook_ATK.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
+				if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-攻擊(金幣)")
@@ -3133,7 +3156,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch2(x, y, "img/SkillBook_DEF.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_DEF and DefCoin<1) ;如果有防禦課本
+				if (GdipImageSearch(x, y, "img/SkillBook_DEF.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_DEF and DefCoin<1) ;如果有防禦課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-防禦(金幣)")
@@ -3163,7 +3186,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch2(x, y, "img/SkillBook_SUP.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_SUP and SupCoin<1) ;如果有防禦課本
+				if (GdipImageSearch(x, y, "img/SkillBook_SUP.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_SUP and SupCoin<1) ;如果有防禦課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-輔助(金幣)")
@@ -3193,7 +3216,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch2(x, y, "img/Cube.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Cube and CubeCoin<1) ;如果有心智魔方
+				if (GdipImageSearch(x, y, "img/Cube.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Cube and CubeCoin<1) ;如果有心智魔方
 				{
 					CubePos := dwmgetpixel(x,y)
 					LogShow("購買心智魔方(金幣)")
@@ -3265,7 +3288,7 @@ if (AcademyDone<1)
 					If (150expbookonly)
 					{
 						sleep 1000
-						if (GdipImageSearch2(x, y, "img/150exp.png", 110, 8, 100, 100, 1200, 650)) ;如果找到150% EXP課本
+						if (GdipImageSearch(x, y, "img/150exp.png", 110, 8, 100, 100, 1200, 650)) ;如果找到150% EXP課本
 						{
 							LogShow("使用150%經驗課本！")
 							xx := x
@@ -3446,7 +3469,7 @@ if (DormDone<1) ;後宅發現任務
 		}
 		else if (DormFood and DormFoodDone<1)
 		{
-			FoodX := (550-30)*(DormFoodBar/100)+30
+			FoodX := Ceil((550-30)*(DormFoodBar/100)+30)
 			if (DwmGetpixel(FoodX, 725)<8000000) ;存糧進度條
 			{
 				FoodCheck := 1
@@ -3473,7 +3496,7 @@ if (DormDone<1) ;後宅發現任務
 					Food2 := DwmCheckcolor(559, 403, 6535902)
 					Food3 := DwmCheckcolor(711, 401, 5947102)
 					Food4 := DwmCheckcolor(838, 380, 5941974)
-					SuppilesbartargetX :=  (1020-430)*(DormFoodBar/100)+430  ; x1=430 , x2=1020, y=303
+					SuppilesbartargetX := Ceil((1020-430)*(DormFoodBar/100)+430)  ; x1=430 , x2=1020, y=303
 					Suppilesbar := DwmCheckcolor(SuppilesbartargetX, 303, 4869450)
 					if (Food1 and Suppilesbar)
 					{
@@ -3501,13 +3524,13 @@ if (DormDone<1) ;後宅發現任務
 				}
 			}
 		}
-		if ((GdipImageSearch2(x, y, "img/Dorm_Coin.png", 8, 8, DormX1, DormY1, DormX2, DormY2) or GdipImageSearch2(x, y, "img/Dorm_Coin2.png", 7, 8, DormX1, DormY1, DormX2, DormY2)) and DormCoin and Dorm_Coin<3) 
+		if ((GdipImageSearch(x, y, "img/Dorm_Coin.png", 8, 8, DormX1, DormY1, DormX2, DormY2) or GdipImageSearch(x, y, "img/Dorm_Coin2.png", 7, 8, DormX1, DormY1, DormX2, DormY2)) and DormCoin and Dorm_Coin<3) 
 		{
 			LogShow("收成傢俱幣")
 			C_Click(x, y)
 			Dorm_Coin++
 		}
-		else if ((GdipImageSearch2(x, y, "img/Dorm_heart.png", 5, 8, DormX1, DormY1, DormX2, DormY2) or GdipImageSearch2(x, y, "img/Dorm_heart2.png", 10, 8, DormX1, DormY1, DormX2, DormY2)) and Dormheart and Dorm_heart<3) 
+		else if ((GdipImageSearch(x, y, "img/Dorm_heart.png", 5, 8, DormX1, DormY1, DormX2, DormY2) or GdipImageSearch(x, y, "img/Dorm_heart2.png", 10, 8, DormX1, DormY1, DormX2, DormY2)) and Dormheart and Dorm_heart<3) 
 		{
 			LogShow("增加親密度")
 			C_Click(x, y)
@@ -4332,7 +4355,7 @@ Battle_Operation()
 		LogShow("報告提督SAMA，艦娘航行中！")
 		Loop
 		{
-			sleep 1000
+			sleep 400
 			if !(DwmCheckcolor(1225, 83, 16249847))
 			{
 				sleep 1000
@@ -4343,10 +4366,18 @@ Battle_Operation()
 			}
 			if (Leave_Operatio and IsChanged<6) ;快輸了自動離開
 			{
-				if (DwmCheckcolor(584, 87, 15672353) and !DwmCheckcolor(499, 86, 15671312) and !DwmCheckcolor(1196, 654, 16777215) and !DwmCheckcolor(1043, 650, 16777215) and !DwmCheckcolor(897, 660, 16777215))  
+				; 我方血量起點 X: 584 Y: 87  Color : 15672353 終點 X: 274 
+				; 敵方血量起點 X: 694 Y: 87 Color : 15672353 終點 X: 1001
+				MyTargetHP_X := Ceil((274-584)*(OperatioMyHpBar/100)+584)
+				EnTargetHP_X := Ceil((1001-694)*(OperatioEnHpBar/100)+694)
+				MyTargetHP := DwmGetpixel(MyTargetHP_X, 87) ;15672336
+				EnTargetHP := DwmGetpixel(EnTargetHP_X, 87) ;15672336
+				if (DwmCheckcolor(584, 87, 15672353) and MyTargetHP<15630000 and DwmCheckcolor(694, 87, 15672353) and (EnTargetHP>15650000 and EnTargetHP<15690000))
 				{
 					sleep 1000
-					if (DwmCheckcolor(584, 87, 15672353) and !DwmCheckcolor(499, 86, 15671312) and !DwmCheckcolor(1196, 654, 16777215) and !DwmCheckcolor(1043, 650, 16777215) and !DwmCheckcolor(897, 660, 16777215))   ;再檢查一次
+					MyTargetHP := DwmGetpixel(MyTargetHP_X, 87) ;15672336
+					EnTargetHP := DwmGetpixel(EnTargetHP_X, 87) ;15672336
+					if (DwmCheckcolor(584, 87, 15672353) and MyTargetHP<15630000 and DwmCheckcolor(694, 87, 15672353) and (EnTargetHP>15630000 and EnTargetHP<15690000))   ;再檢查一次
 					{
 						LogShow("我方血量過低，自動離開戰鬥")
 						Loop, 100
@@ -4631,43 +4662,31 @@ Gdip_DisposeImage(pBitmap)
 Gdip_DisposeImage(pBitmap_part)
 }
 
-;~ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
-;~ {
-	;~ defaultX1 := x1, defaultY1 := y1, y := y1
-	;~ hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-	;~ Loop {
-		;~ x1 := x1 +1, x := x1
-		;~ if (x1=x2) {
-			;~ x1 := defaultX1,	y1 := y1 +1, y := y1
-		;~ }
-		;~ pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-		;~ pix := ConvertColor(pix)
-	;~ } until pix=color or y=y2
-	;~ DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
-	;~ DllCall("gdi32.dll\DeleteDC", "UInt", hDC)
-	;~ if (pix=color) {
-		;~ x := x,	y := y, a := 1
-		;~ return a
-	;~ } else {
-		;~ x :="" , y :="", a := 0
-		;~ return a
-	;~ }
-;~ }
+AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
+{
+	defaultX1 := x1, defaultY1 := y1, y := y1
+	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+	Loop {
+		x1 := x1 +1, x := x1
+		if (x1=x2) {
+			x1 := defaultX1,	y1 := y1 +1, y := y1
+		}
+		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+		pix := ConvertColor(pix)
+	} until pix=color or y=y2
+	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+	DllCall("gdi32.dll\DeleteDC", "UInt", hDC)
+	if (pix=color) {
+		x := x,	y := y, a := 1
+		return a
+	} else {
+		x :="" , y :="", a := 0
+		return a
+	}
+}
 
 DwmCheckcolor(x, y, color="")
 {
-    ;~ pc_hDC := DllCall("GetDC", "UInt", UniqueID)
-    ;~ pc_hCDC := DllCall("CreateCompatibleDC", "UInt", pc_hDC)
-    ;~ pc_hBmp := DllCall("CreateCompatibleBitmap", "UInt", pc_hDC, "Int", 1318, "Int", 758)
-    ;~ pc_hObj := DllCall("SelectObject", "UInt", pc_hCDC, "UInt", pc_hBmp)
-    ;~ DllCall("PrintWindow", "UInt", UniqueID, "UInt", pc_hCDC, "UInt", 0)
-    ;~ pc_c := DllCall("GetPixel", "UInt", pc_hCDC, "Int", x, "Int", y, "UInt")
-    ;~ pc_c := pc_c >> 16 & 0xff | pc_c & 0xff00 | (pc_c & 0xff) << 16
-    ;~ pc_c .= ""
-    ;~ DllCall("DeleteObject", "UInt", pc_hBmp)
-    ;~ DllCall("DeleteDC", "UInt", pc_hCDC)
-    ;~ DllCall("ReleaseDC", "UInt", UniqueID, "UInt", pc_hDC)
-	;~ PixelGetColor, pc_c, X, Y , RGB
 	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
 	pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
 	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
@@ -4679,21 +4698,7 @@ DwmCheckcolor(x, y, color="")
 	return 0
 }
 
-GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1) 
-{
-    pBitmap := Gdip_BitmapFromHWND(UniqueID)
-    LIST = 0
-    bmpNeedle := Gdip_CreateBitmapFromFile(imagePath)
-    RET := Gdip_ImageSearch(pBitmap, bmpNeedle, LIST, 0, 0, 1280, 720, Variation, , direction, 1)
-    Gdip_DisposeImage(bmpNeedle)
-    Gdip_DisposeImage(pBitmap)
-    LISTArray := StrSplit(LIST, ",")
-    x := LISTArray[1]
-    y := LISTArray[2]
-    return List
-}
-
-GdipImageSearch2(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
+GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
 {
     pBitmap := Gdip_BitmapFromHWND(UniqueID)
     LIST = 0
@@ -4706,6 +4711,27 @@ GdipImageSearch2(byref x, byref y, imagePath = "img/picturehere.png",  Variation
     y := LISTArray[2]
     return List
 }
+
+;~ GdipBitmapFromBase64(ByRef Base64)
+;~ {
+   ;~ Ptr := A_PtrSize ? "Ptr" : "UInt"
+   ;~ UPtr := A_PtrSize ? "UPtr" : "UInt"
+   ;~ ; calculate the length of the buffer needed
+   ;~ if !(DllCall("crypt32\CryptStringToBinary" (A_IsUnicode ? "W" : "A"), Ptr, &Base64, "UInt", 0, "UInt", 0x01, Ptr, 0, "UIntP", DecLen, Ptr, 0, Ptr, 0))
+      ;~ return -1
+   ;~ VarSetCapacity(Dec, DecLen, 0)
+   ;~ ; decode the Base64 encoded string
+   ;~ if !(DllCall("crypt32\CryptStringToBinary" (A_IsUnicode ? "W" : "A"), Ptr, &Base64, "UInt", 0, "UInt", 0x01, Ptr, &Dec, "UIntP", DecLen, Ptr, 0, Ptr, 0))
+      ;~ return -2
+   ;~ ; create a memory stream
+   ;~ if !(pStream := DllCall("shlwapi\SHCreateMemStream", Ptr, &Dec, "UInt", DecLen, UPtr))
+      ;~ return -3
+   ;~ DllCall("gdiplus\GdipCreateBitmapFromStreamICM", Ptr, pStream, Ptr "P", pBitmap)
+   ;~ PtrSize := A_PtrSize ? A_PtrSize : 4
+   ;~ Release := NumGet( NumGet( pStream+0 ), 2*PtrSize)
+   ;~ DllCall(Release, Ptr, pStream)
+   ;~ return pBitmap
+;~ }
 
 LogShow(logData) {
 formattime, nowtime,, MM-dd HH:mm:ss
