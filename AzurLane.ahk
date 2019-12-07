@@ -350,8 +350,8 @@ Gui, Add, CheckBox, x160 y%Tab2_Y% w50 h20 gAnchorsettings vCamp7 checked%Camp7%
 iniread, RarityAll, settings.ini, Battle, RarityAll, 1 ;全部
 iniread, Rarity1, settings.ini, Battle, Rarity1, 1 ;普通
 iniread, Rarity2, settings.ini, Battle, Rarity2, 1 ;稀有
-iniread, Rarity3, settings.ini, Battle, Rarity3 ;精銳
-iniread, Rarity4, settings.ini, Battle, Rarity4 ;超稀有
+iniread, Rarity3, settings.ini, Battle, Rarity3, 0 ;精銳
+iniread, Rarity4, settings.ini, Battle, Rarity4, 0 ;超稀有
 Tab2_Y+=33
 Gui, Add, text, x30 y%Tab2_Y% w75 h20  , 稀有度：
 Tab2_Y-=3
@@ -361,6 +361,7 @@ Gui, Add, CheckBox, x130 y%Tab2_Y% w50 h20 gAnchorsettings vRarity1 checked%Rari
 Gui, Add, CheckBox, x180 y%Tab2_Y% w50 h20 gAnchorsettings vRarity2 checked%Rarity2% , 稀有
 Gui, Add, CheckBox, x230 y%Tab2_Y% w50 h20 gAnchorsettings vRarity3 checked%Rarity3% , 精銳
 Gui, Add, CheckBox, x280 y%Tab2_Y% w75 h20 gAnchorsettings vRarity4 checked%Rarity4% , 超稀有
+Guicontrol, disable, Rarity4
 
 iniread, DailyGoalSub, settings.ini, Battle, DailyGoalSub
 ;~ Gui, Add, GroupBox, x11 y280 w457 h75, ` 
@@ -906,14 +907,22 @@ if (EmulatorCrushCheckCount>1)
 		iniwrite, 1, settings.ini, OtherSub, Autostart
 		runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
 		sleep 10000
-		goto, startemulatorSub
+		reload
 	}
 	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7 and DwmCheckcolor(13, 25, 16041247))  ;如果6個點顏色相同，推定當機
 	{
-		sleep 1000
+		sleep 500
 		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 		{
-			sleep 1000
+			sleep 500
+			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(1148, 465, 16777215) and DwmCheckcolor(996, 66, 16729459) and DwmCheckcolor(1143, 436, 14593618)) ;如果在主畫面
+			{
+				Random, x, 38, 75
+				Random, y, 73, 105
+				C_Click(x, y) ;進入個人資訊頁面
+				MyData := 1
+				sleep 1500
+			}
 			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 			{
 				LogShow("=========模擬器當機，重啟=========")
@@ -922,6 +931,24 @@ if (EmulatorCrushCheckCount>1)
 				runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
 				sleep 10000
 				reload
+			}
+			else if (MyData=1)
+			{
+				MyData := VarSetCapacity
+				Loop, 20
+				{
+					if (DwmCheckcolor(161, 57, 14609407)) ;如果還在個人資訊頁面
+					{
+						Random, x, 38, 75
+						Random, y, 73, 105
+						C_Click(x, y) ;離開個人資訊頁面
+						sleep 1500
+					}
+					else
+					{
+						break
+					}
+				}
 			}
 		}
 		EmulatorCrushCheckCount := VarSetCapacity	
