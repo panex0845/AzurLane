@@ -24,7 +24,7 @@ SetWorkingDir %A_WorkingDir%  ; Ensures a consistent starting directory.
 SetControlDelay, -1
 SetBatchLines, 1000ms
 SetTitleMatchMode, 3
-Menu, Tray, NoStandard
+;~ Menu, Tray, NoStandard
 Menu, tray, add, &顯示介面, Showsub
 Menu, tray, add,  , 
 Menu, tray, add, 檢查更新, IsUpdate
@@ -482,21 +482,31 @@ iniread, MissionSub, settings.ini, MissionSub, MissionSub
 Gui, Add, CheckBox, x30 y90 w150 h20 gMissionsettings vMissionSub checked%MissionSub% +c4400FF, 啟動自動接收任務
 
 Gui, Tab, 其　他
-Gui, Add, button, x30 y90 w120 h20 vdebug gDebug2, 除錯
-Gui, Add, button, x180 y90 w200 h20 gForumSub, Bug回報、功能建議討論區
-Gui, Add, button, x180 y120 w200 h20 gDiscordSub, Discord
-Gui, Add, button, x30 y120 w120 h20 gDailyGoalSub2, 執行每日任務
-Gui, Add, button, x30 y150 w120 h20 gOperationSub, 執行演習
-Gui, Add, button, x30 y180 w120 h20 gstartemulatorsub, 啟動模擬器
+Tab_Y := 90
+Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 除錯
+Gui, Add, button, x180 y%TAB_Y% w200 h20 gForumSub, Bug回報、功能建議討論區
+Tab_Y += 30
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustAllowance, 調整誤差值
+Tab_Y += 30
+Gui, Add, button, x180 y%TAB_Y% w200 h20 gDiscordSub, Discord
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
+Tab_Y += 30
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gOperationSub, 執行演習
+Tab_Y += 30
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gstartemulatorsub, 啟動模擬器
+Tab_Y += 30
 iniread, GuiHideX, settings.ini, OtherSub, GuiHideX
-Gui, Add, CheckBox, x30 y210 w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
+Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
+Tab_Y += 30
 iniread, EmulatorCrushCheck, settings.ini, OtherSub, EmulatorCrushCheck
-Gui, Add, CheckBox, x30 y240 w200 h20 gOthersettings vEmulatorCrushCheck checked%EmulatorCrushCheck% , 自動檢查模擬器是否當機
+Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vEmulatorCrushCheck checked%EmulatorCrushCheck% , 自動檢查模擬器是否當機
+Tab_Y += 30
 iniread, AutoLogin, settings.ini, OtherSub, AutoLogin
-Gui, Add, CheckBox, x30 y270 w200 h20 gOthersettings vAutoLogin checked%AutoLogin% , 斷線自動重登(Google帳號)
-
-Gui, Add, CheckBox, x30 y300 w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
-Gui Add, Edit, x155 y299 w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
+Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vAutoLogin checked%AutoLogin% , 斷線自動重登(Google帳號)
+Tab_Y += 30
+Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
+Tab_Y -= 1
+Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
@@ -946,6 +956,62 @@ FileDelete ThisVersion.ahk
 newver := ""
 return
 
+AdjustAllowance:
+MsgBox, 262208, 設定精靈, 請回到遊戲首頁後再按下確認
+LogShow("開始調整")
+WinRestore,  %title%
+WinMove,  %title%, , , , 1318, 758
+sleep 200
+C_Click( 56, 87)
+sleep 1000
+C_Click( 56, 87) ;先校正遊戲可能產生的顏色錯誤
+sleep 1000
+Position1 := DwmGetpixel(12, 200) ;左上角稜形方塊 16777215
+Logshow(Position1)
+Position2 := DwmGetpixel(576, 64) ;上方汽油桶 3224625
+Logshow(Position2)
+Position3 := DwmGetpixel(794, 78) ;上方金幣 16234050
+Logshow(Position3)
+Position4 := DwmGetpixel(997, 64) ;上方紅尖尖 16729459
+Logshow(Position4)
+Position5 := DwmGetpixel(976, 429) ;編隊按鈕 5421815
+Logshow(Position5)
+Position6 := DwmGetpixel(1149, 448) ;出擊按鈕 14592594
+Logshow(Position6)
+Color1 := Abs(16777215-Position1)
+Color2 := Abs(3224625-Position2)
+Color3 := Abs(16234050-Position3)
+Color4 := Abs(16729459-Position4)
+Color5 := Abs(5421815-Position5)
+Color6 := Abs(14592594-Position6)
+LogShow("差值")
+LogShow(Color1)
+LogShow(Color2)
+LogShow(Color3)
+LogShow(Color4)
+LogShow(Color5)
+LogShow(Color6)
+if (Color1=Color2=Color3=Color4=Color5=Color6)
+{
+	AllowanceValue := Color3+2000
+	if (Color1=0 and Color2=0 and Color3=0 and Color4=0 and Color5=0 and Color6=0)
+	{
+		LogShow("不需調整誤差值")
+		AllowanceValue := 2000
+	}
+	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
+	MsgBox, 262208, 設定精靈, 調整完畢
+	Reload
+}
+else
+{
+	LogShow("出現預期外的錯誤，強制調整")
+	AllowanceValue := AllowanceValue+ 10000
+	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
+	LogShow("請手動按下停止鍵")
+}
+return
+
 EmulatorCrushCheckSub:
 if (EmulatorCrushCheckCount<1) ;檢查6個點
 {
@@ -1268,16 +1334,16 @@ if (Withdraw and Switchover )
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		A_SwipeFast(164, 218, 1235, 646, 500)
-		sleep 300
+		A_SwipeFast(164, 218, 1235, 646)
+		sleep 500
 		Loop
 		{
 			x := 350, y := 220
 			Random, xx, 0, 750
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
-			x2 := x1-145, y2 := y1-100
-			A_SwipeFast(x1, y1, x2, y2, 300)
+			x2 := x1-100, y2 := y1-100
+			A_SwipeFast(x1, y1, x2, y2)
 			AlignCenterCount++
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y-1
@@ -1288,7 +1354,7 @@ if (Withdraw and Switchover )
 			if (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
 				break
 			Random, y, 180, 650
-			A_SwipeFast(650, y, 430, y, 300)
+			A_SwipeFast(650, y, 430, y)
 			AlignCenterCount++
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
@@ -2663,6 +2729,7 @@ Loop
 	}
 }
 return
+
 
 startemulatorSub:
 run, dnconsole.exe launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
@@ -4846,3 +4913,6 @@ WM_HELP()
 	sleep 1000
 	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
+
+
+
