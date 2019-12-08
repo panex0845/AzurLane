@@ -24,7 +24,7 @@ SetWorkingDir %A_WorkingDir%  ; Ensures a consistent starting directory.
 SetControlDelay, -1
 SetBatchLines, 1000ms
 SetTitleMatchMode, 3
-;~ Menu, Tray, NoStandard
+Menu, Tray, NoStandard
 Menu, tray, add, &顯示介面, Showsub
 Menu, tray, add,  , 
 Menu, tray, add, 檢查更新, IsUpdate
@@ -4662,20 +4662,74 @@ ClickFailed()
 A_Swipe(x1,y1,x2,y2,swipetime="")
 {
 	sleep 100
-	runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
-	sleep 500
+	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
+	MouseGetPos,x,y, thewindow
+	2GuiID = Gui%title%
+	if (thewindow=UniqueID)
+	{
+		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
+		WinSet, Transparent, 1, %2GuiID%
+		Gui, 2: -Caption +AlwaysOnTop
+	}
+	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
+	Loop, 10
+	{
+		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
+		x1 += ShiftX, y1 += ShiftY
+		sleep 10
+	}
+	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
+	Gui, 2:Hide
+	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
+	sleep 300
 }
 
 A_SwipeFast(x1,y1,x2,y2,swipetime="")
 {
 	sleep 50
-	runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
+	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
+	MouseGetPos,x,y, thewindow
+	2GuiID = Gui%title%
+	if (thewindow=UniqueID)
+	{
+		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
+		WinSet, Transparent, 1, %2GuiID%
+		Gui, 2: -Caption +AlwaysOnTop
+	}
+	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
+	Loop, 10
+	{
+		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
+		x1 += ShiftX, y1 += ShiftY
+		sleep 10
+	}
+	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
+	Gui, 2:Hide
+	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
 	sleep 250
 }
 
 A_Swipe2(x1,y1,x2,y2,swipetime="")
 {
-	Run,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
+	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
+	MouseGetPos,x,y, thewindow
+	2GuiID = Gui%title%
+	if (thewindow=UniqueID)
+	{
+		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
+		WinSet, Transparent, 1, %2GuiID%
+		Gui, 2: -Caption +AlwaysOnTop
+	}
+	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
+	Loop, 10
+	{
+		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
+		x1 += ShiftX, y1 += ShiftY
+		sleep 10
+	}
+	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
+	Gui, 2:Hide
+	;~ Run,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
 }
 
 A_Click(x,y)
@@ -4778,27 +4832,6 @@ GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=
     y := LISTArray[2]
     return List
 }
-
-;~ GdipBitmapFromBase64(ByRef Base64)
-;~ {
-   ;~ Ptr := A_PtrSize ? "Ptr" : "UInt"
-   ;~ UPtr := A_PtrSize ? "UPtr" : "UInt"
-   ;~ ; calculate the length of the buffer needed
-   ;~ if !(DllCall("crypt32\CryptStringToBinary" (A_IsUnicode ? "W" : "A"), Ptr, &Base64, "UInt", 0, "UInt", 0x01, Ptr, 0, "UIntP", DecLen, Ptr, 0, Ptr, 0))
-      ;~ return -1
-   ;~ VarSetCapacity(Dec, DecLen, 0)
-   ;~ ; decode the Base64 encoded string
-   ;~ if !(DllCall("crypt32\CryptStringToBinary" (A_IsUnicode ? "W" : "A"), Ptr, &Base64, "UInt", 0, "UInt", 0x01, Ptr, &Dec, "UIntP", DecLen, Ptr, 0, Ptr, 0))
-      ;~ return -2
-   ;~ ; create a memory stream
-   ;~ if !(pStream := DllCall("shlwapi\SHCreateMemStream", Ptr, &Dec, "UInt", DecLen, UPtr))
-      ;~ return -3
-   ;~ DllCall("gdiplus\GdipCreateBitmapFromStreamICM", Ptr, pStream, Ptr "P", pBitmap)
-   ;~ PtrSize := A_PtrSize ? A_PtrSize : 4
-   ;~ Release := NumGet( NumGet( pStream+0 ), 2*PtrSize)
-   ;~ DllCall(Release, Ptr, pStream)
-   ;~ return pBitmap
-;~ }
 
 LogShow(logData) {
 formattime, nowtime,, MM-dd HH:mm:ss
@@ -4913,6 +4946,3 @@ WM_HELP()
 	sleep 1000
 	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
-
-
-
