@@ -38,7 +38,7 @@ RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir 
 if (ldplayer="") {
 	RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
 	if (ldplayer="") {
-		Msgbox, 未偵測到雷電模擬器已被安裝，請嘗試重新安裝。
+		MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試重新安裝。
 	Exitapp
 	}
 }
@@ -1334,7 +1334,7 @@ if (Withdraw and Switchover )
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		A_SwipeFast(164, 218, 1235, 646)
+		Swipe(164, 218, 1235, 646)
 		sleep 500
 		Loop
 		{
@@ -1343,7 +1343,7 @@ if (Withdraw and Switchover )
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
 			x2 := x1-100, y2 := y1-100
-			A_SwipeFast(x1, y1, x2, y2)
+			Swipe(x1, y1, x2, y2)
 			AlignCenterCount++
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
 		y1 := y-1
@@ -1354,7 +1354,7 @@ if (Withdraw and Switchover )
 			if (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
 				break
 			Random, y, 180, 650
-			A_SwipeFast(650, y, 430, y)
+			Swipe(650, y, 430, y)
 			AlignCenterCount++
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
 		AlignCenterCount := VarSetCapacity
@@ -1375,12 +1375,12 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (yy>660)
 				{
-					A_Swipe(138,300,148,215)
+					Swipe(138,300,148,215)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1416,12 +1416,12 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (yy>660)
 				{
-					A_Swipe(138,300,148,215)
+					Swipe(138,300,148,215)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279) and !(DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215))) ;如果在限時(無限時)地圖
@@ -1464,7 +1464,7 @@ if (Withdraw and Switchover )
 			{
 				LogShow("BOSS位於左上角，拖曳畫面！")
 				Random, y, 200, 600
-				A_Swipe(370, y, 700, y)
+				Swipe(370, y, 700, y)
 				return
 			}
 			else if Bossaction=優先攻擊－當前隊伍
@@ -1498,11 +1498,11 @@ if (Withdraw and Switchover )
 						random, swipeboss, 1, 2
 						if swipeboss=1
 						{
-							A_Swipe(138,215,148,300)  ;下
+							Swipe(138,215,148,300)  ;下
 						}
 						else if swipeboss=2
 						{
-							A_Swipe(148,300,138,215)  ;上
+							Swipe(148,300,138,215)  ;上
 						}
 						break
 					}
@@ -1593,7 +1593,7 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1626,7 +1626,7 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1659,7 +1659,7 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1693,7 +1693,7 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1726,7 +1726,7 @@ if (Withdraw and Switchover )
 			{
 				if (xx<360 and yy<195)
 				{
-					A_Swipe(138,215,148,300)
+					Swipe(138,215,148,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
@@ -1756,7 +1756,7 @@ if (Withdraw and Switchover )
 			yy := y 
 			if (xx<360 and yy<195)
 			{
-				A_Swipe(138,215,148,300)
+				Swipe(138,215,148,300)
 				return
 			}
 			if (SearchLoopcount>15 and ossaction="能不攻擊就不攻擊")
@@ -1801,48 +1801,48 @@ if (Withdraw and Switchover )
 			}
 			if side<1
 			{
-				;~ A_Swipe(652,166,652,660)  ;下
-				A_Swipe(1013,531,211,106)  ;↖
+				;~ Swipe(652,166,652,660)  ;下
+				Swipe(1013,531,211,106)  ;↖
 				side := 2
 			}
 			else if side=2
 			{
-					A_Swipe(652,130,652,710)  ;swipe side : ↓
+					Swipe(652,130,652,710)  ;swipe side : ↓
 				side=3
 			}
 			else if side=3
 			{
-					A_Swipe(652,130,652,710)  ;swipe side : ↓
+					Swipe(652,130,652,710)  ;swipe side : ↓
 				side=4
 			}
 			else if side=4
 			{
-				A_Swipe(257,310,1040,310) ;swipe side : →
-				;~ A_Swipe(1256,310,120,310) ;左
+				Swipe(257,310,1040,310) ;swipe side : →
+				;~ Swipe(1256,310,120,310) ;左
 				side=5
 			}
 			else if side=5
 			{
-				;~ A_Swipe(1256,310,120,310) ;左
-				A_Swipe(188,241,1164,621) ;swipe side : ↘
+				;~ Swipe(1256,310,120,310) ;左
+				Swipe(188,241,1164,621) ;swipe side : ↘
 				side=6
 			}
 			else if side=6
 			{
-				;~ A_Swipe(1256,310,120,310) ;左
-				 A_Swipe(604,710,652,130)  ;swipe side : ↑
+				;~ Swipe(1256,310,120,310) ;左
+				 Swipe(604,710,652,130)  ;swipe side : ↑
 				side=7
 			}
 			else if side=7
 			{
-				;~ A_Swipe(200,310,1240,310) ;右
-				A_Swipe(363,555,1011,220) ;swipe side : ↗
+				;~ Swipe(200,310,1240,310) ;右
+				Swipe(363,555,1011,220) ;swipe side : ↗
 				side=8
 			}
 			else if side=8
 			{
-				;~ A_Swipe(200,310,1240,310) ;右
-				A_Swipe(1256,310,120,310) ;swipe side : ←
+				;~ Swipe(200,310,1240,310) ;右
+				Swipe(1256,310,120,310) ;swipe side : ←
 				side=0
 			}
 			sleep 300
@@ -2815,7 +2815,7 @@ if  (DailyGoalSub and DailyDone<1)
 		{
 			 if (DwmCheckcolor(384, 192, 16768825) and DwmCheckcolor(397, 190, 16768825))
 			{
-				;~ A_Swipe(652,166,652,610)
+				;~ Swipe(652,166,652,610)
 				sleep 1000
 				if ((Checkweek=1 or Checkweek=4 or Checkweek=7) and DailyGoalRedAction=1) or ((Checkweek=3 or Checkweek=6) and DailyGoalGreenAction=1) or ((Checkweek=2 or Checkweek=5) and DailyGoalBlueAction=1)
 				{
@@ -3820,7 +3820,7 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 		Mission1 := DelegationMission2()
 		if (Mission1=2 and !DwmCheckcolor(1082, 62, 9211540) and !DwmCheckcolor(1088, 63, 11383477) and Mission4=0)
 		{
-			A_Swipe(1221,395, 1221, 115)
+			Swipe(1221,395, 1221, 115)
 			C_Click(560, 651)
 			DelegationMission2()
 		}
@@ -3831,7 +3831,7 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 		Mission2 := DelegationMission2()
 		if (Mission1=2  and Mission4=0)
 		{
-			A_Swipe(1221,395, 1221, 115)
+			Swipe(1221,395, 1221, 115)
 			C_Click(560, 651)
 			DelegationMission2()
 		}
@@ -3842,7 +3842,7 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 		Mission3 := DelegationMission2()
 		if (Mission3=2  and Mission4=0)
 		{
-			A_Swipe(1221,395, 1221, 115)
+			Swipe(1221,395, 1221, 115)
 			C_Click(560, 651)
 			DelegationMission2()
 		}
@@ -3853,7 +3853,7 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 		Mission4 := DelegationMission2()
 		if (Mission4=2)
 		{
-			A_Swipe(1221,395, 1221, 115)
+			Swipe(1221,395, 1221, 115)
 			C_Click(560, 651)
 			DelegationMission2()
 		}
@@ -3898,7 +3898,7 @@ Loop, 30  ;等待選單開啟
 			}
 			C_Click(1227, 172) ;離開介面
 			sleep 300
-			A_Swipe(1220,187,1220,473) ;往上拉
+			Swipe(1220,187,1220,473) ;往上拉
 			e := 1 ;成功接受委託任務
 			;~ LogShow("軍事任務成功接受")
 			return e
@@ -3907,7 +3907,7 @@ Loop, 30  ;等待選單開啟
 		{
 			C_Click(1227, 172) ;離開介面
 			sleep 500
-			A_Swipe(1220,187,1220,473) ;往上拉
+			Swipe(1220,187,1220,473) ;往上拉
 			sleep 500
 			e := 0 ;接收失敗...可能是角色等級或數量不足 etc...
 			;~ LogShow("軍事任務接收失敗")
@@ -3918,7 +3918,7 @@ Loop, 30  ;等待選單開啟
 	{
 		C_Click(1227, 172) ;離開介面
 		sleep 500
-		A_Swipe(1220,187,1220,473) ;往上拉
+		Swipe(1220,187,1220,473) ;往上拉
 		sleep 500
 		e := 2 ;油耗超過個位數 不予接受
 		;~ LogShow("軍事任務油耗超過個位數")
@@ -4410,7 +4410,7 @@ ChooseParty(Byref StopAnchor)
 		}
 		if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
 		{
-			A_Swipe(272, 419, 1100, 422)
+			Swipe(272, 419, 1100, 422)
 		}
 	}
 }
@@ -4536,9 +4536,9 @@ Battle()
 				{
 					if (MoveDown<1)
 					{
-						A_Swipe(150,630, 150, 700, 650) ;下
+						Swipe(150,630, 150, 700, 650) ;下
 						sleep 200
-						A_Swipe(116,587, 20, 587, 1000) ;往後
+						Swipe(116,587, 20, 587, 1000) ;往後
 						swipeside := 3
 					}
 					MoveDown := 1
@@ -4560,22 +4560,22 @@ Battle()
 				{
 					;~ if swipeside=1
 					;~ {
-						;~ A_Swipe2(149,545, 149, 400, 2500) ;上
+						;~ Swipe(149,545, 149, 400, 2500) ;上
 						;~ Swipe := 2
 					;~ }
 					;~ else if swipeside=2
 					;~ {
-						;~ A_Swipe2(150,630, 150, 700, 2500) ;下
+						;~ Swipe(150,630, 150, 700, 2500) ;下
 						;~ Swipe := 3
 					;~ }
 					if swipeside=3
 					{
-						A_Swipe2(198,591, 298, 591, 1800) ;往前
+						Swipe(198,591, 298, 591, 1800) ;往前
 						swipeside := 4
 					}
 					else if swipeside=4
 					{
-						A_Swipe2(116,587, 20, 587, 1600) ;往後
+						Swipe(116,587, 20, 587, 1600) ;往後
 						swipeside := 3
 					}
 					HalfAuto := 0
@@ -4650,89 +4650,41 @@ ClickFailed()
 	if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(919, 282, 16241474) and DwmCheckcolor(415, 224, 16777215)) ;誤點"制空值"訊息
 	{
 		C_Click(893, 229)
-		A_Swipe(153, 227,153,453)
+		Swipe(153, 227,153,453)
 	}
 	else if (DwmCheckcolor(220, 127, 16777215) and DwmCheckcolor(452, 570, 16771988) and DwmCheckcolor(838, 561, 16746116)) ;誤點敵軍詳情
 	{
 		C_Click(1136, 298)
-		A_Swipe(153, 453,153,227)
+		Swipe(153, 453,153,227)
 	}
 }
 
-A_Swipe(x1,y1,x2,y2,swipetime="")
+Swipe(x1,y1,x2,y2,swipetime="")
 {
 	sleep 100
 	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
-	MouseGetPos,x,y, thewindow
+	MouseGetPos,x,y, thewindow ;偵測滑鼠位置
 	2GuiID = Gui%title%
-	if (thewindow=UniqueID)
+	if (thewindow=UniqueID) ;如果滑鼠位於視窗內，則創造一個隱形GUI
 	{
-		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
+		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID% ;創造一個隱形的GUI去檔住滑鼠
 		WinSet, Transparent, 1, %2GuiID%
 		Gui, 2: -Caption +AlwaysOnTop
 	}
-	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
+	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10) ;計算拖曳座標距離
 	Loop, 10
 	{
-		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
+		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
 		x1 += ShiftX, y1 += ShiftY
-		sleep 10
+		sleep 20
 	}
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
-	Gui, 2:Hide
+	Gui, 2:Hide ;隱藏上方創造的隱形GUI
 	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
 	sleep 300
 }
 
-A_SwipeFast(x1,y1,x2,y2,swipetime="")
-{
-	sleep 50
-	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
-	MouseGetPos,x,y, thewindow
-	2GuiID = Gui%title%
-	if (thewindow=UniqueID)
-	{
-		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
-		WinSet, Transparent, 1, %2GuiID%
-		Gui, 2: -Caption +AlwaysOnTop
-	}
-	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
-	Loop, 10
-	{
-		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
-		x1 += ShiftX, y1 += ShiftY
-		sleep 10
-	}
-	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
-	Gui, 2:Hide
-	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
-	sleep 250
-}
-
-A_Swipe2(x1,y1,x2,y2,swipetime="")
-{
-	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
-	MouseGetPos,x,y, thewindow
-	2GuiID = Gui%title%
-	if (thewindow=UniqueID)
-	{
-		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID%
-		WinSet, Transparent, 1, %2GuiID%
-		Gui, 2: -Caption +AlwaysOnTop
-	}
-	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10)
-	Loop, 10
-	{
-		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA 
-		x1 += ShiftX, y1 += ShiftY
-		sleep 10
-	}
-	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
-	Gui, 2:Hide
-	;~ Run,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
-}
-
-A_Click(x,y)
+Ld_Click(x,y)
 {
 	Random, randomsleep, 400, 550
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
