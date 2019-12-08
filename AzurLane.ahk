@@ -1006,7 +1006,7 @@ if (Color1=Color2=Color3=Color4=Color5=Color6)
 else
 {
 	LogShow("出現預期外的錯誤，強制調整")
-	AllowanceValue := AllowanceValue+ 10000
+	AllowanceValue := Color1+ 2000
 	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
 	LogShow("請手動按下停止鍵")
 }
