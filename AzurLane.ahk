@@ -452,15 +452,23 @@ Gui, Add, CheckBox, x30 y180 w120 h20 gAcademysettings vAcademyTactics checked%A
 iniread, 150expbookonly, settings.ini, Academy, 150expbookonly, 1
 Gui, Add, CheckBox, x160 y180 w200 h20 gAcademysettings v150expbookonly checked%150expbookonly%, 僅使用150`%經驗的課本
 iniread, AcademyShop, settings.ini, Academy, AcademyShop, 1
-Gui, Add, CheckBox, x30 y210 w220 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 軍火商刷新時進行購物`(金幣)
-iniread, SkillBook_ATK, settings.ini, Academy, SkillBook_ATK
-iniread, SkillBook_DEF, settings.ini, Academy, SkillBook_DEF
-iniread, SkillBook_SUP, settings.ini, Academy, SkillBook_SUP
-iniread, Cube, settings.ini, Academy, Cube
+Gui, Add, CheckBox, x30 y210 w220 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 自動購買軍火商物品`(金幣)
+iniread, SkillBook_ATK, settings.ini, Academy, SkillBook_ATK, 1
+iniread, SkillBook_DEF, settings.ini, Academy, SkillBook_DEF, 1
+iniread, SkillBook_SUP, settings.ini, Academy, SkillBook_SUP, 1
+iniread, Cube, settings.ini, Academy, Cube, 1
+iniread, Part_Aircraft, settings.ini, Academy, Part_Aircraft, 0
+iniread, Part_Cannon, settings.ini, Academy, Part_Cannon, 0
+iniread, Part_torpedo, settings.ini, Academy, Part_torpedo, 0
+iniread, Item_Tempura, settings.ini, Academy, Item_Tempura, 0
 Gui, Add, CheckBox, x50 y240 w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
 Gui, Add, CheckBox, x140 y240 w80 h20 gAcademysettings vSkillBook_DEF checked%SkillBook_DEF%, 防禦教材
 Gui, Add, CheckBox, x230 y240 w80 h20 gAcademysettings vSkillBook_SUP checked%SkillBook_SUP%, 輔助教材
 Gui, Add, CheckBox, x320 y240 w80 h20 gAcademysettings vCube checked%Cube%, 心智魔方
+Gui, Add, CheckBox, x50 y270 w110 h20 gAcademysettings vPart_Aircraft checked%Part_Aircraft%, 艦載機部件T3
+Gui, Add, CheckBox, x170 y270 w100 h20 gAcademysettings vPart_Cannon checked%Part_Cannon%, 主砲部件T3
+Gui, Add, CheckBox, x280 y270 w100 h20 gAcademysettings vPart_torpedo checked%Part_torpedo%, 魚雷部件T3
+Gui, Add, CheckBox, x50 y300 w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
 
 Gui, Tab, 後　宅
 iniread, DormSub, settings.ini, Dorm, DormSub
@@ -812,6 +820,10 @@ Guicontrolget, SkillBook_ATK
 Guicontrolget, SkillBook_DEF
 Guicontrolget, SkillBook_SUP
 Guicontrolget, Cube
+Guicontrolget, Part_Aircraft
+Guicontrolget, Part_Cannon
+Guicontrolget, Part_torpedo
+Guicontrolget, Item_Tempura
 Iniwrite, %AcademySub%, settings.ini, Academy, AcademySub
 Iniwrite, %AcademyOil%, settings.ini, Academy, AcademyOil
 Iniwrite, %AcademyCoin%, settings.ini, Academy, AcademyCoin
@@ -822,6 +834,10 @@ Iniwrite, %SkillBook_ATK%, settings.ini, Academy, SkillBook_ATK
 Iniwrite, %SkillBook_DEF%, settings.ini, Academy, SkillBook_DEF
 Iniwrite, %SkillBook_SUP%, settings.ini, Academy, SkillBook_SUP
 Iniwrite, %Cube%, settings.ini, Academy, Cube
+Iniwrite, %Part_Aircraft%, settings.ini, Academy, Part_Aircraft
+Iniwrite, %Part_Cannon%, settings.ini, Academy, Part_Cannon
+Iniwrite, %Part_torpedo%, settings.ini, Academy, Part_torpedo
+Iniwrite, %Item_Tempura%, settings.ini, Academy, Item_Tempura
 return
 
 Dormsettings: ;後宅設定
@@ -3178,7 +3194,7 @@ if (AcademyDone<1)
 				fullycoin := 1
 			}
 		}
-		if (DwmCheckcolor(1132, 213, 16774127) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
+		if (DwmCheckcolor(942, 225, 5391764) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
 		{
 			LogShow("商店街發大財")
 			C_Click(1113, 210)
@@ -3303,7 +3319,127 @@ if (AcademyDone<1)
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
-								SupCoin++
+								CubeCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
+				{
+					Part_AircraftPos := dwmgetpixel(x,y)
+					LogShow("購買艦載機部件T3(金幣)")
+					Loop, 20
+					{
+						if (Part_AircraftPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Part_AircraftCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
+				{
+					Part_CannonPos := dwmgetpixel(x,y)
+					LogShow("購買主砲部件T3(金幣)")
+					Loop, 20
+					{
+						if (Part_CannonPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Part_CannonCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
+				{
+					Part_torpedoPos := dwmgetpixel(x,y)
+					LogShow("購買魚雷部件T3(金幣)")
+					Loop, 20
+					{
+						if (Part_torpedoPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Part_torpedoCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
+				{
+					Item_TempuraPos := dwmgetpixel(x,y)
+					LogShow("購買魚雷部件T3(金幣)")
+					Loop, 20
+					{
+						if (Item_TempuraPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Item_TempuraCoin++
 								Random, xx, 414, 527
 								Random, yy, 566, 569
 								C_Click(xx,yy) ;點擊取消
@@ -3401,7 +3537,7 @@ if (AcademyDone<1)
 		}
 		sleep 300
 		Academycount++
-		if (Academycount>30)
+		if (Academycount>20)
 		{
 			LogShow("離開學院。")
 			GetOil := VarSetCapacity
@@ -3605,7 +3741,7 @@ if (DormDone<1) ;後宅發現任務
 		}
 		sleep 300
 		Dormcount++
-		if (Dormcount>25)
+		if (Dormcount>20)
 		{
 			LogShow("離開後宅。")
 			Dorm_Coin := VarSetCapacity
