@@ -102,8 +102,9 @@ MouseGetPos X1, Y1, A
 WinGetTitle, title, ahk_id %A%
 UniqueID := WinExist("A")
 return
-
+#if F2Func!=1
 f2::
+F2Func := 1
 ; The line of code below loads a cursor from the system set (specifically, the wait cursor - 32514).
 if (F10Function=1)
 {
@@ -150,8 +151,10 @@ Gdip_SaveBitmapToFile(pBitmap_part, "TempImg/" . "" . "" . "TestTemp" . ".png", 
 Gdip_DisposeImage(pBitmap)
 Gdip_DisposeImage(pBitmap_part)
  ; 創建照片預覽GUI
-Gui_w := if (xx2>600) ? Xx2+30 : 600
-Gui_H := if (Yy2<420) ? Yy2+220 : 420
+ThisXX := Xx2+30
+ThisYY :=  Yy2+220
+Gui_w := if (xx2>600) ? ThisXX : 600
+Gui_H := if (Yy2>500) ? ThisYY : 500 
 Gui, Image: Add, Picture, x10 y10  ,TempImg\%FileName%.png
 Pos_X := 10
 Pos_Y := Gui_H-120
@@ -204,17 +207,16 @@ Gui, Image: Add, Checkbox, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vClickPictur
 BTNConfrim_X += 120
 BTNConfrim_Y += 30
 Gui, Image: Add, Button, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vBTNText gBTNTextSub, 測試函數
+BTNConfrim_X += 120
+BTNConfrim_Y += 3
+Gui, Image: Add, text,x%BTNConfrim_X% y%BTNConfrim_Y% w150 h20 vTestText +cEE0011, 
 Gui, Image: -sysmenu +AlwaysOnTop
 Gui, Image: Show, w%Gui_w% h%Gui_H%, %FileName%.Png
-While (PictureOK<1)
-{
-	sleep 400
-}
 return
 ; And finally, when the action is over, we call the code below to revert the default set of cursors back to its original state.
 
 PictureOKSub:
-PictureOK := 1
+F2Func := 0
 Gui, 1:Show
 GuicontrolGet, Search_X1
 GuicontrolGet, Search_Y1
@@ -241,16 +243,14 @@ GuicontrolGet, Search_direction
 GuicontrolGet, ClickPicture
 if (GdipImageSearch(x, y, "TempImg/TestTemp.png", Search_Variation, Search_direction, Search_X1, Search_Y1, Search_X2, Search_Y2))
 {
-	tooltip, 圖片位於：`nx: %x% `ny: %y%
+	GuiControl,, TestText, 圖片位於`: x%x% y%y%
 	if (ClickPicture)
 	{
 		ControlClick, x%x% y%y%, %title%,,,2 , NA 
 	}
 } else {
-	tooltip, NotFound
+	GuiControl,, TestText, 圖片位於: NotFound
 }
-sleep 2000
-Tooltip
 return
 
 
