@@ -4529,28 +4529,88 @@ ChooseParty(Byref StopAnchor)
 			C_Click(1230, 68) ;返回主選單
 			return StopAnchor
 		}
-		sleep 2000
-		if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
+		Loop, 20
 		{
-			Loop, 20
-			{
-				sleep 500
-				if (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1059, 696, 9738925) and DwmCheckcolor(1257, 712, 16239426)) ;如果進入地圖頁面 檢測"撤退" "切換" "迎擊"
-				{
-					sleep 3000
-					Random, x, 963, 1096
-					Random, y, 701, 728
-					C_Click(x,y) ;點擊"切換"
-					break
-				}
-			}
-		}
+			sleep 500 ;如果進入地圖頁面 檢測"撤退" "切換" "迎擊"
+		} until (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1059, 696, 9738925) and DwmCheckcolor(1257, 712, 16239426))
 		if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
 		{
 			Swipe(272, 419, 1100, 422)
 		}
 	}
 }
+
+;~ if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
+		;~ {
+			;~ Loop
+			;~ {
+				;~ MapScan1 := DwmGetPixel(364, 351)
+				;~ sleep 200
+				;~ MapScan2 := DwmGetPixel(364, 351)
+			;~ } until MapScan1=MapScan2
+			;~ sleep 1000
+			;~ if (AnchorChapter="7" and AnchorChapter2="2")
+			;~ {
+				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+			;~ }
+			;~ sleep 2000
+			;~ Random, x, 963, 1096
+			;~ Random, y, 701, 728
+			;~ C_Click(x,y) ;點擊"切換"
+		;~ }
+		;~ if (!(SwitchPartyAtFirstTime) and (ChooseParty2!="不使用" and AnchorMode="普通")) ;先把主要隊伍移到中間，避免BOSS出現卡住
+		;~ {
+			;~ Loop
+			;~ {
+				;~ MapScan1 := DwmGetPixel(364, 351)
+				;~ sleep 200
+				;~ MapScan2 := DwmGetPixel(364, 351)
+			;~ } until MapScan1=MapScan2
+			;~ sleep 1000
+			;~ Random, x, 963, 1096
+			;~ Random, y, 701, 728
+			;~ C_Click(x,y) ;點擊"切換"
+			;~ Swipe(210, 228, 735, 423)
+			;~ Swipe(477, 297, 1107, 596)
+			;~ Loop
+			;~ {
+				;~ x := 350, y := 220
+				;~ Random, xx, 0, 750
+				;~ Random, yy, 0, 400
+				;~ x1 := x+xx, y1 := y+yy
+				;~ x2 := x1-100, y2 := y1-100
+				;~ Swipe(x1, y1, x2, y2)
+				;~ AlignCenterCount++
+			;~ } until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
+			;~ y1 := y-1
+			;~ y2 := y+1
+			;~ AlignCenterCount := VarSetCapacity
+			;~ Loop 
+			;~ {
+				;~ if (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
+					;~ break
+				;~ Random, y, 180, 650
+				;~ Swipe(650, y, 430, y)
+				;~ AlignCenterCount++
+			;~ } until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
+			;~ AlignCenterCount := VarSetCapacity
+			;~ if (AnchorChapter="7" and AnchorChapter2="2")
+			;~ {
+				;~ Movepixel := Dwmgetpixel(596, 383)
+				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+			;~ }
+			;~ Loop 
+			;~ {
+				;~ sleep 500
+				;~ MoveCount++
+			;~ } until (Movepixel!=Dwmgetpixel(596, 383) and DwmCheckcolor(794, 713, 16777215)) or MoveCount>20
+			;~ Random, x, 963, 1096
+			;~ Random, y, 701, 728
+			;~ sleep 1500
+			;~ C_Click(x,y) ;點擊"切換"
+		;~ }
 
 Battle_Operation()
 {
