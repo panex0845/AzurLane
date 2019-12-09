@@ -3329,7 +3329,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
 				{
 					Part_AircraftPos := dwmgetpixel(x,y)
 					LogShow("購買艦載機部件T3(金幣)")
@@ -3359,7 +3359,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
 				{
 					Part_CannonPos := dwmgetpixel(x,y)
 					LogShow("購買主砲部件T3(金幣)")
@@ -3389,7 +3389,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
 				{
 					Part_torpedoPos := dwmgetpixel(x,y)
 					LogShow("購買魚雷部件T3(金幣)")
@@ -3419,7 +3419,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
+				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
 				{
 					Item_TempuraPos := dwmgetpixel(x,y)
 					LogShow("購買魚雷部件T3(金幣)")
