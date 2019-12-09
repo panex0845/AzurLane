@@ -2591,17 +2591,6 @@ Try
 }
 return
 
-;~ F3::
-;~ pBitmap := Gdip_BitmapFromHWND(UniqueID), Gdip_GetDimensions(pBitmap, w, h)
-;~ MapX1 := 0, MapY1 := 0, MapX2 := 1280, MapY2 := 745
-;~ Random, SearchDirection, 1, 8
-;~ g := Gdip_PixelSearch(pBitmap, 4287894561,  x,  y)
-;~ g := Gdip_PixelSearch2( x,  y, 0, 0, MapX2, MapY2, 4286845976, 0)
-;~ g := GdipImageSearch(x, y, "img/Item_Tempura.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2)
-;~ tooltip x%x% y%y% g%g%
-;~ C_Click(x,y)
-;~ return
-
 BtnCheck:
     Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
     Switchover := DwmCheckcolor(1025, 697,9212581)  ;Checkcolor(1025, 697, 4287402661) 切換
@@ -5095,3 +5084,16 @@ WM_HELP()
 	sleep 1000
 	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
+
+;~ F3::
+;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
+;~ Random, SearchDirection, 1, 8
+;~ g := GdipImageSearch(x, y, "img/target3_2.png", 50, SearchDirection, MapX1, MapY1, MapX2, MapY2)
+;~ if (g>1) {
+;~ tooltip x%x% y%y% g%g%
+;~ } else {
+	;~ tooltip NotFound
+;~ }
+;~ sleep 2000
+;~ tooltip 
+;~ return
