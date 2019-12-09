@@ -1350,8 +1350,9 @@ if (Withdraw and Switchover )
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		Swipe(164, 218, 1235, 646)
-		sleep 500
+
+		Swipe(210, 228, 735, 423)
+		Swipe(477, 297, 1107, 596)
 		Loop
 		{
 			x := 350, y := 220
@@ -4800,12 +4801,12 @@ Swipe(x1,y1,x2,y2,swipetime="")
 	sleep 100
 	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
 	MouseGetPos,x,y, thewindow ;偵測滑鼠位置
-	2GuiID = Gui%title%
+	HideGuiID = Gui%UniqueID%
 	if (thewindow=UniqueID) ;如果滑鼠位於視窗內，則創造一個隱形GUI
 	{
-		Gui, 2:Show, w%w1% h%h1% x%xx% y%yy%, %2GuiID% ;創造一個隱形的GUI去檔住滑鼠
-		WinSet, Transparent, 1, %2GuiID%
-		Gui, 2: -Caption +AlwaysOnTop
+		Gui, HideGui:Show, w%w1% h%h1% x%xx% y%yy%, %HideGuiID% ;創造一個隱形的GUI去檔住滑鼠
+		Gui, HideGui: -caption +AlwaysOnTop
+		WinSet, Transparent, 1, %HideGuiID%
 	}
 	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10) ;計算拖曳座標距離
 	Loop, 10
@@ -4815,7 +4816,7 @@ Swipe(x1,y1,x2,y2,swipetime="")
 		sleep 20
 	}
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
-	Gui, 2:Hide ;隱藏上方創造的隱形GUI
+	Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
 	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
 	sleep 300
 }
