@@ -70,6 +70,7 @@ ExitApp
 return
 
 F10::
+F10Function := 1
 MouseGetPos X1, Y1, A
 WinGetTitle, title, ahk_id %A%
 WinActivate, %title%
@@ -104,6 +105,12 @@ return
 
 f2::
 ; The line of code below loads a cursor from the system set (specifically, the wait cursor - 32514).
+if (F10Function=1)
+{
+	Gui, 1:Hide
+	MsgBox, 16, 錯誤, 使用F2功能請勿按下F10`n`n按下確認後自動重啟
+	Reload
+}
 Gui, 1:Hide
 MouseGetPos X1, Y1, A
 WinGetTitle, title, ahk_id %A%
