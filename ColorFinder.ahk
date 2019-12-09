@@ -12,12 +12,13 @@ Exitapp
 Coordmode, pixel, window
 Coordmode, mouse, window
 SetBatchLines, 500ms
+SetControlDelay, -1
 pToken := Gdip_Startup()
 
 
 guif:
-Gui Show, w450 h250, ColorFinder
-Gui, Add, Text, x20 y10 w350 h40 vtitle1 , 視窗標題： 按下F10鎖定視窗 
+Gui, Add, Text, x20 y10 w200 h20 vtitle1 +cEE0011 ,  按下F10鎖定視窗 
+Gui, Add, Text, x230 y10 w350 h20 vtitle999 +c1100EE ,  按下F2啟動找圖函數
 
 Gui Add, Text, x20 y54 w10 h15,  X:
 Gui Add, Edit, x40 y50 w40 h20 vPosX, 
@@ -55,8 +56,7 @@ Gui, Add, Edit, x180 y206 w100 h20 ReadOnly vEventcountRGB
 UpdateText("Eventcount1", %RGB%)
 ;~ Gui, Add, Text, x140 y130 w180 h20 vEventcount1 , ARGB： %ARGB% 。
 
-
-
+Gui 1:Show, w450 h250, ColorFinder
 Gui,+AlwaysOnTop
 
 
@@ -70,6 +70,9 @@ ExitApp
 return
 
 F10::
+MouseGetPos X1, Y1, A
+WinGetTitle, title, ahk_id %A%
+WinActivate, %title%
 GuiControlget, title
 UniqueID := WinExist("A")
 MouseGetPos X, Y, A
@@ -93,6 +96,155 @@ settimer, testRGB, 500
 return
 
 
+F11::
+MouseGetPos X1, Y1, A
+WinGetTitle, title, ahk_id %A%
+UniqueID := WinExist("A")
+return
+
+f2::
+; The line of code below loads a cursor from the system set (specifically, the wait cursor - 32514).
+Gui, 1:Hide
+MouseGetPos X1, Y1, A
+WinGetTitle, title, ahk_id %A%
+WinActivate, %title%
+MouseGetPos X1, Y1, A
+hCursor := DllCall("LoadImage", "Uint", 0, "Uint", 32515, "Uint", 2, "Uint", 0, "Uint", 0, "Uint", 0x8000)
+Cursors = 32650,32512,32515,32649,32651,32513,32648,32646,32643,32645,32642,32644,32516,32514
+Loop, Parse, Cursors, `,
+{
+	DllCall("SetSystemCursor", "Uint", DllCall("CopyImage", "Uint", hCursor, "Uint", 2, "Int", 0, "Int", 0, "Uint", 0), "Uint", A_LoopField)
+}
+Loop,
+{
+	MouseGetPos X2, Y2, A
+	tooltip, Wintitle: %title% `nx1: %x1% y1: %y1%`nx2: %x2% y2: %y2%`n`n等待按下滑鼠右鍵後繼續
+	sleep 10
+	if GetKeyState("RButton", "P")
+		break
+}
+Global A
+DllCall("SystemParametersInfo", "Uint", 0x0057, "Uint", 0, "Uint", 0, "Uint", 0)
+Tooltip
+;拍照選取範圍
+FileCreateDir, TempImg
+InputBox, FileName , 設定精靈, `n`n　　　　　　　請輸入檔案名稱,, , ,,,,, 123
+if (FileName="") or Errorlevel
+{
+	Msgbox, ,設定精靈, 未輸入檔案名稱
+	Gui, 1:Show
+	return
+}
+pBitmap := Gdip_BitmapFromHWND(A)
+Xx2:=X2-X1, Yy2:=Y2-Y1 ;把Y1 Y2改成W H
+pBitmap_part := Gdip_CloneBitmapArea(pBitmap, X1, Y1, Xx2, Yy2)
+Gdip_SaveBitmapToFile(pBitmap_part, "TempImg/" . "" . "" . FileName . ".png", 100)
+Gdip_SaveBitmapToFile(pBitmap_part, "TempImg/" . "" . "" . "TestTemp" . ".png", 100)
+Gdip_DisposeImage(pBitmap)
+Gdip_DisposeImage(pBitmap_part)
+ ; 創建照片預覽GUI
+Gui_w := if (xx2>600) ? Xx2+30 : 600
+Gui_H := if (Yy2<420) ? Yy2+220 : 420
+Gui, Image: Add, Picture, x10 y10  ,TempImg\%FileName%.png
+Pos_X := 10
+Pos_Y := Gui_H-120
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, 搜尋設定：
+Pos_Y += 30
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, X1：
+Pos_X += 30
+Pos_Y -= 3
+Search_X1num := if (x1-5>1) ? x1-5 : 0
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_X1 number, %Search_X1num%
+Pos_X += 60
+Pos_Y += 3
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, Y1：
+Pos_X += 30
+Pos_Y -= 3
+Search_Y1num := y1-5
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_Y1 number, %Search_Y1num%
+Pos_X += 60
+Pos_Y += 3
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, X2：
+Pos_X += 30
+Pos_Y -= 3
+Search_x2num := x2+5
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_X2 number, %Search_x2num%
+Pos_X += 60
+Pos_Y += 3
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, Y2：
+Pos_X += 30
+Pos_Y -= 3
+Search_y2num := if (y2+5>768) ? 768 : y2+5
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_Y2 number, %Search_y2num%
+Pos_X += 60
+Pos_Y += 3
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, 容許值：
+Pos_X += 50
+Pos_Y -= 3
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_Variation number, 100
+Pos_X += 60
+Pos_Y += 3
+Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, 方向：
+Pos_X += 40
+Pos_Y -= 3
+Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_direction number, 8
+
+BTNConfrim_X := 10
+BTNConfrim_Y := Gui_H-30
+Gui, Image: Add, Button, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vPictureOK gPictureOKSub, 複製函數
+BTNConfrim_Y -= 30
+Gui, Image: Add, Checkbox, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vClickPicture , 點擊該圖片
+BTNConfrim_X += 120
+BTNConfrim_Y += 30
+Gui, Image: Add, Button, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vBTNText gBTNTextSub, 測試函數
+Gui, Image: -sysmenu +AlwaysOnTop
+Gui, Image: Show, w%Gui_w% h%Gui_H%, %FileName%.Png
+While (PictureOK<1)
+{
+	sleep 400
+}
+return
+; And finally, when the action is over, we call the code below to revert the default set of cursors back to its original state.
+
+PictureOKSub:
+PictureOK := 1
+Gui, 1:Show
+GuicontrolGet, Search_X1
+GuicontrolGet, Search_Y1
+GuicontrolGet, Search_X2
+GuicontrolGet, Search_Y2
+GuicontrolGet, Search_Variation
+GuicontrolGet, Search_direction
+Text = `GdipImageSearch(x, y, `"`img/%FileName%.png`"`, %Search_Variation%, %Search_direction%, %Search_X1%, %Search_Y1%, %Search_X2%, %Search_Y2%)
+clipboard = %text%`n`{`n    C_Click(x, y)`n`}
+ToolTip, 函數：`n`n%text%`n`n已複製到剪貼簿
+Gui, Image: Destroy
+sleep 2000
+FileDelete TestTemp.png
+Tooltip
+return
+
+BTNTextSub:
+GuicontrolGet, Search_X1
+GuicontrolGet, Search_Y1
+GuicontrolGet, Search_X2
+GuicontrolGet, Search_Y2
+GuicontrolGet, Search_Variation
+GuicontrolGet, Search_direction
+GuicontrolGet, ClickPicture
+if (GdipImageSearch(x, y, "TempImg/TestTemp.png", Search_Variation, Search_direction, Search_X1, Search_Y1, Search_X2, Search_Y2))
+{
+	tooltip, 圖片位於：`nx: %x% `ny: %y%
+	if (ClickPicture)
+	{
+		ControlClick, x%x% y%y%, %title%,,,2 , NA 
+	}
+} else {
+	tooltip, NotFound
+}
+sleep 2000
+Tooltip
+return
 
 
 test2:
@@ -3862,3 +4014,16 @@ MCode(ByRef code, hex) { ; allocate memory and write Machine Code there
       NumPut("0x" . SubStr(hex,2*A_Index-1,2), code, A_Index-1, "Char")
 }
 
+GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
+{
+    pBitmap := Gdip_BitmapFromHWND(A)
+    LIST = 0
+    bmpNeedle := Gdip_CreateBitmapFromFile(imagePath)
+    RET := Gdip_ImageSearch(pBitmap, bmpNeedle, LIST, x1, y1, x2, y2, Variation, , direction, 1)
+    Gdip_DisposeImage(bmpNeedle)
+    Gdip_DisposeImage(pBitmap)
+    LISTArray := StrSplit(LIST, ",")
+    x := LISTArray[1]
+    y := LISTArray[2]
+    return List
+}
