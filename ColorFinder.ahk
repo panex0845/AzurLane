@@ -96,14 +96,19 @@ settimer, test, 500
 settimer, testRGB, 500
 return
 
-
-F11::
-MouseGetPos X1, Y1, A
-WinGetTitle, title, ahk_id %A%
-UniqueID := WinExist("A")
-return
+;~ Gui, Temp:Show, x%mx% y%my% w0 h0, tempGui
+;~ Gui, Temp:-caption
+;~ WinSet, Transparent, 80, tempGui
+	;~ MouseGetPos X2, Y2, A
+	;~ MouseGetPos, mx2, my2
+	mx2 := mx2-mx, my2:= my2-my
+	;~ WinMove, tempGui,, , , mx2, my2,
+	
 #if F2Func!=1
 f2::
+;~ CoordMode, Mouse, Screen
+;~ MouseGetPos mx, my
+;~ CoordMode, Mouse, Window
 F2Func := 1
 ; The line of code below loads a cursor from the system set (specifically, the wait cursor - 32514).
 if (F10Function=1)
@@ -114,6 +119,9 @@ if (F10Function=1)
 }
 Gui, 1:Hide
 MouseGetPos X1, Y1, A
+;~ Gui, Temp:Show, x%mx% y%my% w1 h1, tempGui
+;~ Gui, Temp:-caption
+;~ WinSet, Transparent, 100, tempGui
 WinGetTitle, title, ahk_id %A%
 WinActivate, %title%
 MouseGetPos X1, Y1, A
@@ -125,12 +133,15 @@ Loop, Parse, Cursors, `,
 }
 Loop,
 {
-	MouseGetPos X2, Y2, A
+	MouseGetPos X2, Y2
+	;~ mx2 := x2-x1, my2:= y2-y1
+	;~ WinMove, tempGui, , , , mx2, my2
 	tooltip, Wintitle: %title% `nx1: %x1% y1: %y1%`nx2: %x2% y2: %y2%`n`n等待按下滑鼠右鍵後繼續
 	sleep 10
 	if GetKeyState("RButton", "P")
 		break
 }
+Gui, temp:Destroy
 Global A
 DllCall("SystemParametersInfo", "Uint", 0x0057, "Uint", 0, "Uint", 0, "Uint", 0)
 Tooltip
@@ -140,6 +151,7 @@ InputBox, FileName , 設定精靈, `n`n　　　　　　　請輸入檔案名�
 if (FileName="") or Errorlevel
 {
 	Msgbox, ,設定精靈, 未輸入檔案名稱
+	F2Func := 0
 	Gui, 1:Show
 	return
 }
@@ -213,7 +225,7 @@ Gui, Image: Add, text,x%BTNConfrim_X% y%BTNConfrim_Y% w150 h20 vTestText +cEE001
 Gui, Image: -sysmenu +AlwaysOnTop
 Gui, Image: Show, w%Gui_w% h%Gui_H%, %FileName%.Png
 return
-; And finally, when the action is over, we call the code below to revert the default set of cursors back to its original state.
+
 
 PictureOKSub:
 F2Func := 0
