@@ -136,9 +136,9 @@ Loop,
 	MouseGetPos X2, Y2
 	;~ mx2 := x2-x1, my2:= y2-y1
 	;~ WinMove, tempGui, , , , mx2, my2
-	tooltip, Wintitle: %title% `nx1: %x1% y1: %y1%`nx2: %x2% y2: %y2%`n`n等待按下滑鼠右鍵後繼續
+	tooltip, Wintitle: %title% `nx1: %x1% y1: %y1%`nx2: %x2% y2: %y2%`n`n等待按下F3後繼續
 	sleep 10
-	if GetKeyState("RButton", "P")
+	if GetKeyState("F3", "P")
 		break
 }
 Gui, temp:Destroy
@@ -164,9 +164,9 @@ Gdip_DisposeImage(pBitmap)
 Gdip_DisposeImage(pBitmap_part)
  ; 創建照片預覽GUI
 ThisXX := Xx2+30
-ThisYY :=  Yy2+220
+ThisYY :=  Yy2+150
 Gui_w := if (xx2>600) ? ThisXX : 600
-Gui_H := if (Yy2>500) ? ThisYY : 500 
+Gui_H :=ThisYY
 Gui, Image: Add, Picture, x10 y10  ,TempImg\%FileName%.png
 Pos_X := 10
 Pos_Y := Gui_H-120
@@ -229,6 +229,7 @@ return
 
 PictureOKSub:
 F2Func := 0
+Stoptest := 1
 Gui, 1:Show
 GuicontrolGet, Search_X1
 GuicontrolGet, Search_Y1
@@ -249,25 +250,29 @@ Tooltip
 return
 
 BTNTextSub:
-GuicontrolGet, Search_X1
-GuicontrolGet, Search_Y1
-GuicontrolGet, Search_X2
-GuicontrolGet, Search_Y2
-GuicontrolGet, Search_Variation
-GuicontrolGet, Search_direction
-GuicontrolGet, ClickPicture
-if (GdipImageSearch(x, y, "TempImg/TestTemp.png", Search_Variation, Search_direction, Search_X1, Search_Y1, Search_X2, Search_Y2))
+Stoptest := 0
+While Stoptest<1
 {
-	GuiControl,, TestText, 圖片位於`: x%x% y%y%
-	if (ClickPicture)
+	GuicontrolGet, Search_X1
+	GuicontrolGet, Search_Y1
+	GuicontrolGet, Search_X2
+	GuicontrolGet, Search_Y2
+	GuicontrolGet, Search_Variation
+	GuicontrolGet, Search_direction
+	GuicontrolGet, ClickPicture
+	if (GdipImageSearch(x, y, "TempImg/TestTemp.png", Search_Variation, Search_direction, Search_X1, Search_Y1, Search_X2, Search_Y2))
 	{
-		ControlClick, x%x% y%y%, %title%,,,2 , NA 
+		GuiControl,, TestText, 圖片位於`: x%x% y%y%
+		if (ClickPicture)
+		{
+			ControlClick, x%x% y%y%, %title%,,,2 , NA 
+		}
+	} else {
+		GuiControl,, TestText, 圖片位於: NotFound
 	}
-} else {
-	GuiControl,, TestText, 圖片位於: NotFound
+	sleep 500
 }
 return
-
 
 test2:
 ;GuiControlget, title
