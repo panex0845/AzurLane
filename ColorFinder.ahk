@@ -237,8 +237,11 @@ GuicontrolGet, Search_Y2
 GuicontrolGet, Search_Variation
 GuicontrolGet, Search_direction
 Text = `GdipImageSearch(x, y, `"`img/%FileName%.png`"`, %Search_Variation%, %Search_direction%, %Search_X1%, %Search_Y1%, %Search_X2%, %Search_Y2%)
-clipboard = %text%`n`{`n    C_Click(x, y)`n`}
-ToolTip, 函數：`n`n%text%`n`n已複製到剪貼簿
+if (ClickPicture)
+	clipboard = if %text%`n`{`n    C_Click(x, y)`n`}
+else
+	clipboard = %Text%
+ToolTip, 函數：`n`n%Text%`n`n已複製到剪貼簿
 Gui, Image: Destroy
 sleep 2000
 FileDelete TestTemp.png
