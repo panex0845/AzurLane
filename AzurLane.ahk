@@ -4142,11 +4142,11 @@ Message_Normal()
 		LogShow("出現訊息，點擊取消！")
 		C_Click(490, 548)
 	}
-	else if (DwmCheckcolor(329, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(758, 544, 16777215) and DwmCheckcolor(721, 523, 3760532))
+	else if (DwmCheckcolor(331, 226, 16777215) and DwmCheckcolor(432, 354, 16777215) and DwmCheckcolor(787, 486, 16777215) and DwmCheckcolor(442, 347, 528392))
 	{
 		LogShow("出現訊息，點擊取消2！")
-		Random, x, 417, 565
-		Random, y, 528, 565
+		Random, x, 452, 601
+		Random, y, 466, 505
 		C_Click(x, y)
 	}
 }
