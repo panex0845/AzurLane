@@ -460,6 +460,9 @@ iniread, Cube, settings.ini, Academy, Cube, 1
 iniread, Part_Aircraft, settings.ini, Academy, Part_Aircraft, 0
 iniread, Part_Cannon, settings.ini, Academy, Part_Cannon, 0
 iniread, Part_torpedo, settings.ini, Academy, Part_torpedo, 0
+iniread, Part_Anti_Aircraft, settings.ini, Academy, Part_Anti_Aircraft, 0
+iniread, Part_Common, settings.ini, Academy, Part_Common, 0
+iniread, Item_Water, settings.ini, Academy, Item_Water, 0
 iniread, Item_Tempura, settings.ini, Academy, Item_Tempura, 0
 Gui, Add, CheckBox, x50 y240 w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
 Gui, Add, CheckBox, x140 y240 w80 h20 gAcademysettings vSkillBook_DEF checked%SkillBook_DEF%, 防禦教材
@@ -468,7 +471,10 @@ Gui, Add, CheckBox, x320 y240 w80 h20 gAcademysettings vCube checked%Cube%, 心�
 Gui, Add, CheckBox, x50 y270 w110 h20 gAcademysettings vPart_Aircraft checked%Part_Aircraft%, 艦載機部件T3
 Gui, Add, CheckBox, x170 y270 w100 h20 gAcademysettings vPart_Cannon checked%Part_Cannon%, 主砲部件T3
 Gui, Add, CheckBox, x280 y270 w100 h20 gAcademysettings vPart_torpedo checked%Part_torpedo%, 魚雷部件T3
-Gui, Add, CheckBox, x50 y300 w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
+Gui, Add, CheckBox, x50 y300 w110 h20 gAcademysettings vPart_Anti_Aircraft checked%Part_Anti_Aircraft%, 防空砲部件T3
+Gui, Add, CheckBox, x170 y300 w110 h20 gAcademysettings vPart_Common checked%Part_Common%, 共通部件T3
+Gui, Add, CheckBox, x50 y330 w100 h20 gAcademysettings vItem_Water checked%Item_Water%, 秘製冷卻水
+Gui, Add, CheckBox, x170 y330 w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
 
 Gui, Tab, 後　宅
 iniread, DormSub, settings.ini, Dorm, DormSub
@@ -823,6 +829,9 @@ Guicontrolget, Cube
 Guicontrolget, Part_Aircraft
 Guicontrolget, Part_Cannon
 Guicontrolget, Part_torpedo
+Guicontrolget, Part_Anti_Aircraft
+Guicontrolget, Part_Common
+Guicontrolget, Item_Water
 Guicontrolget, Item_Tempura
 Iniwrite, %AcademySub%, settings.ini, Academy, AcademySub
 Iniwrite, %AcademyOil%, settings.ini, Academy, AcademyOil
@@ -837,6 +846,9 @@ Iniwrite, %Cube%, settings.ini, Academy, Cube
 Iniwrite, %Part_Aircraft%, settings.ini, Academy, Part_Aircraft
 Iniwrite, %Part_Cannon%, settings.ini, Academy, Part_Cannon
 Iniwrite, %Part_torpedo%, settings.ini, Academy, Part_torpedo
+Iniwrite, %Part_Anti_Aircraft%, settings.ini, Academy, Part_Anti_Aircraft
+Iniwrite, %Part_Common%, settings.ini, Academy, Part_Common
+Iniwrite, %Item_Water%, settings.ini, Academy, Item_Water
 Iniwrite, %Item_Tempura%, settings.ini, Academy, Item_Tempura
 return
 
@@ -3409,10 +3421,100 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
+				if (GdipImageSearch(x, y, "img/Part_Anti_Aircraft.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Anti_Aircraft and Part_Anti_AircraftCoin<1) 
+				{
+					Part_Anti_AircraftPos := dwmgetpixel(x,y)
+					LogShow("購買防空砲部件(金幣)")
+					Loop, 20
+					{
+						if (Part_Anti_AircraftPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Part_Anti_AircraftCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Part_Common.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
+				{
+					Part_CommonPos := dwmgetpixel(x,y)
+					LogShow("購買共通部件(金幣)")
+					Loop, 20
+					{
+						if (Part_CommonPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Part_Anti_AircraftCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
+				if (GdipImageSearch(x, y, "img/Item_Water.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Water and Item_WaterCoin<1) 
+				{
+					Item_WaterPos := dwmgetpixel(x,y)
+					LogShow("購買秘製冷卻水(金幣)")
+					Loop, 20
+					{
+						if (Item_WaterPos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊
+						}
+						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 527, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Item_WaterCoin++
+								Random, xx, 414, 527
+								Random, yy, 566, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							Break
+						}
+						sleep 600
+					}
+				}
 				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
 				{
 					Item_TempuraPos := dwmgetpixel(x,y)
-					LogShow("購買魚雷部件T3(金幣)")
+					LogShow("購買天婦羅(金幣)")
 					Loop, 20
 					{
 						if (Item_TempuraPos=dwmgetpixel(x,y))
