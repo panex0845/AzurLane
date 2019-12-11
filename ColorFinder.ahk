@@ -106,11 +106,7 @@ return
 	
 #if F2Func!=1
 f2::
-;~ CoordMode, Mouse, Screen
-;~ MouseGetPos mx, my
-;~ CoordMode, Mouse, Window
 F2Func := 1
-; The line of code below loads a cursor from the system set (specifically, the wait cursor - 32514).
 if (F10Function=1)
 {
 	Gui, 1:Hide
@@ -119,9 +115,6 @@ if (F10Function=1)
 }
 Gui, 1:Hide
 MouseGetPos X1, Y1, A
-;~ Gui, Temp:Show, x%mx% y%my% w1 h1, tempGui
-;~ Gui, Temp:-caption
-;~ WinSet, Transparent, 100, tempGui
 WinGetTitle, title, ahk_id %A%
 WinActivate, %title%
 MouseGetPos X1, Y1, A
@@ -131,16 +124,8 @@ Loop, Parse, Cursors, `,
 {
 	DllCall("SetSystemCursor", "Uint", DllCall("CopyImage", "Uint", hCursor, "Uint", 2, "Int", 0, "Int", 0, "Uint", 0), "Uint", A_LoopField)
 }
-Loop,
-{
-	MouseGetPos X2, Y2
-	;~ mx2 := x2-x1, my2:= y2-y1
-	;~ WinMove, tempGui, , , , mx2, my2
-	tooltip, Wintitle: %title% `nx1: %x1% y1: %y1%`nx2: %x2% y2: %y2%`n`n等待按下F3後繼續
-	sleep 10
-	if GetKeyState("F3", "P")
-		break
-}
+DefineBox(TLX, TLY, BLX, BLY, BW, BH)
+MouseGetPos X2, Y2
 Global A
 DllCall("SystemParametersInfo", "Uint", 0x0057, "Uint", 0, "Uint", 0, "Uint", 0)
 Tooltip
@@ -4059,4 +4044,114 @@ GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=
     x := LISTArray[1]
     y := LISTArray[2]
     return List
+}
+
+DefineBox(ByRef TopLeftX, ByRef TopLeftY, ByRef BottomRightX, ByRef BottomRightY, ByRef BoxWidth, ByRef BoxHeight) ;This function needs to return the coords of the top left corner x/y  of the square and bottom right corner x/y of the square
+{
+    CoordMode, ToolTip, Screen
+    CoordMode, Pixel, Screen
+    CoordMode, Mouse, Screen
+
+    SysGet, Width, 78
+    SysGet, Height, 79
+
+    SysGet, X0, 76
+    SysGet, Y0, 77
+
+    WS_EX_LAYERED:=0x00080000 ;positioned here for ease of GDI+ use
+    WS_EX_NOACTIVATE:=0x08000000
+
+    ; {
+    ;generate GUI to cover the active window so you don't play with things in it while you select your box.
+    Gui, 2: +LastFound -Caption +AlwaysOnTop
+    Gui, 2: Color, White
+    Gui, 2: Show, Hide
+    WinSet, Transparent, 30
+    Gui, 2: Show, NA x%X0% y%Y0% w%Width% h%Height%
+    Global OverlayFlag
+    OverlayFlag := 1
+
+    ;Wait for the left mouse button to start the GDI+
+    KeyWait, LButton, D
+    if (!pToken:=Gdip_Startup()) {
+      msgbox, 48, gdiplus error!, Gdiplus failed to start. Please ensure you have gdiplus on your system
+      ExitApp
+    }
+    ;Generate the GDI+
+    Gui, 3: +LastFound -Caption +AlwaysOnTop +E%WS_EX_LAYERED% +E%WS_EX_NOACTIVATE%
+    Gui, 3: Show, NA
+
+
+    MouseGetPos, MX, MY
+    MX := MX-1
+    MY := MY-1
+
+    Loop {
+        MouseGetPos, NewMX, NewMY
+        ; Tooltip %X0% .  "|". %NewMX% . "x" . %NewMY%
+        NewMX := NewMX-1
+        NewMY := NewMY-1
+        XWidth := (NewMX-MX)
+        YHeight := (NewMY-MY)
+
+        hwnd1 := WinExist()
+        hbm := CreateDIBSection(Width, Height)
+        hdc := CreateCompatibleDC()
+        obm := SelectObject(hdc, hbm)
+        G := Gdip_GraphicsFromHDC(hdc)
+        Gdip_SetSmoothingMode(G, 4)
+        pPen := Gdip_CreatePen(0xfff73146, 2)
+
+        If (XWidth < 0) {
+            LeftBorder := MX + XWidth
+            XWidth := -XWidth
+        } else {
+            LeftBorder := MX
+        }
+
+        If (YHeight < 0) {
+            TopBorder := MY + YHeight
+            YHeight := -YHeight
+        } else {
+            TopBorder := MY
+        }
+
+        Tooltip %LeftBorder% . ":" . %X0% .  "|". %XWidth% . "x" . %YHeight%
+
+        
+
+        Gdip_DrawRoundedRectangle(G, pPen, LeftBorder-X0, TopBorder, XWidth, YHeight, 1)
+        Gdip_DeletePen(pPen)
+        UpdateLayeredWindow(hwnd1, hdc, X0, Y0, Width, Height)
+        SelectObject(hdc, obm)
+        DeleteObject(hbm)
+        DeleteDC(hdc)
+        Gdip_DeleteGraphics(G)
+        if (GetKeyState("LButton", "P") = 0) {
+            Break
+        }
+    }
+    Tooltip
+    Gui, 2:Destroy
+    Gui, 3:Destroy
+
+    Sleep, 100
+
+    If (OverlayFlag != "Error")
+        OverlayFlag := 0
+
+    TopLeftX:= LeftBorder
+    TopLeftY:= TopBorder
+    BoxWidth := XWidth
+    BoxHeight := YHeight
+    BottomRightX:= LeftBorder + XWidth
+    BottomRightY:= TopBorder + YHeight
+
+    ; MsgBox % TopLeftX . "," . TopLeftY . " : " . BoxWidth . "x" . BoxHeight . " : " . BottomRightX . "," . BottomRightY
+
+    ; }
+    CoordMode, ToolTip, Relative
+    CoordMode, Pixel, Relative
+    CoordMode, Mouse, Relative
+    return
 }
