@@ -96,13 +96,6 @@ settimer, test, 500
 settimer, testRGB, 500
 return
 
-;~ Gui, Temp:Show, x%mx% y%my% w0 h0, tempGui
-;~ Gui, Temp:-caption
-;~ WinSet, Transparent, 80, tempGui
-	;~ MouseGetPos X2, Y2, A
-	;~ MouseGetPos, mx2, my2
-	mx2 := mx2-mx, my2:= my2-my
-	;~ WinMove, tempGui,, , , mx2, my2,
 	
 #if F2Func!=1
 f2::
@@ -4072,7 +4065,7 @@ DefineBox(ByRef TopLeftX, ByRef TopLeftY, ByRef BottomRightX, ByRef BottomRightY
     OverlayFlag := 1
 
     ;Wait for the left mouse button to start the GDI+
-    KeyWait, LButton, D
+    ;~ KeyWait, LButton, D
     if (!pToken:=Gdip_Startup()) {
       msgbox, 48, gdiplus error!, Gdiplus failed to start. Please ensure you have gdiplus on your system
       ExitApp
@@ -4127,7 +4120,7 @@ DefineBox(ByRef TopLeftX, ByRef TopLeftY, ByRef BottomRightX, ByRef BottomRightY
         DeleteObject(hbm)
         DeleteDC(hdc)
         Gdip_DeleteGraphics(G)
-        if (GetKeyState("LButton", "P") = 0) {
+        if (GetKeyState("LButton", "P") = 1) {
             Break
         }
     }
