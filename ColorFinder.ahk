@@ -202,7 +202,7 @@ Pos_Y += 3
 Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, Y2：
 Pos_X += 30
 Pos_Y -= 3
-Search_y2num := if (y2+5>768) ? 768 : y2+5
+Search_y2num :=y2+5
 Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_Y2 number, %Search_y2num%
 Pos_X += 60
 Pos_Y += 3
