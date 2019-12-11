@@ -4251,6 +4251,13 @@ Message_Normal()
 		Random, y, 466, 505
 		C_Click(x, y)
 	}
+	else if (DwmCheckcolor(330, 229, 16777215) and DwmCheckcolor(523, 564, 16777215) and DwmCheckcolor(414, 244, 16777215))
+	{
+		LogShow("出現訊息，點擊取消3！")
+		Random, x, 416, 550
+		Random, y, 558, 588
+		C_Click(x, y)
+	}
 }
 
 UnknowWife()
