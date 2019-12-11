@@ -15,16 +15,13 @@ SetBatchLines, 500ms
 SetControlDelay, -1
 pToken := Gdip_Startup()
 
-
 guif:
 Gui, Add, Text, x20 y10 w200 h20 vtitle1 +cEE0011 ,  按下F10鎖定視窗 
 Gui, Add, Text, x230 y10 w350 h20 vtitle999 +c1100EE ,  按下F2啟動找圖函數
-
 Gui Add, Text, x20 y54 w10 h15,  X:
 Gui Add, Edit, x40 y50 w40 h20 vPosX, 
 Gui Add, Text, x100 y54 w10 h15, Y:
 Gui Add, Edit, x120 y50 w40 h20 vPosY, 
-
 Gui Add, Text, x20 y90 w120 h15, 抓取滑鼠位置
 
 F10X := 0
@@ -42,28 +39,19 @@ Gui, Add, Text, x260 y100 w160 h20 vF10EventcountRGB , RGB： %RGB% 。
 Gui Add, Text, x20 y130 w180 h15, 座標位置(user32)　　Color：
 Gui, Add, Edit, x180 y126 w100 h20 ReadOnly vF11color
 Gui Add, Button, x300 y125 w80 h20 gCopyUser32, 複製
-;Gui, Add, Text, x180 y110 w150 h20 vF11color , color： %ccolor2% 。
-
 
 Gui Add, Text, x20 y170 w180 h15, 座標位置(GDIP)　　ARGB：
 Gui, Add, Edit, x180 y166 w100 h20 ReadOnly vEventcount1
 UpdateText("Eventcount1", %ARGB%)
 Gui Add, Button, x300 y165 w80 h20 gCopyGDIP, 複製
-;~ Gui, Add, Text, x140 y130 w180 h20 vEventcount1 , ARGB： %ARGB% 。
 
 Gui Add, Text, x20 y210 w180 h15, 座標位置(RGB)　 　RGB：
 Gui, Add, Edit, x180 y206 w100 h20 ReadOnly vEventcountRGB
 UpdateText("Eventcount1", %RGB%)
-;~ Gui, Add, Text, x140 y130 w180 h20 vEventcount1 , ARGB： %ARGB% 。
 
 Gui 1:Show, w450 h250, ColorFinder
 Gui,+AlwaysOnTop
-
-
 Return
-
-
-
 
 GuiClose:
 ExitApp
@@ -79,7 +67,6 @@ UniqueID := WinExist("A")
 MouseGetPos X, Y, A
 WinGetTitle, title, ahk_id %A%
 ccolor := DwmGetPixel( x, y, UniqueID)
-;~ MsgBox ,,, x%X% y%y% color:%ccolor% 
 GuiControl, , F10X, X： %x% 
 GuiControl, , F10Y, Y： %y%
 GuiControl, , F10ccolor, color： %ccolor% 。
@@ -90,18 +77,15 @@ GuiControl, , F10ccolorARGB, ARGB： %ARGB% 。
 GuiControl, , title1, 視窗標題： %title%  
 PixelGetColor RGB, %X%, %Y%, RGB
 GuiControl, , F10EventcountRGB, RGB： %RGB% 。
-
 settimer, test2, 500
 settimer, test, 500
 settimer, testRGB, 500
 return
 
-	
 #if F2Func!=1
 f2::
 F2Func := 1
-if (F10Function=1)
-{
+if (F10Function=1) {
 	Gui, 1:Hide
 	MsgBox, 16, 錯誤, 使用F2功能請勿按下F10`n`n按下確認後自動重啟
 	Reload
@@ -122,8 +106,7 @@ MouseGetPos X2, Y2
 Global A
 DllCall("SystemParametersInfo", "Uint", 0x0057, "Uint", 0, "Uint", 0, "Uint", 0)
 Tooltip
-if (x2<x1) or (y2<y1)
-{
+if (x2<x1) or (y2<y1) {
 	Msgbox, ,設定精靈, 座標錯誤
 	F2Func := 0
 	Gui, 1:Show
@@ -132,8 +115,7 @@ if (x2<x1) or (y2<y1)
 ;拍照選取範圍
 FileCreateDir, TempImg
 InputBox, FileName , 設定精靈, `n`n　　　　　　　請輸入檔案名稱,, , ,,,,, 123
-if (FileName="") or Errorlevel
-{
+if (FileName="") or Errorlevel {
 	Msgbox, ,設定精靈, 未輸入檔案名稱
 	F2Func := 0
 	Gui, 1:Show
@@ -194,7 +176,6 @@ Gui, Image: Add, text, x%Pos_X% y%Pos_Y%, 方向：
 Pos_X += 40
 Pos_Y -= 3
 Gui, Image: Add, edit, x%Pos_X% y%Pos_Y% w50 h20 vSearch_direction number, 8
-
 BTNConfrim_X := 10
 BTNConfrim_Y := Gui_H-30
 Gui, Image: Add, Button, x%BTNConfrim_X% y%BTNConfrim_Y% w100 h20 vPictureOK gPictureOKSub, 複製函數
@@ -259,37 +240,30 @@ While Stoptest<1
 return
 
 test2:
-;GuiControlget, title
 GuiControlget, PosX
 GuiControlget, PosY
-;~ MsgBox  % DwmGetPixel( PosX, PosY, UniqueID2)
-if (PosX="" or PosY="")
-{
-ccolor2 := DwmGetPixel( X, Y, UniqueID)   
-GuiControl, , F11color, %ccolor2%   
-Loop
-{
-MouseGetPos,,, A
-WinGetTitle, title2, ahk_id %A%
-if (title2!="ColorFinder")
-{
-   break   
-}
-}
-}
-else
-{
-ccolor2 := DwmGetPixel( PosX, PosY, UniqueID)   
-GuiControl, , F11color, %ccolor2%   
-Loop
-{
-MouseGetPos,,, A
-WinGetTitle, title2, ahk_id %A%
-if (title2!="ColorFinder")
-{
-   break   
-}
-}
+if (PosX="" or PosY="") {
+	ccolor2 := DwmGetPixel( X, Y, UniqueID)   
+	GuiControl, , F11color, %ccolor2%   
+	Loop
+	{
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		   break   
+		}
+	}
+} else {
+	ccolor2 := DwmGetPixel( PosX, PosY, UniqueID)   
+	GuiControl, , F11color, %ccolor2%   
+	Loop
+	{
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		   break   
+		}
+	}
 }
 return
 
@@ -302,35 +276,30 @@ test:
 GuiControlget, PosX
 GuiControlget, PosY
 pBitmap:= Gdip_BitmapFromHWND(UniqueID)
-if (PosX="" or PosY="")
-{
-ARGB := GDIP_GetPixel(pBitmap, x, y)
-GDIP_DisposeImage(pBitMap)
-GuiControl, , Eventcount1, %ARGB%
+if (PosX="" or PosY="") {
+	ARGB := GDIP_GetPixel(pBitmap, x, y)
+	GDIP_DisposeImage(pBitMap)
+	GuiControl, , Eventcount1, %ARGB%
    Loop
    {
-   MouseGetPos,,, A
-   WinGetTitle, title2, ahk_id %A%
-      if (title2!="ColorFinder")
-      {
-         break   
-      }
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		break   
+		}
    }
-}
-else
-{
-ARGB := GDIP_GetPixel(pBitmap, PosX, PosY)
-GDIP_DisposeImage(pBitMap)
-GuiControl, , Eventcount1, %ARGB%
-Loop
-{
-MouseGetPos,,, A
-WinGetTitle, title2, ahk_id %A%
-if (title2!="ColorFinder")
-{
-   break   
-}
-}
+} else {
+	ARGB := GDIP_GetPixel(pBitmap, PosX, PosY)
+	GDIP_DisposeImage(pBitMap)
+	GuiControl, , Eventcount1, %ARGB%
+	Loop
+	{
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		   break   
+		}
+	}
 }
 return
 
@@ -338,51 +307,36 @@ CopyGDIP:
 clipboard = %ARGB%
 
 testRGB:
-;GuiControlget, title
 GuiControlget, PosX
 GuiControlget, PosY
-if (PosX="" or PosY="")
-{
-PixelGetColor RGB2, %X%, %Y%, RGB
-GuiControl, , EventcountRGB, %RGB2%
-Loop
-{
-MouseGetPos,,, A
-WinGetTitle, title2, ahk_id %A%
-if (title2!="ColorFinder")
-{
-   break   
-}
-}
-}
-else
-{
-PixelGetColor RGB2, %X%, %Y%, RGB
-GuiControl, , EventcountRGB, %RGB2%
-Loop
-{
-MouseGetPos,,, A
-WinGetTitle, title2, ahk_id %A%
-if (title2!="ColorFinder")
-{
-   break   
-}
-}
+if (PosX="" or PosY="") {
+	PixelGetColor RGB2, %X%, %Y%, RGB
+	GuiControl, , EventcountRGB, %RGB2%
+	Loop
+	{
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		   break   
+		}
+	}
+} else {
+	PixelGetColor RGB2, %X%, %Y%, RGB
+	GuiControl, , EventcountRGB, %RGB2%
+	Loop
+	{
+		MouseGetPos,,, A
+		WinGetTitle, title2, ahk_id %A%
+		if (title2!="ColorFinder")	{
+		   break   
+		}
+	}
 }
 return
-
-
-
-
-
-
 
 >^F12::
-RELOAD
-
+reload
 return
-
-
 
 UpdateText(ControlID, NewText)
 {
@@ -397,8 +351,6 @@ UpdateText(ControlID, NewText)
 		OldText[ControlID] := NewText
 	}
 }
-
-
 
 DwmGetPixel(x, y, UniqueID)
 {
@@ -427,8 +379,6 @@ ConvertColor( BGRValue )
 	RedByte := ( BGRValue & 0x0000FF ) << 16
 	return RedByte | GreenByte | BlueByte
 }
-
-
 
 ; Gdip standard library v1.54 on 11/15/2017
 ; Gdip standard library v1.53 on 6/19/2017
