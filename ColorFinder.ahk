@@ -141,10 +141,16 @@ Loop,
 	if GetKeyState("F3", "P")
 		break
 }
-Gui, temp:Destroy
 Global A
 DllCall("SystemParametersInfo", "Uint", 0x0057, "Uint", 0, "Uint", 0, "Uint", 0)
 Tooltip
+if (x2<x1) or (y2<y1)
+{
+	Msgbox, ,設定精靈, 座標錯誤
+	F2Func := 0
+	Gui, 1:Show
+	return
+}
 ;拍照選取範圍
 FileCreateDir, TempImg
 InputBox, FileName , 設定精靈, `n`n　　　　　　　請輸入檔案名稱,, , ,,,,, 123
