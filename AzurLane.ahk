@@ -673,7 +673,7 @@ return
 
 TabFunc: ;切換分頁讀取GUI設定，否則可能導致選項失效
 gosub, inisettings
-gosub, Anchorsettings
+gosub, Anchor3settings
 gosub, Academysettings
 gosub, Dormsettings
 gosub, Missionsettings
@@ -1420,7 +1420,7 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
-		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))) and FightRoundsDone<1)
+		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or ( FightRoundsDo3="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))) and FightRoundsDone<1)
 		{
 			FightRoundsDone := 1
 			if FightRoundsDo3=更換艦隊Ｂ
