@@ -555,13 +555,13 @@ if (Autostart) {
 DefaultDir = %A_WorkingDir%
 SetWorkingDir, %ldplayer%
 OnMessage(0x53, "WM_HELP")
-if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
+if (FileExist("fyservice.exe") or FileExist("fynews.exe"))
 {
 	MsgBox, 24628, 敬告, 發現雷電模擬器中可能的惡意廣告軟體，是否自動刪除？
 	IfMsgBox Yes
 	{
 		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
-		{
+		{ ;ldnews.exe 刪除不影響運作 看起來很像廣告檔案
 			WinClose, ahk_exe fynews.exe
 			WinClose, ahk_exe fyservice.exe
 			WinClose, ahk_exe ldnews.exe
