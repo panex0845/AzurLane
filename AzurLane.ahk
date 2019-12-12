@@ -94,7 +94,7 @@ Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
 Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
-Gui,Add,Tab, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|學　院|後　宅|任　務|其　他|
+Gui,Add,Tab, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|出擊３|學　院|後　宅|任　務|其　他|
 ;///////////////////     GUI Right Side  Start  ///////////////////
 
 Gui, Tab, 出　擊
@@ -118,13 +118,13 @@ Tab1_Y += 5
 Gui, Add, text, x180 y%Tab1_Y% w20 h20  , 第
 Tab1_Y -= 5
 if AnchorChapter=紅染1
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1||紅染2|S.P.|
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1||紅染2|S.P.|
 else if AnchorChapter=紅染2
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2||S.P.|
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1|紅染2||S.P.|
 else if AnchorChapter=S.P.
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|紅染1|紅染2|S.P.||
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1|紅染2|S.P.||
 else
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1||2|3|4|5|6|7|紅染1|紅染2|S.P.|
+	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1||2|3|4|5|6|7|8|紅染1|紅染2|S.P.|
 Tab1_Y += 5
 Gui, Add, text, x270 y%Tab1_Y% w40 h20  , 章 第
 Gui, Add, DropDownList, x310 y115 w40 h100 vAnchorChapter2 gAnchorsettings Choose%AnchorChapter2% , 1||2|3|4|
@@ -439,6 +439,26 @@ Gui, Add, Slider, x310 y%Tab2_Y% w50 h30 gAnchorsettings vOperatioEnHpBar range1
 Tab2_Y+=2
 Gui, Add, Text, x360 y%Tab2_Y% w20 h20 vOperatioEnHpBarUpdate , %OperatioEnHpBar% 
 Gui, Add, Text, x380 y%Tab2_Y% w80 h20 vOperatioEnHpBarPercent, `%，時撤退
+
+Gui, Tab, 出擊３
+Tab_Y := 90
+iniread, FightRoundsDo, settings.ini, Battle, FightRoundsDo, 0
+iniread, FightRoundsDo2, settings.ini, Battle, FightRoundsDo2, 或沒子彈
+iniread, FightRoundsDo3, settings.ini, Battle, FightRoundsDo3, 更換艦隊Ｂ
+Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vFightRoundsDo checked%FightRoundsDo%, 艦隊Ａ每出擊
+Tab_Y -= 2
+if FightRoundsDo2=或沒子彈
+	Gui, Add, DropDownList, x150 y%Tab_Y% w85 h200 gAnchor3settings vFightRoundsDo2  Choose%FightRoundsDo2%, 1|2|3|4|5|6|7|8|9|10|或沒子彈||
+else
+	Gui, Add, DropDownList, x150 y%Tab_Y% w85 h200 gAnchor3settings vFightRoundsDo2  Choose%FightRoundsDo2%, 1|2|3|4|5|6|7|8|9|10|或沒子彈|
+Tab_Y +=5
+Gui, Add, Text, x250 y%Tab_Y% w40 h20 , 次：
+Tab_Y -=5
+if FightRoundsDo3=更換艦隊Ｂ
+	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ||撤退|
+else if FightRoundsDo3=撤退
+	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ|撤退||
+
 
 Gui, Tab, 學　院
 iniread, AcademySub, settings.ini, Academy, AcademySub
@@ -814,6 +834,17 @@ Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
 Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
 Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar
 return
+
+Anchor3settings: ;TAB出擊3
+Guicontrolget, FightRoundsDo
+Guicontrolget, FightRoundsDo2
+Guicontrolget, FightRoundsDo3
+Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
+Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
+Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
+return
+
+
 
 Academysettings: ;學院設定
 Guicontrolget, AcademySub
@@ -1251,6 +1282,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		}
 	}
 	AnchorTimes++ ;統計出擊次數
+	FightRoundsDoCount++ ;統計當艦隊A每出擊
 	GuiControl, ,AnchorTimesText, 出擊次數：%AnchorTimes% 次。
 	LogShow("出擊～！")
     Random, x, 1056, 1225
@@ -1388,6 +1420,21 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
+		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))))
+		{
+			if FightRoundsDo3=更換艦隊Ｂ
+			{
+				SwitchParty := 1
+				C_Click(1034, 713) ;點擊更換艦隊
+			}
+			else if FightRoundsDo3=撤退
+			{
+				C_Click(834, 716)
+				sleep 2000
+				C_Click(791, 556)
+				return
+			}
+		}
 		if (GdipImageSearch(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;只有在彈藥歸零時才會拾取
 		{
 			LogShow("嗶嗶嚕嗶～發現：子彈補給！")
@@ -1588,7 +1635,8 @@ if (Withdraw and Switchover )
 						TargetFailed2 := 0
 						TargetFailed3 := 0
 						TargetFailed4 := 0
-						SwitchParty := 0
+						if (FightRoundsDo and FightRoundsDo3!="更換艦隊Ｂ")
+							SwitchParty := 0
 						return
 					}
 					sleep 4050
@@ -2113,6 +2161,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	bulletFailed := 1 ;進去關卡第一輪不拿彈藥
 	StopBattleTimeCount++ ;每出擊N場修及的判斷次數
 	WeighAnchorCount++ ;判斷目前出擊次數
+	FightRoundsDoCount := VarSetCapacity ;將艦隊A每出擊次數歸零
 	sleep 1000 ;判斷現在位於第幾關 1 2 3 4 5 6 7 8 9 
 	Chapter1 := DwmCheckcolor(221, 523, 16777215)  ;第一關 1-1
 	Chapter2 := DwmCheckcolor(887, 533, 16777215) ;第二關 2-1
@@ -2452,6 +2501,13 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		if (DwmCheckcolor(1018, 521, 16777215))
 		{
 			C_Click(1019,522)
+		}
+	}
+	else if (AnchorChapter=8 and AnchorChapter2=1) ; 選擇關卡8-1
+	{
+		if (DwmCheckcolor(623, 259, 16777215))
+		{
+			C_Click(624,259)
 		}
 	}
 	else if (AnchorChapter="紅染1" or AnchorChapter="紅染2")
@@ -4271,11 +4327,8 @@ Message_Story()
 	{
 		LogShow("劇情對話，自動略過")
 		C_Click(1200, 74)
-		sleep 1000
-		if (DwmCheckcolor(810, 546, 16777215))
-		{
-			C_Click(784, 545)
-		}
+		sleep 1500
+		C_Click(790, 550)
 	}
 }
 
