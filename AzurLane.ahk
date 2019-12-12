@@ -4224,7 +4224,7 @@ NewWife()
 
 Message_Center()
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(661, 549, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<5000000)) ;中央訊息
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000)) ;中央訊息
 	{
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
@@ -4754,7 +4754,7 @@ Battle_Operation()
 								C_Click(504, 553) ;退出戰鬥
 								sleep 1000
 							}
-							else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(821, 535, 16777215))
+							else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(820, 547, 16777215))
 							{
 								C_Click(790, 544) ;拋棄獲得的資源 道具 腳色
 								sleep 1000
