@@ -1100,38 +1100,41 @@ if (EmulatorCrushCheckCount>1)
 		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 		{
 			sleep 500
-			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(1148, 465, 16777215) and DwmCheckcolor(996, 66, 16729459) and DwmCheckcolor(1143, 436, 14593618)) ;如果在主畫面
-			{
-				Random, x, 38, 75
-				Random, y, 73, 105
-				C_Click(x, y) ;進入個人資訊頁面
-				MyData := 1
-				sleep 1500
-			}
 			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 			{
-				LogShow("=========模擬器當機，重啟=========")
-				EmulatorCrushCheckCount := VarSetCapacity
-				iniwrite, 1, settings.ini, OtherSub, Autostart
-				runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
-				sleep 10000
-				reload
-			}
-			else if (MyData=1)
-			{
-				MyData := VarSetCapacity
-				Loop, 20
+				if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(1148, 465, 16777215) and DwmCheckcolor(996, 66, 16729459) and DwmCheckcolor(1143, 436, 14593618)) ;如果在主畫面
 				{
-					if (DwmCheckcolor(161, 57, 14609407)) ;如果還在個人資訊頁面
+					Random, x, 38, 75
+					Random, y, 73, 105
+					C_Click(x, y) ;進入個人資訊頁面
+					MyData := 1
+					sleep 1500
+				}
+				if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
+				{
+					LogShow("=========模擬器當機，重啟=========")
+					EmulatorCrushCheckCount := VarSetCapacity
+					iniwrite, 1, settings.ini, OtherSub, Autostart
+					runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+					sleep 10000
+					reload
+				}
+				else if (MyData=1)
+				{
+					MyData := VarSetCapacity
+					Loop, 20
 					{
-						Random, x, 38, 75
-						Random, y, 73, 105
-						C_Click(x, y) ;離開個人資訊頁面
-						sleep 1500
-					}
-					else
-					{
-						break
+						if (DwmCheckcolor(161, 57, 14609407)) ;如果還在個人資訊頁面
+						{
+							Random, x, 38, 75
+							Random, y, 73, 105
+							C_Click(x, y) ;離開個人資訊頁面
+							sleep 1500
+						}
+						else
+						{
+							break
+						}
 					}
 				}
 			}
