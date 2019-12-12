@@ -2128,7 +2128,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	Chapter5 := DwmCheckcolor(292, 434, 16777215) ;第五關 5-1
 	Chapter6 := DwmCheckcolor(988, 575, 16777215) ;第六關 6-1
 	Chapter7 := DwmCheckcolor(279, 558, 16777215) ;第七關 7-1
-	Chapter8 := 0
+	Chapter8 := DwmCheckcolor(623, 256, 16777215) ; 第八關 8-1
 	Chapter9 := 0
 	Chapter10 := 0
 	Chapter11 := 0
@@ -5206,3 +5206,4 @@ WM_HELP()
 ;~ sleep 2000
 ;~ tooltip 
 ;~ return
+
