@@ -1271,12 +1271,12 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 	SearchLoopcount := VarSetCapacity
 	SearchFailedMessage := VarSetCapacity
 	SearchLoopcountFailed2 := VarSetCapacity
-    if (GdiGetPixel(743, 541)=4282544557) ;心情低落
+    if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(460, 562, 16777215) and DwmCheckcolor(811, 561, 16777215)) ;心情低落
     {
 		if mood=強制出戰
 		{
 			LogShow("老婆心情低落：提督SAMA沒人性")
-			C_Click(790, 546)
+			C_Click(788, 551)
 		}
 		else if mood=更換隊伍
 		{
@@ -1294,9 +1294,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		{
 			LogShow("老婆心情低落：休息1小時")
 			takeabreak := 600
-			C_Click(483, 544)
-			sleep 2000
-			C_Click(59, 88)
+			C_Click(492, 555)
 			sleep 3000
 			C_Click(1227, 67)
 			StopAnchor := 1
@@ -1306,9 +1304,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		{
 			LogShow("老婆心情低落：休息2小時")
 			takeabreak := 600
-			C_Click(483, 544)
-			sleep 2000
-			C_Click(59, 88)
+			C_Click(492, 555)
 			sleep 3000
 			C_Click(1227, 67)
 			StopAnchor := 1
@@ -1318,9 +1314,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		{
 			LogShow("老婆心情低落：休息3小時")
 			takeabreak := 600
-			C_Click(483, 544)
-			sleep 2000
-			C_Click(59, 88)
+			C_Click(492, 555)
 			sleep 3000
 			C_Click(1227, 67)
 			StopAnchor := 1
@@ -1330,9 +1324,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		{
 			LogShow("老婆心情低落：休息5小時")
 			takeabreak := 600
-			C_Click(483, 544)
-			sleep 2000
-			C_Click(59, 88)
+			C_Click(492, 555)
 			sleep 3000
 			C_Click(1227, 67)
 			StopAnchor := 1
@@ -4225,7 +4217,7 @@ NewWife()
 
 Message_Center()
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215)) ;中央訊息
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215) and !DwmCheckcolor(810, 557, 16777215)) ;中央訊息
 	{
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
