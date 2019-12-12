@@ -1426,10 +1426,14 @@ if (Withdraw and Switchover )
 			if FightRoundsDo3=更換艦隊Ｂ
 			{
 				SwitchParty := 1
+				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDoCount%次，%FightRoundsDo3%
+				LogShow(FightRoundsText)
 				C_Click(1034, 713) ;點擊更換艦隊
 			}
 			else if FightRoundsDo3=撤退
 			{
+				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDoCount%次，%FightRoundsDo3%
+				LogShow(FightRoundsText)
 				C_Click(834, 716)
 				sleep 2000
 				C_Click(791, 556)
