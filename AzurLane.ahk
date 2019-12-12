@@ -1241,6 +1241,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 				{
 					C_Click(530, 480) ;點擊取消
 				}
+				sleep 1000
 			}
 			sleep 300
 			if (DwmCheckcolor(132, 59, 14610431)) ;回到編隊頁面
@@ -1470,7 +1471,7 @@ if (Withdraw and Switchover )
 				if (DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215)) ;獲得道具
 				{
 					sleep 1200
-					C_Click(xx, yy)
+					C_Click(276, 619)
 					Break
 				}
 				BackAttack()
@@ -3608,7 +3609,7 @@ if (AcademyDone<1)
 						}
 					}
 				}
-				else if (DwmCheckcolor(810, 547, 16777215) and DwmCheckcolor(460, 540, 16777215) and DwmCheckcolor(515, 534, 16777215))
+				else if (DwmCheckcolor(329, 210, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(810, 558, 16777215)) 
 				{
 					LogShow("堅持學習！")
 					C_Click(789, 541)
@@ -4224,7 +4225,7 @@ NewWife()
 
 Message_Center()
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000)) ;中央訊息
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215)) ;中央訊息
 	{
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
@@ -4239,23 +4240,12 @@ Message_Center()
 
 Message_Normal()
 {
-	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;訊息自動確認
+
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(522, 555, 16777215) and DwmCheckcolor(810, 555, 16777215))
 	{
-		LogShow("出現訊息，點擊取消！")
-		C_Click(490, 548)
-	}
-	else if (DwmCheckcolor(331, 226, 16777215) and DwmCheckcolor(432, 354, 16777215) and DwmCheckcolor(787, 486, 16777215) and DwmCheckcolor(442, 347, 528392))
-	{
-		LogShow("出現訊息，點擊取消2！")
-		Random, x, 452, 601
-		Random, y, 466, 505
-		C_Click(x, y)
-	}
-	else if (DwmCheckcolor(330, 229, 16777215) and DwmCheckcolor(523, 564, 16777215) and DwmCheckcolor(414, 244, 16777215))
-	{
-		LogShow("出現訊息，點擊取消3！")
-		Random, x, 416, 550
-		Random, y, 558, 588
+		LogShow("出現訊息，點擊取消！") ;有取消跟確認的
+		Random, x, 423, 537
+		Random, y, 554, 573
 		C_Click(x, y)
 	}
 }
@@ -4321,7 +4311,7 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(865, 557, 16777215) and DwmCheckcolor(463, 541, 16777215) and DwmCheckcolor(615, 533, 16777215) and DwmCheckcolor(402, 527, 3761564) and DwmCheckcolor(13, 25, 16041247))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(416, 548, 16777215) and DwmCheckcolor(614, 549, 16777215) and DwmCheckcolor(858, 548, 16777215))
 	{
 		if shipsfull=停止出擊
 		{
@@ -4631,6 +4621,26 @@ ChooseParty(Byref StopAnchor)
 		{
 			sleep 500 ;如果進入地圖頁面 檢測"撤退" "切換" "迎擊"
 		} until (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1059, 696, 9738925) and DwmCheckcolor(1257, 712, 16239426))
+		if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
+		{
+			Loop
+			{
+				MapScan1 := DwmGetPixel(364, 351)
+				sleep 300
+				MapScan2 := DwmGetPixel(364, 351)
+				MapScan3++
+			} until MapScan1=MapScan2 or MapScan3>20
+			sleep 1000
+			if (AnchorChapter="7" and AnchorChapter2="2")
+			{
+				C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+				C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
+			}
+			sleep 2000
+			Random, x, 963, 1096
+			Random, y, 701, 728
+			C_Click(x,y) ;點擊"切換"
+		}
 		if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
 		{
 			Swipe(272, 419, 1100, 422)
@@ -4638,25 +4648,6 @@ ChooseParty(Byref StopAnchor)
 	}
 }
 
-;~ if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
-		;~ {
-			;~ Loop
-			;~ {
-				;~ MapScan1 := DwmGetPixel(364, 351)
-				;~ sleep 200
-				;~ MapScan2 := DwmGetPixel(364, 351)
-			;~ } until MapScan1=MapScan2
-			;~ sleep 1000
-			;~ if (AnchorChapter="7" and AnchorChapter2="2")
-			;~ {
-				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-			;~ }
-			;~ sleep 2000
-			;~ Random, x, 963, 1096
-			;~ Random, y, 701, 728
-			;~ C_Click(x,y) ;點擊"切換"
-		;~ }
 		;~ if (!(SwitchPartyAtFirstTime) and (ChooseParty2!="不使用" and AnchorMode="普通")) ;先把主要隊伍移到中間，避免BOSS出現卡住
 		;~ {
 			;~ Loop
