@@ -1420,8 +1420,9 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
-		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))))
+		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))) and FightRoundsDone<1)
 		{
+			FightRoundsDone := 1
 			if FightRoundsDo3=更換艦隊Ｂ
 			{
 				SwitchParty := 1
@@ -2162,6 +2163,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	StopBattleTimeCount++ ;每出擊N場修及的判斷次數
 	WeighAnchorCount++ ;判斷目前出擊次數
 	FightRoundsDoCount := VarSetCapacity ;將艦隊A每出擊次數歸零
+	FightRoundsDone := VarSetCapacity ;將艦隊A每出擊次數歸零
 	sleep 1000 ;判斷現在位於第幾關 1 2 3 4 5 6 7 8 9 
 	Chapter1 := DwmCheckcolor(221, 523, 16777215)  ;第一關 1-1
 	Chapter2 := DwmCheckcolor(887, 533, 16777215) ;第二關 2-1
@@ -2508,6 +2510,27 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		if (DwmCheckcolor(623, 259, 16777215))
 		{
 			C_Click(624,259)
+		}
+	}
+	else if (AnchorChapter=8 and AnchorChapter2=2) ; 選擇關卡8-2
+	{
+		if (DwmCheckcolor(349, 431, 16777215))
+		{
+			C_Click(348,430)
+		}
+	}
+	else if (AnchorChapter=8 and AnchorChapter2=3) ; 選擇關卡8-3
+	{
+		if (DwmCheckcolor(390, 638, 16777215))
+		{
+			C_Click(391,639)
+		}
+	}
+	else if (AnchorChapter=8 and AnchorChapter2=4) ; 選擇關卡8-3
+	{
+		if (DwmCheckcolor(858, 532, 16777215))
+		{
+			C_Click(859,533)
 		}
 	}
 	else if (AnchorChapter="紅染1" or AnchorChapter="紅染2")
