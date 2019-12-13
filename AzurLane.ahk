@@ -4706,12 +4706,6 @@ ChooseParty(Byref StopAnchor)
 				MapScan3++
 			} until MapScan1=MapScan2 or MapScan3>20
 			sleep 1000
-			if (AnchorChapter="7" and AnchorChapter2="2")
-			{
-				C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-				C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-			}
-			sleep 2000
 			Random, x, 963, 1096
 			Random, y, 701, 728
 			C_Click(x,y) ;點擊"切換"
