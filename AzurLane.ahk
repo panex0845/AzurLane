@@ -4705,7 +4705,7 @@ ChooseParty(Byref StopAnchor)
 				MapScan2 := DwmGetPixel(364, 351)
 				MapScan3++
 			} until MapScan1=MapScan2 or MapScan3>20
-			sleep 1000
+			sleep 4000
 			Random, x, 963, 1096
 			Random, y, 701, 728
 			C_Click(x,y) ;點擊"切換"
