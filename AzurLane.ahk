@@ -4308,7 +4308,7 @@ Message_Center()
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
 	}
-	else if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(690, 559, 16777215) and DwmCheckcolor(665, 349, 10268333))
+	else if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(690, 571, 16777215))
 	{
 		LogShow("每日提示，今日不再顯示！")
 		C_Click(774, 497)
@@ -5045,7 +5045,7 @@ Swipe(x1,y1,x2,y2,swipetime="")
 	sleep 300
 }
 
-Ld_Click(x,y)
+Ld_Click(PosX,PosY)
 {
 	Random, randomsleep, 400, 550
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
