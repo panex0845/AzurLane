@@ -4386,7 +4386,8 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(416, 548, 16777215) and DwmCheckcolor(614, 549, 16777215) and DwmCheckcolor(858, 548, 16777215))
+	PlusBtn := DwmGetPixel(791, 531)
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(416, 548, 16777215) and DwmCheckcolor(614, 549, 16777215) and (PlusBtn>2500000 and PlusBtn<4500000))
 	{
 		if shipsfull=停止出擊
 		{
