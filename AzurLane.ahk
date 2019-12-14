@@ -541,6 +541,10 @@ Tab_Y += 30
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
 Tab_Y -= 1
 Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
+Tab_Y += 30
+iniread, DebugMode, settings.ini, OtherSub, DebugMode
+Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , DebugMode
+
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
@@ -909,12 +913,14 @@ Guicontrolget, EmulatorCrushCheck
 Guicontrolget, AutoLogin
 Guicontrolget, SetGuiBGcolor
 Guicontrolget, SetGuiBGcolor2
+Guicontrolget, DebugMode
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
 Iniwrite, %AutoLogin%, settings.ini, OtherSub, AutoLogin
 Iniwrite, %SetGuiBGcolor%, settings.ini, OtherSub, SetGuiBGcolor
 Iniwrite, %SetGuiBGcolor2%, settings.ini, OtherSub, SetGuiBGcolor2
-Global AutoLogin
+Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
+Global AutoLogin, DebugMode
 return
 
 exitsub:
@@ -1423,13 +1429,13 @@ if (Withdraw and Switchover )
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
-		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or ( FightRoundsDo3="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))) and FightRoundsDone<1)
+		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
 		{
 			FightRoundsDone := 1
 			if FightRoundsDo3=更換艦隊Ｂ
 			{
 				SwitchParty := 1
-				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDoCount%次，%FightRoundsDo3%
+				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDo2%次，%FightRoundsDo3%
 				LogShow(FightRoundsText)
 				C_Click(1034, 713) ;點擊更換艦隊
 			}
@@ -5056,6 +5062,8 @@ C_Click(PosX, PosY)
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
 	sleep %randomsleep%
+	;~ if (debugmode)
+		;~ msgbox x%x% x%y%
 	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
 	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
 	sleep 500
