@@ -1389,7 +1389,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
     
 }
 gosub BtnCheck
-if (Withdraw and Switchover )
+if (Withdraw and Switchover)
 {
 	if (IsDetect<1)
 		LogShow("偵查中。")
@@ -2690,7 +2690,7 @@ return
 
 BtnCheck:
     Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
-    Switchover := DwmCheckcolor(957, 706, 8685204)  ;Checkcolor(1025, 697, 4287402661) 切換
+    Switchover := DwmCheckcolor(994, 722, 16777215)  ;Checkcolor(1025, 697, 4287402661) 切換
     Offensive := DwmCheckcolor(1234, 703, 16239426) ;Checkcolor(1234, 703, 4294429506)
     WeighAnchor1 := DwmCheckcolor(132, 54, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
     WeighAnchor2 := DwmCheckcolor(160, 73, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
