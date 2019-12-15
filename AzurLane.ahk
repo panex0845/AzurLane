@@ -3146,9 +3146,15 @@ if (MissionCheck and MainCheck) ;如果有任務獎勵
         {
             LogShow("獎勵領取結束，返回主選單！")
             C_Click(1227, 69)
-			break
+			MissionDone := 1
+			sleep 1000
         }
-        sleep 400
+		else if (DwmCheckcolor(13, 200, 16777215) and MissionDone=1)
+		{
+			MissionDone :=0
+			break
+		}
+        sleep 500
     } 
 }
 if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;在主選單偵測到軍事任務已完成
