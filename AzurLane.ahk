@@ -1396,8 +1396,9 @@ if (Withdraw and Offensive)
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-
+		sleep 300
 		Swipe(210, 228, 735, 423)
+		sleep 300
 		Swipe(477, 297, 1107, 596)
 		Loop
 		{
@@ -1438,6 +1439,7 @@ if (Withdraw and Offensive)
 				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDo2%次，%FightRoundsDo3%
 				LogShow(FightRoundsText)
 				C_Click(1034, 713) ;點擊更換艦隊
+				sleep 1500
 			}
 			else if FightRoundsDo3=撤退
 			{
