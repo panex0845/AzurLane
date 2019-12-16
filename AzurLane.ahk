@@ -4722,6 +4722,7 @@ ChooseParty(Byref StopAnchor)
 			LogShow("困難模式次數已用盡，停止出擊到永久。")
 			StopAnchor := 1
 			C_Click(1230, 68) ;返回主選單
+			sleep 2000
 			return StopAnchor
 		}
 		Loop, 20
