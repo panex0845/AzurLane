@@ -2539,7 +2539,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			C_Click(391,639)
 		}
 	}
-	else if (AnchorChapter=8 and AnchorChapter2=4) ; 選擇關卡8-3
+	else if (AnchorChapter=8 and AnchorChapter2=4) ; 選擇關卡8-4
 	{
 		if (DwmCheckcolor(858, 532, 16777215))
 		{
@@ -2645,6 +2645,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		sleep 2000
 		return
 	}
+	sleep 2000
 	SwitchParty := 0 ;BOSS換隊
 	;~ ChapterCheck := ("0,0,0")
 	;~ ChapterCheckArray := StrSplit(ChapterCheck, ",")
@@ -3309,10 +3310,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3343,10 +3344,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3373,10 +3374,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3403,10 +3404,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊魔方
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3433,10 +3434,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3463,10 +3464,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3493,10 +3494,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3523,10 +3524,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3541,7 +3542,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Common.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Common.png", 95, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
 				{
 					Part_CommonPos := dwmgetpixel(x,y)
 					LogShow("購買共通部件(金幣)")
@@ -3553,10 +3554,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3583,10 +3584,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -3613,10 +3614,10 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;跳出購買訊息
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
-							Random, yy, 527, 569
+							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
@@ -4402,7 +4403,7 @@ shipsfull(byref StopAnchor)
 	PlusBtn := DwmGetPixel(595, 549)
 	StrnBtn := DwmGetPixel(796, 547)
 	Isbetween(Var, Min, Max)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3000000, 5000000) and Isbetween(PlusBtn, 3000000, 5000000) and Isbetween(StrnBtn, 3000000, 5000000))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3200000, 4900000) and Isbetween(PlusBtn, 3200000, 4900000) and Isbetween(StrnBtn, 3200000, 4900000))
 	{
 		if shipsfull=停止出擊
 		{
