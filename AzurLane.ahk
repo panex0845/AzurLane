@@ -3655,16 +3655,29 @@ if (AcademyDone<1)
 			LogShow("我們真的學不來！")
 			C_Click(740, 166) ;點擊學院
 			sleep 3000
-			Loop, 50
+			Loop, 30
 			{
+				if ((DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215))) ;之前版本確認按鈕在中間
+				{
+					Break
+				}
+				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(810, 556, 16777215))
+				{
+					Break ;確認按鈕偏下面
+				}
 				sleep 500
-			}  until (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215))
-			C_Click(789, 541)
+			}  
+			C_Click(789, 541) ;點擊確認
 			Loop
 			{
 				if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(750, 538, 4353453))
 				{
 					LogShow("學習！學習！")
+					C_Click(786, 545)
+				}
+				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(810, 556, 16777215))
+				{
+					LogShow("學習2！學習2！")
 					C_Click(786, 545)
 				}
 				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(661, 548, 16777215) and DwmCheckcolor(608, 550, 16777215)) ;學習的技能已滿等
@@ -3703,7 +3716,7 @@ if (AcademyDone<1)
 				}
 				else if (DwmCheckcolor(329, 210, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(810, 558, 16777215)) 
 				{
-					LogShow("堅持學習！")
+					LogShow("確認使用教材以訓練技能！")
 					C_Click(789, 541)
 				}
 				else if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(274, 165, 13022901))
