@@ -4329,8 +4329,9 @@ Message_Center()
 
 Message_Normal()
 {
-
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(522, 555, 16777215) and DwmCheckcolor(810, 555, 16777215))
+	Confirmbtn := dwmgetpixel(742, 548)
+	CancelBtn := dwmgetpixel(440, 546)
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
 	{
 		LogShow("出現訊息，點擊取消！") ;有取消跟確認的
 		Random, x, 423, 537
@@ -4397,8 +4398,11 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	PlusBtn := DwmGetPixel(791, 531)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and DwmCheckcolor(416, 548, 16777215) and DwmCheckcolor(614, 549, 16777215) and (PlusBtn>2500000 and PlusBtn<4500000))
+	SortBtn := DwmGetPixel(398, 553)
+	PlusBtn := DwmGetPixel(595, 549)
+	StrnBtn := DwmGetPixel(796, 547)
+	Isbetween(Var, Min, Max)
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3000000, 5000000) and Isbetween(PlusBtn, 3000000, 5000000) and Isbetween(StrnBtn, 3000000, 5000000))
 	{
 		if shipsfull=停止出擊
 		{
@@ -4706,8 +4710,8 @@ ChooseParty(Byref StopAnchor)
 		}
 		Loop, 20
 		{
-			sleep 500 ;如果進入地圖頁面 檢測"撤退" "切換" "迎擊"
-		} until (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1059, 696, 9738925) and DwmCheckcolor(1257, 712, 16239426))
+			sleep 500 ;如果進入地圖頁面 檢測"撤退" "迎擊"
+		} until (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1257, 712, 16239426))
 		if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
 		{
 			Loop
@@ -4717,9 +4721,9 @@ ChooseParty(Byref StopAnchor)
 				MapScan2 := DwmGetPixel(364, 351)
 				MapScan3++
 			} until MapScan1=MapScan2 or MapScan3>20
-			sleep 4000
-			Random, x, 963, 1096
-			Random, y, 701, 728
+			sleep 5000
+			Random, x, 970, 1050
+			Random, y, 710, 720
 			C_Click(x,y) ;點擊"切換"
 		}
 		if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
@@ -5267,6 +5271,15 @@ WM_HELP()
 	sleep 1000
 	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
+
+Isbetween(Var, Min, Max)
+{
+	if (Var>Min and Var<Max)
+		return 1
+	return 0
+}
+
+
 
 ;~ F3::
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
