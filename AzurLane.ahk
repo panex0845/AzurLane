@@ -4354,6 +4354,13 @@ Message_Normal()
 		Random, y, 554, 573
 		C_Click(x, y)
 	}
+	else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(376, 231, 16777215) and DwmCheckcolor(810, 556, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
+	{
+		LogShow("出現訊息，點擊取消2！") ;有取消跟確認的
+		Random, x, 423, 537
+		Random, y, 554, 573
+		C_Click(x, y)
+	}
 }
 
 UnknowWife()
@@ -4419,7 +4426,7 @@ shipsfull(byref StopAnchor)
 	StrnBtn := DwmGetPixel(796, 547)
 	XBtn := DwmGetPixel(906, 231)
 	Isbetween(Var, Min, Max)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13000000) )
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13000000))
 	{
 		if shipsfull=停止出擊
 		{
