@@ -4727,26 +4727,32 @@ ChooseParty(Byref StopAnchor)
 		}
 		Loop, 20
 		{
-			sleep 500 ;如果進入地圖頁面 檢測"撤退" "迎擊"
-		} until (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1257, 712, 16239426))
-		if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
-		{
-			Loop
+			sleep 500
+			if (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1257, 712, 16239426)) ;如果進入地圖頁面 檢測"撤退" "迎擊"
 			{
-				MapScan1 := DwmGetPixel(364, 351)
-				sleep 300
-				MapScan2 := DwmGetPixel(364, 351)
-				MapScan3++
-			} until MapScan1=MapScan2 or MapScan3>20
-			sleep 5000
-			Random, x, 970, 1050
-			Random, y, 710, 720
-			C_Click(x,y) ;點擊"切換"
-		}
-		if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
-		{
-			Swipe(272, 419, 1100, 422)
-		}
+				if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
+				{
+					Loop, 20 ;等待進入地圖的掃描結束
+					{
+						MapScan1 := DwmGetPixel(364, 351)
+						sleep 500
+						MapScan2 := DwmGetPixel(364, 351)
+						if (MapScan1=MapScan2)
+							break
+					}
+					sleep 3000
+					Random, x, 970, 1050
+					Random, y, 710, 720
+					C_Click(x,y) ;點擊"切換"
+					sleep 1000
+				}
+				if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
+				{
+					Swipe(272, 419, 1100, 422)
+				}
+				break
+			}
+		} 
 	}
 }
 
