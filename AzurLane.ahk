@@ -4441,7 +4441,7 @@ shipsfull(byref StopAnchor)
 	StrnBtn := DwmGetPixel(796, 547)
 	XBtn := DwmGetPixel(906, 231)
 	Isbetween(Var, Min, Max)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13000000))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13800000))
 	{
 		if shipsfull=停止出擊
 		{
