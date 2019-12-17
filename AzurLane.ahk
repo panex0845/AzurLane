@@ -2796,6 +2796,7 @@ Loop
 	{
 		LogShow("演習出擊。")
 		C_Click(1089, 689)
+		sleep 1500
 		if (DwmCheckcolor(529, 359, 16249847))
 		{
 			LogShow("演習結束！")
@@ -2803,7 +2804,14 @@ Loop
 			C_Click(1239, 72) ;回到首頁
 			break
 		}
-		sleep 3000
+		sleep 5000
+		if (DwmCheckcolor(998, 65, 16729459) and DwmCheckcolor(785, 65, 16773987)) ;點了出擊過了5秒還是沒出擊
+		{
+			LogShow("演習異常，強制結束！")
+			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
+			C_Click(1239, 72) ;回到首頁
+			break
+		}
 	}
 	else if (DwmCheckcolor(208, 58, 14085119) and DwmCheckcolor(198, 62, 14085119) and DwmCheckcolor(102, 663, 16239426)) ;誤點商店
 	{
