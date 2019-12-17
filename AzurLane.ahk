@@ -4347,7 +4347,7 @@ Message_Normal()
 {
 	Confirmbtn := dwmgetpixel(742, 548)
 	CancelBtn := dwmgetpixel(440, 546)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(376, 231, 16777215) and DwmCheckcolor(800, 550, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
 	{
 		LogShow("出現訊息，點擊取消！") ;有取消跟確認的
 		Random, x, 423, 537
