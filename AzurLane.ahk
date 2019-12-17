@@ -2796,7 +2796,7 @@ Loop
 	{
 		LogShow("演習出擊。")
 		C_Click(1089, 689)
-		sleep 1500
+		sleep 1300
 		if (DwmCheckcolor(529, 359, 16249847))
 		{
 			LogShow("演習結束！")
@@ -5242,6 +5242,7 @@ AutoLoginIn() ;預設登入Google帳號
 	{
 		If (DwmCheckcolor(472, 473, 10075364) and DwmCheckcolor(505, 274, 9342606) and DwmCheckcolor(740, 510, 2129103)) ;斷線的登入頁面(密碼登入)
 		{
+			LogShow("遊戲斷線，開始重登")
 			C_Click(777, 254) ;快速登入
 			sleep 500
 			Loop
@@ -5269,8 +5270,7 @@ AutoLoginIn() ;預設登入Google帳號
 				}
 				else if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(577, 63, 3224625) and DwmCheckcolor(997, 64, 16729459))
 				{
-					iniwrite, 1, settings.ini, OtherSub, Autostart
-					reload
+					;~ iniwrite, 1, settings.ini, OtherSub, Autostart
 					sleep 3000
 					return
 				}
