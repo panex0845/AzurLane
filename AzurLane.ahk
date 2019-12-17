@@ -4369,6 +4369,13 @@ Message_Normal()
 		Random, y, 554, 573
 		C_Click(x, y)
 	}
+	else if (DwmCheckcolor(330, 229, 16777215) and DwmCheckcolor(375, 246, 16777215) and DwmCheckcolor(468, 562, 16777215) and DwmCheckcolor(810, 567, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000))
+	{
+		LogShow("出現訊息，點擊取消3！") ;有取消跟確認的
+		Random, x, 423, 562
+		Random, y, 549, 580
+		C_Click(x, y)
+	}
 }
 
 UnknowWife()
