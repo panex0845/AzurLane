@@ -4414,11 +4414,12 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	SortBtn := DwmGetPixel(398, 553)
+	SortBtn := DwmGetPixel(398, 553) ; 3762597 4355509 4881853
 	PlusBtn := DwmGetPixel(595, 549)
 	StrnBtn := DwmGetPixel(796, 547)
+	XBtn := DwmGetPixel(906, 231)
 	Isbetween(Var, Min, Max)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3200000, 4900000) and Isbetween(PlusBtn, 3200000, 4900000) and Isbetween(StrnBtn, 3200000, 4900000))
+	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13000000) )
 	{
 		if shipsfull=停止出擊
 		{
