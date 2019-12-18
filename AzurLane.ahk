@@ -4382,7 +4382,7 @@ Message_Normal()
 		Random, y, 549, 580
 		C_Click(x, y)
 	}
-	else if (DwmCheckcolor(331, 222, 16777215) and DwmCheckcolor(382, 245, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn, 12718146, 13818146))
+	else if (DwmCheckcolor(331, 222, 16777215) and DwmCheckcolor(382, 245, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn_Fix, 12718146, 13818146))
 	{
 		LogShow("出現維修工具，點擊取消！") ;有取消跟確認的
 		Random, x, 466, 578
