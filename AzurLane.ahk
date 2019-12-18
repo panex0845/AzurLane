@@ -4360,6 +4360,7 @@ Message_Normal()
 {
 	Confirmbtn := dwmgetpixel(742, 548)
 	CancelBtn := dwmgetpixel(440, 546)
+	CancelBtn_Fix := dwmgetpixel(908, 241) ;12718146~13818146
 	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(376, 231, 16777215) and DwmCheckcolor(800, 550, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
 	{
 		LogShow("出現訊息，點擊取消！") ;有取消跟確認的
@@ -4379,6 +4380,13 @@ Message_Normal()
 		LogShow("出現訊息，點擊取消3！") ;有取消跟確認的
 		Random, x, 423, 562
 		Random, y, 549, 580
+		C_Click(x, y)
+	}
+	else if (DwmCheckcolor(331, 222, 16777215) and DwmCheckcolor(382, 245, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn, 12718146, 13818146))
+	{
+		LogShow("出現維修工具，點擊取消！") ;有取消跟確認的
+		Random, x, 466, 578
+		Random, y, 471, 493
 		C_Click(x, y)
 	}
 }
