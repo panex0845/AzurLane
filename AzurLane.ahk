@@ -482,6 +482,7 @@ iniread, Part_Cannon, settings.ini, Academy, Part_Cannon, 0
 iniread, Part_torpedo, settings.ini, Academy, Part_torpedo, 0
 iniread, Part_Anti_Aircraft, settings.ini, Academy, Part_Anti_Aircraft, 0
 iniread, Part_Common, settings.ini, Academy, Part_Common, 0
+iniread, Item_Equ_Box1, settings.ini, Academy, Item_Equ_Box1, 0
 iniread, Item_Water, settings.ini, Academy, Item_Water, 0
 iniread, Item_Tempura, settings.ini, Academy, Item_Tempura, 0
 Gui, Add, CheckBox, x50 y240 w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
@@ -493,6 +494,7 @@ Gui, Add, CheckBox, x170 y270 w100 h20 gAcademysettings vPart_Cannon checked%Par
 Gui, Add, CheckBox, x280 y270 w100 h20 gAcademysettings vPart_torpedo checked%Part_torpedo%, 魚雷部件T3
 Gui, Add, CheckBox, x50 y300 w110 h20 gAcademysettings vPart_Anti_Aircraft checked%Part_Anti_Aircraft%, 防空砲部件T3
 Gui, Add, CheckBox, x170 y300 w110 h20 gAcademysettings vPart_Common checked%Part_Common%, 共通部件T3
+Gui, Add, CheckBox, x280 y300 w110 h20 gAcademysettings vItem_Equ_Box1 checked%Item_Equ_Box1%, 外觀裝備箱
 Gui, Add, CheckBox, x50 y330 w100 h20 gAcademysettings vItem_Water checked%Item_Water%, 秘製冷卻水
 Gui, Add, CheckBox, x170 y330 w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
 
@@ -866,6 +868,7 @@ Guicontrolget, Part_Cannon
 Guicontrolget, Part_torpedo
 Guicontrolget, Part_Anti_Aircraft
 Guicontrolget, Part_Common
+Guicontrolget, Item_Equ_Box1
 Guicontrolget, Item_Water
 Guicontrolget, Item_Tempura
 Iniwrite, %AcademySub%, settings.ini, Academy, AcademySub
@@ -883,6 +886,7 @@ Iniwrite, %Part_Cannon%, settings.ini, Academy, Part_Cannon
 Iniwrite, %Part_torpedo%, settings.ini, Academy, Part_torpedo
 Iniwrite, %Part_Anti_Aircraft%, settings.ini, Academy, Part_Anti_Aircraft
 Iniwrite, %Part_Common%, settings.ini, Academy, Part_Common
+Iniwrite, %Item_Equ_Box1%, settings.ini, Academy, Item_Equ_Box1
 Iniwrite, %Item_Water%, settings.ini, Academy, Item_Water
 Iniwrite, %Item_Tempura%, settings.ini, Academy, Item_Tempura
 return
@@ -3297,7 +3301,7 @@ if (AcademyDone<1)
 				fullycoin := 1
 			}
 		}
-		if (DwmCheckcolor(942, 225, 5391764) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
+		if (DwmCheckcolor(1097, 233, 16777215) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
 		{
 			LogShow("商店街發大財")
 			C_Click(1113, 210)
@@ -3308,6 +3312,38 @@ if (AcademyDone<1)
 			ShopX1 := 430, ShopY1 := 150, ShopX2 := 1250, ShopY2 := 620
 			Loop
 			{
+				if (GdipImageSearch(x, y, "img/Item_Equ_Box1.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
+				{
+					Item_Equ_Box1Pos := dwmgetpixel(x,y)
+					LogShow("購買外觀裝備箱(金幣)")
+					Loop, 20
+					{
+						if (Item_Equ_Box1Pos=dwmgetpixel(x,y))
+						{
+							xx := x+10
+							yy := y+8
+							C_Click(xx,yy) ;點擊裝備箱
+						}
+						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						{
+							Random, xx, 713, 863
+							Random, yy, 543, 569
+							C_Click(xx,yy) ;隨機點擊"兌換"鈕
+							sleep 4000
+							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							{
+								Item_Equ_Box1Coin++
+								Random, xx, 423, 558
+								Random, yy, 543, 569
+								C_Click(xx,yy) ;點擊取消
+							}
+							C_Click(187,362) ;點不知火取消獲得道具的視窗
+							Break
+						}
+						sleep 600
+					}
+				}
+				
 				if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
@@ -3329,15 +3365,11 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								AtkCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
-						}
-						else if buycheck>10
-						{
-							
 						}
 						sleep 600
 					}
@@ -3363,8 +3395,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								DefCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3393,8 +3425,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								SupCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3423,8 +3455,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								CubeCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3453,8 +3485,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Part_AircraftCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3483,8 +3515,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Part_CannonCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3513,8 +3545,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Part_torpedoCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3543,8 +3575,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Part_Anti_AircraftCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3573,8 +3605,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Part_Anti_AircraftCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3603,8 +3635,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Item_WaterCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3633,8 +3665,8 @@ if (AcademyDone<1)
 							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
 							{
 								Item_TempuraCoin++
-								Random, xx, 414, 527
-								Random, yy, 566, 569
+								Random, xx, 423, 558
+								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
 							}
 							Break
@@ -3643,7 +3675,7 @@ if (AcademyDone<1)
 					}
 				}
 				ShopCount++
-				if (ShopCount>20)
+				if (ShopCount>15)
 				{
 					AcademyShopDone := 1
 					ShopCount := VarSetCapacity
@@ -3658,7 +3690,7 @@ if (AcademyDone<1)
 				sleep 500
 			}
 		}
-		if (DwmCheckcolor(878, 194, 16774127) and AcademyTactics and learnt<1)
+		if (DwmCheckcolor(875, 178, 16774127) and AcademyTactics and learnt<1)
 		{
 			LogShow("我們真的學不來！")
 			C_Click(740, 166) ;點擊學院
@@ -3667,15 +3699,21 @@ if (AcademyDone<1)
 			{
 				if ((DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215))) ;之前版本確認按鈕在中間
 				{
+					C_Click(789, 546) ;點擊確認
 					Break
 				}
 				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(810, 556, 16777215))
 				{
+					C_Click(789, 546) ;點擊確認
+					Break ;確認按鈕偏下面
+				}
+				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(660, 558, 16777215)) ;技能LV10
+				{
+					C_Click(635, 545) ;點擊確認
 					Break ;確認按鈕偏下面
 				}
 				sleep 500
 			}  
-			C_Click(789, 541) ;點擊確認
 			Loop
 			{
 				if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(750, 538, 4353453))
