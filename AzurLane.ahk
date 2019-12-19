@@ -2950,7 +2950,7 @@ if  (DailyGoalSub and DailyDone<1)
 				{
 					C_Click(756, 552)
 				}
-				if (DwmCheckcolor(477, 361, 15724527))
+				if (DwmCheckcolor(477, 361, 15724527) and DwmCheckcolor(997, 66, 16729459)) ;如果出現驚嘆號 (多確認一個紅尖尖 避免誤判)
 				{		
 					if (Checkweek=1 and CheckweekCount<1 and DailyGoalSunday) ;如果是禮拜天  (打左邊)
 					{
