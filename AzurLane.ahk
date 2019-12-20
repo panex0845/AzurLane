@@ -2930,7 +2930,13 @@ if  (DailyGoalSub and DailyDone<1)
 		Formattime, Checkweek, , Wday ;星期的天數 (1 – 7). 星期天為 1.
 		Loop
 		{
-			 if (DwmCheckcolor(384, 192, 16768825) and DwmCheckcolor(397, 190, 16768825))
+			if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(728, 433, 10268333))
+			{
+				LogShow("每日提示，今日不再顯示！")
+				C_Click(790, 497)
+				C_Click(641, 559)
+			}
+			if (DwmCheckcolor(384, 192, 16768825) and DwmCheckcolor(397, 190, 16768825))
 			{
 				;~ Swipe(652,166,652,610)
 				sleep 1000
@@ -4386,11 +4392,11 @@ Message_Center()
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
 	}
-	else if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(690, 571, 16777215))
+	else if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(728, 433, 10268333))
 	{
 		LogShow("每日提示，今日不再顯示！")
-		C_Click(774, 497)
-		C_Click(638, 565)
+		C_Click(790, 497)
+		C_Click(641, 559)
 	}
 }
 
@@ -5375,8 +5381,6 @@ Isbetween(Var, Min, Max)
 		return 1
 	return 0
 }
-
-
 
 ;~ F3::
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
