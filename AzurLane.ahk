@@ -3250,12 +3250,12 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;åœ
 	{
 		Loop
 		{
-			if DwmCheckcolor(109, 172, 4876692)
+			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
 			{
 				C_Click(1246, 89)
 				sleep 2000
 			}
-			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
+			if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
 			{
 				break
 			}
