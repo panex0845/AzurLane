@@ -4784,8 +4784,10 @@ ChooseParty(Byref StopAnchor)
 		Random, x, 1000, 1150
 		Random, y, 620, 655
 		C_Click(x, y)	;立刻前往
-		sleep 200
-		if (GdiGetPixel(743, 541)=4282544557) ;心情低落
+		sleep 500
+		BTN_Confirm := dwmgetpixel(743, 555) ;4355509
+		BTN_Cancel := dwmgetpixel(444, 554) ;9211540
+		if (DwmCheckcolor(330, 209, 16777215) and Isbetween(BTN_Cancel, 8211540, 11211540) and Isbetween(BTN_Confirm, 3755509, 4905509)) ;心情低落
 		{
 			LogShow("老婆心情低落中。")
 			C_Click(743, 541)
