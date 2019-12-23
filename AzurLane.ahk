@@ -575,18 +575,19 @@ Settimer, whitealbum, 10000 ;很重要!
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
 if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
+	LogShow("出現不可預期的錯誤，自動重啟")
 	Goto, Start
 }
 ;//////////////刪除雷電模擬器可能的惡意廣告檔案//////////////////
 DefaultDir = %A_WorkingDir%
 SetWorkingDir, %ldplayer%
 OnMessage(0x53, "WM_HELP")
-if (FileExist("fyservice.exe") or FileExist("fynews.exe"))
+if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news"))
 {
 	MsgBox, 24628, 敬告, 發現雷電模擬器中可能的惡意廣告軟體，是否自動刪除？
 	IfMsgBox Yes
 	{
-		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
+		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news"))
 		{ ;ldnews.exe 刪除不影響運作 看起來很像廣告檔案
 			WinClose, ahk_exe fynews.exe
 			WinClose, ahk_exe fyservice.exe
@@ -594,7 +595,8 @@ if (FileExist("fyservice.exe") or FileExist("fynews.exe"))
 			FileDelete, fynews.exe
 			FileDelete, fyservice.exe
 			FileDelete, ldnews.exe
-		}
+			FileRemoveDir, news, 1
+		}		
 		SetWorkingDir, %A_temp%
 		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe"))
 		{
@@ -687,15 +689,18 @@ gosub, Othersettings
 return
 
 inisettings: ;一般設定
+Critical
 Guicontrolget, title
 Guicontrolget, emulatoradb
 Guicontrolget, AllowanceValue
 Iniwrite, %emulatoradb%, settings.ini, emulator, emulatoradb
 Iniwrite, %title%, settings.ini, emulator, title
 Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
+Critical, off
 return
 
 Anchorsettings: ;出擊設定
+Critical
 ;///////////////TAB1//////////////
 Guicontrolget, AnchorSub,
 Guicontrolget, AnchorMode
@@ -839,20 +844,24 @@ Iniwrite, %OperatioEnHpBar%, settings.ini, Battle, OperatioEnHpBar ;演習時的
 Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
 Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
 Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar
+Critical, off
 return
 
 Anchor3settings: ;TAB出擊3
+Critical
 Guicontrolget, FightRoundsDo
 Guicontrolget, FightRoundsDo2
 Guicontrolget, FightRoundsDo3
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
+Critical, off
 return
 
 
 
 Academysettings: ;學院設定
+Critical
 Guicontrolget, AcademySub
 Guicontrolget, AcademyOil
 Guicontrolget, AcademyCoin
@@ -889,9 +898,11 @@ Iniwrite, %Part_Common%, settings.ini, Academy, Part_Common
 Iniwrite, %Item_Equ_Box1%, settings.ini, Academy, Item_Equ_Box1
 Iniwrite, %Item_Water%, settings.ini, Academy, Item_Water
 Iniwrite, %Item_Tempura%, settings.ini, Academy, Item_Tempura
+Critical, off
 return
 
 Dormsettings: ;後宅設定
+Critical
 Guicontrolget, DormSub
 Guicontrolget, DormCoin
 Guicontrolget, Dormheart
@@ -904,14 +915,18 @@ Iniwrite, %DormFood%, settings.ini, Dorm, DormFood
 Iniwrite, %DormFoodBar%, settings.ini, Dorm, DormFoodBar
 Guicontrol, ,DormFoodBarUpdate, %DormFoodBar%
 Global DormFood
+Critical, off
 return
 
 Missionsettings: ;任務設定
+Critical
 Guicontrolget, MissionSub
 Iniwrite, %MissionSub%, settings.ini, MissionSub, MissionSub
+Critical, off
 return
 
 Othersettings: ;其他設定
+Critical
 Guicontrolget, GuiHideX
 Guicontrolget, EmulatorCrushCheck
 Guicontrolget, AutoLogin
@@ -925,13 +940,16 @@ Iniwrite, %SetGuiBGcolor%, settings.ini, OtherSub, SetGuiBGcolor
 Iniwrite, %SetGuiBGcolor2%, settings.ini, OtherSub, SetGuiBGcolor2
 Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
 Global AutoLogin, DebugMode
+Critical, off
 return
 
 exitsub:
+Critical
 WindowName = Azur Lane - %title%
 wingetpos, azur_x, azur_y,, WindowName
 iniwrite, %azur_x%, settings.ini, Winposition, azur_x
 iniwrite, %azur_y%, settings.ini, Winposition, azur_y
+Critical, off
 exitapp
 return
 
@@ -1122,6 +1140,8 @@ if (EmulatorCrushCheckCount>1)
 				}
 				if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
 				{
+					if (DebugMode)
+						Capture() 
 					LogShow("=========模擬器當機，重啟=========")
 					EmulatorCrushCheckCount := VarSetCapacity
 					iniwrite, 1, settings.ini, OtherSub, Autostart
@@ -5266,6 +5286,10 @@ GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=
 LogShow(logData) {
 formattime, nowtime,, MM-dd HH:mm:ss
 guicontrol, , ListBoxLog, [%nowtime%]  %logData%||
+if (DebugMode)
+{
+	FileAppend, [%nowtime%]  %logData%`n, AzurLane.log
+}
 return
 }
 
