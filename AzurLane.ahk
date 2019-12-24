@@ -3965,29 +3965,29 @@ if (DormDone<1) ;後宅發現任務
 				C_Click(292,718)
 				Loop
 				{
-					Food1 := DwmCheckcolor(402, 406, 6538215)
-					Food2 := DwmCheckcolor(559, 403, 6535902)
-					Food3 := DwmCheckcolor(711, 401, 5947102)
-					Food4 := DwmCheckcolor(838, 380, 5941974)
+					Food1 := Dwmgetpixel(305, 468)
+					Food2 := Dwmgetpixel(461, 468)
+					Food3 := Dwmgetpixel(619, 468)
+					Food4 := Dwmgetpixel(774, 468)
 					SuppilesbartargetX := Ceil((1020-430)*(DormFoodBar/100)+430)  ; x1=430 , x2=1020, y=303
 					Suppilesbar := DwmCheckcolor(SuppilesbartargetX, 303, 4869450)
-					if (Food1 and Suppilesbar)
+					if (Food1<10000000 and Suppilesbar)
 					{
 						C_Click(358,416) 
 					}
-					else if (Food2 and Suppilesbar)
+					else if (Food2<10000000 and Suppilesbar)
 					{
 						C_Click(519,416)
 					}
-					else if (Food3 and Suppilesbar)
+					else if (Food3<10000000 and Suppilesbar)
 					{
 						C_Click(669,416)
 					}
-					else if (Food4 and Suppilesbar)
+					else if (Food4<10000000 and Suppilesbar)
 					{
 						C_Click(826,416)
 					}
-					if (!Suppilesbar or (!Food1 and !Food2 and !Food3 and !Food4))
+					if (!Suppilesbar or (Food1>10000000 and Food2>10000000 and Food3>10000000 and Food4>10000000))
 					{
 						C_Click(557,119) ;離開餵食
 						sleep 500
@@ -4290,7 +4290,7 @@ Loop, 30  ;等待選單開啟
 		}
 	}
 	;~ LogShow("成功進入")
-	if (DwmCheckcolor(1138, 338, 4870499) or DwmCheckcolor(1108, 166, 16729459) or DwmCheckcolor(772, 165, 3748921)) ;如果耗油是個位數 或 出現寶石 或 出現油田
+	if (DwmCheckcolor(1138, 338, 4870499) or DwmCheckcolor(1108, 166, 16729459) or DwmCheckcolor(772, 165, 3748921) or DwmCheckcolor(771, 166, 3224625)) ;如果耗油是個位數 或 出現寶石 或 出現油田
 	{
 		C_Click(931, 380)
 		if (DwmCheckcolor(1149, 386, 15709770)) ;如果成功推薦角色
