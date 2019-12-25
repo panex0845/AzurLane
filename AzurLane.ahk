@@ -4297,9 +4297,9 @@ Loop, 30  ;等待選單開啟
 		{
 			C_Click(1096, 385) ;開始
 			sleep 1000
-			if (DwmCheckcolor(329, 209, 16777215) and DwmCheckcolor(811,547, 16777215)) ;如果有花費油
+			if (DwmCheckcolor(329, 209, 16777215) and DwmCheckcolor(375, 232, 16777215)) ;如果有花費油
 			{
-				C_Click(784, 548) ;確認
+				C_Click(788, 546) ;確認
 				sleep 1000
 			}
 			C_Click(1227, 172) ;離開介面
