@@ -1492,7 +1492,7 @@ if (Withdraw and Offensive)
 					Swipe(138,300,148,215)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
@@ -1615,7 +1615,7 @@ if (Withdraw and Offensive)
 						}
 						break
 					}
-					if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+					if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 					{
 						sleep 1000
 					}
@@ -1706,7 +1706,7 @@ if (Withdraw and Offensive)
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
@@ -1727,7 +1727,7 @@ if (Withdraw and Offensive)
 			}
 			return
 		}
-		if ((GdipImageSearch(x, y, "img/target_1.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_2.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_3.png", 33, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
+		if ((GdipImageSearch(x, y, "img/target_1.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_2.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_3.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：航空艦隊！")
 			xx := x 
@@ -1739,7 +1739,7 @@ if (Withdraw and Offensive)
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
@@ -1772,7 +1772,7 @@ if (Withdraw and Offensive)
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
@@ -1806,7 +1806,7 @@ if (Withdraw and Offensive)
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
@@ -1839,7 +1839,7 @@ if (Withdraw and Offensive)
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279)) ;如果在限時(無限時)地圖
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
