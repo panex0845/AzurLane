@@ -699,9 +699,9 @@ return
 Anchorsettings: ;出擊設定
 Critical
 ;///////////////TAB1//////////////
-Guicontrolget, AnchorSub,
+Guicontrolget, AnchorSub
 Guicontrolget, AnchorMode
-Guicontrolget, AnchorChapter 
+Guicontrolget, AnchorChapter
 Guicontrolget, AnchorChapter2
 Guicontrolget, Assault
 Guicontrolget, mood
@@ -1808,7 +1808,6 @@ if (Withdraw and Offensive)
 			}
 			return
 		}
-		GuiControlGet, AnchorChapter
 		if ((AnchorChapter="異色1" or AnchorChapter="異色2") and (GdipImageSearch(x, y, "img/target_4.png", 90, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：航空艦隊！(異色格)")
