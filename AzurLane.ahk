@@ -1669,11 +1669,6 @@ if (Withdraw and Offensive)
 					if (AnchorChapter="異色1") ;異色格地圖太大，直接滑動到BOSS可能的出生點
 					{
 						sleep 1000
-						Loop, 3
-						{
-							Swipe(998, 443, 300, 443)
-							sleep 300
-						}
 						if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
 						{
 							LogShow("發現：最終ＢＯＳＳ")
@@ -1683,9 +1678,9 @@ if (Withdraw and Offensive)
 						}
 						else
 						{
-							Loop, 2
+							Loop, 3
 							{
-								Swipe(607, 561, 607, 200)
+								Swipe(998, 443, 300, 443)
 								sleep 300
 							}
 							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
@@ -1694,6 +1689,21 @@ if (Withdraw and Offensive)
 								C_Click(x, y)
 								sleep 5000
 								return
+							}
+							else
+							{
+								Loop, 2
+								{
+									Swipe(607, 561, 607, 200)
+									sleep 300
+								}
+								if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+								{
+									LogShow("發現：最終ＢＯＳＳ(3)")
+									C_Click(x, y)
+									sleep 5000
+									return
+								}
 							}
 						}
 					}
@@ -2308,6 +2318,12 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			text1=演習
 		SendText = 位於活動關卡，返回地圖執行%text1%。
 		LogShow(SendText)
+		C_Click(60, 90)
+		return
+	}
+	else if ((Chapter=14 or Chapter=15 or Chapter=16 or Chapter=17 or Chapter=18) and (AnchorChapter is number))
+	{
+		LogShow("位於活動地圖，返回主線。")
 		C_Click(60, 90)
 		return
 	}
