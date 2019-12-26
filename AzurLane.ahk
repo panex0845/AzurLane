@@ -1775,7 +1775,7 @@ if (Withdraw and Offensive)
 			}
 			return
 		}
-		if ((GdipImageSearch(x, y, "img/target_1.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_2.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_3.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
+		if ((GdipImageSearch(x, y, "img/target_1.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_2.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_3.png", 32, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target_4.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：航空艦隊！")
 			xx := x 
@@ -5568,13 +5568,12 @@ Isbetween(Var, Min, Max)
 ;~ F3::
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
 ;~ Random, SearchDirection, 1, 8
-;~ g := GdipImageSearch(x, y, "img/target3_2.png", 50, SearchDirection, MapX1, MapY1, MapX2, MapY2)
-;~ if (g>1) {
+;~ if (GdipImageSearch(x, y, "img/target_4.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ {
 ;~ tooltip x%x% y%y% g%g%
 ;~ } else {
 	;~ tooltip NotFound
 ;~ }
-;~ sleep 2000
-;~ tooltip 
+
 ;~ return
 
