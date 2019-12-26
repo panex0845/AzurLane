@@ -1808,6 +1808,40 @@ if (Withdraw and Offensive)
 			}
 			return
 		}
+		GuiControlGet, AnchorChapter
+		if ((AnchorChapter="異色1" or AnchorChapter="異色2") and (GdipImageSearch(x, y, "img/target_4.png", 90, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed<1 and (Ship_Target1 or SearchLoopcount>9)) ;
+		{
+			LogShow("嗶嗶嚕嗶～發現：航空艦隊！(異色格)")
+			xx := x 
+			yy := y 
+			Loop, 15
+			{
+				if (xx<360 and yy<195)
+				{
+					Swipe(138,215,148,300)
+					break
+				}
+				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				{
+					C_Click(xx, yy)
+					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					{
+						TargetFailed++
+						LogShow("哎呀哎呀，前往航空艦隊的路徑被擋住了！")
+						sleep 2000
+						break
+					}
+					sleep 1500
+				}
+				if (DwmCheckcolor(1235, 652, 16777215))
+				{
+					Break
+				}
+				BackAttack()
+				sleep 500
+			}
+			return
+		}
 		if ((GdipImageSearch(x, y, "img/target4_1.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target4_2.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target4_3.png", 60, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed4<1 and (Ship_Target4 or SearchLoopcount>9)) 
 		{
 			LogShow("嗶嗶嚕嗶～發現：偵查艦隊！")
