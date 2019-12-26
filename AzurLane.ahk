@@ -678,6 +678,7 @@ return
 
 TabFunc: ;切換分頁讀取GUI設定，否則可能導致選項失效
 gosub, inisettings
+gosub, Anchorsettings
 gosub, Anchor3settings
 gosub, Academysettings
 gosub, Dormsettings
