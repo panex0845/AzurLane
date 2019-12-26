@@ -112,19 +112,16 @@ else if AnchorMode=困難
 else if AnchorMode=停用
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w60 h100 vAnchorMode gAnchorsettings, 普通|困難|停用||
 
-iniread, AnchorChapter, settings.ini, Battle, AnchorChapter
+iniread, CH_AnchorChapter, settings.ini, Battle, CH_AnchorChapter,1
 iniread, AnchorChapter2, settings.ini, Battle, AnchorChapter2
 Tab1_Y += 5
 Gui, Add, text, x180 y%Tab1_Y% w20 h20  , 第
 Tab1_Y -= 5
-if AnchorChapter=紅染1
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1||紅染2|S.P.|
-else if AnchorChapter=紅染2
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1|紅染2||S.P.|
-else if AnchorChapter=S.P.
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1|2|3|4|5|6|7|8|紅染1|紅染2|S.P.||
-else
-	Gui, Add, DropDownList, x200 y%Tab1_Y% w60 h300 vAnchorChapter gAnchorsettings Choose%AnchorChapter%, 1||2|3|4|5|6|7|8|紅染1|紅染2|S.P.|
+
+AnchorChapterList = 1|2|3|4|5|6|7|8|紅染1|紅染2|S.P.|異色1|異色2|
+StringReplace, AnchorChapterListSR, AnchorChapterList,%CH_AnchorChapter%,%CH_AnchorChapter%|
+Gui, Add, DropDownList,  x200 y%Tab1_Y% w60 gAnchorsettings vAnchorChapter, %AnchorChapterListSR%
+
 Tab1_Y += 5
 Gui, Add, text, x270 y%Tab1_Y% w40 h20  , 章 第
 Gui, Add, DropDownList, x310 y115 w40 h100 vAnchorChapter2 gAnchorsettings Choose%AnchorChapter2% , 1||2|3|4|
@@ -734,7 +731,7 @@ Guicontrolget, StopBattleTime2
 Guicontrolget, StopBattleTime3
 Iniwrite, %AnchorSub%, settings.ini, Battle, AnchorSub
 Iniwrite, %AnchorMode%, settings.ini, Battle, AnchorMode
-Iniwrite, %AnchorChapter%, settings.ini, Battle, AnchorChapter
+Iniwrite, %AnchorChapter%, settings.ini, Battle, CH_AnchorChapter
 Iniwrite, %AnchorChapter2%, settings.ini, Battle, AnchorChapter2
 Iniwrite, %Assault%, settings.ini, Battle, Assault
 Iniwrite, %mood%, settings.ini, Battle, mood
@@ -1420,20 +1417,24 @@ if (Withdraw and Offensive)
 	sleep 1000
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
-		sleep 300
+		if (AnchorChapter="異色1" or AnchorChapter="異色2")
+		{
+			Swipe(210, 228, 735, 400)
+			sleep 300
+		}
 		Swipe(210, 228, 735, 423)
 		sleep 300
-		Swipe(477, 297, 1107, 596)
+		Swipe(477, 297, 1107, 596) ;往右下角拖曳
 		Loop
 		{
 			x := 350, y := 220
 			Random, xx, 0, 750
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
-			x2 := x1-100, y2 := y1-100
+			x2 := x1-50, y2 := y1-110
 			Swipe(x1, y1, x2, y2)
 			AlignCenterCount++
-		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>6
+		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>8
 		y1 := y-1
 		y2 := y+1
 		AlignCenterCount := VarSetCapacity
@@ -1444,13 +1445,13 @@ if (Withdraw and Offensive)
 			Random, y, 180, 650
 			Swipe(650, y, 430, y)
 			AlignCenterCount++
-		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>5
+		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>6
 		AlignCenterCount := VarSetCapacity
 	}
 	Loop, 100
 	{
 		sleep 300
-		MapX1 := 125, MapY1 := 125, MapX2 :=1180, MapY2 := 650 ; //////////檢查敵方艦隊的範圍//////////
+		MapX1 := 125, MapY1 := 140, MapX2 :=1180, MapY2 := 670 ; //////////檢查敵方艦隊的範圍//////////
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
@@ -2220,8 +2221,10 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	ChapterEvent1 := DwmCheckcolor(500, 248, 16777215) ;14 活動：紅染1 A1
 	ChapterEvent2 := DwmCheckcolor(421, 588, 16777215) ;15 活動：紅染2 B1
 	ChapterEventSP := DwmCheckcolor(530, 263, 16777215) ; 16 活動：努力、希望和計畫
+	ChapterEvent3 := DwmCheckcolor(284, 291, 16777215) ;17 活動 異色格1 A1
+	ChapterEvent4 := 0 ;18 活動 異色格2 
 	ChapterFailed := 1
-	array := [Chapter1, Chapter2,Chapter3, Chapter4, Chapter5, Chapter6, Chapter7, Chapter8, Chapter9, Chapter10, Chapter11, Chapter12, Chapter13, ChapterEvent1,ChapterEvent2, ChapterEventSP, ChapterFailed]
+	array := [Chapter1, Chapter2,Chapter3, Chapter4, Chapter5, Chapter6, Chapter7, Chapter8, Chapter9, Chapter10, Chapter11, Chapter12, Chapter13, ChapterEvent1,ChapterEvent2, ChapterEventSP, ChapterEvent3, ChapterEvent4, ChapterFailed]
 	Chapter := VarSetCapacity
 	Loop % array.MaxIndex()
 	{
@@ -2244,8 +2247,13 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	{
 		;~ LogShow("畫面已經在S.P.地圖") 
 	}
-	else if (Chapter=14 or Chapter=15 or Chapter=16)
+	else if (Chapter=17 or Chapter=18) and (AnchorChapter="異色1" or AnchorChapter="異色2")
 	{
+		;~ LogShow("畫面已經在異色格地圖") 
+	}
+	else if ((Chapter=14 or Chapter=15 or Chapter=16 or Chapter=17 or Chapter=18) and (AnchorChapter is number))
+	{
+		LogShow("位於活動關卡，返回主線。")
 		C_Click(60, 90)
 	}
 	else if (Chapter=array.MaxIndex())
@@ -2346,6 +2354,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		}
 	}
 	sleep 500
+	GuiControlGet, AnchorChapter
 	Chaptermessage = ——選擇關卡： 第 %AnchorChapter% 章 第 %AnchorChapter2% 節。——
 	LogShow(Chaptermessage)
 	if (AnchorChapter=1 and AnchorChapter2=1) ; 選擇關卡 1-1
@@ -2662,6 +2671,73 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			if (DwmCheckcolor(649, 601, 16777215))
 			{
 				C_Click(650,600) ;點擊SP3
+			}
+		}
+	}
+	else if (AnchorChapter="異色1" or AnchorChapter="異色2")
+	{
+		if (DwmCheckcolor(1194, 232, 16772062) and (AnchorChapter="異色1" or AnchorChapter="異色2")) ;如果在主線，則進入異色關卡
+		{
+			C_Click(1201, 226) 
+			sleep 2000
+		}
+		else if (ChapterEvent3 and AnchorChapter="異色2") ;
+		{
+			C_Click(1223, 411)
+			sleep 2000
+		}
+		else if (ChapterEvent4 and AnchorChapter="異色1") ;
+		{
+			C_Click(48, 409)
+			sleep 2000
+		}
+		if (AnchorChapter="異色1" and AnchorChapter2=1)
+		{
+			if (DwmCheckcolor(272, 291, 16777215))
+			{
+				C_Click(284,292)
+			}
+		}
+		else if (AnchorChapter="異色1" and AnchorChapter2=2)
+		{
+			if (DwmCheckcolor(372, 563, 16777215))
+			{
+				C_Click(373,564)
+			}
+		}
+		else if (AnchorChapter="異色1" and AnchorChapter2=3)
+		{
+			if (DwmCheckcolor(863, 318, 16777215))
+			{
+				C_Click(864,319)
+			}
+		}
+		else if (AnchorChapter="異色1" and AnchorChapter2=4)
+		{
+			if (DwmCheckcolor(954, 576, 16777215))
+			{
+				C_Click(955,577)
+			}
+		}
+		else if (AnchorChapter="異色2" and AnchorChapter2=1)
+		{
+			if (DwmCheckcolor(421, 591, 16777215))
+			{
+				C_Click(422,592)
+			}
+		}
+		else if (AnchorChapter="異色2" and AnchorChapter2=2)
+		{
+			if (DwmCheckcolor(935, 573, 16777215))
+			{
+				C_Click(936,574)
+			}
+		}
+		else if (AnchorChapter="異色2" and AnchorChapter2=3)
+		{
+			if (DwmCheckcolor(774, 297, 16777215))
+			{
+				C_Click(775,298)
 			}
 		}
 	}
@@ -3338,7 +3414,7 @@ if (AcademyDone<1)
 			ShopX1 := 430, ShopY1 := 150, ShopX2 := 1250, ShopY2 := 620
 			Loop
 			{
-				if (GdipImageSearch(x, y, "img/Item_Equ_Box1.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
+				if ((GdipImageSearch(x, y, "img/Item_Equ_Box1.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) or GdipImageSearch(x, y, "img/Item_Equ_Box2.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2))and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
 				{
 					Item_Equ_Box1Pos := dwmgetpixel(x,y)
 					LogShow("購買外觀裝備箱(金幣)")
