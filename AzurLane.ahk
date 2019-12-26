@@ -1455,6 +1455,11 @@ if (Withdraw and Offensive)
 		;Mainfleet := 4287894561 ; ARGB 主力艦隊
 		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
+		if (DwmCheckcolor(1102, 480, 16768842))
+		{
+			LogShow("關閉陣型列表")
+			C_Click(1071, 476)
+		}
 		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
 		{
 			FightRoundsDone := 1
@@ -1660,6 +1665,38 @@ if (Withdraw and Offensive)
 						}
 						sleep 300
 					}
+					GuiControlGet, AnchorChapter
+					if (AnchorChapter="異色1") ;異色格地圖太大，直接滑動到BOSS可能的出生點
+					{
+						sleep 1000
+						Loop, 3
+						{
+							Swipe(998, 443, 300, 443)
+							sleep 300
+						}
+						if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+						{
+							LogShow("發現：最終ＢＯＳＳ")
+							C_Click(x, y)
+							sleep 5000
+							return
+						}
+						else
+						{
+							Loop, 2
+							{
+								Swipe(607, 561, 607, 200)
+								sleep 300
+							}
+							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+							{
+								LogShow("發現：最終ＢＯＳＳ(2)")
+								C_Click(x, y)
+								sleep 5000
+								return
+							}
+						}
+					}
 				}
 				else
 				{
@@ -1691,7 +1728,7 @@ if (Withdraw and Offensive)
 			}
 			else
 			{
-				msgbox, 優先攻擊－當前隊伍 or 優先攻擊－切換隊伍 發生錯誤
+				LogShow("優先攻擊－當前隊伍 or 優先攻擊－切換隊伍 發生錯誤")
 			}
 			return
 		}
@@ -2004,7 +2041,7 @@ if (Withdraw and Offensive)
 				TargetFailed4 := VarSetCapacity
 				Plane_TargetFailed1 := VarSetCapacity
 			}
-			else if (BossactionTarget=1 and SearchLoopcountFailed2>8)
+			else if (BossactionTarget=1 and SearchLoopcountFailed2>15)
 			{
 				TargetFailed := VarSetCapacity
 				TargetFailed2 := VarSetCapacity
@@ -2021,7 +2058,7 @@ if (Withdraw and Offensive)
 				TargetFailed4 := VarSetCapacity
 				Plane_TargetFailed1 := VarSetCapacity
 			}
-			else if (SearchLoopcountFailed2>8)
+			else if (SearchLoopcountFailed2>15)
 			{
 				TargetFailed := VarSetCapacity
 				TargetFailed2 := VarSetCapacity
@@ -2241,6 +2278,12 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	}
 	else if (Chapter=14 or Chapter=15) and (AnchorChapter="紅染1" or AnchorChapter="紅染2")
 	{
+		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1))
+		{
+			LogShow("位於活動關卡，返回主線。")
+			C_Click(60, 90)
+			return
+		}
 		;~ LogShow("畫面已經在紅染地圖")
 	}
 	else if (Chapter=16) and (AnchorChapter="S.P.")
@@ -2249,12 +2292,24 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	}
 	else if (Chapter=17 or Chapter=18) and (AnchorChapter="異色1" or AnchorChapter="異色2")
 	{
+		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1))
+		{
+			LogShow("位於活動關卡，返回主線。")
+			C_Click(60, 90)
+			return
+		}
 		;~ LogShow("畫面已經在異色格地圖") 
 	}
-	else if ((Chapter=14 or Chapter=15 or Chapter=16 or Chapter=17 or Chapter=18) and (AnchorChapter is number))
+	else if ((Chapter=14 or Chapter=15 or Chapter=16 or Chapter=17 or Chapter=18) and ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1)))
 	{
-		LogShow("位於活動關卡，返回主線。")
+		if (OperationSub and OperationDone<1)
+			text1=每日
+		if (DailyGoalSub and DailyDone<1)
+			text1=演習
+		SendText = 位於活動關卡，返回地圖執行%text1%。
+		LogShow(SendText)
 		C_Click(60, 90)
+		return
 	}
 	else if (Chapter=array.MaxIndex())
 	{
@@ -2700,21 +2755,21 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		}
 		else if (AnchorChapter="異色1" and AnchorChapter2=2)
 		{
-			if (DwmCheckcolor(372, 563, 16777215))
+			if (DwmCheckcolor(378, 565, 16777215))
 			{
 				C_Click(373,564)
 			}
 		}
 		else if (AnchorChapter="異色1" and AnchorChapter2=3)
 		{
-			if (DwmCheckcolor(863, 318, 16777215))
+			if (DwmCheckcolor(858, 314, 16777215))
 			{
 				C_Click(864,319)
 			}
 		}
 		else if (AnchorChapter="異色1" and AnchorChapter2=4)
 		{
-			if (DwmCheckcolor(954, 576, 16777215))
+			if (DwmCheckcolor(941, 575, 16777215))
 			{
 				C_Click(955,577)
 			}
@@ -2725,6 +2780,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			{
 				C_Click(422,592)
 			}
+			LogShow("異色格：後篇尚未開放1")
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=2)
 		{
@@ -2732,6 +2788,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			{
 				C_Click(936,574)
 			}
+			LogShow("異色格：後篇尚未開放2")
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=3)
 		{
@@ -2739,6 +2796,15 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			{
 				C_Click(775,298)
 			}
+			LogShow("異色格：後篇尚未開放3")
+		}
+		else if (AnchorChapter="異色2" and AnchorChapter2=4)
+		{
+			if (DwmCheckcolor(774, 297, 16777215))
+			{
+				C_Click(775,298)
+			}
+			LogShow("異色格：後篇尚未開放4")
 		}
 	}
 	else 
@@ -2747,7 +2813,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		sleep 2000
 		return
 	}
-	sleep 2000
+	sleep 2500
 	SwitchParty := 0 ;BOSS換隊
 	;~ ChapterCheck := ("0,0,0")
 	;~ ChapterCheckArray := StrSplit(ChapterCheck, ",")
@@ -2942,7 +3008,6 @@ Loop
 	}
 }
 return
-
 
 startemulatorSub:
 run, dnconsole.exe launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
