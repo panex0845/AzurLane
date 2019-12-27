@@ -1090,8 +1090,8 @@ if (Color1=Color2=Color3=Color4=Color5=Color6)
 }
 else
 {
-	LogShow("出現預期外的錯誤，強制調整")
-	AllowanceValue := Color1+ 2000
+	LogShow("出現預期外的錯誤")
+	;~ AllowanceValue := Color1+ 2000 ;似乎沒什麼用
 	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
 	LogShow("請手動按下停止鍵")
 }
@@ -1743,7 +1743,7 @@ if (Withdraw and Offensive)
 			}
 			return
 		}
-		if ((GdipImageSearch(x, y, "img/target2_1.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_2.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_3.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed2<1 and (Ship_Target2 or SearchLoopcount>9)) ;
+		if ((GdipImageSearch(x, y, "img/target2_1.png", 103, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_2.png", 103, SearchDirection, MapX1, MapY1, MapX2, MapY2) or GdipImageSearch(x, y, "img/target2_3.png", 103, SearchDirection, MapX1, MapY1, MapX2, MapY2)) and TargetFailed2<1 and (Ship_Target2 or SearchLoopcount>9)) ;
 		{
 			LogShow("嗶嗶嚕嗶～發現：運輸艦隊！")
 			xx := x 
@@ -1994,22 +1994,28 @@ if (Withdraw and Offensive)
 			if side<1
 			{
 				;~ Swipe(652,166,652,660)  ;下
+				Swipe(1256,310,120,310) ;swipe side : ←
+				sleep 300
 				Swipe(1013,531,211,106)  ;↖
+				sleep 300
 				side := 2
 			}
 			else if side=2
 			{
-					Swipe(652,130,652,710)  ;swipe side : ↓
+				Swipe(652,190,652,710)  ;swipe side : ↓
+				sleep 300
 				side=3
 			}
 			else if side=3
 			{
-					Swipe(652,130,652,710)  ;swipe side : ↓
+				Swipe(652,190,652,710)  ;swipe side : ↓
+				sleep 300
 				side=4
 			}
 			else if side=4
 			{
 				Swipe(257,310,1040,310) ;swipe side : →
+				sleep 300
 				;~ Swipe(1256,310,120,310) ;左
 				side=5
 			}
@@ -2017,24 +2023,35 @@ if (Withdraw and Offensive)
 			{
 				;~ Swipe(1256,310,120,310) ;左
 				Swipe(188,241,1164,621) ;swipe side : ↘
+				sleep 300
 				side=6
 			}
 			else if side=6
 			{
 				;~ Swipe(1256,310,120,310) ;左
-				 Swipe(604,710,652,130)  ;swipe side : ↑
+				Swipe(604,710,652,180)  ;swipe side : ↑
+				sleep 300
 				side=7
 			}
 			else if side=7
 			{
 				;~ Swipe(200,310,1240,310) ;右
 				Swipe(363,555,1011,220) ;swipe side : ↗
+				sleep 300
 				side=8
 			}
 			else if side=8
 			{
 				;~ Swipe(200,310,1240,310) ;右
 				Swipe(1256,310,120,310) ;swipe side : ←
+				sleep 300
+				side=9
+			}
+			else if side=9
+			{
+				;~ Swipe(200,310,1240,310) ;右
+				Swipe(1256,310,12,310) ;swipe side : ←
+				sleep 300
 				side=0
 			}
 			sleep 300
@@ -2302,8 +2319,8 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	ChapterEvent1 := DwmCheckcolor(500, 248, 16777215) ;14 活動：紅染1 A1
 	ChapterEvent2 := DwmCheckcolor(421, 588, 16777215) ;15 活動：紅染2 B1
 	ChapterEventSP := DwmCheckcolor(530, 263, 16777215) ; 16 活動：努力、希望和計畫
-	ChapterEvent3 := DwmCheckcolor(284, 291, 16777215) ;17 活動 異色格1 A1
-	ChapterEvent4 := 0 ;18 活動 異色格2 
+	ChapterEvent3 := DwmCheckcolor(272, 291, 16777215) ;17 活動 異色格1 A1
+	ChapterEvent4 := if (GdipImageSearch(x, y, "img/Number/Number_1.png", 100, 8, 359, 292, 380, 322)) ? 1 : 0 ;18 活動 異色格2 
 	ChapterFailed := 1
 	array := [Chapter1, Chapter2,Chapter3, Chapter4, Chapter5, Chapter6, Chapter7, Chapter8, Chapter9, Chapter10, Chapter11, Chapter12, Chapter13, ChapterEvent1,ChapterEvent2, ChapterEventSP, ChapterEvent3, ChapterEvent4, ChapterFailed]
 	Chapter := VarSetCapacity
@@ -2826,35 +2843,31 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=1)
 		{
-			if (DwmCheckcolor(421, 591, 16777215))
+			if (GdipImageSearch(x, y, "img/Number/Number_1.png", 100, 8, 359, 292, 380, 322))
 			{
-				C_Click(422,592)
+				C_Click(422,305)
 			}
-			LogShow("異色格：後篇尚未開放1")
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=2)
 		{
-			if (DwmCheckcolor(935, 573, 16777215))
+			if (GdipImageSearch(x, y, "img/Number/Number_2.png", 100, 8, 933, 253, 953, 280))
 			{
-				C_Click(936,574)
+				C_Click(966,265)
 			}
-			LogShow("異色格：後篇尚未開放2")
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=3)
 		{
-			if (DwmCheckcolor(774, 297, 16777215))
+			if (GdipImageSearch(x, y, "img/Number/Number_3.png", 100, 8, 473, 592, 493, 621))
 			{
-				C_Click(775,298)
+				C_Click(517,608)
 			}
-			LogShow("異色格：後篇尚未開放3")
 		}
 		else if (AnchorChapter="異色2" and AnchorChapter2=4)
 		{
-			if (DwmCheckcolor(774, 297, 16777215))
+			if (GdipImageSearch(x, y, "img/Number/Number_4.png", 100, 8, 780, 421, 800, 450))
 			{
-				C_Click(775,298)
+				C_Click(817,435)
 			}
-			LogShow("異色格：後篇尚未開放4")
 		}
 	}
 	else 
@@ -2863,8 +2876,9 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		sleep 2000
 		return
 	}
-	sleep 2500
+	sleep 2000
 	SwitchParty := 0 ;BOSS換隊
+	ToMap()
 	;~ ChapterCheck := ("0,0,0")
 	;~ ChapterCheckArray := StrSplit(ChapterCheck, ",")
 	;~ msgbox % ChapterCheckArray.MaxIndex()
@@ -5354,9 +5368,8 @@ ClickFailed()
 	}
 }
 
-Swipe(x1,y1,x2,y2,swipetime="")
-{
-	sleep 100
+Swipe(x1,y1,x2,y2,swipetime=230)
+{	
 	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
 	MouseGetPos,x,y, thewindow ;偵測滑鼠位置
 	HideGuiID = Gui%UniqueID%
@@ -5366,17 +5379,20 @@ Swipe(x1,y1,x2,y2,swipetime="")
 		Gui, HideGui: -caption +AlwaysOnTop
 		WinSet, Transparent, 1, %HideGuiID%
 	}
-	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10) ;計算拖曳座標距離
+	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10), sleeptime := Ceil(swipetime/10) ;計算拖曳座標距離 時間
+	sleep 50
+	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA
+	sleep 50
 	Loop, 10
 	{
 		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
 		x1 += ShiftX, y1 += ShiftY
-		sleep 20
+		sleep %sleeptime%
 	}
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
 	Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
-	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide
-	sleep 300
+	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide ;雷電4.0似乎有BUG 偶爾會卡住
+	sleep 400
 }
 
 Ld_Click(PosX,PosY)
@@ -5606,6 +5622,7 @@ Isbetween(Var, Min, Max)
 		return 1
 	return 0
 }
+
 
 ;~ F3::
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
