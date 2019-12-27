@@ -2193,12 +2193,12 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		}
 		if (DailyDone=0)
 		{
-			if (DwmCheckcolor(145, 686, 16777215) and DwmCheckcolor(132, 61, 14085119) and DwmCheckcolor(750, 717, 10864623))
+			if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(784, 692, 16777215))
 			{ ;如果在出擊頁面檢查到每日還沒執行
 				LogShow("執行每日任務！")
 				Loop
 				{
-					if (DwmCheckcolor(145, 686, 16777215) and DwmCheckcolor(132, 61, 14085119) and DwmCheckcolor(750, 717, 10864623))  ;如果在出擊頁面檢查到每日還沒執行
+					if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(784, 692, 16777215))  ;如果在出擊頁面檢查到每日還沒執行
 					{
 						C_Click(826, 709) ;嘗試進入每日頁面
 						sleep 3000
@@ -2226,12 +2226,12 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		}
 		else
 		{
-			if (DwmCheckcolor(145, 686, 16777215) and DwmCheckcolor(132, 61, 14085119) and DwmCheckcolor(1130, 686, 16773086))
+			if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(1130, 686, 16773086))
 			{ ;如果在出擊頁面檢查到演習還沒執行
 				LogShow("自動執行演習！")
 				Loop
 				{
-					if (DwmCheckcolor(145, 686, 16777215) and DwmCheckcolor(132, 61, 14085119) and DwmCheckcolor(1130, 686, 16773086))  ;如果在出擊頁面檢查到演習還沒執行
+					if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(1130, 686, 16773086))  ;如果在出擊頁面檢查到演習還沒執行
 					{
 						C_Click(1177, 706) ;嘗試進入演習頁面
 						sleep 3000
@@ -3443,6 +3443,7 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 	{
 		Rmenu := VarSetCapacity
 		DelegationMission()
+		sleep 1000
 		Loop, 50
 		{
 			if DwmCheckcolor(109, 172, 4876692)
@@ -3454,7 +3455,7 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 			{
 				break
 			}
-			sleep 300
+			sleep 500
 		}
 	}
 	else
@@ -4378,12 +4379,16 @@ DelegationMission() {
 	sleep 300
 	DelegationMission3()
 	sleep 500
-	Loop
+	Loop, 50
 	{
 		if (DwmCheckcolor(167, 64, 15201279))
 		{
-		C_Click(62, 91) ;離開
-		break
+			C_Click(1223, 63) ;離開
+			sleep 2000
+		}
+		else if (DwmCheckcolor(12, 200, 16777215))
+		{
+			Break
 		}
 		sleep 500
 	}
