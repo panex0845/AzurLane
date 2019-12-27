@@ -5012,13 +5012,16 @@ ChooseParty(Byref StopAnchor)
 		{
 			LogShow("石油不足，停止出擊到永久。")
 			StopAnchor := 1
+			sleep 1000
 			C_Click(1230, 68) ;返回主選單
+			sleep 2000
 			return StopAnchor
 		}
 		else if DwmCheckcolor(424, 361, 15724527) and AnchorMode="困難"
 		{
 			LogShow("困難模式次數已用盡，停止出擊到永久。")
 			StopAnchor := 1
+			sleep 1000
 			C_Click(1230, 68) ;返回主選單
 			sleep 2000
 			return StopAnchor
