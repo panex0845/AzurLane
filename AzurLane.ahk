@@ -1708,6 +1708,49 @@ if (Withdraw and Offensive)
 							}
 						}
 					}
+					if (AnchorChapter="異色2" and AnchorChapter2="1") ;異色格地圖太大，直接滑動到BOSS可能的出生點2
+					{
+						sleep 1000
+						if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+						{
+							LogShow("發現：最終ＢＯＳＳ")
+							C_Click(x, y)
+							sleep 5000
+							return
+						}
+						else
+						{
+							Loop, 3
+							{
+								Swipe(998, 443, 300, 443)
+								sleep 300
+							}
+							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+							{
+								LogShow("發現：最終ＢＯＳＳ(2)")
+								C_Click(x, y)
+								sleep 5000
+								return
+							}
+							else
+							{
+								Loop, 2
+								{
+									Swipe(607, 200, 607, 560)
+									sleep 300
+								}
+								if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+								{
+									LogShow("發現：最終ＢＯＳＳ(3)")
+									C_Click(x, y)
+									sleep 5000
+									return
+								}
+							}
+						}
+					}
+					
+					
 				}
 				else
 				{
@@ -5368,7 +5411,7 @@ ClickFailed()
 	}
 }
 
-Swipe(x1,y1,x2,y2,swipetime=230)
+Swipe(x1,y1,x2,y2,swipetime=200)
 {	
 	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
 	MouseGetPos,x,y, thewindow ;偵測滑鼠位置
@@ -5380,9 +5423,8 @@ Swipe(x1,y1,x2,y2,swipetime=230)
 		WinSet, Transparent, 1, %HideGuiID%
 	}
 	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10), sleeptime := Ceil(swipetime/10) ;計算拖曳座標距離 時間
-	sleep 50
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA
-	sleep 50
+	sleep 40
 	Loop, 10
 	{
 		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
@@ -5392,7 +5434,7 @@ Swipe(x1,y1,x2,y2,swipetime=230)
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
 	Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
 	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide ;雷電4.0似乎有BUG 偶爾會卡住
-	sleep 400
+	sleep 300
 }
 
 Ld_Click(PosX,PosY)
