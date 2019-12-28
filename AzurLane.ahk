@@ -2520,6 +2520,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	}
 	sleep 500
 	GuiControlGet, AnchorChapter
+	GuiControlGet, AnchorChapter2
 	Chaptermessage = ——選擇關卡： 第 %AnchorChapter% 章 第 %AnchorChapter2% 節。——
 	LogShow(Chaptermessage)
 	if (AnchorChapter=1 and AnchorChapter2=1) ; 選擇關卡 1-1
