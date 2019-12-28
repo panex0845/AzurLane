@@ -1416,6 +1416,38 @@ if (Withdraw and Offensive)
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
+	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
+	{
+		FightRoundsDone := 1
+		if FightRoundsDo3=撤退
+		{
+			FightRoundsText = 艦隊Ａ已出擊%FightRoundsDoCount%次，%FightRoundsDo3%
+			LogShow(FightRoundsText)
+			sleep 1000
+			C_Click(834, 716)
+			sleep 2000
+			C_Click(791, 556)
+			return
+		}
+		else if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1) and (Bossaction="優先攻擊－切換隊伍")
+		{
+			;如果出現BOSS則不做事 避免出現BOSS導致多打道中
+			LogShow("偵查到BOSS，等待切換隊伍")
+			TargetFailed := 1
+			TargetFailed2 := 1
+			TargetFailed3 := 1
+			TargetFailed4 := 1
+		}
+		else if FightRoundsDo3=更換艦隊Ｂ
+		{
+			SwitchParty := 1
+			FightRoundsText = 艦隊Ａ已出擊%FightRoundsDo2%次，%FightRoundsDo3%
+			LogShow(FightRoundsText)
+			sleep 1000
+			C_Click(1034, 713) ;點擊更換艦隊
+			sleep 1500
+		}
+	}
 	if (AlignCenter) and !(GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 150, 540, 650, 740)) and ((Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍") and !(GdipImageSearch(n, m, "img/targetboss_1.png", 0, 1, MapX1, MapY1, MapX2, MapY2))) ; 嘗試置中地圖
 	{
 		if (AnchorChapter="異色1" or AnchorChapter="異色2")
@@ -1432,7 +1464,7 @@ if (Withdraw and Offensive)
 			Random, xx, 0, 750
 			Random, yy, 0, 400
 			x1 := x+xx, y1 := y+yy
-			x2 := x1-50, y2 := y1-110
+			x2 := x1-55, y2 := y1-110
 			Swipe(x1, y1, x2, y2)
 			AlignCenterCount++
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>8
@@ -1460,27 +1492,6 @@ if (Withdraw and Offensive)
 		{
 			LogShow("關閉陣型列表")
 			C_Click(1071, 476)
-		}
-		if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
-		{
-			FightRoundsDone := 1
-			if FightRoundsDo3=更換艦隊Ｂ
-			{
-				SwitchParty := 1
-				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDo2%次，%FightRoundsDo3%
-				LogShow(FightRoundsText)
-				C_Click(1034, 713) ;點擊更換艦隊
-				sleep 1500
-			}
-			else if FightRoundsDo3=撤退
-			{
-				FightRoundsText = 艦隊Ａ已出擊%FightRoundsDoCount%次，%FightRoundsDo3%
-				LogShow(FightRoundsText)
-				C_Click(834, 716)
-				sleep 2000
-				C_Click(791, 556)
-				return
-			}
 		}
 		if (GdipImageSearch(x, y, "img/bullet.png", 105, SearchDirection, MapX1, MapY1, MapX2, MapY2) and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2) and bulletFailed<1 and Item_Bullet) ;只有在彈藥歸零時才會拾取
 		{
@@ -1674,7 +1685,15 @@ if (Withdraw and Offensive)
 						{
 							LogShow("發現：最終ＢＯＳＳ")
 							C_Click(x, y)
-							sleep 5000
+							BossGetpixel := dwmgetpixel(x, y)
+							Loop, 10
+							{
+								if (BossGetpixel!=dwmgetpixel(x, y))
+								{
+									Break
+								}
+								sleep 1000
+							}
 							return
 						}
 						else
@@ -1684,11 +1703,20 @@ if (Withdraw and Offensive)
 								Swipe(998, 443, 300, 443)
 								sleep 300
 							}
+							sleep 500
 							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
 							{
 								LogShow("發現：最終ＢＯＳＳ(2)")
 								C_Click(x, y)
-								sleep 5000
+								BossGetpixel := dwmgetpixel(x, y)
+								Loop, 10
+								{
+									if (BossGetpixel!=dwmgetpixel(x, y))
+									{
+										Break
+									}
+									sleep 1000
+								}
 								return
 							}
 							else
@@ -1698,11 +1726,20 @@ if (Withdraw and Offensive)
 									Swipe(607, 561, 607, 200)
 									sleep 300
 								}
+								sleep 500
 								if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
 								{
 									LogShow("發現：最終ＢＯＳＳ(3)")
 									C_Click(x, y)
-									sleep 5000
+									BossGetpixel := dwmgetpixel(x, y)
+									Loop, 10
+									{
+										if (BossGetpixel!=dwmgetpixel(x, y))
+										{
+											Break
+										}
+										sleep 1000
+									}
 									return
 								}
 							}
@@ -1715,7 +1752,15 @@ if (Withdraw and Offensive)
 						{
 							LogShow("發現：最終ＢＯＳＳ")
 							C_Click(x, y)
-							sleep 5000
+							BossGetpixel := dwmgetpixel(x, y)
+							Loop, 10
+							{
+								if (BossGetpixel!=dwmgetpixel(x, y))
+								{
+									Break
+								}
+								sleep 1000
+							}
 							return
 						}
 						else
@@ -1725,11 +1770,20 @@ if (Withdraw and Offensive)
 								Swipe(998, 443, 300, 443)
 								sleep 300
 							}
+							sleep 500
 							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
 							{
 								LogShow("發現：最終ＢＯＳＳ(2)")
 								C_Click(x, y)
-								sleep 5000
+								BossGetpixel := dwmgetpixel(x, y)
+								Loop, 10
+								{
+									if (BossGetpixel!=dwmgetpixel(x, y))
+									{
+										Break
+									}
+									sleep 1000
+								}
 								return
 							}
 							else
@@ -1739,18 +1793,25 @@ if (Withdraw and Offensive)
 									Swipe(607, 200, 607, 560)
 									sleep 300
 								}
+								sleep 500
 								if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
 								{
 									LogShow("發現：最終ＢＯＳＳ(3)")
 									C_Click(x, y)
-									sleep 5000
+									BossGetpixel := dwmgetpixel(x, y)
+									Loop, 10
+									{
+										if (BossGetpixel!=dwmgetpixel(x, y))
+										{
+											Break
+										}
+										sleep 1000
+									}
 									return
 								}
 							}
 						}
 					}
-					
-					
 				}
 				else
 				{
@@ -2037,7 +2098,7 @@ if (Withdraw and Offensive)
 			if side<1
 			{
 				;~ Swipe(652,166,652,660)  ;下
-				Swipe(1256,310,120,310) ;swipe side : ←
+				Swipe(1013,531,211,106)  ;↖
 				sleep 300
 				Swipe(1013,531,211,106)  ;↖
 				sleep 300
@@ -2087,13 +2148,6 @@ if (Withdraw and Offensive)
 			{
 				;~ Swipe(200,310,1240,310) ;右
 				Swipe(1256,310,120,310) ;swipe side : ←
-				sleep 300
-				side=9
-			}
-			else if side=9
-			{
-				;~ Swipe(200,310,1240,310) ;右
-				Swipe(1256,310,12,310) ;swipe side : ←
 				sleep 300
 				side=0
 			}
@@ -5423,10 +5477,10 @@ Swipe(x1,y1,x2,y2,swipetime=200)
 		Gui, HideGui: -caption +AlwaysOnTop
 		WinSet, Transparent, 1, %HideGuiID%
 	}
-	ShiftX := Ceil((x2 - x1)/10) , ShiftY := Ceil((y2 - y1)/10), sleeptime := Ceil(swipetime/10) ;計算拖曳座標距離 時間
+	ShiftX := Ceil((x2 - x1)/5) , ShiftY := Ceil((y2 - y1)/5), sleeptime := Ceil(swipetime/5) ;計算拖曳座標距離 時間
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA
-	sleep 40
-	Loop, 10
+	sleep 50
+	Loop, 5
 	{
 		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
 		x1 += ShiftX, y1 += ShiftY
@@ -5458,7 +5512,7 @@ C_Click(PosX, PosY)
 		;~ msgbox x%x% x%y%
 	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
 	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
-	sleep 500
+	sleep 700
 }
 
 GdiGetPixel( x, y)
