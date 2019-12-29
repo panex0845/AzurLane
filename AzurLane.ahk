@@ -455,6 +455,16 @@ if FightRoundsDo3=更換艦隊Ｂ
 	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ||撤退|
 else if FightRoundsDo3=撤退
 	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ|撤退||
+Tab_Y+=30
+iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp
+Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦血量低於
+IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 10
+Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range5-90 +ToolTip , %Retreat_LowHpBar%
+Tab_Y+=4
+Gui, Add, Text, x240 y%Tab_Y% w20 h20 vRetreat_LowHpBarUpdate , %Retreat_LowHpBar% 
+Gui, Add, Text, x260 y%Tab_Y%  h20 , `%，時退出戰鬥，並切換隊伍。
+Tab_Y-=4
+
 
 
 Gui, Tab, 學　院
@@ -860,9 +870,15 @@ Critical
 Guicontrolget, FightRoundsDo
 Guicontrolget, FightRoundsDo2
 Guicontrolget, FightRoundsDo3
+Guicontrolget, Retreat_LowHp
+Guicontrolget, Retreat_LowHpBar
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
+Iniwrite, %Retreat_LowHp%, settings.ini, Battle, Retreat_LowHp
+Iniwrite, %Retreat_LowHpBar%, settings.ini, Battle, Retreat_LowHpBar
+Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
+Global Retreat_LowHp, Retreat_LowHpBar
 Critical, off
 return
 
@@ -5444,6 +5460,19 @@ Battle()
 					}
 				}
 			}
+			if (Retreat_LowHp) ;旗艦HP過低撤退
+			{
+				DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
+				if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
+				{
+					Message = 偵測到HP低於%Retreat_LowHpBar%`%，但撤退功能未完成
+					LogShow(Message)
+					NowHP := Ceil((x-10)/85*100)
+					Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
+					LogShow(Message)
+					sleep 1000
+				}
+			}
 		} 
 		battletime := VarSetCapacity
 	}
@@ -5767,15 +5796,14 @@ Isbetween(Var, Min, Max)
 	return 0
 }
 
-;~ F3::DwmCheckcolor(1242, 80, 16249847)
-;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
+;~ F3::
+;~ MapX1 := 10, MapY1 := 370, MapX2 := 95, MapY2 := 535
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img/target_4.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img/battle/LowHP.png", 14, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
-;~ tooltip x%x% y%y% g%g%
+;~ tooltip x%x% y%y%
 ;~ } else {
 	;~ tooltip NotFound
 ;~ }
-
-;~ return
+return
 
