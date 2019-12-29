@@ -546,11 +546,12 @@ Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%Debu
 Tab_Y += 32
 Iniread, DwmMode, settings.ini, OtherSub, DwmMode, 1
 Iniread, GdiMode, settings.ini, OtherSub, GdiMode, 0
+Iniread, ActiveMode, settings.ini, OtherSub, ActiveMode, 0
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 取色方式：
 Tab_Y -= 3
 Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
 Gui, Add, Radio,  x180 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
-
+;~ Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vActiveMode checked%ActiveMode% , Active
 
 
 
@@ -1476,6 +1477,7 @@ if (Withdraw and Offensive)
 			x2 := x1-55, y2 := y1-110
 			Swipe(x1, y1, x2, y2)
 			AlignCenterCount++
+			sleep 100
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>8
 		y1 := y-1
 		y2 := y+1
@@ -1487,6 +1489,7 @@ if (Withdraw and Offensive)
 			Random, y, 180, 650
 			Swipe(650, y, 430, y)
 			AlignCenterCount++
+			sleep 100
 		} until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>6
 		AlignCenterCount := VarSetCapacity
 	}
@@ -4511,7 +4514,7 @@ DelegationMission() {
 		if (DwmCheckcolor(167, 64, 15201279))
 		{
 			C_Click(53, 89) ;離開
-			sleep 3000
+			sleep 2000
 		}
 		else if !(DwmCheckcolor(167, 64, 15201279))
 		{
@@ -5065,9 +5068,21 @@ ToMap()
 {
 	if (DwmCheckcolor(869, 531, 14587474) and DwmCheckcolor(1045, 532, 16777215) and DwmCheckcolor(1045, 550, 16238402))
 	{
-		if (WeekMode and DwmCheckcolor(1045, 630, 9737876)) ;周回模式開關
+		if (WeekMode) ;周回模式開關
 		{
-			C_Click(1022, 631)
+			if (DwmCheckcolor(1045, 630, 9737876)) ;
+			{
+				LogShow("開啟周回模式")
+				C_Click(1022, 631)
+			}
+		}
+		else if !(WeekMode)
+		{
+			if (DwmCheckcolor(1010, 631, 8710143))
+			{
+				LogShow("關閉周回模式")
+				C_Click(1012, 631)
+			}
 		}
 		LogShow("立刻前往攻略地圖")
 		Random, x, 866, 1034
@@ -5752,7 +5767,7 @@ Isbetween(Var, Min, Max)
 	return 0
 }
 
-;~ F3::
+;~ F3::DwmCheckcolor(1242, 80, 16249847)
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
 ;~ Random, SearchDirection, 1, 8
 ;~ if (GdipImageSearch(x, y, "img/target_4.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2))
