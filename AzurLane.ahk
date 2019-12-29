@@ -1690,6 +1690,7 @@ if (Withdraw and Offensive)
 							{
 								if (BossGetpixel!=dwmgetpixel(x, y))
 								{
+									sleep 1500
 									Break
 								}
 								sleep 1000
@@ -1713,6 +1714,7 @@ if (Withdraw and Offensive)
 								{
 									if (BossGetpixel!=dwmgetpixel(x, y))
 									{
+										sleep 1500
 										Break
 									}
 									sleep 1000
@@ -1736,6 +1738,7 @@ if (Withdraw and Offensive)
 									{
 										if (BossGetpixel!=dwmgetpixel(x, y))
 										{
+											sleep 1500
 											Break
 										}
 										sleep 1000
@@ -1757,6 +1760,7 @@ if (Withdraw and Offensive)
 							{
 								if (BossGetpixel!=dwmgetpixel(x, y))
 								{
+									sleep 1500
 									Break
 								}
 								sleep 1000
@@ -1780,6 +1784,7 @@ if (Withdraw and Offensive)
 								{
 									if (BossGetpixel!=dwmgetpixel(x, y))
 									{
+										sleep 1500
 										Break
 									}
 									sleep 1000
@@ -1803,6 +1808,7 @@ if (Withdraw and Offensive)
 									{
 										if (BossGetpixel!=dwmgetpixel(x, y))
 										{
+											sleep 1500
 											Break
 										}
 										sleep 1000
@@ -2276,7 +2282,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			if (DwmCheckcolor(167, 64, 15201279))
 			{
 				C_Click(58, 92)
-				sleep 1500
+				sleep 3000
 			}
 		}
 	}
@@ -5504,15 +5510,15 @@ Ld_Click(PosX,PosY)
 
 C_Click(PosX, PosY)
 {
-	Random, randomsleep, 400, 600
+	;~ Random, randomsleep, 400, 600
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
-	sleep %randomsleep%
+	;~ sleep %randomsleep%
 	;~ if (debugmode)
 		;~ msgbox x%x% x%y%
 	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
 	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
-	sleep 700
+	sleep 1000
 }
 
 GdiGetPixel( x, y)
