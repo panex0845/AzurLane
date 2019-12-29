@@ -516,17 +516,17 @@ Gui, Add, CheckBox, x30 y90 w150 h20 gMissionsettings vMissionSub checked%Missio
 
 Gui, Tab, 其　他
 Tab_Y := 90
-Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 除錯
-Gui, Add, button, x180 y%TAB_Y% w200 h20 gForumSub, Bug回報、功能建議討論區
+Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 測試取色
+Gui, Add, button, x180 y%TAB_Y% w200 h20 gForumSub, GitHub
 Tab_Y += 30
-Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
-Tab_Y += 30
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gstartemulatorsub, 啟動模擬器
 Gui, Add, button, x180 y%TAB_Y% w200 h20 gDiscordSub, Discord
+Tab_Y += 30
+;~ Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
+;~ Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
 Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gOperationSub, 執行演習
-Tab_Y += 30
-Gui, Add, button, x30 y%TAB_Y% w120 h20 gstartemulatorsub, 啟動模擬器
 Tab_Y += 30
 iniread, GuiHideX, settings.ini, OtherSub, GuiHideX
 Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
@@ -543,6 +543,15 @@ Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %Set
 Tab_Y += 30
 iniread, DebugMode, settings.ini, OtherSub, DebugMode
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , DebugMode
+Tab_Y += 32
+Iniread, DwmMode, settings.ini, OtherSub, DwmMode, 1
+Iniread, GdiMode, settings.ini, OtherSub, GdiMode, 0
+Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 取色方式：
+Tab_Y -= 3
+Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
+Gui, Add, Radio,  x180 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
+
+
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
@@ -569,10 +578,6 @@ Global Allowance
 LogShow("啟動完畢，等待開始")
 Gosub, whitealbum
 Settimer, whitealbum, 10000 ;很重要!
-iniread, UseGdiGetpixel, settings.ini, emulator, UseGdiGetpixel, 0
-Global UseGdiGetpixel
-if (UseGdiGetpixel)
-	LogShow("GdiMode=1")
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
 if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
@@ -935,13 +940,17 @@ Guicontrolget, AutoLogin
 Guicontrolget, SetGuiBGcolor
 Guicontrolget, SetGuiBGcolor2
 Guicontrolget, DebugMode
+Guicontrolget, DwmMode
+Guicontrolget, GdiMode
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
 Iniwrite, %AutoLogin%, settings.ini, OtherSub, AutoLogin
 Iniwrite, %SetGuiBGcolor%, settings.ini, OtherSub, SetGuiBGcolor
 Iniwrite, %SetGuiBGcolor2%, settings.ini, OtherSub, SetGuiBGcolor2
 Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
-Global AutoLogin, DebugMode
+Iniwrite, %DwmMode%, settings.ini, OtherSub, DwmMode
+Iniwrite, %GdiMode%, settings.ini, OtherSub, GdiMode
+Global AutoLogin, DebugMode, DwmMode, GdiMode
 Critical, off
 return
 
@@ -1007,7 +1016,7 @@ if (EmulatorCrushCheck)
 return
 
 ForumSub:
-Run, https://github.com/panex0845/AzurLane/issues
+Run, https://github.com/panex0845/AzurLane/
 return
 
 DiscordSub:
@@ -5511,6 +5520,7 @@ Ld_Click(PosX,PosY)
 C_Click(PosX, PosY)
 {
 	;~ Random, randomsleep, 400, 600
+	sleep 50
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
 	;~ sleep %randomsleep%
@@ -5576,17 +5586,22 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 
 DwmCheckcolor(x, y, color="")
 {
-	if (UseGdiGetpixel) {
+	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
 		Gdip_DisposeImage(pBitmap)
 		pix := ARGB & 0x00ffffff
-	} else {
+	} else if (DwmMode) {
 		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
 		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
 		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
 		pix := ConvertColor(pix)
 	}
+	;~ if (DebugMode)
+	;~ {
+		;~ Message = (%x%, %y%, %color%) & pix: %pix%
+		;~ LogShow(Message)
+	;~ }
 	if (Allowance>=abs(color-pix))
 		return 1
 	else 
@@ -5621,13 +5636,13 @@ guicontrol, , ListBoxLog, %logData%||
 
 DwmGetPixel(x, y)
 {
-	if (UseGdiGetpixel) {
+	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
 		Gdip_DisposeImage(pBitmap)
 		RGB := ARGB & 0x00ffffff
 		return RGB
-	} else {
+	} else if (DwmMode) {
 		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
 		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
 		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
