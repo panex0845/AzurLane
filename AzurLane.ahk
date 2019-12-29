@@ -2274,13 +2274,14 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		} Until DwmCheckcolor(135, 58, 15725567)
 		DelegationMission()
 		sleep 1000
-		Loop, 5
+		Loop, 10
 		{
 			if (DwmCheckcolor(167, 64, 15201279))
 			{
 				C_Click(58, 92)
 				sleep 3000
 			}
+			sleep 1000
 		}
 	}
 	if (DailyGoalSub and DailyDone<1)
@@ -4501,13 +4502,13 @@ DelegationMission() {
 		if (DwmCheckcolor(167, 64, 15201279))
 		{
 			C_Click(53, 89) ;離開
-			sleep 5000
+			sleep 3000
 		}
-		else if (DwmCheckcolor(12, 200, 16777215))
+		else if !(DwmCheckcolor(167, 64, 15201279))
 		{
 			Break
 		}
-		sleep 500
+		sleep 300
 	}
 }
 
@@ -5517,7 +5518,7 @@ C_Click(PosX, PosY)
 		;~ msgbox x%x% x%y%
 	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
 	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
-	sleep 1000
+	sleep 800
 }
 
 GdiGetPixel( x, y)
