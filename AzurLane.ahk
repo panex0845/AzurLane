@@ -4491,12 +4491,12 @@ DelegationMission() {
 	sleep 300
 	DelegationMission3()
 	sleep 500
-	Loop, 50
+	Loop, 30
 	{
 		if (DwmCheckcolor(167, 64, 15201279))
 		{
-			C_Click(1223, 63) ;離開
-			sleep 2000
+			C_Click(53, 89) ;離開
+			sleep 5000
 		}
 		else if (DwmCheckcolor(12, 200, 16777215))
 		{
