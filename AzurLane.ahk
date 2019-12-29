@@ -519,7 +519,7 @@ Tab_Y := 90
 Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 除錯
 Gui, Add, button, x180 y%TAB_Y% w200 h20 gForumSub, Bug回報、功能建議討論區
 Tab_Y += 30
-Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustAllowance, 調整誤差值
+Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
 Tab_Y += 30
 Gui, Add, button, x180 y%TAB_Y% w200 h20 gDiscordSub, Discord
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
@@ -569,6 +569,10 @@ Global Allowance
 LogShow("啟動完畢，等待開始")
 Gosub, whitealbum
 Settimer, whitealbum, 10000 ;很重要!
+iniread, UseGdiGetpixel, settings.ini, emulator, UseGdiGetpixel, 0
+Global UseGdiGetpixel
+if (UseGdiGetpixel)
+	LogShow("GdiMode=1")
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
 if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
@@ -1041,58 +1045,51 @@ FileDelete ThisVersion.ahk
 newver := ""
 return
 
-AdjustAllowance:
+AdjustGetPixelMode:
 MsgBox, 262208, 設定精靈, 請回到遊戲首頁後再按下確認
 LogShow("開始調整")
 WinRestore,  %title%
 WinMove,  %title%, , , , 1318, 758
 sleep 200
-C_Click( 56, 87)
-sleep 1000
-C_Click( 56, 87) ;先校正遊戲可能產生的顏色錯誤
-sleep 1000
 Position1 := DwmGetpixel(12, 200) ;左上角稜形方塊 16777215
+Position11 := GdiGetpixel(12, 200) ;左上角稜形方塊 4294967295
 Logshow(Position1)
+Logshow(Position11)
 Position2 := DwmGetpixel(576, 64) ;上方汽油桶 3224625
+Position22 := GdiGetpixel(576, 64) ;上方汽油桶 4281414705
 Logshow(Position2)
+Logshow(Position22)
 Position3 := DwmGetpixel(794, 78) ;上方金幣 16234050
+Position33 := GdiGetpixel(794, 78) ;上方金幣 4294424130
 Logshow(Position3)
+Logshow(Position33)
 Position4 := DwmGetpixel(997, 64) ;上方紅尖尖 16729459
+Position44 := GdiGetpixel(997, 64) ;上方紅尖尖 4294919539
 Logshow(Position4)
+Logshow(Position44)
 Position5 := DwmGetpixel(976, 429) ;編隊按鈕 5421815
+Position55 := GdiGetpixel(976, 429) ;編隊按鈕 4283611895
 Logshow(Position5)
+Logshow(Position55)
 Position6 := DwmGetpixel(1149, 448) ;出擊按鈕 14592594
+Position66 := GdiGetpixel(1149, 448) ;出擊按鈕 4292782674
 Logshow(Position6)
-Color1 := Abs(16777215-Position1)
-Color2 := Abs(3224625-Position2)
-Color3 := Abs(16234050-Position3)
-Color4 := Abs(16729459-Position4)
-Color5 := Abs(5421815-Position5)
-Color6 := Abs(14592594-Position6)
-LogShow("差值")
-LogShow(Color1)
-LogShow(Color2)
-LogShow(Color3)
-LogShow(Color4)
-LogShow(Color5)
-LogShow(Color6)
-if (Color1=Color2=Color3=Color4=Color5=Color6)
+Logshow(Position66)
+if (Position1=16777215 and Position2=3224625 and Position3=16234050 and Position4=16729459 and Position5=5421815 and Position6=14592594)
 {
-	AllowanceValue := Color3+2000
-	if (Color1=0 and Color2=0 and Color3=0 and Color4=0 and Color5=0 and Color6=0)
-	{
-		LogShow("不需調整誤差值")
-		AllowanceValue := 2000
-	}
+	LogShow("不需調整")
+	AllowanceValue := 2000
 	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
-	MsgBox, 262208, 設定精靈, 調整完畢
-	Reload
+}
+else 	if (Position11=4294967295 and Position22=4281414705 and Position33=4294424130 and Position44=4294919539 and Position55=4283611895 and Position66=4292782674)
+{
+	LogShow("GdiGetpixel = True")
+	LogShow("請手動按下停止鍵")
+	Iniwrite, 1, settings.ini, emulator, UseGdiGetpixel
 }
 else
 {
-	LogShow("出現預期外的錯誤")
-	;~ AllowanceValue := Color1+ 2000 ;似乎沒什麼用
-	Iniwrite, %AllowanceValue%, settings.ini, emulator, AllowanceValue
+	LogShow("出現不可預期的錯誤")
 	LogShow("請手動按下停止鍵")
 }
 return
@@ -1416,6 +1413,9 @@ if (Withdraw and Offensive)
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
+	MapX1 := 130, MapY1 := 130, MapX2 :=1260, MapY2 := 670 ; //////////檢查敵方艦隊的範圍//////////
+	;Mainfleet := 4287894561 ; ARGB 主力艦隊
+	;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
 	{
 		FightRoundsDone := 1
@@ -1484,9 +1484,6 @@ if (Withdraw and Offensive)
 	Loop, 100
 	{
 		sleep 300
-		MapX1 := 125, MapY1 := 140, MapX2 :=1180, MapY2 := 670 ; //////////檢查敵方艦隊的範圍//////////
-		;Mainfleet := 4287894561 ; ARGB 主力艦隊
-		;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
 		Random, SearchDirection, 1, 8
 		if (DwmCheckcolor(1102, 480, 16768842))
 		{
@@ -5576,15 +5573,21 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 
 DwmCheckcolor(x, y, color="")
 {
-	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-	pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
-	pix := ConvertColor(pix)
-	;~ PixelGetColor, pc_c, X, Y , RGB
+	if (UseGdiGetpixel) {
+		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
+		Argb := Gdip_GetPixel(pBitmap, x, y)
+		Gdip_DisposeImage(pBitmap)
+		pix := ARGB & 0x00ffffff
+	} else {
+		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		pix := ConvertColor(pix)
+	}
 	if (Allowance>=abs(color-pix))
-	return 1
+		return 1
 	else 
-	return 0
+		return 0
 }
 
 GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
@@ -5604,25 +5607,30 @@ GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=
 LogShow(logData) {
 formattime, nowtime,, MM-dd HH:mm:ss
 guicontrol, , ListBoxLog, [%nowtime%]  %logData%||
-if (DebugMode)
-{
+if (DebugMode) {
 	FileAppend, [%nowtime%]  %logData%`n, AzurLane.log
 }
-return
 }
 
 LogShow2(logData) {
 guicontrol, , ListBoxLog, %logData%||
-return
 }
 
 DwmGetPixel(x, y)
 {
-	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-	pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-	DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
-	pix := ConvertColor(pix)
-    Return pix
+	if (UseGdiGetpixel) {
+		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
+		Argb := Gdip_GetPixel(pBitmap, x, y)
+		Gdip_DisposeImage(pBitmap)
+		RGB := ARGB & 0x00ffffff
+		return RGB
+	} else {
+		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		pix := ConvertColor(pix)
+		Return pix
+	}
 }
 
 DecToHex(dec)
