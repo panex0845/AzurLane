@@ -4129,6 +4129,7 @@ if (AcademyDone<1)
 				if (DwmCheckcolor(170, 68, 14610431))
 				{
 					C_Click(38,92)
+					sleep 3000
 				}
 				else if (DwmCheckcolor(12, 202, 16777215))
 				{
@@ -4332,6 +4333,7 @@ if (DormDone<1) ;後宅發現任務
 				if (DwmCheckcolor(95, 573, 16711680))
 				{
 					C_Click(38,92)
+					sleep 3000
 				}
 				else if (DwmCheckcolor(12, 202, 16777215))
 				{
