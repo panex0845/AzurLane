@@ -2417,7 +2417,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	ChapterEvent2 := DwmCheckcolor(421, 588, 16777215) ;15 活動：紅染2 B1
 	ChapterEventSP := DwmCheckcolor(530, 263, 16777215) ; 16 活動：努力、希望和計畫
 	ChapterEvent3 := DwmCheckcolor(272, 291, 16777215) ;17 活動 異色格1 A1
-	ChapterEvent4 := if (GdipImageSearch(x, y, "img/Number/Number_1.png", 100, 8, 359, 292, 380, 322)) ? 1 : 0 ;18 活動 異色格2 
+	ChapterEvent4 := if (GdipImageSearch(x, y, "img/Number/Number_1.png", 60, 8, 359, 292, 380, 322)) ? 1 : 0 ;18 活動 異色格2 
 	ChapterFailed := 1
 	array := [Chapter1, Chapter2,Chapter3, Chapter4, Chapter5, Chapter6, Chapter7, Chapter8, Chapter9, Chapter10, Chapter11, Chapter12, Chapter13, ChapterEvent1,ChapterEvent2, ChapterEventSP, ChapterEvent3, ChapterEvent4, ChapterFailed]
 	Chapter := VarSetCapacity
@@ -5719,7 +5719,6 @@ Isbetween(Var, Min, Max)
 		return 1
 	return 0
 }
-
 
 ;~ F3::
 ;~ MapX1 := 125, MapY1 := 125, MapX2 := 1200, MapY2 := 720
