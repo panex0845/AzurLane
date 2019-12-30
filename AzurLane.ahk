@@ -3596,9 +3596,9 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;åœ
 		Rmenu := VarSetCapacity
 		DelegationMission()
 		sleep 1000
-		Loop, 50
+		Loop, 20
 		{
-			if DwmCheckcolor(109, 172, 4876692)
+			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
 			{
 				C_Click(1246, 89)
 				sleep 2000
@@ -3612,7 +3612,7 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;åœ
 	}
 	else
 	{
-		Loop
+		Loop, 20
 		{
 			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
 			{
