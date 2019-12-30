@@ -1779,7 +1779,7 @@ if (Withdraw and Offensive)
 							}
 						}
 					}
-					if (AnchorChapter="異色2" and AnchorChapter2="1") ;異色格地圖太大，直接滑動到BOSS可能的出生點2
+					else if (AnchorChapter="異色2" and AnchorChapter2="1") ;異色格地圖太大，直接滑動到BOSS可能的出生點2
 					{
 						sleep 1000
 						if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
@@ -1859,14 +1859,16 @@ if (Withdraw and Offensive)
 						BossFailed++
 						LogShow("哎呀哎呀，前往BOSS的路徑被擋住了！")
 						sleep 1000
-						C_Click(1035, 715) ;換回原本的隊伍
+						if !(FightRoundsDo)
+						{
+							C_Click(1035, 715) ;換回原本的隊伍
+							SwitchParty := 0
+						}
 						sleep 1000
 						TargetFailed := 0
 						TargetFailed2 := 0
 						TargetFailed3 := 0
 						TargetFailed4 := 0
-						if (FightRoundsDo and FightRoundsDo3!="更換艦隊Ｂ")
-							SwitchParty := 0
 						return
 					}
 					sleep 4050
