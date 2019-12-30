@@ -462,9 +462,13 @@ IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 10
 Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range5-90 +ToolTip , %Retreat_LowHpBar%
 Tab_Y+=4
 Gui, Add, Text, x240 y%Tab_Y% w20 h20 vRetreat_LowHpBarUpdate , %Retreat_LowHpBar% 
-Gui, Add, Text, x260 y%Tab_Y%  h20 , `%，時退出戰鬥，並切換隊伍。
+Gui, Add, Text, x260 y%Tab_Y% w120 h20 , `% 退出戰鬥，並
 Tab_Y-=4
-
+iniread, Retreat_LowHpDo, settings.ini, Battle, Retreat_LowHpDo, 切換隊伍
+if Retreat_LowHpDo=切換隊伍
+	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 切換隊伍||重新來過|
+else
+	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 切換隊伍|重新來過||
 
 
 Gui, Tab, 學　院
@@ -872,13 +876,15 @@ Guicontrolget, FightRoundsDo2
 Guicontrolget, FightRoundsDo3
 Guicontrolget, Retreat_LowHp
 Guicontrolget, Retreat_LowHpBar
+Guicontrolget, Retreat_LowHpDo
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
 Iniwrite, %Retreat_LowHp%, settings.ini, Battle, Retreat_LowHp
 Iniwrite, %Retreat_LowHpBar%, settings.ini, Battle, Retreat_LowHpBar
+Iniwrite, %Retreat_LowHpDo%, settings.ini, Battle, Retreat_LowHpDo
 Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
-Global Retreat_LowHp, Retreat_LowHpBar
+Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo
 Critical, off
 return
 
@@ -5465,13 +5471,22 @@ Battle()
 				DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
 				if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
 				{
-					Message = 偵測到HP低於%Retreat_LowHpBar%`%，但撤退功能未完成
+					if (Retreat_LowHpDo="切換隊伍")
+					{
+						
+					}
+					else if (Retreat_LowHpDo="重新來過")
+					{
+						
+					}
+					Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
 					LogShow(Message)
 					NowHP := Ceil((x-10)/85*100)
 					Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
 					LogShow(Message)
-					sleep 1000
+					sleep 1500
 				}
+				
 			}
 		} 
 		battletime := VarSetCapacity
