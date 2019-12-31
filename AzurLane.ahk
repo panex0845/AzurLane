@@ -2516,9 +2516,11 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	}
 	else if (Chapter=14 or Chapter=15) and (AnchorChapter="紅染1" or AnchorChapter="紅染2")
 	{
-		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1))
+		BacktoNormalMap++
+		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1) or (BacktoNormalMap>=2))
 		{
-			LogShow("位於活動關卡，返回主線。")
+			LogShow("位於紅染地圖，返回主線。")
+			BacktoNormalMap := VarSetCapacity
 			C_Click(60, 90)
 			return
 		}
@@ -2530,9 +2532,11 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	}
 	else if (Chapter=17 or Chapter=18) and (AnchorChapter="異色1" or AnchorChapter="異色2")
 	{
-		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1))
+		BacktoNormalMap++
+		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1) or (BacktoNormalMap>=2))
 		{
-			LogShow("位於活動關卡，返回主線。")
+			LogShow("位於異色格地圖，返回主線。")
+			BacktoNormalMap := VarSetCapacity
 			C_Click(60, 90)
 			return
 		}
