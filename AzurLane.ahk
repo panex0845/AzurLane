@@ -1,7 +1,7 @@
 ﻿/* Free to use, Free for life.
 	Made by panex0845 
 */ 
-Version = 1001
+Version = 
 ;@Ahk2Exe-SetName AzurLane Helper
 ;@Ahk2Exe-SetDescription AzurLane Helper
 ;@Ahk2Exe-SetVersion 1.0.0.1
@@ -15,6 +15,11 @@ Exitapp
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #Persistent
 #SingleInstance, force
+#include Gdip.dll
+If !pToken := Gdip_Startup() {
+   MsgBox "Gdiplus failed to start. Please ensure you have gdiplus on your system"
+   ExitApp
+}
 Coordmode, pixel, window
 Coordmode, mouse, window
 DetectHiddenWindows, On
@@ -580,12 +585,6 @@ if azur_y=
 Gui, +OwnDialogs
 Gui Show, w900 h500 x%azur_x% y%azur_y%, Azur Lane - %title%
 Menu, Tray, Tip , Azur Lane `(%title%)
-#include Gdip.dll
-If !pToken := Gdip_Startup()
-{
-   MsgBox "Gdiplus failed to start. Please ensure you have gdiplus on your system"
-   ExitApp
-}
 Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
 Global UniqueID
@@ -1846,6 +1845,47 @@ if (Withdraw and Offensive)
 									}
 									return
 								}
+							}
+						}
+					}
+					else if (AnchorChapter="異色2" and AnchorChapter2="4") ;異色格地圖太大，直接滑動到BOSS可能的出生點2
+					{
+						sleep 1000
+						if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+						{
+							LogShow("發現：最終ＢＯＳＳ")
+							C_Click(x, y)
+							BossGetpixel := dwmgetpixel(x, y)
+							Loop, 10
+							{
+								if (BossGetpixel!=dwmgetpixel(x, y))
+								{
+									sleep 1500
+									Break
+								}
+								sleep 1000
+							}
+							return
+						}
+						else
+						{
+							Swipe(922, 253, 498, 608)
+							sleep 600
+							if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1)
+							{
+								LogShow("發現：最終ＢＯＳＳ(2)")
+								C_Click(x, y)
+								BossGetpixel := dwmgetpixel(x, y)
+								Loop, 10
+								{
+									if (BossGetpixel!=dwmgetpixel(x, y))
+									{
+										sleep 1500
+										Break
+									}
+									sleep 1000
+								}
+								return
 							}
 						}
 					}
@@ -4699,6 +4739,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		LogShow("艦已靠港。")
 		Random, x, 100, 1000
 		Random, y, 100, 600
+		sleep 500
 		C_Click(x, y)
 	}
 }
@@ -5473,22 +5514,54 @@ Battle()
 				DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
 				if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
 				{
+					Global Retreat_LowHpDocount
 					if (Retreat_LowHpDo="切換隊伍")
 					{
-						
+						Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
+						LogShow(Message)
+						NowHP := Ceil((x-10)/85*100)
+						Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
+						LogShow(Message)
+						sleep 1500
 					}
-					else if (Retreat_LowHpDo="重新來過")
+					else if (Retreat_LowHpDo="重新來過" and Retreat_LowHpDocount<=2) ;只會嘗試2次，避免死循環
 					{
-						
+						Retreat_LowHpDocount++
+						NowHP := Ceil((x-10)/85*100)
+						Message = 旗艦HP : %NowHP%`%，%Retreat_LowHpDo%
+						LogShow(Message)
+						Loop
+						{
+							if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
+							{
+								C_Click(1226, 82)
+								sleep 1000
+							}
+							else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
+							{
+								C_Click(504, 551)
+								sleep 1000
+							}
+							else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
+							{
+								C_Click(790, 548)
+								sleep 1000
+							}
+							else if (DwmCheckcolor(1256, 695, 16777215))
+							{
+								C_Click(1208, 714)
+								sleep 1000
+							}
+							else if (DwmCheckcolor(1235, 650, 16777215))
+							{
+								C_Click(1152, 667)
+								break
+							}
+							sleep 350
+						}
 					}
-					Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
-					LogShow(Message)
-					NowHP := Ceil((x-10)/85*100)
-					Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
-					LogShow(Message)
-					sleep 1500
+
 				}
-				
 			}
 		} 
 		battletime := VarSetCapacity
@@ -5592,16 +5665,14 @@ C_Click(PosX, PosY)
 	sleep 800
 }
 
-GdiGetPixel( x, y)
-{
+GdiGetPixel( x, y) {
     pBitmap:= Gdip_BitmapFromHWND(UniqueID)
     Argb := Gdip_GetPixel(pBitmap, x, y)
     Gdip_DisposeImage(pBitmap)
     return ARGB
 }
 
-Capture() 
-{
+Capture(){
 FileCreateDir, capture
 formattime, nowtime,,yyyy.MM.dd_HH.mm.ss
 pBitmap := Gdip_BitmapFromHWND(UniqueID)
@@ -5611,8 +5682,7 @@ Gdip_DisposeImage(pBitmap)
 Gdip_DisposeImage(pBitmap_part)
 }
 
-Capture2(x1, y1, x2, y2) 
-{
+Capture2(x1, y1, x2, y2) {
 FileCreateDir, capture
 x2 := x2-x1, y2 := y2-y1
 pBitmap := Gdip_BitmapFromHWND(UniqueID)
@@ -5645,8 +5715,7 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 	}
 }
 
-DwmCheckcolor(x, y, color="")
-{
+DwmCheckcolor(x, y, color="") {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
@@ -5695,12 +5764,24 @@ LogShow2(logData) {
 guicontrol, , ListBoxLog, %logData%||
 }
 
-DwmGetPixel(x, y)
-{
+DwmGetPixel(x, y) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
-		Gdip_DisposeImage(pBitmap)
+		Gdip_DisposeImage(pBitmap)#SingleInstance, Force
+		#KeyHistory, 0
+		SetBatchLines, -1
+		ListLines, Off
+		SendMode Input ; Forces Send and SendRaw to use SendInput buffering for speed.
+		SetTitleMatchMode, 3 ; A window's title must exactly match WinTitle to be a match.
+		SetWorkingDir, %A_ScriptDir%
+		SplitPath, A_ScriptName, , , , thisscriptname
+		#MaxThreadsPerHotkey, 1 ; no re-entrant hotkey handling
+		; DetectHiddenWindows, On
+		; SetWinDelay, -1 ; Remove short delay done automatically after every windowing command except IfWinActive and IfWinExist
+		; SetKeyDelay, -1, -1 ; Remove short delay done automatically after every keystroke sent by Send or ControlSend
+		; SetMouseDelay, -1 ; Remove short delay done automatically after Click and MouseMove/Click/Drag
+		
 		RGB := ARGB & 0x00ffffff
 		return RGB
 	} else if (DwmMode) {
@@ -5814,13 +5895,12 @@ Isbetween(Var, Min, Max)
 }
 
 ;~ F3::
-;~ MapX1 := 10, MapY1 := 370, MapX2 := 95, MapY2 := 535
+;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img/battle/LowHP.png", 14, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 115, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
 ;~ tooltip x%x% y%y%
 ;~ } else {
 	;~ tooltip NotFound
 ;~ }
-return
-
+;~ return
