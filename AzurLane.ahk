@@ -570,9 +570,9 @@ Iniread, GdiMode, settings.ini, OtherSub, GdiMode, 0
 Iniread, ActiveMode, settings.ini, OtherSub, ActiveMode, 0
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 取色方式：
 Tab_Y -= 3
-Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
 Iniread, CloneWindowforDWM, settings.ini, OtherSub, CloneWindowforDWM, 0
 Gui, Add, CheckBox, x180 y%TAB_Y% w200 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造一個隱形視窗對其取色
+Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
 Tab_Y += 25
 Gui, Add, Radio,  x110 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
 ;~ Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vActiveMode checked%ActiveMode% , Active
@@ -1058,7 +1058,7 @@ WinMove,  %title%, , , , 1318, 758
 WinSet, Transparent, off, %title%
 Settimer, Mainsub, 2500
 Settimer, WinSub, 3200
-if (CloneWindowforDWM)
+if (DWMmode and CloneWindowforDWM)
 	gosub, CloneWindowSub
 if (EmulatorCrushCheck)
 {
