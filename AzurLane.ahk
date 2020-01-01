@@ -464,18 +464,18 @@ else if FightRoundsDo3=撤退
 	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ|撤退||
 Tab_Y+=30
 iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp
-Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦血量低於
-IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 10
-Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range5-90 +ToolTip , %Retreat_LowHpBar%
+Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦扣血高於
+IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 30
+Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range20-90 +ToolTip , %Retreat_LowHpBar%
 Tab_Y+=4
 Gui, Add, Text, x240 y%Tab_Y% w20 h20 vRetreat_LowHpBarUpdate , %Retreat_LowHpBar% 
 Gui, Add, Text, x260 y%Tab_Y% w120 h20 , `% 退出戰鬥，並
 Tab_Y-=4
-iniread, Retreat_LowHpDo, settings.ini, Battle, Retreat_LowHpDo, 切換隊伍
-if Retreat_LowHpDo=切換隊伍
-	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 切換隊伍||重新來過|
+iniread, Retreat_LowHpDo, settings.ini, Battle, Retreat_LowHpDo, 重新來過
+if Retreat_LowHpDo=重新來過
+	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 重新來過||
 else
-	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 切換隊伍|重新來過||
+	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 重新來過||
 
 
 Gui, Tab, 學　院
@@ -5545,57 +5545,139 @@ Battle()
 			}
 			if (Retreat_LowHp) ;旗艦HP過低撤退
 			{
-				DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
-				if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
+				
+				if (OriginalHP<1) ;先檢查原本HP剩多少
 				{
-					Global Retreat_LowHpDocount
-					if (Retreat_LowHpDo="切換隊伍")
+					DetectHP_Pos_X := [10, 100], DetectHP_Pos_Y := [380, 510]
+					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos_X[1], DetectHP_Pos_Y[1], DetectHP_Pos_X[2], DetectHP_Pos_Y[2]))
 					{
-						Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
+						OriginalHP := Ceil((x-10)/85*100)
+						OriginalHP2 := OriginalHP-Retreat_LowHpBar
+						Message = 旗艦HP: %OriginalHP%`%，當HP低於: %OriginalHP2%`%，%Retreat_LowHpDo%。
 						LogShow(Message)
-						NowHP := Ceil((x-10)/85*100)
-						Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
-						LogShow(Message)
-						sleep 1500
 					}
-					else if (Retreat_LowHpDo="重新來過" and Retreat_LowHpDocount<=2) ;只會嘗試2次，避免死循環
+					else if (DebugMode)
 					{
-						Retreat_LowHpDocount++
-						NowHP := Ceil((x-10)/85*100)
-						Message = 旗艦HP : %NowHP%`%，%Retreat_LowHpDo%
-						LogShow(Message)
-						Loop
+						LogShow("HP檢測中。")
+						sleep 500
+					}
+					else
+					{
+						sleep 500
+					}
+				}
+				else if (OriginalHP>=1)
+				{
+					IsPositive_Integer := if (OriginalHP-Retreat_LowHpBar)>1 ? 1 : 0
+					if (IsPositive_Integer)
+					{
+						DetectHP_Pos_X := [10, 100], DetectHP_Pos_Y := [380, 510]
+						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos_X[1], DetectHP_Pos_Y[1], DetectHP_Pos_X[2], DetectHP_Pos_Y[2]))
 						{
-							if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
+							NowHP := Ceil((x-10)/85*100)
+							if (debugMode)
 							{
-								C_Click(1226, 82)
-								sleep 1000
+								SufferHP := OriginalHP-NowHP
+								Message = 目前HP: %NowHP%`%，已扣血: %SufferHP%`%，目標: %Retreat_LowHpBar%`%。
+								LogShow(Message)
 							}
-							else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
+						}
+						if ((OriginalHP-NowHP)>=Retreat_LowHpBar)
+						{
+							SufferHP := OriginalHP-NowHP
+							Message = 旗艦扣血超過%SufferHP%`%，%Retreat_LowHpDo%
+							Loop, 200
 							{
-								C_Click(504, 551)
-								sleep 1000
+								if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
+								{
+									C_Click(1226, 82)
+									sleep 1000
+								}
+								else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
+								{
+									C_Click(504, 551)
+									sleep 1000
+								}
+								else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
+								{
+									C_Click(790, 548)
+									sleep 1000
+								}
+								else if (DwmCheckcolor(1256, 695, 16777215))
+								{
+									C_Click(1208, 714)
+									sleep 1000
+								}
+								else if (DwmCheckcolor(1235, 650, 16777215))
+								{
+									C_Click(1152, 667)
+									break
+								}
+								sleep 350
 							}
-							else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
-							{
-								C_Click(790, 548)
-								sleep 1000
-							}
-							else if (DwmCheckcolor(1256, 695, 16777215))
-							{
-								C_Click(1208, 714)
-								sleep 1000
-							}
-							else if (DwmCheckcolor(1235, 650, 16777215))
-							{
-								C_Click(1152, 667)
-								break
-							}
-							sleep 350
+						}
+					sleep 1000
+					}
+					else
+					{
+						if (ShowLog<1)
+						{
+							Message = 目前HP(%OriginalHP%`%)扣除: %Retreat_LowHpBar%`%後小於1，不撤退。
+							LogShow(Message)
+							ShowLog := 1
 						}
 					}
-
 				}
+				;~ DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
+				;~ if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
+				;~ {
+					;~ Global Retreat_LowHpDocount
+					;~ if (Retreat_LowHpDo="切換隊伍")
+					;~ {
+						;~ Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
+						;~ LogShow(Message)
+						;~ NowHP := Ceil((x-10)/85*100)
+						;~ Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
+						;~ LogShow(Message)
+						;~ sleep 1500
+					;~ }
+					;~ else if (Retreat_LowHpDo="重新來過" and Retreat_LowHpDocount<=2) ;只會嘗試2次，避免死循環
+					;~ {
+						;~ Retreat_LowHpDocount++
+						;~ NowHP := Ceil((x-10)/85*100)
+						;~ Message = 旗艦HP : %NowHP%`%，%Retreat_LowHpDo%
+						;~ LogShow(Message)
+						;~ Loop
+						;~ {
+							;~ if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
+							;~ {
+								;~ C_Click(1226, 82)
+								;~ sleep 1000
+							;~ }
+							;~ else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
+							;~ {
+								;~ C_Click(504, 551)
+								;~ sleep 1000
+							;~ }
+							;~ else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
+							;~ {
+								;~ C_Click(790, 548)
+								;~ sleep 1000
+							;~ }
+							;~ else if (DwmCheckcolor(1256, 695, 16777215))
+							;~ {
+								;~ C_Click(1208, 714)
+								;~ sleep 1000
+							;~ }
+							;~ else if (DwmCheckcolor(1235, 650, 16777215))
+							;~ {
+								;~ C_Click(1152, 667)
+								;~ break
+							;~ }
+							;~ sleep 350
+						;~ }
+					;~ }
+				;~ }
 			}
 		} 
 		battletime := VarSetCapacity
