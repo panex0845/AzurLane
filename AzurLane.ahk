@@ -2514,33 +2514,21 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	{
 		;~ LogShow("畫面已經在主線地圖") 
 	}
-	else if (Chapter=14 or Chapter=15) and (AnchorChapter="紅染1" or AnchorChapter="紅染2")
+	else if (Chapter=14 or Chapter=15 or Chapter=17 or Chapter=18) and ((AnchorChapter="紅染1" or AnchorChapter="紅染2") or (AnchorChapter="異色1" or AnchorChapter="異色2"))
 	{
 		BacktoNormalMap++
-		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1) or (BacktoNormalMap>=2))
+		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1) or (BacktoNormalMap>2))
 		{
-			LogShow("位於紅染地圖，返回主線。")
+			Message = 位於%AnchorChapter%地圖，返回主線。
+			LogShow(Message)
 			BacktoNormalMap := VarSetCapacity
 			C_Click(60, 90)
 			return
 		}
-		;~ LogShow("畫面已經在紅染地圖")
 	}
 	else if (Chapter=16) and (AnchorChapter="S.P.")
 	{
 		;~ LogShow("畫面已經在S.P.地圖") 
-	}
-	else if (Chapter=17 or Chapter=18) and (AnchorChapter="異色1" or AnchorChapter="異色2")
-	{
-		BacktoNormalMap++
-		if ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1) or (BacktoNormalMap>=2))
-		{
-			LogShow("位於異色格地圖，返回主線。")
-			BacktoNormalMap := VarSetCapacity
-			C_Click(60, 90)
-			return
-		}
-		;~ LogShow("畫面已經在異色格地圖") 
 	}
 	else if ((Chapter=14 or Chapter=15 or Chapter=16 or Chapter=17 or Chapter=18) and ((OperationSub and OperationDone<1) or (DailyGoalSub and DailyDone<1)))
 	{
@@ -4656,6 +4644,12 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 			Swipe(1221,395, 1221, 115)
 			C_Click(560, 651)
 			DelegationMission2()
+		}
+		if (DwmCheckcolor(1085, 61, 12435142)) ;如果可派出艦隊是1/4
+		{
+			Swipe(1221,395, 1221, 115)
+			C_Click(560, 651)
+			DelegationMission2()			
 		}
 	}
 	Mission1 := VarSetCapacity
