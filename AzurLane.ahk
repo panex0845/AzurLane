@@ -75,7 +75,7 @@ if (title="") or (title="ERROR") {
 }
 Run, %comspec% /c powercfg /change /monitor-timeout-ac 0,, Hide ;關閉螢幕省電模式
 iniread, SetGuiBGcolor, settings.ini, OtherSub, SetGuiBGcolor, 0
-IniRead, SetGuiBGcolor2, settings.ini, OtherSub, SetGuiBGcolor2, FFCCCC
+IniRead, SetGuiBGcolor2, settings.ini, OtherSub, SetGuiBGcolor2, FFD2D2
 if (SetGuiBGcolor)
 {
 	Gui, Color, %SetGuiBGcolor2%
@@ -561,6 +561,7 @@ Tab_Y += 30
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
 Tab_Y -= 1
 Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
+Gui Add, Button, x255 y%TAB_Y% w120 h21 gHexadecimalSub , 色票查詢工具
 Tab_Y += 30
 iniread, DebugMode, settings.ini, OtherSub, DebugMode
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , DebugMode
@@ -1014,6 +1015,12 @@ return
 
 CloneWindowSub2:
 DllCall("User32.dll\PrintWindow", "Ptr", UniqueID, "Ptr", DC, "UInt", 2)
+return
+
+HexadecimalSub:
+MsgBox, 8228, 設定精靈, 即將前往色票工具網站：https://color.adobe.com/zh/create
+ifMsgBox Yes 
+	Run, https://color.adobe.com/zh/create
 return
 
 GuiClose:
