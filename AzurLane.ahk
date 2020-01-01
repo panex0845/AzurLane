@@ -92,6 +92,8 @@ Gui, Add, Button, x20 y470 w100 h20 gstart vstart , 開始
 Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
 Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整視窗
+
+
 Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
 Gui, Add, text, x480 y20 w400 h20 vstarttext, 
 Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
@@ -569,7 +571,10 @@ Iniread, ActiveMode, settings.ini, OtherSub, ActiveMode, 0
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 取色方式：
 Tab_Y -= 3
 Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
-Gui, Add, Radio,  x180 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
+Iniread, CloneWindowforDWM, settings.ini, OtherSub, CloneWindowforDWM, 0
+Gui, Add, CheckBox, x180 y%TAB_Y% w200 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造一個隱形視窗對其取色
+Tab_Y += 25
+Gui, Add, Radio,  x110 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
 ;~ Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vActiveMode checked%ActiveMode% , Active
 
 
@@ -964,6 +969,7 @@ Guicontrolget, SetGuiBGcolor2
 Guicontrolget, DebugMode
 Guicontrolget, DwmMode
 Guicontrolget, GdiMode
+Guicontrolget, CloneWindowforDWM
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
 Iniwrite, %AutoLogin%, settings.ini, OtherSub, AutoLogin
@@ -972,7 +978,8 @@ Iniwrite, %SetGuiBGcolor2%, settings.ini, OtherSub, SetGuiBGcolor2
 Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
 Iniwrite, %DwmMode%, settings.ini, OtherSub, DwmMode
 Iniwrite, %GdiMode%, settings.ini, OtherSub, GdiMode
-Global AutoLogin, DebugMode, DwmMode, GdiMode
+Iniwrite, %CloneWindowforDWM%, settings.ini, OtherSub, CloneWindowforDWM
+Global AutoLogin, DebugMode, DwmMode, GdiMode, CloneWindowforDWM
 Critical, off
 return
 
@@ -988,6 +995,25 @@ return
 
 Showsub:
 Gui, show
+return
+
+CloneWindowSub:
+;~ DefaultDir = %A_WorkingDir%
+;~ SetWorkingDir, %ldplayer%
+;~ SetWorkingDir, DefaultDir
+Gui, CloneWindow:New, -Caption +ToolWindow, CloneWindow-%title% ;創造一個GUI
+Gui, CloneWindow:Show, w1318 h758,  ;創造一個GUI
+if !(debugMode)
+	WinSet, Transparent, 0, CloneWindow-%title%
+CloneTitle = CloneWindow-%title%
+CloneWindow := WinExist(CloneTitle)
+Global CloneTitle, CloneWindow
+DC := DllCall("user32.dll\GetDCEx", "UInt", CloneWindow, "UInt", 0, "UInt", 2)
+Settimer, CloneWindowSub2, 1000
+return
+
+CloneWindowSub2:
+DllCall("User32.dll\PrintWindow", "Ptr", UniqueID, "Ptr", DC, "UInt", 2)
 return
 
 GuiClose:
@@ -1012,6 +1038,7 @@ Guicontrol, disable, BattleTimes2
 Guicontrol, disable, Timetobattle1
 Guicontrol, disable, Timetobattle2
 Guicontrol, disable, StopBattleTime3
+Guicontrol, disable, CloneWindowforDWM
 return
 
 Start:
@@ -1031,6 +1058,8 @@ WinMove,  %title%, , , , 1318, 758
 WinSet, Transparent, off, %title%
 Settimer, Mainsub, 2500
 Settimer, WinSub, 3200
+if (CloneWindowforDWM)
+	gosub, CloneWindowSub
 if (EmulatorCrushCheck)
 {
 	Settimer, EmulatorCrushCheckSub, 300000
@@ -4221,8 +4250,8 @@ AcademyDone := VarSetCapacity
 return
 
 WinSub:
-LDplayerCheck := DwmCheckcolor(13, 25, 16041247)
-if !LDplayerCheck
+LDplayerCheck := [DwmCheckcolor(13, 25, 16041247), CloneWindowforDWM]
+if !LDplayerCheck[1] or LDplayerCheck[2]
 {
 	WinGet, Wincheck, MinMax, %title%
 	if Wincheck=-1
@@ -5720,9 +5749,15 @@ DwmCheckcolor(x, y, color="") {
 		Gdip_DisposeImage(pBitmap)
 		pix := ARGB & 0x00ffffff
 	} else if (DwmMode) {
-		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		if !(CloneWindowforDWM) {
+			hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+			pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+			DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		} else {
+			hDC := DllCall("user32.dll\GetDCEx", "UInt", CloneWindow, "UInt", 0, "UInt", 1|2)
+			pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+			DllCall("user32.dll\ReleaseDC", "UInt", CloneWindow, "UInt", hDC)
+		}
 		pix := ConvertColor(pix)
 	}
 	;~ if (DebugMode)
@@ -5766,26 +5801,19 @@ DwmGetPixel(x, y) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
-		Gdip_DisposeImage(pBitmap)#SingleInstance, Force
-		#KeyHistory, 0
-		SetBatchLines, -1
-		ListLines, Off
-		SendMode Input ; Forces Send and SendRaw to use SendInput buffering for speed.
-		SetTitleMatchMode, 3 ; A window's title must exactly match WinTitle to be a match.
-		SetWorkingDir, %A_ScriptDir%
-		SplitPath, A_ScriptName, , , , thisscriptname
-		#MaxThreadsPerHotkey, 1 ; no re-entrant hotkey handling
-		; DetectHiddenWindows, On
-		; SetWinDelay, -1 ; Remove short delay done automatically after every windowing command except IfWinActive and IfWinExist
-		; SetKeyDelay, -1, -1 ; Remove short delay done automatically after every keystroke sent by Send or ControlSend
-		; SetMouseDelay, -1 ; Remove short delay done automatically after Click and MouseMove/Click/Drag
-		
+		Gdip_DisposeImage(pBitmap)		
 		RGB := ARGB & 0x00ffffff
 		return RGB
 	} else if (DwmMode) {
-		hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
-		pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
-		DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		if !(CloneWindowforDWM) {
+			hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
+			pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+			DllCall("user32.dll\ReleaseDC", "UInt", UniqueID, "UInt", hDC)
+		} else {
+			hDC := DllCall("user32.dll\GetDCEx", "UInt", CloneWindow, "UInt", 0, "UInt", 1|2)
+			pix := DllCall("gdi32.dll\GetPixel", "UInt", hDC, "Int", x, "Int", y, "UInt")
+			DllCall("user32.dll\ReleaseDC", "UInt", CloneWindow, "UInt", hDC)
+		}
 		pix := ConvertColor(pix)
 		Return pix
 	}
