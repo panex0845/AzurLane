@@ -32,7 +32,7 @@ SetTitleMatchMode, 3
 Menu, Tray, NoStandard
 Menu, tray, add, &顯示介面, Showsub
 Menu, tray, add,  , 
-Menu, tray, add, 檢查更新, IsUpdate
+Menu, tray, add, 檢查更新, IsUpdate2
 Menu, tray, add,  , 
 Menu, Tray, Default, &顯示介面
 Menu, tray, add, 結束, Exitsub
@@ -96,8 +96,9 @@ Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整�
 
 Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
 Gui, Add, text, x480 y20 w400 h20 vstarttext, 
-Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
-Gui, Add, text, x600 y50 w320 h20 vAnchorFailedText, ; 統計 全軍覆沒：%AnchorFailedTimes%  次 ｜ 翻船機率： %rate%`%
+AnchorFailedTimes := 0
+Gui, Add, text, x480 y50 w400 h20 vAnchorTimesText, 出擊次數：0 次 ｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率： 0`%
+;~ Gui, Add, text, x640 y50 w320 h20 vAnchorFailedText, ; 統計 全軍覆沒：%AnchorFailedTimes%  次 ｜ 翻船機率： %rate%`%
 Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
@@ -1102,8 +1103,7 @@ Loop, Parse, ThisVersion
   If A_LoopField is Number
     OldVersion .= A_LoopField
 }
-if (OldVersion="")
-{
+if (OldVersion="") {
 	VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
 	return
@@ -1404,7 +1404,8 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 	AnchorTimes++ ;統計出擊次數
 	Global AnchorTimes
 	FightRoundsDoCount++ ;統計當艦隊A每出擊
-	GuiControl, ,AnchorTimesText, 出擊次數：%AnchorTimes% 次。
+	rate := Round(AnchorFailedTimes/AnchorTimes*100, 2)
+	GuiControl, ,AnchorTimesText, 出擊次數：%AnchorTimes% 次 ｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率：%rate%`%
 	LogShow("出擊～！")
     Random, x, 1056, 1225
 	Random, y, 656, 690
@@ -4797,8 +4798,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
 		rate := Round(AnchorFailedTimes/AnchorTimes*100, 2)
-		Guicontrol, ,AnchorFailedText,｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率： %rate%`%
-		Message = 出擊: %AnchorFailedTimes% 次　覆沒：%AnchorFailedTimes% 次　機率： %rate%`%
+		Message = 出擊: %AnchorTimes% 次　覆沒：%AnchorFailedTimes% 次　機率： %rate%`%
 		LogShow(Message)
 		Random, x, 100, 1000
 		Random, y, 100, 600
