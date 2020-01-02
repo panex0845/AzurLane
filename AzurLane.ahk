@@ -469,7 +469,7 @@ Tab_Y+=30
 iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp
 Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦消耗高於
 IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 30
-Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range20-90 +ToolTip , %Retreat_LowHpBar%
+Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range15-90 +ToolTip , %Retreat_LowHpBar%
 Tab_Y+=4
 Gui, Add, Text, x240 y%Tab_Y% w20 h20 vRetreat_LowHpBarUpdate , %Retreat_LowHpBar% 
 Gui, Add, Text, x260 y%Tab_Y% w120 h20 , `% 退出戰鬥，並
@@ -5633,7 +5633,9 @@ Battle()
 						if ((OriginalHP-NowHP)>=Retreat_LowHpBar)
 						{
 							SufferHP := OriginalHP-NowHP
-							Message = 旗艦消耗高於%SufferHP%`%，%Retreat_LowHpDo%
+							Message = 目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
+							LogShow(Message)
+							Message = 旗艦消耗高於%Retreat_LowHpBar%`%，%Retreat_LowHpDo%
 							LogShow(Message)
 							Loop, 200
 							{
