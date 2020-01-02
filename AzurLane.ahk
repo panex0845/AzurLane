@@ -238,7 +238,7 @@ Tab1_Y -= 5
 iniread, mood, settings.ini, Battle, mood, 強制出戰
 if mood=強制出戰
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰||不再出擊|休息1小時|休息2小時|休息3小時|休息5小時|
-else if mood=更換隊伍
+else if mood=不再出擊
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊||休息1小時|休息2小時|休息3小時|休息5小時|
 else if mood=休息1小時
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時||休息2小時|休息3小時|休息5小時|
@@ -248,6 +248,8 @@ else if mood=休息3小時
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時|休息2小時|休息3小時||休息5小時|
 else if mood=休息5小時
 	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時|休息2小時|休息3小時|休息5小時||
+else
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰||不再出擊|休息1小時|休息2小時|休息3小時|休息5小時|
 
 Tab1_Y += 35
 iniread, Use_FixKit, settings.ini, Battle, Use_FixKit
@@ -5756,7 +5758,7 @@ Swipe(x1,y1,x2,y2,swipetime=200)
 	}
 	ShiftX := Ceil((x2 - x1)/5) , ShiftY := Ceil((y2 - y1)/5), sleeptime := Ceil(swipetime/5) ;計算拖曳座標距離 時間
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA
-	sleep 50
+	sleep 20
 	Loop, 5
 	{
 		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
@@ -5766,7 +5768,7 @@ Swipe(x1,y1,x2,y2,swipetime=200)
 	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
 	Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
 	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide ;雷電4.0似乎有BUG 偶爾會卡住
-	sleep 300
+	sleep 400
 }
 
 Ld_Click(PosX,PosY)
