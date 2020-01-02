@@ -1,7 +1,7 @@
 ﻿/* Free to use, Free for life.
 	Made by panex0845 
 */ 
-Version = 
+Version := 1001
 ;@Ahk2Exe-SetName AzurLane Helper
 ;@Ahk2Exe-SetDescription AzurLane Helper
 ;@Ahk2Exe-SetVersion 1.0.0.1
@@ -540,14 +540,17 @@ Gui, Add, CheckBox, x30 y90 w150 h20 gMissionsettings vMissionSub checked%Missio
 Gui, Tab, 其　他
 Tab_Y := 90
 Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 測試取色
-Gui, Add, button, x180 y%TAB_Y% w200 h20 gForumSub, GitHub
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gForumSub, GitHub
 Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gstartemulatorsub, 啟動模擬器
-Gui, Add, button, x180 y%TAB_Y% w200 h20 gDiscordSub, Discord
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gDiscordSub, Discord
 Tab_Y += 30
 ;~ Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
 ;~ Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate2, 檢查更新
+iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
+Gui, Add, Checkbox, x320 y%TAB_Y% w125 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查
 Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gOperationSub, 執行演習
 Tab_Y += 30
@@ -605,6 +608,9 @@ if (Autostart) {
 	iniwrite, 0, settings.ini, OtherSub, Autostart
 	LogShow("出現不可預期的錯誤，自動重啟")
 	Goto, Start
+}
+else if (CheckUpdate) { ;啟動時檢查自動更新
+	gosub, Isupdate2
 }
 ;//////////////刪除雷電模擬器可能的惡意廣告檔案//////////////////
 DefaultDir = %A_WorkingDir%
@@ -964,6 +970,7 @@ return
 
 Othersettings: ;其他設定
 Critical
+Guicontrolget, CheckUpdate
 Guicontrolget, GuiHideX
 Guicontrolget, EmulatorCrushCheck
 Guicontrolget, AutoLogin
@@ -973,6 +980,7 @@ Guicontrolget, DebugMode
 Guicontrolget, DwmMode
 Guicontrolget, GdiMode
 Guicontrolget, CloneWindowforDWM
+Iniwrite, %CheckUpdate%, settings.ini, OtherSub, CheckUpdate
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
 Iniwrite, %AutoLogin%, settings.ini, OtherSub, AutoLogin
@@ -1088,30 +1096,45 @@ Run, https://github.com/panex0845/AzurLane
 return
 
 IsUpdate2:
-If (FileExist(ThisVersion.ahk))
-	FileDelete ThisVersion.ahk
-UrlDownloadToFile, https://github.com/panex0845/AzurLane/blob/master/AzurLane.ahk, ThisVersion.ahk
-FileReadLine, oldversion, ThisVersion.ahk, 4
-Loop, Parse, oldversion 
+FileReadLine, ThisVersion, ChangeLog.txt, 1
+Loop, Parse, ThisVersion
 {
-	If A_LoopField is Number
-	newver .= A_LoopField
+  If A_LoopField is Number
+    OldVersion .= A_LoopField
 }
-if newver!=Version
+if (OldVersion="")
 {
-	LogShow("檢查中，請稍後")
-	Msgbox, 4, ,　　檢查到更新，是否自動下載？
+	VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
+	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
+	return
+}
+message = 檢查更新中，目前版本: %OldVersion%
+LogShow(message)
+VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
+FileUrl := "https://github.com/panex0845/AzurLane/archive/master.zip"
+UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
+FileReadLine, ThisVersion, ChangeLog.txt, 1
+Loop, Parse, ThisVersion
+{
+  If A_LoopField is Number
+    NewVersion .= A_LoopField
+}
+if (NewVersion!=OldVersion) {
+	MsgBox, 68, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
 	IfMsgBox Yes
-		UrlDownloadToFile, https://github.com/panex0845/AzurLane/archive/master.zip, AzurLane v%newver%.zip
-	else
-		LogShow("取消更新")
+	{
+		LogShow("下載更新檔中，請稍後…")
+		UrlDownloadToFile, %FileUrl%, AzurLane v%NewVersion%.zip
+		LogShow("下載完畢")
+	}
+	IfMsgBox No
+		LogShow("取消")
 }
-else if newver=Version
-{
-	LogShow("沒有更新")
+else {
+	LogShow("沒有新版本可供下載")
 }
-FileDelete ThisVersion.ahk
-newver := ""
+NewVersion := ""
+OldVersion := ""
 return
 
 AdjustGetPixelMode:
