@@ -237,17 +237,17 @@ Gui, Add, text, x30 y%Tab1_Y% w140 h20  , 心情低落：
 Tab1_Y -= 5
 iniread, mood, settings.ini, Battle, mood, 強制出戰
 if mood=強制出戰
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰||更換隊伍|休息1小時|休息2小時|休息3小時|休息5小時|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰||不再出擊|休息1小時|休息2小時|休息3小時|休息5小時|
 else if mood=更換隊伍
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|更換隊伍||休息1小時|休息2小時|休息3小時|休息5小時|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊||休息1小時|休息2小時|休息3小時|休息5小時|
 else if mood=休息1小時
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|更換隊伍|休息1小時||休息2小時|休息3小時|休息5小時|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時||休息2小時|休息3小時|休息5小時|
 else if mood=休息2小時
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|更換隊伍|休息1小時|休息2小時||休息3小時|休息5小時|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時|休息2小時||休息3小時|休息5小時|
 else if mood=休息3小時
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|更換隊伍|休息1小時|休息2小時|休息3小時||休息5小時|
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時|休息2小時|休息3小時||休息5小時|
 else if mood=休息5小時
-	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|更換隊伍|休息1小時|休息2小時|休息3小時|休息5小時||
+	Gui, Add, DropDownList, x110 y%Tab1_Y% w90 h150 vmood gAnchorsettings, 強制出戰|不再出擊|休息1小時|休息2小時|休息3小時|休息5小時||
 
 Tab1_Y += 35
 iniread, Use_FixKit, settings.ini, Battle, Use_FixKit
@@ -1405,17 +1405,14 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 			LogShow("老婆心情低落：提督SAMA沒人性")
 			C_Click(788, 551)
 		}
-		else if mood=更換隊伍
+		else if mood=不再出擊
 		{
-			LogShow("老婆心情低落，但更換隊伍未完成，強制休息")
+			LogShow("老婆心情低落，不再出擊")
 			takeabreak := 600
-			C_Click(483, 544)
-			sleep 2000
-			C_Click(59, 88)
+			C_Click(492, 555)
 			sleep 3000
 			C_Click(1227, 67)
 			StopAnchor := 1
-			settimer, clock, -3600000
 		}
 		else if mood=休息1小時
 		{
@@ -1459,7 +1456,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		}
 		else
 		{
-			msgbox get sometihng bad
+			LogShow("心情低落選項出錯")
 		}
     }
     else if (DwmGetPixel(543, 361)=15724527) ;石油不足
@@ -4931,7 +4928,6 @@ BackAttack()
 		else
 		{
 			LogShow("伏擊錯誤")
-			Msgbox, Assalut = %Assault%
 		}
 	}
 }
@@ -5084,7 +5080,7 @@ shipsfull(byref StopAnchor)
 					}
 					else
 					{
-						Msgbox, 排序角色出錯
+						Msgbox, 排序角色出錯，為避免退役錯誤強制停止。
 					}
 				sleep 300
 				}
@@ -5553,7 +5549,7 @@ Battle()
 					{
 						OriginalHP := Ceil((x-10)/85*100)
 						OriginalHP2 := OriginalHP-Retreat_LowHpBar
-						Message = 旗艦HP: %OriginalHP%`%，當HP低於: %OriginalHP2%`%，%Retreat_LowHpDo%。
+						Message = 旗艦HP: %OriginalHP%`%，當HP＜: %OriginalHP2%`%，%Retreat_LowHpDo%。
 						LogShow(Message)
 					}
 					else if (DebugMode)
@@ -5577,9 +5573,15 @@ Battle()
 							NowHP := Ceil((x-10)/85*100)
 							if (debugMode)
 							{
-								SufferHP := OriginalHP-NowHP
-								Message = 目前HP: %NowHP%`%，已扣血: %SufferHP%`%，目標: %Retreat_LowHpBar%`%。
-								LogShow(Message)
+								HpdebugMode++
+								if (HpdebugMode=2)
+								{
+									SufferHP := OriginalHP-NowHP
+									Message = 目前HP: %NowHP%`%，已扣血: %SufferHP%`%，目標: %Retreat_LowHpBar%`%。
+									LogShow(Message)
+									sleep 2000
+									HpdebugMode := VarSetCapacity
+								}
 							}
 						}
 						if ((OriginalHP-NowHP)>=Retreat_LowHpBar)
@@ -5590,27 +5592,37 @@ Battle()
 							{
 								if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
 								{
-									C_Click(1226, 82)
+									Random, x, 1152, 1256
+									Random, y, 69, 88
+									C_Click(x, y)
 									sleep 1000
 								}
 								else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
 								{
-									C_Click(504, 551)
+									Random, x, 443, 567
+									Random, y, 540, 569
+									C_Click(x, y)
 									sleep 1000
 								}
 								else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
 								{
-									C_Click(790, 548)
+									Random, x, 726, 862
+									Random, y, 544, 570
+									C_Click(x, y)
+									sleep 2000
+								}
+								else if (DwmCheckcolor(1256, 695, 16777215)) ;迎擊
+								{
+									Random, x, 1163, 1244
+									Random, y, 700, 725
+									C_Click(x, y)
 									sleep 1000
 								}
-								else if (DwmCheckcolor(1256, 695, 16777215))
+								else if (DwmCheckcolor(1235, 650, 16777215)) ;再次出擊
 								{
-									C_Click(1208, 714)
-									sleep 1000
-								}
-								else if (DwmCheckcolor(1235, 650, 16777215))
-								{
-									C_Click(1152, 667)
+									Random, x, 1060, 1221
+									Random, y, 658, 692
+									C_Click(x, y)
 									break
 								}
 								sleep 350
