@@ -4765,11 +4765,11 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 	4Corner2 := [DwmCheckcolor(68, 703, 16777215), DwmCheckcolor(68, 703, 528417)] ;位於四個角落的移動方點
 	Z := DwmCheckcolor(661, 405, 16777215) ; "戰"鬥
 	D := DwmCheckcolor(685, 406, 16777215) ; 戰"鬥"
-	D := if (IsBetween(DwmGetPixel(397, 87), 10359570, 12400000)) ? 1 : 0 ;檢查"DEF"EAT的顏色 11359570
+	D2 := if (IsBetween(DwmGetPixel(397, 87), 10359570, 12400000)) ? 1 : 0 ;檢查"DEF"EAT的顏色 11359570
 	E := if (IsBetween(DwmGetPixel(570, 87), 10359570, 12400000)) ? 1 : 0
 	F := if (IsBetween(DwmGetPixel(723, 87), 10359570, 12400000)) ? 1 : 0
 	;~ Global
-	if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and D and E and F and Z and D)
+	if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and D2 and E and F and Z and D)
 	{
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
