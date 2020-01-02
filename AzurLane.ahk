@@ -97,7 +97,7 @@ Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整�
 Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
 Gui, Add, text, x480 y20 w400 h20 vstarttext, 
 Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
-Gui, Add, text, x600 y50 w320 h20 vAnchorFailedText, 
+Gui, Add, text, x600 y50 w320 h20 vAnchorFailedText, ; 統計 全軍覆沒：%AnchorFailedTimes%  次 ｜ 翻船機率： %rate%`%
 Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
@@ -4774,8 +4774,9 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
 		rate := Round(AnchorFailedTimes/AnchorTimes*100, 2)
-		Guicontrol, ,AnchorFailedText,｜ 全軍覆沒：%AnchorFailedTimes%  次 ｜ 翻船機率： %rate%`%
-		LogShow("==重要通知==　全軍覆沒")
+		Guicontrol, ,AnchorFailedText,｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率： %rate%`%
+		Message = 出擊: %AnchorFailedTimes% 次　覆沒：%AnchorFailedTimes% 次　機率： %rate%`%
+		LogShow(Message)
 		Random, x, 100, 1000
 		Random, y, 100, 600
 		sleep 500
