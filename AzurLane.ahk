@@ -97,7 +97,8 @@ Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整�
 Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
 Gui, Add, text, x480 y20 w400 h20 vstarttext, 
 Gui, Add, text, x480 y50 w150 h20 vAnchorTimesText, 出擊次數：0 次
-;~ Gui, Add, text, x650 y50 w150 h20 vAnchorFailedText, 旗艦大破：0 次
+Gui, Add, text, x600 y50 w25 h20, 
+Gui, Add, text, x630 y50 w150 h20 vAnchorFailedText, 
 Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
@@ -466,7 +467,7 @@ else if FightRoundsDo3=撤退
 	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ|撤退||
 Tab_Y+=30
 iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp
-Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦扣血高於
+Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦消耗高於
 IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 30
 Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range20-90 +ToolTip , %Retreat_LowHpBar%
 Tab_Y+=4
@@ -4757,19 +4758,31 @@ Loop, 30  ;等待選單開啟
 
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
+	V := if (IsBetween(DwmGetPixel(295, 84), 6500000, 7621517)) ? 1 : 0 ;檢查"VIC"TORY的顏色
+	I := if (IsBetween(DwmGetPixel(452, 84), 6500000, 7621517)) ? 1 : 0
+	C := if (IsBetween(DwmGetPixel(528, 84), 6500000, 7621517)) ? 1 : 0
+	4Corner := [DwmCheckcolor(123, 650, 16777215), DwmCheckcolor(139, 666, 16777215), DwmCheckcolor(125, 682, 16777215), DwmCheckcolor(110, 666, 16777215)] ;右下角四個閃爍正方形
+	4Corner2 := [DwmCheckcolor(68, 703, 16777215), DwmCheckcolor(68, 703, 528417)] ;位於四個角落的移動方點
+	Z := DwmCheckcolor(661, 405, 16777215) ; "戰"鬥
+	D := DwmCheckcolor(685, 406, 16777215) ; 戰"鬥"
+	D := if (IsBetween(DwmGetPixel(397, 87), 10359570, 12400000)) ? 1 : 0 ;檢查"DEF"EAT的顏色 11359570
+	E := if (IsBetween(DwmGetPixel(570, 87), 10359570, 12400000)) ? 1 : 0
+	F := if (IsBetween(DwmGetPixel(723, 87), 10359570, 12400000)) ? 1 : 0
 	;~ Global
-	;~ if (DwmCheckcolor(197, 311, 15200231) and DwmCheckcolor(550, 321, 13029318) and DwmCheckcolor(664, 346, 14608350))
-	;~ {
-		;~ AnchorFailedTimes++
-		;~ Guicontrol, ,AnchorFailedText, 旗艦大破：%AnchorFailedTimes% 次。
-		;~ LogShow("======旗艦大破======")
-		;~ Random, x, 100, 1000
-		;~ Random, y, 100, 600
-		;~ C_Click(x, y)
-	;~ }
-	if (DwmCheckcolor(123, 650, 16777215)  or DwmCheckcolor(139, 666, 16777215) or DwmCheckcolor(125, 682, 16777215) or DwmCheckcolor(110, 666, 16777215)) and (DwmCheckcolor(68, 703, 16777215) or DwmCheckcolor(68, 703, 528417) or DwmCheckcolor(661, 405, 16777215)) and DwmCheckcolor(685, 406, 16777215) and !DwmCheckcolor(1208, 658, 4379631) and DwmCheckcolor(13, 25, 16041247) ;點擊繼續
+	if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and D and E and F and Z and D)
 	{
-		LogShow("艦已靠港。")
+		Global AnchorFailedTimes
+		AnchorFailedTimes++
+		Guicontrol, ,AnchorFailedText, 全軍覆沒：%AnchorFailedTimes%  次。
+		LogShow("==重要通知==　全軍覆沒")
+		Random, x, 100, 1000
+		Random, y, 100, 600
+		sleep 500
+		C_Click(x, y)
+	}
+	else if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and V and I and C and Z and D) ;點擊繼續
+	{
+		LogShow("敵艦討伐完畢。")
 		Random, x, 100, 1000
 		Random, y, 100, 600
 		sleep 500
@@ -5579,7 +5592,13 @@ Battle()
 								if (HpdebugMode=2)
 								{
 									SufferHP := OriginalHP-NowHP
-									Message = 目前HP: %NowHP%`%，已扣血: %SufferHP%`%，目標: %Retreat_LowHpBar%`%。
+									if (SufferHP>=0)
+										Message = 目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
+									else if (SufferHP<0)
+									{
+										SufferHP := Abs(SufferHP)
+										Message = 目前HP: %NowHP%`%，維修HP: %SufferHP%`%。
+									}	
 									LogShow(Message)
 									sleep 2000
 									HpdebugMode := VarSetCapacity
@@ -5589,7 +5608,8 @@ Battle()
 						if ((OriginalHP-NowHP)>=Retreat_LowHpBar)
 						{
 							SufferHP := OriginalHP-NowHP
-							Message = 旗艦扣血超過%SufferHP%`%，%Retreat_LowHpDo%
+							Message = 旗艦消耗高於%SufferHP%`%，%Retreat_LowHpDo%
+							LogShow(Message)
 							Loop, 200
 							{
 								if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
