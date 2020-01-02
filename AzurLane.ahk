@@ -5042,8 +5042,9 @@ shipsfull(byref StopAnchor)
 					StopAnchor := 1 ;不再出擊
 					return StopAnchor
 				}
-			} until DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215) and DwmCheckcolor(13, 25, 16041247)
+			} until (DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215))
 			shipcount := VarSetCapacity
+			sleep 1300
 			Loop
 			{
 				if (DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215))
@@ -5059,7 +5060,8 @@ shipsfull(byref StopAnchor)
 							StopAnchor := 1 ;不再出擊
 							return StopAnchor
 						}
-					} until DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(13, 25, 16041247)
+					} until (DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(13, 25, 16041247))
+					sleep 1300
 					shipcount := VarSetCapacity
 					C_Click(502, 129) ;排序 等級
 					C_Click(363, 266) ;索引 全部
@@ -5105,10 +5107,10 @@ shipsfull(byref StopAnchor)
 						C_Click(833, 529)
 					if (Rarity4)
 						C_Click(991, 529)
-					if (DwmCheckcolor(821, 702, 16777215))
+					if (DwmCheckcolor(821, 702, 16777215)) ;檢查"確定"
 					{
-					C_Click(796, 702)
-					sleep 1000
+						C_Click(796, 702) ;點擊確定
+						sleep 1000
 						if (DwmCheckcolor(280, 397, 16777215) and DwmCheckcolor(1141, 380, 9718090) and DwmCheckcolor(1141, 423, 9718090)) ;如果篩選完畢發現沒有船可以退役
 						{
 							LogShow("篩選後已經無符合條件的船艦，強制停止")
@@ -5120,25 +5122,27 @@ shipsfull(byref StopAnchor)
 					}
 					else
 					{
-						Msgbox, 排序角色出錯，為避免退役錯誤強制停止。
+						LogShow("排序角色出錯，為避免退役錯誤強制停止。")
+						Loop
+						{
+							sleep 5000
+						}
 					}
 				sleep 300
 				}
 			}
-			;~ LogShow("排序完畢這裡繼續")
+			LogShow("排序退役腳色完畢，開始退役。")
 			Loop
 			{
 				if (DwmCheckcolor(1035, 683, 16777215) and DwmCheckcolor(825, 684, 16777215) and DwmCheckcolor(156, 84, 16777215))
-					C_Click(1014,677)  ;退役確定
+					C_Click(1014,677)  ;退役確定 左下角可獲得金幣...
 				else if (DwmCheckcolor(330, 208, 16777215) and DwmCheckcolor(523, 546, 16777215) and DwmCheckcolor(811, 555, 16777215)) ;如果有角色等級不為1(確定)
 					C_Click(787,546)  
-				else if (DwmCheckcolor(711, 261,16777215) and DwmCheckcolor(575, 258,16777215)) ;獲得道具
+				else if (DwmCheckcolor(576, 261, 16777215) and DwmCheckcolor(598, 273, 16777215) and DwmCheckcolor(675, 260, 16777215) and DwmCheckcolor(712, 256, 16777215) and DwmCheckcolor(634, 267, 16777215)) ;獲得道具(一行)
 					C_Click(636, 91)
-				else if (DwmCheckcolor(712, 182, 16777215) and DwmCheckcolor(576, 188, 16777215)) ;獲得道具
-					C_Click(636, 91)
-				else if (DwmCheckcolor(212, 173, 16777215) and DwmCheckcolor(986, 592, 16777215)) ;拆裝(確定)
+				else if (DwmCheckcolor(211, 175, 16777215) and DwmCheckcolor(255, 195, 16777215) and DwmCheckcolor(294, 190, 16777215) and  DwmCheckcolor(732, 578, 16777215) and DwmCheckcolor(978, 582, 16777215)) ;拆裝(確定)
 					C_Click(979, 580)
-				else if (DwmCheckcolor(211, 153, 16777215) and DwmCheckcolor(828, 615, 16777215)) ;將獲得以下材料
+				else if (DwmCheckcolor(212, 154, 16777215) and DwmCheckcolor(451, 605, 16777215) and DwmCheckcolor(506, 608, 16777215) and DwmCheckcolor(827, 606, 16777215)) ;將獲得以下材料
 					C_Click(805, 605)
 				else if (DwmCheckcolor(102, 408, 16777215) and DwmCheckcolor(184, 403, 16777215) and DwmCheckcolor(386, 405, 16777215)) ;暫無符合條件的艦船
 				{
@@ -5146,10 +5150,10 @@ shipsfull(byref StopAnchor)
 					Logshow("退役結束")
 					break
 				}
-				else if (!(DwmCheckcolor(266, 403, 16777215) and DwmCheckcolor(1141, 388, 9718090)) and DwmCheckcolor(879, 709, 16777215)) ;第一位還沒被退役
+				else if (!(DwmCheckcolor(266, 403, 16777215) and DwmCheckcolor(1141, 388, 9718090)) and (DwmCheckcolor(879, 709, 16777215) and DwmCheckcolor(1101, 706, 10856101))) ;第一位還沒被退役
 				{
 					DockCount++
-					if (DockCount>20 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
+					if (DockCount>30 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
 					{
 						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
 						DockCount := VarSetCapacity
