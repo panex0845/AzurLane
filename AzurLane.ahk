@@ -5184,10 +5184,10 @@ shipsfull(byref StopAnchor)
 						C_Click(1078,702)  ;確定
 					}
 				}
-				else
+				Try
 				{
 					IsDockCount++
-					if (IsDockCount>200 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
+					if (IsDockCount>300 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
 					{
 						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
 						IsDockCount := VarSetCapacity
