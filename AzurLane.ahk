@@ -2402,7 +2402,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 {
 	if (MissionSub and DwmCheckcolor(1063, 684, 16774127) and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
 	{
-		LogShow("執行軍事委託任務！")
+		LogShow("執行軍事委託(主線)！")
 		C_Click(1006, 712)
 		Loop, 60
 		{
@@ -3504,6 +3504,10 @@ if  (DailyGoalSub and DailyDone<1)
 					ChooseDailyParty := 1
 				}
 				Logshow("出擊每日任務！")
+				if (Retreat_LowHp) { ; 每日任務不撤退
+					Retreat_LowHp := 0
+					IsRetreat_LowHp := 1
+				}
 				C_Click(1147, 667)
 				if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(791, 546, 4355509) and DwmCheckcolor(849, 232, 4877741))
 				{
@@ -3565,6 +3569,9 @@ if  (DailyGoalSub and DailyDone<1)
 				}
 			}
 		}
+	}
+	if (IsRetreat_LowHp) {
+		Retreat_LowHp := 1
 	}
 	Iniwrite, %Today%, settings.ini, Battle, Yesterday
 	DailyBreak := VarSetCapacity
@@ -4782,16 +4789,16 @@ Loop, 30  ;等待選單開啟
 
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
-	V := if (IsBetween(DwmGetPixel(295, 84), 6500000, 7621517)) ? 1 : 0 ;檢查"VIC"TORY的顏色
-	I := if (IsBetween(DwmGetPixel(452, 84), 6500000, 7621517)) ? 1 : 0
-	C := if (IsBetween(DwmGetPixel(528, 84), 6500000, 7621517)) ? 1 : 0
+	V := IsBetween(DwmGetPixel(295, 84), 6500000, 7621517) ;檢查"VIC"TORY的顏色
+	I := IsBetween(DwmGetPixel(452, 84), 6500000, 7621517)
+	C := IsBetween(DwmGetPixel(528, 84), 6500000, 7621517)
 	4Corner := [DwmCheckcolor(123, 650, 16777215), DwmCheckcolor(139, 666, 16777215), DwmCheckcolor(125, 682, 16777215), DwmCheckcolor(110, 666, 16777215)] ;右下角四個閃爍正方形
 	4Corner2 := [DwmCheckcolor(68, 703, 16777215), DwmCheckcolor(68, 703, 528417)] ;位於四個角落的移動方點
 	Z := DwmCheckcolor(661, 405, 16777215) ; "戰"鬥
 	D := DwmCheckcolor(685, 406, 16777215) ; 戰"鬥"
-	D2 := if (IsBetween(DwmGetPixel(397, 87), 10359570, 12400000)) ? 1 : 0 ;檢查"DEF"EAT的顏色 11359570
-	E := if (IsBetween(DwmGetPixel(570, 87), 10359570, 12400000)) ? 1 : 0
-	F := if (IsBetween(DwmGetPixel(723, 87), 10359570, 12400000)) ? 1 : 0
+	D2 := IsBetween(DwmGetPixel(397, 87), 10359570, 12400000) ;檢查"DEF"EAT的顏色 11359570
+	E := IsBetween(DwmGetPixel(570, 87), 10359570, 12400000)
+	F := IsBetween(DwmGetPixel(723, 87), 10359570, 12400000)
 	;~ Global
 	if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and D2 and E and F and Z and D)
 	{
@@ -5693,56 +5700,6 @@ Battle()
 						}
 					}
 				}
-				;~ DetectHp_Pos_X := [10, Ceil((95-10)*(Retreat_LowHpBar/100)+10)], DetectHP_Pos_Y := [380, 510]
-				;~ if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHp_Pos_X[1], DetectHP_Pos_Y[1], DetectHp_Pos_X[2], DetectHP_Pos_Y[2]))
-				;~ {
-					;~ Global Retreat_LowHpDocount
-					;~ if (Retreat_LowHpDo="切換隊伍")
-					;~ {
-						;~ Message = 偵測到HP低於%Retreat_LowHpBar%`%，但%Retreat_LowHpDo%未完成
-						;~ LogShow(Message)
-						;~ NowHP := Ceil((x-10)/85*100)
-						;~ Message = 所以什麼事也不會做。X:%X% 旗艦HP : %NowHP%`%
-						;~ LogShow(Message)
-						;~ sleep 1500
-					;~ }
-					;~ else if (Retreat_LowHpDo="重新來過" and Retreat_LowHpDocount<=2) ;只會嘗試2次，避免死循環
-					;~ {
-						;~ Retreat_LowHpDocount++
-						;~ NowHP := Ceil((x-10)/85*100)
-						;~ Message = 旗艦HP : %NowHP%`%，%Retreat_LowHpDo%
-						;~ LogShow(Message)
-						;~ Loop
-						;~ {
-							;~ if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
-							;~ {
-								;~ C_Click(1226, 82)
-								;~ sleep 1000
-							;~ }
-							;~ else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
-							;~ {
-								;~ C_Click(504, 551)
-								;~ sleep 1000
-							;~ }
-							;~ else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
-							;~ {
-								;~ C_Click(790, 548)
-								;~ sleep 1000
-							;~ }
-							;~ else if (DwmCheckcolor(1256, 695, 16777215))
-							;~ {
-								;~ C_Click(1208, 714)
-								;~ sleep 1000
-							;~ }
-							;~ else if (DwmCheckcolor(1235, 650, 16777215))
-							;~ {
-								;~ C_Click(1152, 667)
-								;~ break
-							;~ }
-							;~ sleep 350
-						;~ }
-					;~ }
-				;~ }
 			}
 		} 
 		battletime := VarSetCapacity
