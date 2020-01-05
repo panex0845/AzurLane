@@ -5664,7 +5664,7 @@ Battle()
 									LogShow("BOSS出現，停止撤退！")
 							}
 						}
-						else if ((OriginalHP-NowHP)>=Retreat_LowHpBar and NotRetreat<1) ;HP過低撤退
+						if ((OriginalHP-NowHP)>=Retreat_LowHpBar and NotRetreat<1) ;HP過低撤退
 						{
 							SufferHP := OriginalHP-NowHP
 							Message = 目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
