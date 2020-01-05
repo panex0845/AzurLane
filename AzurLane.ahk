@@ -2,6 +2,7 @@
 	Made by panex0845 
 */ 
 Version := 1001
+VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 ;@Ahk2Exe-SetName AzurLane Helper
 ;@Ahk2Exe-SetDescription AzurLane Helper
 ;@Ahk2Exe-SetVersion 1.0.0.1
@@ -479,6 +480,9 @@ if Retreat_LowHpDo=重新來過
 	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 重新來過||
 else
 	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 重新來過||
+Tab_Y+=30
+iniread, Stop_LowHp, settings.ini, Battle, Stop_LowHp, 0
+Gui, Add, CheckBox, x50 y%Tab_Y% w180 h20 gAnchor3settings vStop_LowHp checked%Stop_LowHp% , 討伐BOSS時不退出戰鬥
 
 
 Gui, Tab, 學　院
@@ -617,8 +621,7 @@ else if (CheckUpdate) { ;啟動時檢查自動更新
 DefaultDir = %A_WorkingDir%
 SetWorkingDir, %ldplayer%
 OnMessage(0x53, "WM_HELP")
-if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news"))
-{
+if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news")) {
 	MsgBox, 24628, 敬告, 發現雷電模擬器中可能的惡意廣告軟體，是否自動刪除？
 	IfMsgBox Yes
 	{
@@ -649,6 +652,9 @@ if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.e
 	}
 }
 SetWorkingDir, %DefaultDir%
+While !(FileExist("ChangeLog.txt")) {
+	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
+}
 return
 
 Debug2:
@@ -891,14 +897,16 @@ Guicontrolget, FightRoundsDo3
 Guicontrolget, Retreat_LowHp
 Guicontrolget, Retreat_LowHpBar
 Guicontrolget, Retreat_LowHpDo
+Guicontrolget, Stop_LowHp
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
 Iniwrite, %Retreat_LowHp%, settings.ini, Battle, Retreat_LowHp
 Iniwrite, %Retreat_LowHpBar%, settings.ini, Battle, Retreat_LowHpBar
 Iniwrite, %Retreat_LowHpDo%, settings.ini, Battle, Retreat_LowHpDo
+Iniwrite, %Stop_LowHp%, settings.ini, Battle, Stop_LowHp
 Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
-Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo
+Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp
 Critical, off
 return
 
@@ -1104,7 +1112,6 @@ Loop, Parse, ThisVersion
     OldVersion .= A_LoopField
 }
 if (OldVersion="") {
-	VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
 	return
 }
@@ -5592,7 +5599,6 @@ Battle()
 			}
 			if (Retreat_LowHp) ;旗艦HP過低撤退
 			{
-				
 				if (OriginalHP<1) ;先檢查原本HP剩多少
 				{
 					DetectHP_Pos_X := [10, 100], DetectHP_Pos_Y := [380, 510]
@@ -5641,7 +5647,17 @@ Battle()
 								}
 							}
 						}
-						if ((OriginalHP-NowHP)>=Retreat_LowHpBar)
+						if (Stop_LowHp and NotRetreat<1) ;如果檢測到打王則不撤退
+						{
+							Bossicon := DwmCheckcolor(371, 61, 16777215)
+							if (Bossicon and Dwmgetpixel(192, 79)!=16777215) 
+							{
+								NotRetreat := 1
+								if (debugmode)
+									LogShow("BOSS出現，停止撤退！")
+							}
+						}
+						else if ((OriginalHP-NowHP)>=Retreat_LowHpBar and NotRetreat<1) ;HP過低撤退
 						{
 							SufferHP := OriginalHP-NowHP
 							Message = 目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
