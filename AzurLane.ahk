@@ -553,7 +553,7 @@ Tab_Y += 30
 ;~ Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
 ;~ Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
-Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate2, 檢查更新
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate, 檢查更新
 iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
 Gui, Add, Checkbox, x320 y%TAB_Y% w125 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查
 Tab_Y += 30
@@ -1119,26 +1119,33 @@ message = 檢查更新中，目前版本: %OldVersion%
 LogShow(message)
 VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 FileUrl := "https://github.com/panex0845/AzurLane/archive/master.zip"
-UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
-FileReadLine, ThisVersion, ChangeLog.txt, 1
+UrlDownloadToFile, %VersionUrl%, Temp.txt
+FileReadLine, ThisVersion, Temp.txt, 1
 Loop, Parse, ThisVersion
 {
   If A_LoopField is Number
     NewVersion .= A_LoopField
 }
+OnMessage(0x53, "Update_HELP")
 if (NewVersion!=OldVersion) {
-	MsgBox, 68, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
+	MsgBox, 16388, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
 	IfMsgBox Yes
 	{
 		LogShow("下載更新檔中，請稍後…")
 		UrlDownloadToFile, %FileUrl%, AzurLane v%NewVersion%.zip
+		FileMove, temp.txt, ChangeLog.txt, 1
+		TrayTip, AzurLane, 更新檔下載完畢
 		LogShow("下載完畢")
 	}
 	IfMsgBox No
+	{
 		LogShow("取消")
+		FileDelete, temp.txt
+	}
 }
 else {
 	LogShow("沒有新版本可供下載")
+	FileDelete, temp.txt
 }
 NewVersion := ""
 OldVersion := ""
@@ -6032,6 +6039,13 @@ MinMax(type := "max", values*) {
 	Sort, x, % "d`; N" (type = "max" ? " R" : "")
 	return type = "avg" ? y/c : SubStr(x, 1, InStr(x, ";") - 1)
 }
+
+
+Update_HELP()
+{
+	Run, temp.txt
+}
+
 
 WM_HELP()
 {
