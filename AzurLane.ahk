@@ -87,8 +87,8 @@ IniRead, emulatoradb, settings.ini, emulator, emulatoradb, 0
 Gui, Add, DropDownList, x270 y15 w40 h300 vemulatoradb ginisettings Choose%emulatoradb%, 1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|0||
 GuicontrolGet, emulatoradb
 Gui Add, Text,  x330 y20 w80 h20 , 容許誤差：
-IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 2000
-Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, %AllowanceValue%
+IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 20
+Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, 15
 Gui, Add, Button, x20 y470 w100 h20 gstart vstart , 開始
 Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
@@ -1355,6 +1355,7 @@ return
 ReAnchorSub:
 Guicontrol, disable, ReAnchorSub
 LogShow("再次出擊！")
+gosub, TabFunc
 StopAnchor := VarSetCapacity
 StopBattleTimeCount := VarSetCapacity
 WeighAnchorCount := VarSetCapacity
@@ -5894,15 +5895,28 @@ DwmCheckcolor(x, y, color="") {
 		}
 		pix := ConvertColor(pix)
 	}
-	;~ if (DebugMode)
+	tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
+	pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
+	distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+	if (DebugMode) {
+		if (distance >0 and distance<Allowance)	{
+			Message = Color(%x%, %y%, %color%) 誤差:%distance% pix: %pix%
+			LogShow(Message)
+			Capture()
+		}
+	}
+	;~ if (debugMode)
 	;~ {
-		;~ Message = (%x%, %y%, %color%) & pix: %pix%
-		;~ LogShow(Message)
+		;~ if(distance<=Allowance)
+			;~ YesNo := 1
+		;~ else
+			;~ YesNo := 0
+		;~ message = %YesNo%: Color(%x%, %y%, %color%) 誤差:%distance%
+		;~ LogShow(message)
 	;~ }
-	if (Allowance>=abs(color-pix))
+	if (distance<Allowance)
 		return 1
-	else 
-		return 0
+	return 0
 }
 
 GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
@@ -6040,12 +6054,10 @@ MinMax(type := "max", values*) {
 	return type = "avg" ? y/c : SubStr(x, 1, InStr(x, ";") - 1)
 }
 
-
 Update_HELP()
 {
 	Run, temp.txt
 }
-
 
 WM_HELP()
 {
