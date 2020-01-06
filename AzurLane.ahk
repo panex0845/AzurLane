@@ -4249,10 +4249,10 @@ if (AcademyDone<1)
 					LogShow("確認使用教材以訓練技能！")
 					C_Click(789, 541)
 				}
-				else if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(274, 165, 13022901))
+				else if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(208, 59, 14610431))
 				{
-					sleep 5000
-					if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(274, 165, 13022901))
+					sleep 4000
+					if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(208, 59, 14610431))
 					{
 						LogShow("學習結束～！")
 						learnt := 1
@@ -4261,6 +4261,7 @@ if (AcademyDone<1)
 						break
 					}
 				}
+				sleep 300
 			}
 		}
 		sleep 300
@@ -4935,6 +4936,13 @@ Message_Normal()
 		LogShow("出現維修工具，點擊取消！") ;有取消跟確認的
 		Random, x, 466, 578
 		Random, y, 471, 493
+		C_Click(x, y)
+	}
+	else if (DwmCheckcolor(332, 226, 16777215) and DwmCheckcolor(396, 244, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn_Fix, 12718146, 13818146))
+	{
+		LogShow("出現維修工具，點擊取消2！") ;有取消跟確認的
+		Random, x, 458, 576
+		Random, y, 466, 493
 		C_Click(x, y)
 	}
 }
@@ -5895,6 +5903,7 @@ DwmCheckcolor(x, y, color="") {
 		}
 		pix := ConvertColor(pix)
 	}
+	;~ Allowance2 := 40
 	;~ tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
 	;~ pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
 	;~ distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
@@ -5907,14 +5916,17 @@ DwmCheckcolor(x, y, color="") {
 	;~ }
 	;~ if (debugMode)
 	;~ {
-		;~ if(distance<=Allowance)
+		;~ if(distance>=30 and distance<=50)
+		;~ {
 			;~ YesNo := 1
+			;~ message = %YesNo%: Color(%x%, %y%, %color%) 誤差:%distance%
+			;~ LogShow(message)
+			
+		;~ }
 		;~ else
 			;~ YesNo := 0
-		;~ message = %YesNo%: Color(%x%, %y%, %color%) 誤差:%distance%
-		;~ LogShow(message)
 	;~ }
-	;~ if (distance<Allowance)
+	;~ if (distance<Allowance2)
 		;~ return 1
 	;~ return 0
 	if (Allowance>=abs(color-pix))
