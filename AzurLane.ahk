@@ -87,8 +87,8 @@ IniRead, emulatoradb, settings.ini, emulator, emulatoradb, 0
 Gui, Add, DropDownList, x270 y15 w40 h300 vemulatoradb ginisettings Choose%emulatoradb%, 1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|0||
 GuicontrolGet, emulatoradb
 Gui Add, Text,  x330 y20 w80 h20 , 容許誤差：
-IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 20
-Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, 20
+IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 2000
+Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, %AllowanceValue%
 Gui, Add, Button, x20 y470 w100 h20 gstart vstart , 開始
 Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
@@ -4254,11 +4254,11 @@ if (AcademyDone<1)
 					sleep 5000
 					if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(274, 165, 13022901))
 					{
-					LogShow("學習結束～！")
-					learnt := 1
-					C_Click(56, 94)
-					sleep 1000
-					break
+						LogShow("學習結束～！")
+						learnt := 1
+						C_Click(56, 94)
+						sleep 1000
+						break
 					}
 				}
 			}
@@ -5895,16 +5895,16 @@ DwmCheckcolor(x, y, color="") {
 		}
 		pix := ConvertColor(pix)
 	}
-	tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
-	pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
-	distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
-	if (DebugMode) {
-		if (distance >0 and distance<Allowance)	{
-			Message = Color(%x%, %y%, %color%) 誤差:%distance% pix: %pix%
-			LogShow(Message)
-			Capture()
-		}
-	}
+	;~ tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
+	;~ pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
+	;~ distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+	;~ if (DebugMode) {
+		;~ if (distance >0 and distance<Allowance)	{
+			;~ Message = Color(%x%, %y%, %color%) 誤差:%distance% pix: %pix%
+			;~ LogShow(Message)
+			;~ Capture()
+		;~ }
+	;~ }
 	;~ if (debugMode)
 	;~ {
 		;~ if(distance<=Allowance)
@@ -5914,7 +5914,10 @@ DwmCheckcolor(x, y, color="") {
 		;~ message = %YesNo%: Color(%x%, %y%, %color%) 誤差:%distance%
 		;~ LogShow(message)
 	;~ }
-	if (distance<Allowance)
+	;~ if (distance<Allowance)
+		;~ return 1
+	;~ return 0
+	if (Allowance>=abs(color-pix))
 		return 1
 	return 0
 }
