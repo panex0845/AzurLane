@@ -5640,7 +5640,8 @@ Battle()
 						if (Stop_LowHp and NotRetreat<1) ;如果檢測到打王則不撤退
 						{
 							Bossicon := DwmCheckcolor(371, 61, 16777215)
-							if (Bossicon and Dwmgetpixel(192, 79)!=16777215) 
+							Bossicon2 :=DwmCheckcolor(331, 63, 16777215)
+							if (Bossicon and Bossicon2 and Dwmgetpixel(192, 79)!=16777215) 
 							{
 								NotRetreat := 1
 								if (debugmode)
