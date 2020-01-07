@@ -1087,9 +1087,7 @@ Settimer, WinSub, 3200
 if (DWMmode and CloneWindowforDWM)
 	gosub, CloneWindowSub
 if (EmulatorCrushCheck)
-{
-	Settimer, EmulatorCrushCheckSub, 300000
-}
+	Settimer, EmulatorCrushCheckSub, 120000
 return
 
 ForumSub:
@@ -1201,80 +1199,56 @@ else
 return
 
 EmulatorCrushCheckSub:
-if (EmulatorCrushCheckCount<1) ;檢查6個點
+if (DwmCheckcolor(432, 115, 907775) and DwmCheckcolor(446, 116, 16768000) and DwmCheckcolor(441, 120, 16201485) and DwmCheckcolor(633, 596, 16777215)) ;遊戲閃退 位於模擬器桌面
 {
-	CheckPostion1 := DwmGetpixel(50, 95)
-	CheckPostion2 := DwmGetpixel(582, 74)
-	CheckPostion3 := DwmGetpixel(961, 242)
-	CheckPostion4 := DwmGetpixel(320, 215)
-	CheckPostion5 := DwmGetpixel(778, 583)
-	CheckPostion6 := DwmGetpixel(312, 446)
-	CheckPostion7 := DwmGetpixel(164, 173)
+	LogShow("=========遊戲閃退，重啟=========")
+	EmulatorCrushCheckCount := VarSetCapacity
+	iniwrite, 1, settings.ini, OtherSub, Autostart
+	runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+	sleep 10000
+	reload
 }
-EmulatorCrushCheckCount++
-if (EmulatorCrushCheckCount>1)
+Loop, 3
 {
-	if (DwmCheckcolor(432, 115, 907775) and DwmCheckcolor(446, 116, 16768000) and DwmCheckcolor(441, 120, 16201485) and DwmCheckcolor(633, 596, 16777215)) ;遊戲閃退 位於模擬器桌面
+	EmulatorCrushCheckCount++
+	CheckPostion%EmulatorCrushCheckCount% := [DwmGetpixel(50, 95), DwmGetpixel(582, 74), DwmGetpixel(961, 242),DwmGetpixel(320, 215), DwmGetpixel(778, 583), DwmGetpixel(312, 446), DwmGetpixel(164, 173)]
+	For k, v in CheckPostion%EmulatorCrushCheckCount%
+		s%EmulatorCrushCheckCount%%k% := v
+	if (EmulatorCrushCheckCount=3)
 	{
-		LogShow("=========遊戲閃退，重啟=========")
-		EmulatorCrushCheckCount := VarSetCapacity
-		iniwrite, 1, settings.ini, OtherSub, Autostart
-		runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
-		sleep 10000
-		reload
-	}
-	else if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7 and DwmCheckcolor(13, 25, 16041247))  ;如果6個點顏色相同，推定當機
-	{
-		sleep 500
-		if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
+		Loop, 3
 		{
-			sleep 500
-			if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
-			{
-				if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(1148, 465, 16777215) and DwmCheckcolor(996, 66, 16729459) and DwmCheckcolor(1143, 436, 14593618)) ;如果在主畫面
-				{
-					Random, x, 38, 75
-					Random, y, 73, 105
-					C_Click(x, y) ;進入個人資訊頁面
-					MyData := 1
-					sleep 1500
-				}
-				if (DwmGetpixel(50, 95)=CheckPostion1 and DwmGetpixel(582, 74)=CheckPostion2 and DwmGetpixel(961, 242)=CheckPostion3 and DwmGetpixel(320, 215)=CheckPostion4 and DwmGetpixel(778, 583)=CheckPostion5 and DwmGetpixel(312, 446)=CheckPostion6 and DwmGetpixel(164, 173)=CheckPostion7) ;再檢查一次
-				{
-					if (DebugMode)
-						Capture() 
-					LogShow("=========模擬器當機，重啟=========")
-					EmulatorCrushCheckCount := VarSetCapacity
-					iniwrite, 1, settings.ini, OtherSub, Autostart
-					runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
-					sleep 10000
-					reload
-				}
-				else if (MyData=1)
-				{
-					MyData := VarSetCapacity
-					Loop, 20
-					{
-						if (DwmCheckcolor(161, 57, 14609407)) ;如果還在個人資訊頁面
-						{
-							Random, x, 38, 75
-							Random, y, 73, 105
-							C_Click(x, y) ;離開個人資訊頁面
-							sleep 1500
-						}
-						else
-						{
-							break
-						}
-					}
-				}
-			}
+			Check1%A_index% := CheckPostion%A_index%[1]
+			Check2%A_index% := CheckPostion%A_index%[2]
+			Check3%A_index% := CheckPostion%A_index%[3]
+			Check4%A_index% := CheckPostion%A_index%[4]
+			Check5%A_index% := CheckPostion%A_index%[5]
+			Check6%A_index% := CheckPostion%A_index%[6]
+			Check7%A_index% := CheckPostion%A_index%[7]
 		}
-		EmulatorCrushCheckCount := VarSetCapacity	
-	}
-	else
-	{
-		;~ LogShow("=====沒事兒=====")
+		if (Check11=Check12 and Check11=Check13)
+			if (Check21=Check22 and Check21=Check23)
+				if (Check31=Check32 and Check31=Check33)
+					if (Check41=Check42 and Check41=Check43)
+						if (Check51=Check52 and Check51=Check53)
+							if (Check61=Check62 and Check61=Check63)
+								if (Check71=Check72 and Check71=Check73)
+								{
+									Checkzz++
+									if (Checkzz=5)
+									{
+										if (DebugMode)
+											Capture() 
+										LogShow("=========模擬器當機，重啟=========")
+										EmulatorCrushCheckCount := VarSetCapacity
+										iniwrite, 1, settings.ini, OtherSub, Autostart
+										runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+										sleep 10000
+										reload
+									}
+								} else {
+									Checkzz := VarSetCapacity
+								}
 		EmulatorCrushCheckCount := VarSetCapacity
 	}
 }
