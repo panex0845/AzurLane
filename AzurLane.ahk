@@ -1235,7 +1235,7 @@ Loop, 3
 								if (Check71=Check72 and Check71=Check73)
 								{
 									Checkzz++
-									if (Checkzz=5)
+									if (Checkzz=12)
 									{
 										if (DebugMode)
 											Capture() 
@@ -1246,12 +1246,12 @@ Loop, 3
 										sleep 10000
 										reload
 									}
-								} else {
-									Checkzz := VarSetCapacity
 								}
 		EmulatorCrushCheckCount := VarSetCapacity
 	}
+	return
 }
+Checkzz := VarSetCapacity
 return
 
 ResetOperationSub:
