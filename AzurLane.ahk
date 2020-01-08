@@ -2406,6 +2406,10 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 				C_Click(58, 92)
 				sleep 3000
 			}
+			else if (DwmCheckcolor(143, 686, 16777215))
+			{
+				break
+			}
 			sleep 1000
 		}
 	}
