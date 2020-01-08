@@ -1029,7 +1029,7 @@ CloneTitle = CloneWindow-%title%
 CloneWindow := WinExist(CloneTitle)
 Global CloneTitle, CloneWindow
 DC := DllCall("user32.dll\GetDCEx", "UInt", CloneWindow, "UInt", 0, "UInt", 2)
-Settimer, CloneWindowSub2, 1000
+Settimer, CloneWindowSub2, 500
 return
 
 CloneWindowSub2:
@@ -1272,7 +1272,7 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0101 or Nowtime=1301)
+	if (NowTime=0101 or Nowtime=1301 or Nowtime=1801)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
 		OperationDone := VarSetCapacity  ;重置演習判斷
@@ -1628,6 +1628,11 @@ if (Withdraw and Offensive)
 				if (yy>660)
 				{
 					Swipe(138,300,148,215)
+					break
+				}
+				if (xx>1180 and yy>420)
+				{
+					Swipe(750,300,650,300)
 					break
 				}
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279) and !(DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215))) ;如果在限時(無限時)地圖
