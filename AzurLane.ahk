@@ -1475,7 +1475,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 			LogShow("心情低落選項出錯")
 		}
     }
-    else if (DwmGetPixel(543, 361)=15724527) ;石油不足
+    if (DwmCheckcolor(543, 361, 15724527)) ;石油不足
     {
         LogShow("石油不足，停止出擊到永遠！")
         C_Click(1230, 74)
