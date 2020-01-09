@@ -4157,7 +4157,7 @@ if (AcademyDone<1)
 				sleep 500
 			}
 		}
-		if (DwmCheckcolor(875, 178, 16774127) and AcademyTactics and learnt<1)
+		if (DwmCheckcolor(875, 178, 16776175) and AcademyTactics and learnt<1)
 		{
 			LogShow("我們真的學不來！")
 			C_Click(740, 166) ;點擊學院
@@ -5600,8 +5600,8 @@ Battle()
 			{
 				if (OriginalHP<1) ;先檢查原本HP剩多少
 				{
-					DetectHP_Pos_X := [10, 100], DetectHP_Pos_Y := [380, 510]
-					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos_X[1], DetectHP_Pos_Y[1], DetectHP_Pos_X[2], DetectHP_Pos_Y[2]))
+					DetectHP_Pos := [10, 400, 101, 510]
+					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 					{
 						OriginalHP := Ceil((x-10)/85*100)
 						OriginalHP2 := OriginalHP-Retreat_LowHpBar
@@ -5623,8 +5623,8 @@ Battle()
 					IsPositive_Integer := if (OriginalHP-Retreat_LowHpBar)>1 ? 1 : 0
 					if (IsPositive_Integer)
 					{
-						DetectHP_Pos_X := [10, 100], DetectHP_Pos_Y := [380, 510]
-						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos_X[1], DetectHP_Pos_Y[1], DetectHP_Pos_X[2], DetectHP_Pos_Y[2]))
+						DetectHP_Pos := [10, 400, 101, 510]
+						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 						{
 							NowHP := Ceil((x-10)/85*100)
 							if (debugMode)
