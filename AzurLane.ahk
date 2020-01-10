@@ -3931,7 +3931,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
 				{
 					Part_AircraftPos := dwmgetpixel(x,y)
 					LogShow("購買艦載機部件T3(金幣)")
@@ -3961,7 +3961,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
 				{
 					Part_CannonPos := dwmgetpixel(x,y)
 					LogShow("購買主砲部件T3(金幣)")
@@ -3991,7 +3991,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
 				{
 					Part_torpedoPos := dwmgetpixel(x,y)
 					LogShow("購買魚雷部件T3(金幣)")
@@ -4021,7 +4021,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Anti_Aircraft.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Anti_Aircraft and Part_Anti_AircraftCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Anti_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Anti_Aircraft and Part_Anti_AircraftCoin<1) 
 				{
 					Part_Anti_AircraftPos := dwmgetpixel(x,y)
 					LogShow("購買防空砲部件(金幣)")
@@ -4051,7 +4051,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Common.png", 95, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Common.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
 				{
 					Part_CommonPos := dwmgetpixel(x,y)
 					LogShow("購買共通部件(金幣)")
@@ -4081,7 +4081,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Item_Water.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Water and Item_WaterCoin<1) 
+				if (GdipImageSearch(x, y, "img/Item_Water.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Water and Item_WaterCoin<1) 
 				{
 					Item_WaterPos := dwmgetpixel(x,y)
 					LogShow("購買秘製冷卻水(金幣)")
@@ -4111,7 +4111,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
+				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
 				{
 					Item_TempuraPos := dwmgetpixel(x,y)
 					LogShow("購買天婦羅(金幣)")
@@ -5781,8 +5781,6 @@ Swipe(x1,y1,x2,y2,swipetime=200)
 		WinSet, Transparent, 1, %HideGuiID%
 	}
 	ShiftX := Ceil((x2 - x1)/5) , ShiftY := Ceil((y2 - y1)/5), sleeptime := Ceil(swipetime/5) ;計算拖曳座標距離 時間
-	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA
-	sleep 20
 	Loop, 5
 	{
 		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
@@ -6075,7 +6073,7 @@ Isbetween(Var, Min, Max)
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 115, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img/Part_Cannon.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
 ;~ tooltip x%x% y%y%
 ;~ } else {
