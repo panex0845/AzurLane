@@ -3158,7 +3158,7 @@ return
 BtnCheck:
     Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
     Offensive := DwmCheckcolor(1234, 703, 16239426) ;Checkcolor(1234, 703, 4294429506)
-    WeighAnchor1 := DwmCheckcolor(132, 54, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
+    WeighAnchor1 := DwmCheckcolor(123, 57, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
     WeighAnchor2 := DwmCheckcolor(160, 73, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
 return 
 
