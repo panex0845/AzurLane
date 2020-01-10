@@ -3261,7 +3261,7 @@ Loop
 		LogShow("演習出擊。")
 		C_Click(1089, 689)
 		sleep 1300
-		if (DwmCheckcolor(529, 359, 16249847))
+		if (DwmCheckcolor(529, 359, 16249847) and DwmCheckcolor(997, 65, 16729459))
 		{
 			LogShow("演習結束！")
 			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
