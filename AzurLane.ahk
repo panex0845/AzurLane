@@ -1655,6 +1655,10 @@ if (Withdraw and Offensive)
 					C_Click(276, 619)
 					Break
 				}
+				if (DwmCheckcolor(449, 359, 16249847)) ;撿到子彈
+				{
+					break
+				}
 				BackAttack()
 				sleep 1000
 			}
