@@ -2394,7 +2394,8 @@ if (Withdraw and Offensive)
 }
 else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 {
-	if (MissionSub and DwmCheckcolor(1063, 684, 16774127) and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
+	CommisionDone := DwmCheckcolor(1063, 682, 16776175, 10)
+	if (MissionSub and  CommisionDone and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
 	{
 		LogShow("執行軍事委託(主線)！")
 		C_Click(1006, 712)
@@ -2525,10 +2526,10 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			return
 		}
 	}
-	if (WeighAnchorCount>=8)
+	if (WeighAnchorCount>=5) ;每打5輪回首頁 (檢查一些在首頁才會有的功能)
 	{
 		WeighAnchorCount := VarSetCapacity
-		C_Click(1229, 71) ;回首頁 (檢查一些在首頁才會有的功能)
+		C_Click(1229, 71) 
 		sleep 2000
 		return
 	}
@@ -4227,6 +4228,10 @@ if (AcademyDone<1)
 						}
 					}
 				}
+				else if (DwmCheckcolor(330, 210, 16777215) and DwmCheckcolor(414, 226, 16777215) and DwmCheckcolor(599, 549, 4353453) and DwmCheckcolor(661, 559, 16777215)) ;技能滿等
+				{
+					C_Click(639, 545)
+				}
 				else if (DwmCheckcolor(329, 210, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(810, 558, 16777215)) 
 				{
 					LogShow("確認使用教材以訓練技能！")
@@ -5867,7 +5872,7 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 	}
 }
 
-DwmCheckcolor(x, y, color="") {
+DwmCheckcolor(x, y, color="", Variation=20) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
@@ -5885,35 +5890,25 @@ DwmCheckcolor(x, y, color="") {
 		}
 		pix := ConvertColor(pix)
 	}
-	;~ Allowance2 := 40
-	;~ tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
-	;~ pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
-	;~ distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
-	;~ if (DebugMode) {
-		;~ if (distance >0 and distance<Allowance)	{
-			;~ Message = Color(%x%, %y%, %color%) 誤差:%distance% pix: %pix%
-			;~ LogShow(Message)
-			;~ Capture()
-		;~ }
-	;~ }
-	;~ if (debugMode)
-	;~ {
-		;~ if(distance>=30 and distance<=50)
-		;~ {
-			;~ YesNo := 1
-			;~ message = %YesNo%: Color(%x%, %y%, %color%) 誤差:%distance%
+	if (Variation>=1) {
+		color := DecToHex(color)
+		pix := DecToHex(pix)
+		tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
+		pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
+		distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+		if (distance<=Variation) {
+			;~ if (debugmode)	{
+			;~ message = x:%x% y:%y% c: %color% p: %pix% v: %distance%
 			;~ LogShow(message)
-			
-		;~ }
-		;~ else
-			;~ YesNo := 0
-	;~ }
-	;~ if (distance<Allowance2)
-		;~ return 1
-	;~ return 0
+			;~ }
+			return 1
+		}
+		return 0
+	} else {
 	if (Allowance>=abs(color-pix))
 		return 1
 	return 0
+	}
 }
 
 GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
