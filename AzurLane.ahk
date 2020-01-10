@@ -5601,7 +5601,7 @@ Battle()
 				if (OriginalHP<1) ;先檢查原本HP剩多少
 				{
 					DetectHP_Pos := [10, 400, 100, 510]
-					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 25, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 					{
 						OriginalHP := Ceil((x-10)/85*100)
 						OriginalHP2 := OriginalHP-Retreat_LowHpBar
@@ -5624,7 +5624,7 @@ Battle()
 					if (IsPositive_Integer)
 					{
 						DetectHP_Pos := [10, 400, 100, 510]
-						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 25, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 18, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 						{
 							NowHP := Ceil((x-10)/85*100)
 							if (debugMode)
