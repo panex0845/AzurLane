@@ -5911,7 +5911,7 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 	}
 }
 
-DwmCheckcolor(x, y, color="", Variation=20) {
+DwmCheckcolor(x, y, color="", Variation=10) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
