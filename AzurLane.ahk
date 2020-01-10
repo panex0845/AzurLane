@@ -2403,6 +2403,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 		{
 			sleep 500
 		} Until DwmCheckcolor(135, 58, 15725567)
+		sleep 1500
 		DelegationMission()
 		sleep 1000
 		Loop, 10
@@ -3753,7 +3754,7 @@ if (AcademyDone<1)
 	Academycount := VarSetCapacity
 	Loop
 	{
-		 if (GdipImageSearch(x, y, "img/AcademyOil.png", 100, 8, 95, 298, 542, 723) and AcademyOil and GetOil<1) ;
+		if (GdipImageSearch(x, y, "img/AcademyOil.png", 100, 8, 95, 298, 542, 723) and AcademyOil and GetOil<1) ;
 		{
 			LogShow("發現石油，高雄發大財！")
 			GetOil := 1
@@ -4158,7 +4159,7 @@ if (AcademyDone<1)
 				sleep 500
 			}
 		}
-		if (DwmCheckcolor(875, 178, 16776175) and AcademyTactics and learnt<1)
+		if (DwmCheckcolor(875, 178, 16776175) and AcademyTactics and learnt<1) ;學院出現！
 		{
 			LogShow("我們真的學不來！")
 			C_Click(740, 166) ;點擊學院
@@ -4252,6 +4253,39 @@ if (AcademyDone<1)
 				sleep 300
 			}
 		}
+		if (DwmCheckcolor(532, 233, 16776175) and Classroom and ClassroomDone<1) ;大講堂出現！
+		{
+			C_Click(460, 208)
+			Loop
+			{
+				if (DwmCheckcolor(78, 547, 16775151) and DwmCheckcolor(190, 67, 14610431)) ;等待進入大講堂
+					break
+				sleep 300
+			}
+			sleep 500
+			Loop
+			{
+				EndLesson := DwmCheckcolor(1229, 677, 11382445) ;結束課程
+				if (EndLesson) ;結束課程
+				{
+					Random, x, 1068, 1224
+					Random, y, 667, 699
+					C_Click(x, y)
+				}
+				if (DwmCheckcolor(330, 210, 16777215) and DwmCheckcolor(414, 226, 16777215) and DwmCheckcolor(790, 556, 4355509))
+				{
+					C_Click(790, 554) ;確定結束課程
+				}
+				V := DwmCheckcolor(412, 99, 6520237) , I := DwmCheckcolor(474, 101, 6520237), C := DwmCheckcolor(551, 100, 6520237)
+				if (V and I and C)
+				{
+					Random, x, 267, 1108
+					Random, y, 81, 178
+					C_Click(x, y)
+				}
+			}
+		}
+		
 		sleep 300
 		Academycount++
 		if (Academycount>20)
@@ -4544,9 +4578,10 @@ DelegationMission() {
 	{
 		sleep 300
 	} until DwmCheckcolor(52, 171, 16777207) ;等待切換到每日頁面
+	sleep 500
 	Loop, 220
 	{
-		sleep 300
+		sleep 400
 		if (DwmCheckcolor(181, 136, 11358530)) 
 		{	
 			LogShow("完成委託任務")
