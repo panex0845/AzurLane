@@ -1235,7 +1235,7 @@ Loop, 3
 								if (Check71=Check72 and Check71=Check73)
 								{
 									Checkzz++
-									if (Checkzz=12)
+									if (Checkzz=9)
 									{
 										if (DebugMode)
 											Capture() 
@@ -5665,14 +5665,14 @@ Battle()
 					IsPositive_Integer := if (OriginalHP-Retreat_LowHpBar)>1 ? 1 : 0
 					if (IsPositive_Integer)
 					{
-						DetectHP_Pos := [10, 400, 100, 510]
+						DetectHP_Pos := [10, 410, 100, 510]
 						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 20, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 						{
 							NowHP := Ceil((x-10)/85*100)
 							if (debugMode)
 							{
 								HpdebugMode++
-								if (HpdebugMode=2)
+								if (HpdebugMode=5)
 								{
 									SufferHP := OriginalHP-NowHP
 									if (SufferHP>=0)
@@ -5683,7 +5683,6 @@ Battle()
 										Message = 目前HP: %NowHP%`%，維修HP: %SufferHP%`%。
 									}	
 									LogShow(Message)
-									sleep 2000
 									HpdebugMode := VarSetCapacity
 								}
 							}
@@ -5746,7 +5745,7 @@ Battle()
 								sleep 350
 							}
 						}
-					sleep 1000
+					sleep 500
 					}
 					else
 					{
