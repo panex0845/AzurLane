@@ -1087,7 +1087,7 @@ Settimer, WinSub, 3200
 if (DWMmode and CloneWindowforDWM)
 	gosub, CloneWindowSub
 if (EmulatorCrushCheck)
-	Settimer, EmulatorCrushCheckSub, 120000
+	Settimer, EmulatorCrushCheckSub, 60000
 return
 
 ForumSub:
@@ -1214,6 +1214,7 @@ Loop, 3
 	CheckPostion%EmulatorCrushCheckCount% := [DwmGetpixel(50, 95), DwmGetpixel(582, 74), DwmGetpixel(961, 242),DwmGetpixel(320, 215), DwmGetpixel(778, 583), DwmGetpixel(312, 446), DwmGetpixel(164, 173)]
 	For k, v in CheckPostion%EmulatorCrushCheckCount%
 		s%EmulatorCrushCheckCount%%k% := v
+	sleep 100
 	if (EmulatorCrushCheckCount=3)
 	{
 		Loop, 3
@@ -1235,7 +1236,7 @@ Loop, 3
 								if (Check71=Check72 and Check71=Check73)
 								{
 									Checkzz++
-									if (Checkzz=9)
+									if (Checkzz=5)
 									{
 										if (DebugMode)
 											Capture() 
@@ -1246,10 +1247,11 @@ Loop, 3
 										sleep 10000
 										reload
 									}
+									EmulatorCrushCheckCount := VarSetCapacity
+									return
 								}
 		EmulatorCrushCheckCount := VarSetCapacity
 	}
-	return
 }
 Checkzz := VarSetCapacity
 return
@@ -5909,7 +5911,7 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 	}
 }
 
-DwmCheckcolor(x, y, color="", Variation=15) {
+DwmCheckcolor(x, y, color="", Variation=10) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
