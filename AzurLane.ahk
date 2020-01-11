@@ -1264,7 +1264,7 @@ GuiControl, Enable, ResetOperation
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := DwmCheckcolor(13, 25, 16041247)
+LDplayerCheck := CheckArray(DwmCheckcolor(13, 25, 16041247), DwmCheckcolor(23, 25, 16041247))
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -1278,30 +1278,28 @@ else if LDplayerCheck
 		OperationDone := VarSetCapacity  ;重置演習判斷
 		iniWrite, 0, settings.ini, Battle, OperationYesterday
 	}
-	MainCheck := [DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871)] ;主選單圖示
-	MainCheck := CheckArray(MainCheck*)
+	MainCheck := CheckArray(DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871))
 	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
 	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
-	LDtitlebar := DwmCheckcolor(13, 25, 16041247)
 	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
-	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
+	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
 	{
 		gosub, MissionSub
 		sleep 3000
 	}
 	AcademyCheck := DwmCheckcolor(627, 712, 11882818) ;學院驚嘆號
-	if (AcademySub and AcademyCheck and MainCheck and Formation and WeighAnchor and LDtitlebar and AcademyDone<1) ;學院
+	if (AcademySub and AcademyCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		gosub, AcademySub
 		sleep 3000
 	}
 	DormMissionCheck := DwmCheckcolor(790, 710, 16244694) ;後宅驚嘆號
-	if (DormSub and DormMissionCheck and MainCheck and Formation and WeighAnchor and LDtitlebar and DormDone<1)  ;後宅
+	if (DormSub and DormMissionCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
 		gosub, DormSub
 		sleep 3000
 	}
-	if ((AnchorSub and LDtitlebar) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
+	if ((AnchorSub) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
 	{
 		gosub, AnchorSub
 	}
@@ -3158,7 +3156,7 @@ return
 BtnCheck:
     Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
     Offensive := DwmCheckcolor(1234, 703, 16239426) ;Checkcolor(1234, 703, 4294429506)
-    WeighAnchor1 := DwmCheckcolor(123, 57, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
+    WeighAnchor1 := DwmCheckcolor(122, 72, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
     WeighAnchor2 := DwmCheckcolor(160, 73, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
 return 
 
@@ -5929,17 +5927,13 @@ DwmCheckcolor(x, y, color="", Variation=15) {
 		}
 		pix := ConvertColor(pix)
 	}
-	if (Variation>=1) {
+	if (Variation>=0) {
 		color := DecToHex(color)
 		pix := DecToHex(pix)
 		tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
 		pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
 		distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
 		if (distance<=Variation) {
-			;~ if (debugmode)	{
-			;~ message = x:%x% y:%y% c: %color% p: %pix% v: %distance%
-			;~ LogShow(message)
-			;~ }
 			return 1
 		}
 		return 0
