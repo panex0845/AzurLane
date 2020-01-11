@@ -1397,6 +1397,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
     Random, x, 1056, 1225
 	Random, y, 656, 690
 	C_Click(x, y) ;於編隊頁面點擊右下 "出擊"
+	sleep 500
 	shipsfull(StopAnchor)
 	IsDetect := VarSetCapacity
     TargetFailed := VarSetCapacity
@@ -1473,7 +1474,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 			LogShow("心情低落選項出錯")
 		}
     }
-    if (DwmCheckcolor(543, 361, 15724527)) ;石油不足
+    if (DwmCheckcolor(543, 361, 15724527) and DwmCheckcolor(784, 63, 16773987) and DwmCheckcolor(1000, 63, 16729459)) ;石油不足
     {
         LogShow("石油不足，停止出擊到永遠！")
         C_Click(1230, 74)
