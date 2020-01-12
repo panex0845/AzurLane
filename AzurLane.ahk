@@ -592,6 +592,10 @@ Gui, Add, Radio,  x110 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode%
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
+EmulatorResolution_W := 1318
+EmulatorResolution_H := 758
+Global EmulatorResolution_W, EmulatorResolution_H
+
 IniRead, azur_x, settings.ini, Winposition, azur_x, 0
 IniRead, azur_y, settings.ini, Winposition, azur_y, 0
 if azur_x=
@@ -661,7 +665,7 @@ Debug2:
 LogShow("檢測中")
 GuiControl, disable, debug
 WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
+WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 text1 := GdiGetPixel(12, 24)
 text2 := DwmGetPixel(12, 24)
 text3 := GdiGetPixel(1300, 681)
@@ -1080,7 +1084,7 @@ Global Allowance
 Global emulatoradb
 LogShow("開始！")
 WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
+WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 WinSet, Transparent, off, %title%
 Settimer, Mainsub, 2500
 Settimer, WinSub, 3200
@@ -1153,7 +1157,7 @@ AdjustGetPixelMode:
 MsgBox, 262208, 設定精靈, 請回到遊戲首頁後再按下確認
 LogShow("開始調整")
 WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
+WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 sleep 200
 Position1 := DwmGetpixel(12, 200) ;左上角稜形方塊 16777215
 Position11 := GdiGetpixel(12, 200) ;左上角稜形方塊 4294967295
@@ -1265,6 +1269,7 @@ sleep 200
 GuiControl, Enable, ResetOperation
 return
 
+F3::
 Mainsub: ;優先檢查出擊以外的其他功能
 LDplayerCheck := CheckArray(DwmCheckcolor(13, 25, 16041247), DwmCheckcolor(23, 25, 16041247))
 Formattime, Nowtime, ,HHmm
@@ -2404,8 +2409,13 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 	{
 		LogShow("執行軍事委託(主線)！")
 		C_Click(1006, 712)
+		sleep 1000
 		Loop, 60
 		{
+			if (DwmCheckcolor(928, 681, 9220764))
+			{
+				C_Click(1006, 712)
+			}
 			sleep 500
 		} Until DwmCheckcolor(135, 58, 15725567)
 		sleep 1500
@@ -3164,8 +3174,6 @@ BtnCheck:
 return 
 
 OperationSub:
-WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
 LogShow("開始演習。")
 Loop
 {
@@ -3346,7 +3354,7 @@ Loop
 	GetItem()
 	CloseEventList()
 	sleep 1000
-	WinMove,  %title%, , , , 1318, 758
+	WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 }
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
 if (Autostart)
@@ -3361,8 +3369,6 @@ else
 return
 
 DailyGoalSub:
-WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
 if  (DailyGoalSub and DailyDone<1)
 {
 	iniread, Yesterday, settings.ini, Battle, Yesterday
@@ -3649,8 +3655,14 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 {
 	LogShow("執行軍事委託")
 	C_Click(20, 200)
+	sleep 1000
 	Loop
 	{
+		if (DwmCheckcolor(46, 181, 16774127))
+		{
+			C_Click(20, 200)
+			sleep 1000
+		}
 		if (DwmCheckcolor(495, 321, 15704642)) ;出現選單
 		{
 			C_Click(444, 318) ;點擊軍事委託完成
@@ -4352,7 +4364,7 @@ ReSizeWindowSub:
 GuiControl, disable, ReSizeWindowSub
 LogShow("視窗已調整為：1280 x 720")
 WinRestore,  %title%
-WinMove,  %title%, , , , 1318, 758
+WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 sleep 100
 GuiControl, enable, ReSizeWindowSub
 return
