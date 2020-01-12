@@ -1269,7 +1269,6 @@ sleep 200
 GuiControl, Enable, ResetOperation
 return
 
-F3::
 Mainsub: ;優先檢查出擊以外的其他功能
 LDplayerCheck := CheckArray(DwmCheckcolor(13, 25, 16041247), DwmCheckcolor(23, 25, 16041247))
 Formattime, Nowtime, ,HHmm
@@ -1292,19 +1291,16 @@ else if LDplayerCheck
 	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
 	{
 		gosub, MissionSub
-		sleep 3000
 	}
 	AcademyCheck := DwmCheckcolor(627, 712, 11882818) ;學院驚嘆號
 	if (AcademySub and AcademyCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		gosub, AcademySub
-		sleep 3000
 	}
 	DormMissionCheck := DwmCheckcolor(790, 710, 16244694) ;後宅驚嘆號
 	if (DormSub and DormMissionCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
 		gosub, DormSub
-		sleep 3000
 	}
 	if ((AnchorSub) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
 	{
@@ -2415,6 +2411,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 			if (DwmCheckcolor(928, 681, 9220764))
 			{
 				C_Click(1006, 712)
+				sleep 1000
 			}
 			sleep 500
 		} Until DwmCheckcolor(135, 58, 15725567)
@@ -3595,10 +3592,15 @@ MissionSub:
 if (MissionCheck and MainCheck) ;如果有任務獎勵
 {
     LogShow("發現任務獎勵！")
-	sleep 500
     C_Click(883, 725) ;點擊任務按紐
+	sleep 1000
 	Loop
 	{
+		if (DwmCheckcolor(948, 709, 16772071)) 
+		{
+			C_Click(883, 725) ;點擊任務按紐
+			sleep 1000
+		}
 		sleep 500
 	} until DwmCheckcolor(51, 199, 16243588) ;等待進入任務界面 (偵測金色的"全部")
     Loop
@@ -3751,11 +3753,16 @@ if (AcademyDone<1)
 {
 	ShopX1 := 100, ShopY1 := 100, ShopX2 := 1250, ShopY2 := 650
 	LogShow("執行學院任務！")
-	sleep 500
 	C_Click(580, 727)
+	sleep 1000
 	Loop ;等待進入學院
 	{
 		sleep 500
+		if (DwmCheckcolor(627, 712, 11882818))
+		{
+			C_Click(580, 727)
+			sleep 1000
+		}
 		Academycount++
 		if (DwmCheckcolor(135, 72, 14085119) and DwmCheckcolor(169, 70, 14609407))
 		{
@@ -4377,10 +4384,15 @@ if (DormDone<1) ;後宅發現任務
 	DormX2 := 1250
 	DormY2 := 620
 	LogShow("執行後宅任務！")
-	sleep 500
 	C_Click(723, 727)
+	sleep 1000
 	Loop ;等待進入後宅
 	{
+		if (DwmCheckcolor(790, 710, 16244694))
+		{
+			C_Click(723, 727)
+			sleep 1000
+		}
 		DormCount++
 		sleep 500
 		GuLuGuLuLu()
