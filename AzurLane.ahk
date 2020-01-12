@@ -103,7 +103,7 @@ Gui, Add, text, x480 y50 w400 h20 vAnchorTimesText, 出擊次數：0 次 ｜ 全
 Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
-Gui,Add,Tab, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|出擊３|學　院|後　宅|任　務|其　他|
+Gui,Add,Tab3, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|出擊３|學　院|後　宅|任　務|其　他
 ;///////////////////     GUI Right Side  Start  ///////////////////
 
 Gui, Tab, 出　擊
@@ -587,7 +587,14 @@ Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode%
 Tab_Y += 25
 Gui, Add, Radio,  x110 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
 ;~ Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vActiveMode checked%ActiveMode% , Active
-
+Tab_Y += 25
+Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 點擊方式：
+Tab_Y -= 3
+Iniread, SendFromAHK, settings.ini, OtherSub, SendFromAHK, 1
+Iniread, SendFromADB, settings.ini, OtherSub, SendFromADB, 0
+Gui, Add, Radio,  x110 y%TAB_Y% w120 h20 gOthersettings vSendFromAHK checked%SendFromAHK% , 模擬滑鼠點擊
+Tab_Y += 25
+Gui, Add, Radio,  x110 y%TAB_Y% w150 h20 gOthersettings vSendFromADB checked%SendFromADB% , ADB發送點擊指令
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
@@ -993,6 +1000,8 @@ Guicontrolget, DebugMode
 Guicontrolget, DwmMode
 Guicontrolget, GdiMode
 Guicontrolget, CloneWindowforDWM
+Guicontrolget, SendFromAHK
+Guicontrolget, SendFromADB
 Iniwrite, %CheckUpdate%, settings.ini, OtherSub, CheckUpdate
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
@@ -1003,7 +1012,9 @@ Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
 Iniwrite, %DwmMode%, settings.ini, OtherSub, DwmMode
 Iniwrite, %GdiMode%, settings.ini, OtherSub, GdiMode
 Iniwrite, %CloneWindowforDWM%, settings.ini, OtherSub, CloneWindowforDWM
-Global AutoLogin, DebugMode, DwmMode, GdiMode, CloneWindowforDWM
+Iniwrite, %SendFromAHK%, settings.ini, OtherSub, SendFromAHK
+Iniwrite, %SendFromADB%, settings.ini, OtherSub, SendFromADB
+Global AutoLogin, DebugMode, DwmMode, GdiMode, CloneWindowforDWM, SendFromAHK, SendFromADB
 Critical, off
 return
 
@@ -1290,17 +1301,23 @@ else if LDplayerCheck
 	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
 	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
 	{
+		sleep 500
 		gosub, MissionSub
+		sleep 500
 	}
 	AcademyCheck := DwmCheckcolor(627, 712, 11882818) ;學院驚嘆號
 	if (AcademySub and AcademyCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
+		sleep 500
 		gosub, AcademySub
+		sleep 500
 	}
 	DormMissionCheck := DwmCheckcolor(790, 710, 16244694) ;後宅驚嘆號
 	if (DormSub and DormMissionCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
+		sleep 500
 		gosub, DormSub
+		sleep 500
 	}
 	if ((AnchorSub) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
 	{
@@ -5839,26 +5856,31 @@ ClickFailed()
 
 Swipe(x1,y1,x2,y2,swipetime=200)
 {	
-	WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
-	MouseGetPos,x,y, thewindow ;偵測滑鼠位置
-	HideGuiID = Gui%UniqueID%
-	if (thewindow=UniqueID) ;如果滑鼠位於視窗內，則創造一個隱形GUI
+	If (SendFromAHK)
 	{
-		Gui, HideGui:Show, w%w1% h%h1% x%xx% y%yy%, %HideGuiID% ;創造一個隱形的GUI去檔住滑鼠
-		Gui, HideGui: -caption +AlwaysOnTop
-		WinSet, Transparent, 1, %HideGuiID%
+		WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
+		MouseGetPos,x,y, thewindow ;偵測滑鼠位置
+		HideGuiID = Gui%UniqueID%
+		if (thewindow=UniqueID) { ;如果滑鼠位於視窗內，則創造一個隱形GUI
+			Gui, HideGui:Show, w%w1% h%h1% x%xx% y%yy%, %HideGuiID% ;創造一個隱形的GUI去檔住滑鼠
+			Gui, HideGui: -caption +AlwaysOnTop
+			WinSet, Transparent, 1, %HideGuiID%
+		}
+		ShiftX := Ceil((x2 - x1)/5) , ShiftY := Ceil((y2 - y1)/5), sleeptime := Ceil(swipetime/5) ;計算拖曳座標距離 時間
+		Loop, 5
+		{
+			ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
+			x1 += ShiftX, y1 += ShiftY
+			sleep %sleeptime%
+		}
+		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
+		Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
+		
+	} else if (SendFromADB){
+		y1 := y1-36, y2 := y2-36
+		runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide ;雷電4.0似乎有BUG 偶爾會卡住
 	}
-	ShiftX := Ceil((x2 - x1)/5) , ShiftY := Ceil((y2 - y1)/5), sleeptime := Ceil(swipetime/5) ;計算拖曳座標距離 時間
-	Loop, 5
-	{
-		ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, D NA ;拖曳畫面(X1->X2, Y1->Y2)
-		x1 += ShiftX, y1 += ShiftY
-		sleep %sleeptime%
-	}
-	ControlClick, x%x1% y%y1%, ahk_id %UniqueID%,,,, U NA 
-	Gui, HideGui:Hide ;隱藏上方創造的隱形GUI
-	;~ runwait,  ld.exe -s %emulatoradb% input swipe %x1% %y1% %x2% %y2% %swipetime%,%ldplayer%, Hide ;雷電4.0似乎有BUG 偶爾會卡住
-	sleep 400
+	sleep 450
 }
 
 Ld_Click(PosX,PosY)
@@ -5873,16 +5895,17 @@ Ld_Click(PosX,PosY)
 
 C_Click(PosX, PosY)
 {
-	;~ Random, randomsleep, 400, 600
-	sleep 50
+	sleep 100
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
-	;~ sleep %randomsleep%
-	;~ if (debugmode)
-		;~ msgbox x%x% x%y%
-	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,2 , NA 
-	;~ Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
-	sleep 800
+	if (SendfromAHK){
+		ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA 
+		sleep 700
+	} else if (SendfromADB){
+		y := y - 36
+		Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
+		sleep 600
+	}
 }
 
 GdiGetPixel( x, y) {
@@ -5893,23 +5916,23 @@ GdiGetPixel( x, y) {
 }
 
 Capture(){
-FileCreateDir, capture
-formattime, nowtime,,yyyy.MM.dd_HH.mm.ss
-pBitmap := Gdip_BitmapFromHWND(UniqueID)
-pBitmap_part := Gdip_CloneBitmapArea(pBitmap, 0, 36, 1280, 722)
-Gdip_SaveBitmapToFile(pBitmap_part, "capture/" . title . "AzurLane_" . nowtime . ".jpg", 100)
-Gdip_DisposeImage(pBitmap)
-Gdip_DisposeImage(pBitmap_part)
+	FileCreateDir, capture
+	formattime, nowtime,,yyyy.MM.dd_HH.mm.ss
+	pBitmap := Gdip_BitmapFromHWND(UniqueID)
+	pBitmap_part := Gdip_CloneBitmapArea(pBitmap, 0, 36, 1280, 722)
+	Gdip_SaveBitmapToFile(pBitmap_part, "capture/" . title . "AzurLane_" . nowtime . ".jpg", 100)
+	Gdip_DisposeImage(pBitmap)
+	Gdip_DisposeImage(pBitmap_part)
 }
 
 Capture2(x1, y1, x2, y2) {
-FileCreateDir, capture
-x2 := x2-x1, y2 := y2-y1
-pBitmap := Gdip_BitmapFromHWND(UniqueID)
-pBitmap_part := Gdip_CloneBitmapArea(pBitmap, x1, y1, x2, y2)
-Gdip_SaveBitmapToFile(pBitmap_part, "capture/" . "OCRTemp" . ".png")
-Gdip_DisposeImage(pBitmap)
-Gdip_DisposeImage(pBitmap_part)
+	FileCreateDir, capture
+	x2 := x2-x1, y2 := y2-y1
+	pBitmap := Gdip_BitmapFromHWND(UniqueID)
+	pBitmap_part := Gdip_CloneBitmapArea(pBitmap, x1, y1, x2, y2)
+	Gdip_SaveBitmapToFile(pBitmap_part, "capture/" . "OCRTemp" . ".png")
+	Gdip_DisposeImage(pBitmap)
+	Gdip_DisposeImage(pBitmap_part)
 }
 
 AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
@@ -5970,30 +5993,27 @@ DwmCheckcolor(x, y, color="", Variation=10) {
 	}
 }
 
-GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) 
-{
+GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) {
     pBitmap := Gdip_BitmapFromHWND(UniqueID)
-    LIST = 0
-    bmpNeedle := Gdip_CreateBitmapFromFile(imagePath)
-    RET := Gdip_ImageSearch(pBitmap, bmpNeedle, LIST, x1, y1, x2, y2, Variation, , direction, 1)
+	bmpNeedle := Gdip_CreateBitmapFromFile(imagePath)
+    Gdip_ImageSearch(pBitmap, bmpNeedle, LIST, x1, y1, x2, y2, Variation, , direction, 1)
     Gdip_DisposeImage(bmpNeedle)
-    Gdip_DisposeImage(pBitmap)
+	Gdip_DisposeImage(pBitmap)
     LISTArray := StrSplit(LIST, ",")
-    x := LISTArray[1]
-    y := LISTArray[2]
+    x := LISTArray[1], y := LISTArray[2]
     return List
 }
 
 LogShow(logData) {
-formattime, nowtime,, MM-dd HH:mm:ss
-guicontrol, , ListBoxLog, [%nowtime%]  %logData%||
-if (DebugMode) {
-	FileAppend, [%nowtime%]  %logData%`n, AzurLane.log
-}
+	formattime, nowtime,, MM-dd HH:mm:ss
+	guicontrol, , ListBoxLog, [%nowtime%]  %logData%||
+	if (DebugMode) {
+		FileAppend, [%nowtime%]  %logData%`n, AzurLane.log
+	}
 }
 
 LogShow2(logData) {
-guicontrol, , ListBoxLog, %logData%||
+	guicontrol, , ListBoxLog, %logData%||
 }
 
 DwmGetPixel(x, y) {
@@ -6127,9 +6147,11 @@ Isbetween(Var, Min, Max)
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img/Part_Cannon.png", 100, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img\123.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
+;~ WinActivate, %title%
 ;~ tooltip x%x% y%y%
+;~ mousemove, %x%, %y%
 ;~ } else {
 	;~ tooltip NotFound
 ;~ }
