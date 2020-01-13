@@ -3860,7 +3860,7 @@ if (AcademyDone<1)
 					}
 				}
 				
-				if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
+				if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 110, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-攻擊(金幣)")
@@ -3920,7 +3920,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/SkillBook_SUP.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_SUP and SupCoin<1) ;如果有防禦課本
+				if (GdipImageSearch(x, y, "img/SkillBook_SUP.png", 110, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_SUP and SupCoin<1) ;如果有防禦課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-輔助(金幣)")
@@ -4130,7 +4130,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Item_Water.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Water and Item_WaterCoin<1) 
+				if (GdipImageSearch(x, y, "img/Item_Water.png", 125, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Water and Item_WaterCoin<1) 
 				{
 					Item_WaterPos := dwmgetpixel(x,y)
 					LogShow("購買秘製冷卻水(金幣)")
@@ -4160,7 +4160,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
+				if (GdipImageSearch(x, y, "img/Item_Tempura.png", 125, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Item_Tempura and Item_TempuraCoin<1) 
 				{
 					Item_TempuraPos := dwmgetpixel(x,y)
 					LogShow("購買天婦羅(金幣)")
@@ -6161,7 +6161,7 @@ Isbetween(Var, Min, Max)
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img\SkillBook_DEF.png", 110, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img\Item_Cola.png", 125, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
 ;~ WinActivate, %title%
 ;~ tooltip x%x% y%y%
