@@ -5907,7 +5907,7 @@ C_Click(PosX, PosY)
 	random , y, PosY - 2, PosY + 2
 	if (SendfromAHK){
 		ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA 
-		sleep 700
+		sleep 800
 	} else if (SendfromADB){
 		y := y - 36
 		Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
