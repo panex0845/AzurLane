@@ -3884,7 +3884,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/SkillBook_DEF.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_DEF and DefCoin<1) ;如果有防禦課本
+				if (GdipImageSearch(x, y, "img/SkillBook_DEF.png", 110, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_DEF and DefCoin<1) ;如果有防禦課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
 					LogShow("購買艦艇教材-防禦(金幣)")
@@ -6147,7 +6147,7 @@ Isbetween(Var, Min, Max)
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
 ;~ Random, SearchDirection, 1, 8
-;~ if (GdipImageSearch(x, y, "img\123.png", 10, SearchDirection, MapX1, MapY1, MapX2, MapY2))
+;~ if (GdipImageSearch(x, y, "img\SkillBook_DEF.png", 110, SearchDirection, MapX1, MapY1, MapX2, MapY2))
 ;~ {
 ;~ WinActivate, %title%
 ;~ tooltip x%x% y%y%
