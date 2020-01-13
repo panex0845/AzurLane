@@ -621,8 +621,10 @@ Gosub, whitealbum
 Settimer, whitealbum, 10000 ;很重要!
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
 if (Autostart) {
+	iniread, AutostartMessage, settings.ini, OtherSub, AutostartMessage
 	iniwrite, 0, settings.ini, OtherSub, Autostart
-	LogShow("出現不可預期的錯誤，自動重啟")
+	iniwrite, 0, settings.ini, OtherSub, AutostartMessage
+	LogShow(AutostartMessage)
 	Goto, Start
 }
 else if (CheckUpdate) { ;啟動時檢查自動更新
@@ -1214,10 +1216,13 @@ else
 return
 
 EmulatorCrushCheckSub:
-if (DwmCheckcolor(432, 115, 907775) and DwmCheckcolor(446, 116, 16768000) and DwmCheckcolor(441, 120, 16201485) and DwmCheckcolor(633, 596, 16777215)) ;遊戲閃退 位於模擬器桌面
+GameCrushed_1920x1080 := [DwmCheckcolor(426, 101, 908287), DwmCheckcolor(1167, 49, 16777215), DwmCheckcolor(635, 631, 16777215), DwmCheckcolor(438, 102, 16768256)]
+GameCrushed_1280x720 := [DwmCheckcolor(432, 115, 907775) and DwmCheckcolor(446, 116, 16768000) and DwmCheckcolor(441, 120, 16201485) and DwmCheckcolor(633, 596, 16777215)]
+if (CheckArray2(GameCrushed_1920x1080*) or CheckArray2(GameCrushed_1280x720*)) ;遊戲閃退 位於模擬器桌面
 {
 	LogShow("=========遊戲閃退，重啟=========")
 	EmulatorCrushCheckCount := VarSetCapacity
+	iniwrite, "=======遊戲閃退，自動重啟=======", settings.ini, OtherSub, AutostartMessage
 	iniwrite, 1, settings.ini, OtherSub, Autostart
 	runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
 	sleep 10000
@@ -1257,6 +1262,7 @@ Loop, 3
 											Capture() 
 										LogShow("=========模擬器當機，重啟=========")
 										EmulatorCrushCheckCount := VarSetCapacity
+										iniwrite, "=========模擬器當機，自動重啟=========", settings.ini, OtherSub, AutostartMessage
 										iniwrite, 1, settings.ini, OtherSub, Autostart
 										runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
 										sleep 10000
@@ -1298,7 +1304,7 @@ else if LDplayerCheck
 	MainCheck := CheckArray(DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871))
 	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
 	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
-	MissionCheck := DwmCheckcolor(948, 709, 16772071) ;任務驚嘆號
+	MissionCheck := DwmCheckcolor(947, 710, 16774127) ;任務驚嘆號
 	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
 	{
 		sleep 500
@@ -5684,10 +5690,11 @@ Battle()
 			}
 			if (Retreat_LowHp) ;旗艦HP過低撤退
 			{
+				Hp_Variation := 30
 				if (OriginalHP<1) ;先檢查原本HP剩多少
 				{
-					DetectHP_Pos := [10, 400, 100, 510]
-					if (GdipImageSearch(x, y, "img/battle/LowHP.png", 20, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+					DetectHP_Pos := [10, 410, 105, 490]
+					if (GdipImageSearch(x, y, "img/battle/LowHP.png", Hp_Variation, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 					{
 						OriginalHP := Ceil((x-10)/85*100)
 						OriginalHP2 := OriginalHP-Retreat_LowHpBar
@@ -5709,8 +5716,8 @@ Battle()
 					IsPositive_Integer := if (OriginalHP-Retreat_LowHpBar)>1 ? 1 : 0
 					if (IsPositive_Integer)
 					{
-						DetectHP_Pos := [10, 410, 100, 510]
-						if (GdipImageSearch(x, y, "img/battle/LowHP.png", 20, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+						DetectHP_Pos := [10, 410, 105, 490]
+						if (GdipImageSearch(x, y, "img/battle/LowHP.png", Hp_Variation, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 						{
 							NowHP := Ceil((x-10)/85*100)
 							if (debugMode)
@@ -6114,6 +6121,13 @@ CheckArray(Var*) ;~ Example.  NowColor := [DwmCheckcolor(12, 200, 16250871), Dwm
 	if v=1
 		return 1
 	return 0
+}
+
+CheckArray2(Var*) {
+	for k, v in Var
+	if v=0
+		return 0
+	return 1
 }
 
 MinMax(type := "max", values*) {
