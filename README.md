@@ -29,6 +29,8 @@ A tool for AzurLane to farm automatically.
       (Recommended run as borderless windowed mode or move the window to virtual desktop)<br>
        Hotkey: Win+Tab / Ctrl+Win+ ← or →
     ![](https://i.imgur.com/7T04aN4.png)
+    * Turn this on:<br>
+    ![](https://i.imgur.com/BXeZbf4.png)
       
     
 
