@@ -1298,7 +1298,7 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0130 or Nowtime=1501 or Nowtime=1801)
+	if (NowTime=0130 or Nowtime=1501 or Nowtime=2001)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
 		OperationDone := VarSetCapacity  ;重置演習判斷
@@ -1338,6 +1338,8 @@ else if LDplayerCheck
 			Random, x, 570, 680
 			Random, y, 285, 500
 			C_Click(x, y)
+			AcademyDone := 1
+			Settimer, AcademyClock, -900000 
 			sleep 1500
 		}
 		sleep 500
@@ -1368,10 +1370,12 @@ else if LDplayerCheck
 			Random, y, 285, 500
 			C_Click(x, y)
 			sleep 1500
+			DormDone := 1
+			Settimer, DormClock, -900000
 		}
 		sleep 500
 	}
-	if ((AnchorSub) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
+	if ((AnchorSub) and (!Living_AreaCheck or AcademyDone=1 or !AcademySub) and (!Living_AreaCheck or DormDone=1 or !DormSub))  ;出擊
 	{
 		gosub, AnchorSub
 	}
