@@ -86,24 +86,24 @@ Gui Add, Text,  x220 y20 w80 h20 , 代號：
 IniRead, emulatoradb, settings.ini, emulator, emulatoradb, 0
 Gui, Add, DropDownList, x270 y15 w40 h300 vemulatoradb ginisettings Choose%emulatoradb%, 1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|0||
 GuicontrolGet, emulatoradb
-Gui Add, Text,  x330 y20 w80 h20 , 容許誤差：
-IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 2000
-Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, %AllowanceValue%
+;~ Gui Add, Text,  x330 y20 w80 h20 , 容許誤差：
+;~ IniRead, AllowanceValue, settings.ini, emulator, AllowanceValue, 2000
+;~ Gui Add, Edit, x410 y17 w50 h21 vAllowanceValue ginisettings  readonly Number Limit4, %AllowanceValue%
 Gui, Add, Button, x20 y470 w100 h20 gstart vstart , 開始
 Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
-Gui, Add, Button, x480 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整視窗
+Gui, Add, Button, x510 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整視窗
 
 
-Gui, Add, button, x780 y470 w100 h20 gexitsub, 結束 
-Gui, Add, text, x480 y20 w400 h20 vstarttext, 
+Gui, Add, button, x810 y470 w100 h20 gexitsub, 結束 
+Gui, Add, text, x513 y20 w400 h20 vstarttext, 
 AnchorFailedTimes := 0
-Gui, Add, text, x480 y50 w400 h20 vAnchorTimesText, 出擊次數：0 次 ｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率： 0`%
+Gui, Add, text, x513 y50 w400 h20 vAnchorTimesText, 出擊次數：0 次 ｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率： 0`%
 ;~ Gui, Add, text, x640 y50 w320 h20 vAnchorFailedText, ; 統計 全軍覆沒：%AnchorFailedTimes%  次 ｜ 翻船機率： %rate%`%
-Gui, Add, ListBox, x480 y74 w400 h393 ReadOnly vListBoxLog
+Gui, Add, ListBox, x510 y74 w400 h393 ReadOnly vListBoxLog
 ;~ Gui, Add, Picture, x480 y450 0x4000000 ,img\WH.png
 
-Gui,Add,Tab3, x10 y50 w460 h405 gTabFunc, 出　擊|出擊２|出擊３|學　院|後　宅|任　務|其　他
+Gui,Add,Tab3, x10 y50 w490 h405 gTabFunc, 出　擊|出擊２|出擊３|學　院|後　宅|科　研|任　務|其　他
 ;///////////////////     GUI Right Side  Start  ///////////////////
 
 Gui, Tab, 出　擊
@@ -538,6 +538,9 @@ Gui, Add, Slider, x110 y178 w100 h30 gDormsettings vDormFoodBar range10-80 +Tool
 Gui, Add, Text, x215 y180 w20 h20 vDormFoodBarUpdate , %DormFoodBarUpdate% 
 Gui, Add, Text, x240 y180 w100 h20 vTestbar1Percent, `%自動補給
 
+Gui, Tab, 科　研
+Gui, Add, text, x30 y90 w150 h20  +cFF0000, 無功能
+
 Gui, Tab, 任　務
 iniread, MissionSub, settings.ini, MissionSub, MissionSub
 Gui, Add, CheckBox, x30 y90 w150 h20 gMissionsettings vMissionSub checked%MissionSub% +c4400FF, 啟動自動接收任務
@@ -610,7 +613,7 @@ if azur_x=
 if azur_y=
 	azur_y := 0
 Gui, +OwnDialogs
-Gui Show, w900 h500 x%azur_x% y%azur_y%, Azur Lane - %title%
+Gui Show, w925 h500 x%azur_x% y%azur_y%, Azur Lane - %title%
 Menu, Tray, Tip , Azur Lane `(%title%)
 Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
@@ -1295,7 +1298,7 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0101 or Nowtime=1301 or Nowtime=1801)
+	if (NowTime=0130 or Nowtime=1501 or Nowtime=1801)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
 		OperationDone := VarSetCapacity  ;重置演習判斷
@@ -1311,18 +1314,61 @@ else if LDplayerCheck
 		gosub, MissionSub
 		sleep 500
 	}
-	AcademyCheck := DwmCheckcolor(627, 712, 11882818) ;學院驚嘆號
-	if (AcademySub and AcademyCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
+	Living_AreaCheck := DwmCheckcolor(627, 712, 11882818) ;生活圈驚嘆號
+	if (AcademySub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		sleep 500
-		gosub, AcademySub
+		Random, x, 501, 624
+		Random, y, 713, 738
+		C_Click(x, y)
+		Loop
+		{
+			if (DwmCheckcolor(414, 366, 16753308) and DwmCheckcolor(921, 411, 6516100)) ;等待進入學院/後宅選單
+				break
+			sleep 500
+		}
+		sleep 500
+		if (DwmCheckcolor(521, 270, 11884882)) ;
+		{
+			LogShow("執行學院任務！")
+			gosub, AcademySub
+		}
+		else 
+		{
+			Random, x, 570, 680
+			Random, y, 285, 500
+			C_Click(x, y)
+			sleep 1500
+		}
 		sleep 500
 	}
-	DormMissionCheck := DwmCheckcolor(790, 710, 16244694) ;後宅驚嘆號
-	if (DormSub and DormMissionCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
+	Living_AreaCheck := DwmCheckcolor(627, 712, 11882818) ;生活圈驚嘆號
+	if (DormSub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
+		
 		sleep 500
-		gosub, DormSub
+		Random, x, 501, 624
+		Random, y, 713, 738
+		C_Click(x, y)
+		Loop
+		{
+			if (DwmCheckcolor(414, 366, 16753308) and DwmCheckcolor(921, 411, 6516100)) ;等待進入學院/後宅選單
+				break
+			sleep 500
+		}
+		sleep 500
+		if (DwmCheckcolor(951, 271, 13001042)) ;
+		{
+			LogShow("執行後宅任務！")
+			gosub, DormSub
+		}
+		else 
+		{
+			Random, x, 570, 680
+			Random, y, 285, 500
+			C_Click(x, y)
+			sleep 1500
+		}
 		sleep 500
 	}
 	if ((AnchorSub) and (!AcademyCheck or AcademyDone=1 or !AcademySub) and (!DormMissionCheck or DormDone=1 or !DormSub))  ;出擊
@@ -3784,8 +3830,9 @@ AcademySub:
 if (AcademyDone<1)
 {
 	ShopX1 := 100, ShopY1 := 100, ShopX2 := 1250, ShopY2 := 650
-	LogShow("執行學院任務！")
-	C_Click(580, 727)
+	Random, x, 320, 509
+	Random, y, 290, 508
+	C_Click(x, y)
 	sleep 1000
 	Loop ;等待進入學院
 	{
@@ -4415,8 +4462,9 @@ if (DormDone<1) ;後宅發現任務
 	DormY1 := 0
 	DormX2 := 1250
 	DormY2 := 620
-	LogShow("執行後宅任務！")
-	C_Click(723, 727)
+	Random, x, 750, 938
+	Random, y, 290, 508
+	C_Click(x, y)
 	sleep 1000
 	Loop ;等待進入後宅
 	{
