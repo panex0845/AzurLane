@@ -1521,6 +1521,13 @@ if (Withdraw and Offensive)
 	MapX1 := 130, MapY1 := 130, MapX2 :=1260, MapY2 := 670 ; //////////檢查敵方艦隊的範圍//////////
 	;Mainfleet := 4287894561 ; ARGB 主力艦隊
 	;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
+	if (DwmCheckcolor(1186, 565, 5418619) and DwmCheckcolor(1228, 565, 5418619) and DwmCheckcolor(1273, 565, 5418619))
+	{ ;陣容鎖定已被開啟
+		LogShow("關閉陣容鎖定")
+		Random, x, 1197, 1257
+		Random, y, 537, 551
+		C_Click(x, y)
+	}
 	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
 	{
 		FightRoundsDone := 1
@@ -2423,8 +2430,9 @@ if (Withdraw and Offensive)
 }
 else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 {
-	CommisionDone := DwmCheckcolor(1063, 682, 16776175, 10)
-	if (MissionSub and  CommisionDone and DwmCheckcolor(928, 681, 9220764)) ;委託任務已完成
+	CommisionDone := DwmCheckcolor(1063, 682, 16776175) ;軍事委託的驚嘆號出現
+	CommisionBtn := DwmCheckcolor(928, 681, 9220764) ;軍事委託的按鈕
+	if (MissionSub and  CommisionDone and CommisionBtn) ;委託任務已完成
 	{
 		LogShow("執行軍事委託(主線)！")
 		C_Click(1006, 712)
@@ -2492,7 +2500,7 @@ else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
 						C_Click(826, 709) ;嘗試進入每日頁面
 						sleep 3000
 					}
-					if (DwmCheckcolor(30, 395, 16777215) and DwmCheckcolor(154, 61, 15201279))
+					if (DwmCheckcolor(30, 395, 16777215) and DwmCheckcolor(154, 61, 15201279) and DwmCheckcolor(1250, 394, 16777215))
 					{
 						Break ;成功進入每日頁面
 					}
@@ -3404,7 +3412,7 @@ if  (DailyGoalSub and DailyDone<1)
 				LogShow("返回主選單。")
 				C_Click(1242, 69)
 			}
-			if (DwmCheckcolor(12, 201, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;如果成功返回主選單 
+			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(974, 427, 5947127)) ;如果成功返回首頁
 			{
 				Break
 			}
@@ -3442,6 +3450,7 @@ if  (DailyGoalSub and DailyDone<1)
 				{
 					C_Click(756, 552)
 				}
+				sleep 1000
 				if (DwmCheckcolor(477, 361, 15724527) and DwmCheckcolor(997, 66, 16729459)) ;如果出現驚嘆號 (多確認一個紅尖尖 避免誤判)
 				{		
 					if (Checkweek=1 and CheckweekCount<1 and DailyGoalSunday) ;如果是禮拜天  (打左邊)
@@ -3468,7 +3477,7 @@ if  (DailyGoalSub and DailyDone<1)
 					else
 					{
 						Logshow("每日任務次數用盡，返回主選單。")
-						Loop, 20
+						Loop, 30
 						{
 							if (DwmCheckcolor(169, 59, 16251903)) ;檢查每日頁面左上角 每日的日
 							{
@@ -3515,21 +3524,21 @@ if  (DailyGoalSub and DailyDone<1)
 					{
 						Loop, 2 
 						{
-						C_Click(915, 376)
+							C_Click(915, 376)
 						}
 					}
 					else if DailyParty=第四艦隊
 					{
 						Loop, 3 
 						{
-						C_Click(915, 376)
+							C_Click(915, 376)
 						}
 					}
 					else if DailyParty=第五艦隊
 					{
 						Loop, 4 
 						{
-						C_Click(915, 376)
+							C_Click(915, 376)
 						}
 					}
 					ChooseDailyParty := 1
@@ -5861,8 +5870,7 @@ ClickFailed()
 	}
 }
 
-Swipe(x1,y1,x2,y2,swipetime=200)
-{	
+Swipe(x1,y1,x2,y2,swipetime=200) {	
 	If (SendFromAHK)
 	{
 		WinGetpos,xx,yy,w1,h1, ahk_id %UniqueID%
@@ -5890,8 +5898,7 @@ Swipe(x1,y1,x2,y2,swipetime=200)
 	sleep 450
 }
 
-Ld_Click(PosX,PosY)
-{
+Ld_Click(PosX,PosY) {
 	Random, randomsleep, 400, 550
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
@@ -5900,8 +5907,7 @@ Ld_Click(PosX,PosY)
 	sleep 500
 }
 
-C_Click(PosX, PosY)
-{
+C_Click(PosX, PosY) {
 	sleep 100
 	random , x, PosX - 3, PosX + 3 ;隨機偏移 避免偵測
 	random , y, PosY - 2, PosY + 2
@@ -5942,8 +5948,7 @@ Capture2(x1, y1, x2, y2) {
 	Gdip_DisposeImage(pBitmap_part)
 }
 
-AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
-{
+AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") {
 	defaultX1 := x1, defaultY1 := y1, y := y1
 	hDC := DllCall("user32.dll\GetDCEx", "UInt", UniqueID, "UInt", 0, "UInt", 1|2)
 	Loop {
@@ -5965,7 +5970,16 @@ AreaDwmCheckcolor(byref x, byref y, x1, y1, x2, y2, color="") ; slow
 	}
 }
 
-DwmCheckcolor(x, y, color="", Variation=10) {
+ColorVariation(Color1, Color2) {
+	color := ConvertColor(Color1)
+	pix := ConvertColor(Color2)
+	tr := format("{:d}","0x" . substr(color,3,2)), tg := format("{:d}","0x" . substr(color,5,2)), tb := format("{:d}","0x" . substr(color,7,2))
+	pr := format("{:d}","0x" . substr(pix,3,2)), pg := format("{:d}","0x" . substr(pix,5,2)), pb := format("{:d}","0x" . substr(pix,7,2))
+	distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+	msgbox %distance%
+}
+
+DwmCheckcolor(x, y, color="", Variation=15) {
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
@@ -6045,8 +6059,7 @@ DwmGetPixel(x, y) {
 	}
 }
 
-DecToHex(dec)
-{
+DecToHex(dec) {
    oldfrmt := A_FormatInteger
    hex := dec
    SetFormat, IntegerFast, hex
@@ -6056,8 +6069,7 @@ DecToHex(dec)
    return hex
 }
 
-ConvertColor( BGRValue )
-{
+ConvertColor(BGRValue) {
 	BlueByte := ( BGRValue & 0xFF0000 ) >> 16
 	GreenByte := BGRValue & 0x00FF00
 	RedByte := ( BGRValue & 0x0000FF ) << 16
@@ -6115,8 +6127,7 @@ AutoLoginIn() ;預設登入Google帳號
 	}
 }
 
-CheckArray(Var*) ;~ Example.  NowColor := [DwmCheckcolor(12, 200, 16250871), DwmCheckcolor(12, 199, 16777215)] `n Msgbox % CheckArray(NowColor*) 
-{ ;檢查數組中，其中一個是否為真
+CheckArray(Var*) { ;檢查數組中，其中一個是否為真
 	for k, v in Var
 	if v=1
 		return 1
@@ -6151,12 +6162,16 @@ WM_HELP()
 	Run, https://www.ptt.cc/bbs/AzurLane/M.1575711622.A.AF3.html
 }
 
-Isbetween(Var, Min, Max)
-{
+Isbetween(Var, Min, Max) {
 	if (Var>Min and Var<Max)
 		return 1
 	return 0
 }
+
+VC(Array){
+	return DwmCheckColor(Array[1], Array[2], Array[3], Array[4])	
+}
+
 
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
