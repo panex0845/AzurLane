@@ -4391,10 +4391,10 @@ if (AcademyDone<1)
 					LogShow("學習2！學習2！")
 					C_Click(786, 545)
 				}
-				else if (DwmCheckcolor(330, 194, 16777215) and DwmCheckcolor(376, 217, 16777215) and DwmCheckcolor(466, 530, 16777215))
+				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(375, 230, 16777215) and DwmCheckcolor(468, 555, 16777215) and DwmCheckcolor(748, 555, 4355509))
 				{
 					LogShow("學習3！學習3！")
-					C_Click(786, 545)
+					C_Click(787, 548)
 				}
 				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(661, 548, 16777215) and DwmCheckcolor(608, 550, 16777215)) ;學習的技能已滿等
 				{
