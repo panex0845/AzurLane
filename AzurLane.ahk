@@ -539,7 +539,11 @@ Gui, Add, Text, x215 y180 w20 h20 vDormFoodBarUpdate , %DormFoodBarUpdate%
 Gui, Add, Text, x240 y180 w100 h20 vTestbar1Percent, `%自動補給
 
 Gui, Tab, 科　研
-Gui, Add, text, x30 y90 w150 h20  +cFF0000, 無功能
+Tab_Y := 90
+iniread, TechacademySub, settings.ini, TechacademySub, TechacademySub
+Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gTechacademysettings vTechacademySub checked%TechacademySub% +c4400FF, 啟動自動執行科研
+
+
 
 Gui, Tab, 任　務
 iniread, MissionSub, settings.ini, MissionSub, MissionSub
@@ -986,6 +990,13 @@ Global DormFood
 Critical, off
 return
 
+Techacademysettings:
+Critical
+Guicontrolget, TechacademySub
+Iniwrite, %TechacademySub%, settings.ini, TechacademySub, TechacademySub
+Critical, off
+return
+
 Missionsettings: ;任務設定
 Critical
 Guicontrolget, MissionSub
@@ -1375,6 +1386,21 @@ else if LDplayerCheck
 		}
 		sleep 500
 	}
+	TechacademyCheck := DwmCheckcolor(790, 710, 16776175)
+	if (TechacademySub and TechacademyCheck and MainCheck and Formation and WeighAnchor and TechacademyDone<1)
+	{
+		sleep 500
+		Random, x, 660, 775
+		Random, y, 713, 738
+		C_Click(x, y)
+		sleep 500
+		Loop
+		{
+			if (DwmCheckcolor(329, 516, 3224633) and DwmCheckcolor(916, 518, 3224633) and DwmCheckcolor(286, 312, 10268374))
+				break ;等待進入科研選單
+		}
+		gosub, TechacademySub
+	}
 	if ((AnchorSub) and (!Living_AreaCheck or AcademyDone=1 or !AcademySub) and (!Living_AreaCheck or DormDone=1 or !DormSub))  ;出擊
 	{
 		gosub, AnchorSub
@@ -1411,6 +1437,68 @@ sleep 1000
 Guicontrol, enable, ReAnchorSub
 return
 
+
+TechacademySub: ;科研
+Techacademy_Done := DwmCheckcolor(441, 503, 13528410)
+Shipworks_Done := 0
+if (Techacademy_Done) ;軍部研究室OK
+{
+	LogShow("進入軍部科研室")
+	Random, x, 247, 388
+	Random, y, 331, 479
+	C_Click(x, y)
+	sleep 1000
+	Loop
+	{
+		if (DwmCheckcolor(608, 626, 10878951, 50)) ;研發已完成(綠色)
+		{
+			C_Click(614, 282)
+			sleep 2000
+			C_Click(640, 716) ;獲得道具
+		}
+		if (DwmCheckcolor(605, 626, 8101582, 40) and DwmCheckcolor(636, 642, 16777215)) ;等待研發(查看詳情)
+		{
+			C_Click(633, 281)
+		}
+		if (DwmCheckcolor(505, 598, 5936854)) ;開始研發
+		{
+			C_Click(507, 617)
+		}
+		if (DwmCheckcolor(330, 210, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(748, 554, 4354485, 30))
+		{ ;確認消耗金幣
+			C_Click(790, 551)
+		}
+		if (DwmCheckcolor(505, 603, 14575954)) ;已經開始研發(停止研發按鈕)
+		{
+			LogShow("離開軍部科研室")
+			C_Click(714, 712)
+			sleep 500
+			C_Click(1227, 71)
+			Loop
+			{
+				if (DwmCheckcolor(12, 200, 16777215))
+					break
+				sleep 500
+			}
+			break
+		}
+		sleep 500
+	}
+}
+else
+{
+	C_Click(1232, 69) ;回首頁
+}
+TechacademyDone := 1
+Settimer, TechacademyClock, -900000
+return
+
+TechacademyClock:
+TechacademyDone := VarSetCapacity
+return
+
+
+
 AnchorSub: ;出擊
 AnchorCheck := DwmCheckcolor(1036, 346, 16777215)
 AnchorCheck2 := DwmCheckcolor(1096, 331, 16769924)
@@ -1421,6 +1509,7 @@ if (AnchorCheck and AnchorCheck2 and MainCheck and StopAnchor<1)
 	Random, x, 1025, 1145
 	Random, y, 356, 453
 	C_Click(x,y) ;於首頁點擊點擊右邊"出擊"
+	sleep 2000
 }
 if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) and DwmCheckcolor(1109, 605, 3224625) and  DwmCheckcolor(31, 621, 16777215)) ;在出擊的編隊頁面
 {
@@ -4302,6 +4391,11 @@ if (AcademyDone<1)
 					LogShow("學習2！學習2！")
 					C_Click(786, 545)
 				}
+				else if (DwmCheckcolor(330, 194, 16777215) and DwmCheckcolor(376, 217, 16777215) and DwmCheckcolor(466, 530, 16777215))
+				{
+					LogShow("學習3！學習3！")
+					C_Click(786, 545)
+				}
 				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(661, 548, 16777215) and DwmCheckcolor(608, 550, 16777215)) ;學習的技能已滿等
 				{
 					C_Click(643, 545) ;點擊確定
@@ -5833,7 +5927,7 @@ Battle()
 									C_Click(x, y)
 									sleep 1000
 								}
-								else if (DwmCheckcolor(330, 209, 16777215)) ;確認退出
+								else if (DwmCheckcolor(330, 209, 16777215) or DwmCheckcolor(747, 554, 11359562, 30)) ;確認退出
 								{
 									Random, x, 726, 862
 									Random, y, 544, 570
