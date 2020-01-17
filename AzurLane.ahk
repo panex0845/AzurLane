@@ -1270,7 +1270,7 @@ Loop, 3
 								if (Check71=Check72 and Check71=Check73)
 								{
 									Checkzz++
-									if (Checkzz=5)
+									if (Checkzz=9)
 									{
 										if (DebugMode)
 											Capture() 
@@ -4391,7 +4391,7 @@ if (AcademyDone<1)
 					LogShow("學習2！學習2！")
 					C_Click(786, 545)
 				}
-				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(375, 230, 16777215) and DwmCheckcolor(468, 555, 16777215) and DwmCheckcolor(748, 555, 4355509))
+				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(375, 230, 16777215) and DwmCheckcolor(468, 555, 16777215))
 				{
 					LogShow("學習3！學習3！")
 					C_Click(787, 548)
