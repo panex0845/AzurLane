@@ -5369,6 +5369,14 @@ shipsfull(byref StopAnchor)
 						C_Click(991, 529)
 					if (DwmCheckcolor(821, 702, 16777215)) ;檢查"確定"
 					{
+						if ((Rarity1) and DwmCheckcolor(478, 530, 7043468)) or ((Rarity2) and DwmCheckcolor(636, 530, 7043468)) or ((Rarity3) and DwmCheckcolor(792, 527, 7043460))
+						{
+							LogShow("排序角色出錯，強制停止")
+							Loop
+							{
+								sleep 5000
+							}
+						}
 						C_Click(796, 702) ;點擊確定
 						sleep 1000
 						if (DwmCheckcolor(280, 397, 16777215) and DwmCheckcolor(1141, 380, 9718090) and DwmCheckcolor(1141, 423, 9718090)) ;如果篩選完畢發現沒有船可以退役
