@@ -565,6 +565,7 @@ iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
 Gui, Add, Checkbox, x320 y%TAB_Y% w125 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查
 Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gOperationSub, 執行演習
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gAutopuzzle, 自動拼圖
 Tab_Y += 30
 iniread, GuiHideX, settings.ini, OtherSub, GuiHideX
 Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
@@ -1497,7 +1498,33 @@ TechacademyClock:
 TechacademyDone := VarSetCapacity
 return
 
-
+Autopuzzle:
+ClickList = D3 C3 C2 D2 D1 C1 C2 D2 D3 D4 C4 B4 A4 A3 A2 B2 B3 C3 C2 C1 B1 A1 A2 B2 B1 C1 D1 D2 D3 D4 C4 C3 C2 B2 B3 B4 C4 C3 D3 D2 C2 C3 B3 A3 A4 B4 B3 C3 D3 D4
+ClickList := StrSplit(ClickList, " ")
+for k, v in ClickList
+{
+	List%A_Index% := ClickList[A_Index]
+	List%A_index% := StrSplit(List%A_index%, "")
+	if (List%A_index%[1]="A")
+		y:= 225
+	else if (List%A_index%[1]="B")
+		y:= 318
+	else if (List%A_index%[1]="C")
+		y:= 412
+	else if (List%A_index%[1]="D")
+		y:= 510
+	if (List%A_index%[2]="1")
+		x:= 389
+	else if (List%A_index%[2]="2")
+		x:= 531
+	else if (List%A_index%[2]="3")
+		x:= 662
+	else if (List%A_index%[2]="4")
+		x:= 800
+	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA
+	sleep 150
+}
+return
 
 AnchorSub: ;出擊
 AnchorCheck := DwmCheckcolor(1036, 346, 16777215)
@@ -3868,6 +3895,10 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 		else
 		{
 			LoopVar++
+			if (LoopVar=30 or LoopVar=40 or LoopVar=50 or LoopVar=60 or LoopVar=70)
+			{
+				C_Click(514, 116)
+			}
 			if (LoopVar>100)
 			{
 				LogShow("軍事委託出現錯誤")
@@ -3885,14 +3916,14 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 		Rmenu := VarSetCapacity
 		DelegationMission()
 		sleep 1000
-		Loop, 20
+		Loop, 30
 		{
 			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
 			{
 				C_Click(1246, 89)
 				sleep 2000
 			}
-			else if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
+			else if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(975, 430, 5946103) and DwmCheckcolor(1142, 442, 14592594))
 			{
 				break
 			}
@@ -3908,7 +3939,7 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 				C_Click(1246, 89)
 				sleep 2000
 			}
-			if (DwmCheckcolor(12, 200, 16777215) or DwmCheckcolor(12, 200, 16250871))
+			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(975, 430, 5946103) and DwmCheckcolor(1142, 442, 14592594))
 			{
 				break
 			}
@@ -4786,7 +4817,7 @@ DelegationMission() {
 		sleep 300
 	} until DwmCheckcolor(52, 171, 16777207) ;等待切換到每日頁面
 	sleep 500
-	Loop, 220
+	Loop
 	{
 		sleep 400
 		if (DwmCheckcolor(181, 136, 11358530)) 
@@ -6334,6 +6365,15 @@ VC(Array){
 	return DwmCheckColor(Array[1], Array[2], Array[3], Array[4])	
 }
 
+Find(byref x, byref y, x1, y1, x2, y2, text, err0 := 0, err1 := 0) {
+	WinGetPos, wx, wy, ww, wh, %title%
+	xx1 := wx+x1, yy1 := wy+y1, xx2 := wx+x2, yy2 := wy+y2
+	if (ok := FindText(xx1, yy1, xx2, yy2 , err0, err1, text))	{
+		X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
+		x := x-wx, y:=y-wy
+		return 1
+	}
+}
 
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
