@@ -52,6 +52,7 @@ Global ldplayer
 
 Gui Add, Text,  x15 y20 w100 h20 , 模擬器標題：
 IniRead, title, settings.ini, emulator, title, 
+Global title
 if (title="") or (title="ERROR") {
     InputBox, title, 設定精靈, `n`n　　　　　　　請輸入模擬器標題,, 400, 200,,,,, 雷電模擬器
     if ErrorLevel {
@@ -1499,30 +1500,36 @@ TechacademyDone := VarSetCapacity
 return
 
 Autopuzzle:
-ClickList = D3 C3 C2 D2 D1 C1 C2 D2 D3 D4 C4 B4 A4 A3 A2 B2 B3 C3 C2 C1 B1 A1 A2 B2 B1 C1 D1 D2 D3 D4 C4 C3 C2 B2 B3 B4 C4 C3 D3 D2 C2 C3 B3 A3 A4 B4 B3 C3 D3 D4
-ClickList := StrSplit(ClickList, " ")
-for k, v in ClickList
+夢中茶會 :="|<>*221$71.00000000000003Vk007000A43zzzU0C000w8Dzzz00Q00Tzkzzzy11zU1zzUwxw07zzs3zz0zzzUDzzs0761zzzUzzzs0Dw3zSD1zD3k0zs7zzw3kS3kDzk7zzU7Uw7Uzi01zw0D1sD7wQ1zzzkS3kSDzy3zzzkw7VsDzw7zU7VyD7k7zsDTzj1zzzU7rUTzzw1zzy03j0Tzzk0zzk0Dz0DES003s00yy0Rns007U07ts0nzU00D00T3kDzw000S00w7UTzU000w00kC0Tk0000s0000000000000001"
+if (Find(x, y, 1064, 285, 1200, 334, 夢中茶會))
 {
-	List%A_Index% := ClickList[A_Index]
-	List%A_index% := StrSplit(List%A_index%, "")
-	if (List%A_index%[1]="A")
-		y:= 225
-	else if (List%A_index%[1]="B")
-		y:= 318
-	else if (List%A_index%[1]="C")
-		y:= 412
-	else if (List%A_index%[1]="D")
-		y:= 510
-	if (List%A_index%[2]="1")
-		x:= 389
-	else if (List%A_index%[2]="2")
-		x:= 531
-	else if (List%A_index%[2]="3")
-		x:= 662
-	else if (List%A_index%[2]="4")
-		x:= 800
-	ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA
-	sleep 150
+	ClickList = D3 C3 C2 D2 D1 C1 C2 D2 D3 D4 C4 B4 A4 A3 A2 B2 B3 C3 C2 C1 B1 A1 A2 B2 B1 C1 D1 D2 D3 D4 C4 C3 C2 B2 B3 B4 C4 C3 D3 D2 C2 C3 B3 A3 A4 B4 B3 C3 D3 D4
+	ClickList := StrSplit(ClickList, " ")
+	for k, v in ClickList
+	{
+		List%A_Index% := ClickList[A_Index]
+		List%A_index% := StrSplit(List%A_index%, "")
+		if (List%A_index%[1]="A")
+			y:= 225
+		else if (List%A_index%[1]="B")
+			y:= 318
+		else if (List%A_index%[1]="C")
+			y:= 412
+		else if (List%A_index%[1]="D")
+			y:= 510
+		if (List%A_index%[2]="1")
+			x:= 389
+		else if (List%A_index%[2]="2")
+			x:= 531
+		else if (List%A_index%[2]="3")
+			x:= 662
+		else if (List%A_index%[2]="4")
+			x:= 800
+		ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA
+		sleep 100
+	}
+} else {
+	MsgBox, 16, 錯誤, 請移動到拼圖介面
 }
 return
 
@@ -6367,6 +6374,8 @@ VC(Array){
 
 Find(byref x, byref y, x1, y1, x2, y2, text, err0 := 0, err1 := 0) {
 	WinGetPos, wx, wy, ww, wh, %title%
+	id := WinExist(title)
+	BindWindow(id)
 	xx1 := wx+x1, yy1 := wy+y1, xx2 := wx+x2, yy2 := wy+y2
 	if (ok := FindText(xx1, yy1, xx2, yy2 , err0, err1, text))	{
 		X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
