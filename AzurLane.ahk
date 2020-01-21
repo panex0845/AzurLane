@@ -1311,7 +1311,7 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0130 or Nowtime=1501 or Nowtime=2001)
+	if (NowTime=0800 or Nowtime=2000)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
 		OperationDone := VarSetCapacity  ;重置演習判斷
@@ -1466,9 +1466,10 @@ if (Techacademy_Done) ;軍部研究室OK
 		{
 			C_Click(507, 617)
 		}
-		if (DwmCheckcolor(330, 210, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(748, 554, 4354485, 30))
-		{ ;確認消耗金幣
-			C_Click(790, 551)
+		需要消耗 :="|<>*174$68.zzzzzzzzjzDs007k003ktnnzbzw000z6QwztzzzDDztnCE003znXzzwnAzbwy001zzgv891DbDCTzzDm2EHtnnbXs07zbzyQwtwSTtk90zU00TnbzTyTzs007ztzo000zyTzzy01000Dz7zzzU0TyTzU001yNzrz7zzlyDzaTxU00TwzbznU0NvnbyDlzws06SwtzU8zySTxbjCTzUDzbbzNvnbzU0TntzqSwVw0z0wyT1rjMT7zyTzbss"
+		if (Find(x, y, 343, 224, 934, 532, 需要消耗))
+		{
+			C_Click(791, 552)
 		}
 		if (DwmCheckcolor(505, 603, 14575954)) ;已經開始研發(停止研發按鈕)
 		{
@@ -1500,7 +1501,7 @@ TechacademyDone := VarSetCapacity
 return
 
 Autopuzzle:
-夢中茶會 :="|<>*221$71.00000000000003Vk007000A43zzzU0C000w8Dzzz00Q00Tzkzzzy11zU1zzUwxw07zzs3zz0zzzUDzzs0761zzzUzzzs0Dw3zSD1zD3k0zs7zzw3kS3kDzk7zzU7Uw7Uzi01zw0D1sD7wQ1zzzkS3kSDzy3zzzkw7VsDzw7zU7VyD7k7zsDTzj1zzzU7rUTzzw1zzy03j0Tzzk0zzk0Dz0DES003s00yy0Rns007U07ts0nzU00D00T3kDzw000S00w7UTzU000w00kC0Tk0000s0000000000000001"
+夢中茶會:="|<>*221$71.00000000000003Vk007000A43zzzU0C000w8Dzzz00Q00Tzkzzzy11zU1zzUwxw07zzs3zz0zzzUDzzs0761zzzUzzzs0Dw3zSD1zD3k0zs7zzw3kS3kDzk7zzU7Uw7Uzi01zw0D1sD7wQ1zzzkS3kSDzy3zzzkw7VsDzw7zU7VyD7k7zsDTzj1zzzU7rUTzzw1zzy03j0Tzzk0zzk0Dz0DES003s00yy0Rns007U07ts0nzU00D00T3kDzw000S00w7UTzU000w00kC0Tk0000s0000000000000001"
 if (Find(x, y, 1064, 285, 1200, 334, 夢中茶會))
 {
 	ClickList = D3 C3 C2 D2 D1 C1 C2 D2 D3 D4 C4 B4 A4 A3 A2 B2 B3 C3 C2 C1 B1 A1 A2 B2 B1 C1 D1 D2 D3 D4 C4 C3 C2 B2 B3 B4 C4 C3 D3 D2 C2 C3 B3 A3 A4 B4 B3 C3 D3 D4
@@ -3525,6 +3526,7 @@ Allowance = %AllowanceValue%
 Global UniqueID, Allowance
 Loop
 {
+	AutoLoginIn()
 	if (DwmCheckcolor(1259, 695, 16777215) and DwmCheckcolor(1240, 700, 22957) and DwmCheckcolor(13, 25, 16041247))
 	{
 		LogShow("位於遊戲首頁，自動登入")
@@ -4419,20 +4421,12 @@ if (AcademyDone<1)
 			}  
 			Loop
 			{
-				if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(750, 538, 4353453))
+				繼續學習 :="|<>*168$70.xzSTxznzyTTzbBvzb00D1V0yQb/yQ01wy7nnmYjvznzkHMD90VzAU0T1xUtYrbtbzzyy7nYmIbaE07s8EA300Q3AnTbAxkQxxkQnBs001sk07tE07U007900TBzzyTzyNYnbtm03tU0N0HSz0807a01Y5/GQ4U0TzyDzo23zyTtzzXzeHDTdM07zwTyZ9PSZbyQ000+I11uG01zzDzdGkrh80Dzwzwr00ArlkzznznQ00nQDkzsDzzzzzzrzrzVzy"
+
+				if (Find(x, y, 343, 224, 934, 532, 繼續學習))
 				{
-					LogShow("學習！學習！")
-					C_Click(786, 545)
-				}
-				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(810, 556, 16777215))
-				{
-					LogShow("學習2！學習2！")
-					C_Click(786, 545)
-				}
-				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(375, 230, 16777215) and DwmCheckcolor(468, 555, 16777215))
-				{
-					LogShow("學習3！學習3！")
-					C_Click(787, 548)
+					LogShow("繼續學習！")
+					C_Click(788, 567)
 				}
 				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(661, 548, 16777215) and DwmCheckcolor(608, 550, 16777215)) ;學習的技能已滿等
 				{
