@@ -4017,7 +4017,8 @@ if (AcademyDone<1)
 			ShopX1 := 430, ShopY1 := 150, ShopX2 := 1250, ShopY2 := 620
 			Loop
 			{
-				if ((GdipImageSearch(x, y, "img/Item_Equ_Box1.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2) or GdipImageSearch(x, y, "img/Item_Equ_Box2.png", 100, 8, ShopX1, ShopY1, ShopX2, ShopY2))and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
+				外觀裝備箱:="|<>*110$70.vxzrTziyzvrTbnw00SvvziQyTDwWQtD7yU0kAzn9nUU3nXDCHy8UDnnzSQxvDueQkDjt00bgTW8HYwT77wAkzPXCu0QQDS78w2Qndzw01wQnYM3AXzkQrtnw0kS00DQ0TDDt7/z4txnBwwzUAjksDrArbnyFqyLlzQ0MzDs2Pz9XxrB7wzU3XsDXrRbzzzzzzzzzxzs"
+				if (Find(x, y, ShopX1, ShopY1, ShopX2, ShopY2, 外觀裝備箱) and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
 				{
 					Item_Equ_Box1Pos := dwmgetpixel(x,y)
 					LogShow("購買外觀裝備箱(金幣)")
@@ -4048,7 +4049,6 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				
 				if (GdipImageSearch(x, y, "img/SkillBook_ATK.png", 110, 8, ShopX1, ShopY1, ShopX2, ShopY2) and SkillBook_ATK and AtkCoin<1) ;如果有攻擊課本
 				{
 					SkillBookPos := dwmgetpixel(x,y)
