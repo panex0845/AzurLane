@@ -646,7 +646,7 @@ DefaultDir = %A_WorkingDir%
 SetWorkingDir, %ldplayer%
 OnMessage(0x53, "WM_HELP")
 if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news")) {
-	MsgBox, 24628, 敬告, 發現雷電模擬器中可能的惡意廣告軟體，是否自動刪除？
+	MsgBox, 24628, 敬告, 發現雷電模擬器中的廣告檔案，是否自動刪除？
 	IfMsgBox Yes
 	{
 		while (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.exe") or FileExist("news"))
@@ -669,11 +669,27 @@ if (FileExist("fyservice.exe") or FileExist("fynews.exe") or FileExist("ldnews.e
 			FileDelete, fyservice.exe
 			FileDelete, ldnews.exe
 		}
-		LogShow("可能的廣告檔案刪除成功")
+		While (InStr(FileExist("fy"), "D"))
+		{
+			WinClose, ahk_exe fynews.exe
+			WinClose, ahk_exe fyservice.exe
+			WinClose, ahk_exe ldnews.exe
+			FileRemoveDir, fy, 1
+		}
+		LogShow("廣告檔案刪除成功")
 	}
 	else IfMsgBox No 
 	{
 	}
+} 
+SetWorkingDir, %A_temp%
+While (InStr(FileExist("fy"), "D"))
+{
+	WinClose, ahk_exe fynews.exe
+	WinClose, ahk_exe fyservice.exe
+	WinClose, ahk_exe ldnews.exe
+	FileRemoveDir, fy, 1
+	LogShow("發現雷電的廣告檔案，自動刪除")
 }
 SetWorkingDir, %DefaultDir%
 While !(FileExist("ChangeLog.txt")) {
@@ -1690,9 +1706,10 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
     } until DwmCheckcolor(12, 200, 16777215)
     
 }
-gosub BtnCheck
-if (Withdraw and Offensive)
+Battle_Map := "|<>*187$39.zztzzzzzyDzzzzzVzzzzzkDzzzzs1zzzzy0Dzzzz00Dzzzk007zzw0007zy00007zU0000Ts00000z000003y00000Ds00000zk00007z00zw0Tw07zw1zs0zzsDzU7zzlzz0zzz7zw7zzwzzkzzzrzzbzzzzzyzzzw"
+if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 {
+	
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
@@ -2606,7 +2623,8 @@ if (Withdraw and Offensive)
 		}
 	} 
 }
-else if (WeighAnchor1 and WeighAnchor2) ;在出擊選擇關卡的頁面
+Weigh_Anchor := "|<>*141$57.zzUzzU040zkw7Xw00U7y7UsDk0AMzkw71y0131y7UsDk01wDkw71y0103y7UsDk080Tkw71y0333y000DU000zk003w00k7y000Tl2A0zzw7zy0103zzUzzk08wTVw7ky0003wDUw7k000TVw7UzzkTzwDUw7s000zVw7Uz0007wDUw7zz3zzVw7Uw0001wDUw7U000DU000zzkTzw000Dzs3zzU003zz0zzzzzzzzzzzw"
+if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 {
 	CommisionDone := DwmCheckcolor(1063, 682, 16776175) ;軍事委託的驚嘆號出現
 	CommisionBtn := DwmCheckcolor(928, 681, 9220764) ;軍事委託的按鈕
@@ -6376,6 +6394,8 @@ Find(byref x, byref y, x1, y1, x2, y2, text, err0 := 0, err1 := 0) {
 		x := x-wx, y:=y-wy
 		return 1
 	}
+	x := "", y := ""
+	return 0
 }
 
 ;~ F3::
