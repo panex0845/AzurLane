@@ -587,23 +587,25 @@ Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%Debu
 Tab_Y += 32
 Iniread, DwmMode, settings.ini, OtherSub, DwmMode, 1
 Iniread, GdiMode, settings.ini, OtherSub, GdiMode, 0
-Iniread, ActiveMode, settings.ini, OtherSub, ActiveMode, 0
+Iniread, AHKMode, settings.ini, OtherSub, AHKMode, 0
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 取色方式：
 Tab_Y -= 3
 Iniread, CloneWindowforDWM, settings.ini, OtherSub, CloneWindowforDWM, 0
-Gui, Add, CheckBox, x180 y%TAB_Y% w200 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造一個隱形視窗對其取色
 Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode% , DWM
+
+Gui, Add, Radio,  x180 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
+Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vAHKMode checked%AHKMode% , AHK
 Tab_Y += 25
-Gui, Add, Radio,  x110 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
-;~ Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vActiveMode checked%ActiveMode% , Active
-Tab_Y += 25
+Gui, Add, CheckBox, x110 y%TAB_Y% w300 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造一個隱形視窗對其取色`(for DWM)
+Tab_Y += 30
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 點擊方式：
 Tab_Y -= 3
 Iniread, SendFromAHK, settings.ini, OtherSub, SendFromAHK, 1
 Iniread, SendFromADB, settings.ini, OtherSub, SendFromADB, 0
 Gui, Add, Radio,  x110 y%TAB_Y% w120 h20 gOthersettings vSendFromAHK checked%SendFromAHK% , 模擬滑鼠點擊
+Gui, Add, Radio,  x230 y%TAB_Y% w150 h20 gOthersettings vSendFromADB checked%SendFromADB% , ADB發送點擊指令
 Tab_Y += 25
-Gui, Add, Radio,  x110 y%TAB_Y% w150 h20 gOthersettings vSendFromADB checked%SendFromADB% , ADB發送點擊指令
+
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
@@ -1017,6 +1019,7 @@ Guicontrolget, SetGuiBGcolor2
 Guicontrolget, DebugMode
 Guicontrolget, DwmMode
 Guicontrolget, GdiMode
+Guicontrolget, AHKMode
 Guicontrolget, CloneWindowforDWM
 Guicontrolget, SendFromAHK
 Guicontrolget, SendFromADB
@@ -1029,10 +1032,11 @@ Iniwrite, %SetGuiBGcolor2%, settings.ini, OtherSub, SetGuiBGcolor2
 Iniwrite, %DebugMode%, settings.ini, OtherSub, DebugMode
 Iniwrite, %DwmMode%, settings.ini, OtherSub, DwmMode
 Iniwrite, %GdiMode%, settings.ini, OtherSub, GdiMode
+Iniwrite, %AHKMode%, settings.ini, OtherSub, AHKMode
 Iniwrite, %CloneWindowforDWM%, settings.ini, OtherSub, CloneWindowforDWM
 Iniwrite, %SendFromAHK%, settings.ini, OtherSub, SendFromAHK
 Iniwrite, %SendFromADB%, settings.ini, OtherSub, SendFromADB
-Global AutoLogin, DebugMode, DwmMode, GdiMode, CloneWindowforDWM, SendFromAHK, SendFromADB
+Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB
 Critical, off
 return
 
@@ -4808,6 +4812,7 @@ else if (num=14)
 return
 
 DelegationMission() {
+	點擊繼續 := "|<>*172$68.zzzrzbzzrzrzw0tz0A7wmNzz/CTk39yQ2jzmXbw0a7Z03zw8s703lm0Ezz0C0mG0wY2DzmHXw0WC301jw0ty0A7UlbPztyTmH1y407zk3Xw00799bzw0U7003kGtvzts1k03s00azU2SS00Tx03zs1bbU07kGQzzp9tk00Q027zk2SM003E01zx207zbzY00PyGs1zVztA02zzyyTszzzzzs"
 	Loop
 	{
 		sleep 300
@@ -4830,12 +4835,7 @@ DelegationMission() {
 		{
 			C_Click(411, 180)
 		}
-		else if (DwmCheckcolor(711, 261, 16777215) or DwmCheckcolor(575, 258, 16777215))
-		{
-			LogShow("每日獲得道具，點擊繼續")
-			C_Click(636, 91)
-		}
-		else if (DwmCheckcolor(712, 182, 16777215) and DwmCheckcolor(576, 188, 16777215))
+		else if (Find(x, y, 413, 472, 881, 659, 點擊繼續))
 		{
 			LogShow("每日獲得道具，點擊繼續")
 			C_Click(636, 91)
@@ -4878,12 +4878,7 @@ DelegationMission() {
 		{
 			C_Click(411, 180)
 		}
-		else if (DwmCheckcolor(711, 261, 16777215) or DwmCheckcolor(575, 258, 16777215))
-		{
-			LogShow("緊急獲得道具，點擊繼續")
-			C_Click(636, 91)
-		}
-		else if (DwmCheckcolor(712, 182, 16777215) and DwmCheckcolor(576, 188, 16777215))
+		else if (Find(x, y, 413, 472, 881, 659, 點擊繼續))
 		{
 			LogShow("緊急獲得道具，點擊繼續")
 			C_Click(636, 91)
@@ -6190,6 +6185,8 @@ DwmCheckcolor(x, y, color="", Variation=15) {
 			DllCall("user32.dll\ReleaseDC", "UInt", CloneWindow, "UInt", hDC)
 		}
 		pix := ConvertColor(pix)
+	} else if (AHKMode) {
+		PixelGetColor, pix, x, y , Alt RGB
 	}
 	if (Variation>=0) {
 		color := DecToHex(color)
@@ -6249,6 +6246,9 @@ DwmGetPixel(x, y) {
 			DllCall("user32.dll\ReleaseDC", "UInt", CloneWindow, "UInt", hDC)
 		}
 		pix := ConvertColor(pix)
+		Return pix
+	} else if (AHKMode) {
+		PixelGetColor, pix, x, y , Alt RGB
 		Return pix
 	}
 }
