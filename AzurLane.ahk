@@ -559,6 +559,8 @@ iniread, TechTarget_02, settings.ini, TechacademySub, TechTarget_02, 1
 iniread, TechTarget_03, settings.ini, TechacademySub, TechTarget_03, 1
 iniread, TechTarget_04, settings.ini, TechacademySub, TechTarget_04, 1
 iniread, TechTarget_05, settings.ini, TechacademySub, TechTarget_05, 1
+iniread, TechTarget_06, settings.ini, TechacademySub, TechTarget_06, 1
+iniread, TechTarget_07, settings.ini, TechacademySub, TechTarget_07, 1
 Tab_Y -= 3
 Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_01 checked%TechTarget_01% , 定向研發
 Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_02 checked%TechTarget_02% , 資金募集
@@ -566,6 +568,8 @@ Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_03 ch
 Gui, Add, CheckBox, x380 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_04 checked%TechTarget_04% , 艦裝解析
 Tab_Y += 25
 Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_05 checked%TechTarget_05% , 研究委託
+Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_06 checked%TechTarget_06% , 試驗募集
+Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_07 checked%TechTarget_07% , 基礎研究
 Tab_Y += 30
 ;~ Gui, Add, Text, x30 y%Tab_Y% w80 h20, 研發消耗：
 ;~ Tab_Y -= 3
@@ -1049,12 +1053,16 @@ Guicontrolget, TechTarget_02 ;資金募集
 Guicontrolget, TechTarget_03 ;數據蒐集
 Guicontrolget, TechTarget_04 ;艦裝解析
 Guicontrolget, TechTarget_05 ;研究委託
+Guicontrolget, TechTarget_06 ;試驗品募集
+Guicontrolget, TechTarget_07 ;基礎研究
 Iniwrite, %TechacademySub%, settings.ini, TechacademySub, TechacademySub
 Iniwrite, %TechTarget_01%, settings.ini, TechacademySub, TechTarget_01
 Iniwrite, %TechTarget_02%, settings.ini, TechacademySub, TechTarget_02
 Iniwrite, %TechTarget_03%, settings.ini, TechacademySub, TechTarget_03
 Iniwrite, %TechTarget_04%, settings.ini, TechacademySub, TechTarget_04
 Iniwrite, %TechTarget_05%, settings.ini, TechacademySub, TechTarget_05
+Iniwrite, %TechTarget_06%, settings.ini, TechacademySub, TechTarget_06
+Iniwrite, %TechTarget_07%, settings.ini, TechacademySub, TechTarget_07
 Critical, off
 return
 
@@ -1556,7 +1564,9 @@ if (Techacademy_Done) ;軍部研究室OK
 		數據蒐集 := "|<>*172$66.wT7wTXzwQDyU37wTUD4MTwU21wT0D4MTw000s00D4E1w001s00D401sU01wE0D41XwU0FwE0T413wwQ3w1UD413w003w1UT407w003w00D487w027sE0D4ADw037sF0D4ADz017sE0D0A7s003wF0D087sV23wE0D083yk61wF8Dw03wk6Fs10Dw1VwU0Ms00jw1lsU"
 		艦裝解析 := "|<>*141$66.zzzzzzzzzzyUU1s3VzXk3wU01s3Vz001w000s00D081k000w00D081k003s3Vy00Vw00Ds3Vz001k00Ts00D00Xk00Vs00D07Dk001tUTz007k00Ts00D001k0E3s00D001k001z0CT007k001y20T001k001w70T701k401s7Uy667o000y0kSA67oA00y0sCAC7wU"
 		研究委託 := "|<>*145$69.zzzzzzzzzXzs007z1zs00TX0E1s00D003s4D4D001zsDz0XsVs00D001zwT4DUM3k00D0XsVw70Tz1zsA20D0M3w80Tz000zVzz1X3s020DsDzkAMDy0MVs01z001sA34D00Ds00D0UMVzVlzVy3s424DwCDw30T0UEVz1lzk0Ds424DkS7z03z0U1Vw7kDk07s7wCT1y3zzzz1U"
-		科研目標 := [定向研發, 資金募集, 數據蒐集, 艦裝解析, 研究委託, 0]
+		試驗品募集 := "|<>*143$57.nzTzzzzzzwDkC0U7s030S1kA0z00M00S103szXz01k00T7wM00S033szX0y7kDzz3wTzky103s03007k80T00M00y103zzzzV7k00Q0U048z003U400V7s40Q8U048z0X7V400V3k40Q8U040S003U40001k00Q0U01sTs43U40U"
+		基礎研究 := "|<>*171$59.lz7zzzzzU1VwDkMsy000007UU0Q12A00TX00wC4Q01z605sw8s03wA8/VsFky7sMEL3kXU0Dk4Ui0V300TUTzw0067kz000kW4000S001l48U00w3l3W8FVV3s0UD4EW003k10S8V700TU27wF2DwDz00Ts0AE00S001k0MU00zwM3zllU"
+		科研目標 := [定向研發, 資金募集, 數據蒐集, 艦裝解析, 研究委託, 試驗品募集, 基礎研究, 0]
 		if (DwmCheckcolor(505, 598, 5936854)) ;開始研發
 		{
 			for k, v in 科研目標
@@ -1564,7 +1574,7 @@ if (Techacademy_Done) ;軍部研究室OK
 				if (Find(x, y, 310, 125, 420, 190, v))
 					break
 			}
-			if (k=1 and !TechTarget_01) or (k=2 and !TechTarget_02) or (k=3 and !TechTarget_03) or (k=3 and !TechTarget_03) or (k=4 and !TechTarget_04) or (k=5 and !TechTarget_05)
+			if (k=1 and !TechTarget_01) or (k=2 and !TechTarget_02) or (k=3 and !TechTarget_03) or (k=3 and !TechTarget_03) or (k=4 and !TechTarget_04) or (k=5 and !TechTarget_05) or (k=6 and !TechTarget_06) or (k=7 and !TechTarget_07) 
 			{
 				LogShow("更換科研項目")
 				Random, x, 320, 980
@@ -1580,10 +1590,13 @@ if (Techacademy_Done) ;軍部研究室OK
 					sleep 300
 				}
 			}
-			else if (k=6)
+			else if (k=8)
 			{
 				LogShow("科研項目發生錯誤(文字搜尋失敗)")
 				sleep 5000
+				C_Click(690, 717)
+				sleep 1000
+				C_Click(885, 252)
 			}
 			else
 			{
