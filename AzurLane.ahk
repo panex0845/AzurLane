@@ -552,6 +552,20 @@ Gui, Tab, 科　研
 Tab_Y := 90
 iniread, TechacademySub, settings.ini, TechacademySub, TechacademySub
 Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gTechacademysettings vTechacademySub checked%TechacademySub% +c4400FF, 啟動自動執行科研
+Tab_Y += 30
+Gui, Add, Text, x30 y%Tab_Y% w80 h20, 研發項目：
+iniread, TechTarget_01, settings.ini, TechacademySub, TechTarget_01, 1
+iniread, TechTarget_02, settings.ini, TechacademySub, TechTarget_02, 1
+iniread, TechTarget_03, settings.ini, TechacademySub, TechTarget_03, 1
+iniread, TechTarget_04, settings.ini, TechacademySub, TechTarget_04, 1
+iniread, TechTarget_05, settings.ini, TechacademySub, TechTarget_05, 1
+Tab_Y -= 2
+Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_01 checked%TechTarget_01% , 定向研發
+Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_02 checked%TechTarget_02% , 資金募集
+Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_03 checked%TechTarget_03% , 數據蒐集
+Gui, Add, CheckBox, x380 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_04 checked%TechTarget_04% , 艦裝解析
+Tab_Y += 25
+Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_05 checked%TechTarget_05% , 研究委託
 
 
 
@@ -1023,10 +1037,20 @@ Global DormFood
 Critical, off
 return
 
-Techacademysettings:
+Techacademysettings: ;科研設定
 Critical
 Guicontrolget, TechacademySub
+Guicontrolget, TechTarget_01 ;定向研發
+Guicontrolget, TechTarget_02 ;資金募集
+Guicontrolget, TechTarget_03 ;數據蒐集
+Guicontrolget, TechTarget_04 ;艦裝解析
+Guicontrolget, TechTarget_05 ;研究委託
 Iniwrite, %TechacademySub%, settings.ini, TechacademySub, TechacademySub
+Iniwrite, %TechTarget_01%, settings.ini, TechacademySub, TechTarget_01
+Iniwrite, %TechTarget_02%, settings.ini, TechacademySub, TechTarget_02
+Iniwrite, %TechTarget_03%, settings.ini, TechacademySub, TechTarget_03
+Iniwrite, %TechTarget_04%, settings.ini, TechacademySub, TechTarget_04
+Iniwrite, %TechTarget_05%, settings.ini, TechacademySub, TechTarget_05
 Critical, off
 return
 
@@ -1486,7 +1510,7 @@ return
 
 TechacademySub: ;科研
 Techacademy_Done := DwmCheckcolor(441, 503, 13528410)
-Shipworks_Done := 0
+Shipworks_Done := 0 ;暫時無用
 if (Techacademy_Done) ;軍部研究室OK
 {
 	LogShow("進入軍部科研室")
@@ -1506,9 +1530,53 @@ if (Techacademy_Done) ;軍部研究室OK
 		{
 			C_Click(633, 281)
 		}
+		定向研發 := "|<>*170$68.zXzzzzzzzzzzkTzyDzU00w0007z3zs00TU001k00D3V7k0zsQ003lsFw0Dz73zkwS4TUbzzkU4D7V7k000A813U81w000724Es00DwzVzkV4C003k8MTw8F3U8Fw260724Ew20T33U1kU4D0U7k0MTw813k8Fy027z20Ew24Tw01zkzwC037z000QDs3k0ly0Q07Xy1zwQTkU"
+		資金募集 := "|<>*169$65.73zw03zlszs407s07w007W02DUy7s00D404T3wDs00w0s3w00DU01w1U3s00T003s423kkkS007k007zVzw00DU00D003s00T000S007k00y000wAADU00zU01w8MTU63s003sEVy0A7U007kV3w007k00Dz3zkUkDY00y007y01y0TUw007kA3sE"
+		數據蒐集 := "|<>*172$66.wT7wTXzwQDyU37wTUD4MTwU21wT0D4MTw000s00D4E1w001s00D401sU01wE0D41XwU0FwE0T413wwQ3w1UD413w003w1UT407w003w00D487w027sE0D4ADw037sF0D4ADz017sE0D0A7s003wF0D087sV23wE0D083yk61wF8Dw03wk6Fs10Dw1VwU0Ms00jw1lsU"
+		艦裝解析 := "|<>*141$66.zzzzzzzzzzyUU1s3VzXk3wU01s3Vz001w000s00D081k000w00D081k003s3Vy00Vw00Ds3Vz001k00Ts00D00Xk00Vs00D07Dk001tUTz007k00Ts00D001k0E3s00D001k001z0CT007k001y20T001k001w70T701k401s7Uy667o000y0kSA67oA00y0sCAC7wU"
+		研究委託 := "|<>*145$69.zzzzzzzzzXzs007z1zs00TX0E1s00D003s4D4D001zsDz0XsVs00D001zwT4DUM3k00D0XsVw70Tz1zsA20D0M3w80Tz000zVzz1X3s020DsDzkAMDy0MVs01z001sA34D00Ds00D0UMVzVlzVy3s424DwCDw30T0UEVz1lzk0Ds424DkS7z03z0U1Vw7kDk07s7wCT1y3zzzz1U"
+		科研目標 := [定向研發, 資金募集, 數據蒐集, 艦裝解析, 研究委託, 0]
 		if (DwmCheckcolor(505, 598, 5936854)) ;開始研發
 		{
-			C_Click(507, 617)
+			for k, v in 科研目標
+			{
+				if (Find(x, y, 310, 125, 420, 190, v))
+					break
+			}
+			if (k=1 and !TechTarget_01) or (k=2 and !TechTarget_02) or (k=3 and !TechTarget_03) or (k=3 and !TechTarget_03) or (k=4 and !TechTarget_04) or (k=5 and !TechTarget_05)
+			{
+				LogShow("更換科研項目")
+				Random, x, 320, 980
+				Random, y ,690, 720
+				C_Click(x, y)
+				Loop
+				{
+					查看詳情 :="|<>*206$65.zzDzzzzszXzzyTzs000z7v0003k001yDq0007U01zU3g000Dzlzz00Ts0Tz000S00zU0Ty000zzlwCM7zsTzw0zUww3U000s1y00070001zzA000C0003U4O001zsTzz08wDz3zU00zzzs007y001zzzk00DsDz3s1zXzsTU007k2D000y000DU0S001wFzsT60w003xU00yATzzzzz001w0z0003yDz3s1y0007w007k3w000Ds00DX7zzzzzlzsT6DU"
+					if (Find(x, y, 613, 602, 713, 662, 查看詳情)) {
+						C_Click(895, 270)
+						break
+					}
+					sleep 300
+				}
+			}
+			else if (k=6)
+			{
+				LogShow("科研項目發生錯誤(文字搜尋失敗)")
+				sleep 5000
+			}
+			else
+			{
+				LogShow("開始研發")
+				C_Click(507, 617)
+				sleep 1000
+			}
+		}
+		if (DwmCheckcolor(438, 618, 9742022) and DwmCheckcolor(579, 618, 9740998) and DwmCheckcolor(532, 618, 13552598)) ;缺少研發道具
+		{
+			LogShow("缺少研究道具")
+			C_Click(657, 713)
+			sleep 1000
+			C_Click(885, 265)
 		}
 		需要消耗 :="|<>*174$68.zzzzzzzzjzDs007k003ktnnzbzw000z6QwztzzzDDztnCE003znXzzwnAzbwy001zzgv891DbDCTzzDm2EHtnnbXs07zbzyQwtwSTtk90zU00TnbzTyTzs007ztzo000zyTzzy01000Dz7zzzU0TyTzU001yNzrz7zzlyDzaTxU00TwzbznU0NvnbyDlzws06SwtzU8zySTxbjCTzUDzbbzNvnbzU0TntzqSwVw0z0wyT1rjMT7zyTzbss"
 		if (Find(x, y, 343, 224, 934, 532, 需要消耗))
@@ -4855,16 +4923,13 @@ return
 
 DelegationMission() {
 	點擊繼續 := "|<>*172$68.zzzrzbzzrzrzw0tz0A7wmNzz/CTk39yQ2jzmXbw0a7Z03zw8s703lm0Ezz0C0mG0wY2DzmHXw0WC301jw0ty0A7UlbPztyTmH1y407zk3Xw00799bzw0U7003kGtvzts1k03s00azU2SS00Tx03zs1bbU07kGQzzp9tk00Q027zk2SM003E01zx207zbzY00PyGs1zVztA02zzyyTszzzzzs"
+	委託 :="|<>*145$53.k001z7zsDU003z7w0D000DyD00zzUzzwS0Tk000600EzU000A07Vz0000Tzz3zk007zzy7zUkEDk1wDw3UkDU3sS0D1kDzzk00S7kTzs00sDy3w00060000s0U7w0001zzwDs0003U3sTy3z1z07kzw3y3y0DVzw3k7wQT3nw10Tssy7Xw01zllwD6000DU3sS0000D07s007y0S0Dk1zzzzwTzk3"
 	Loop
 	{
-		sleep 300
-	} until DwmCheckcolor(166, 65, 15201279) ;進入委託頁面
-	C_Click(53, 191) ;每日
-	Loop
-	{
-		sleep 300
-	} until DwmCheckcolor(52, 171, 16777207) ;等待切換到每日頁面
-	sleep 500
+		if (Find(x, y, 97, 34, 197, 94, 委託))
+			break
+		sleep 500
+	}
 	Loop
 	{
 		sleep 400
