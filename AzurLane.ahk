@@ -78,9 +78,10 @@ if (title="") or (title="ERROR") {
 Run, %comspec% /c powercfg /change /monitor-timeout-ac 0,, Hide ;關閉螢幕省電模式
 iniread, SetGuiBGcolor, settings.ini, OtherSub, SetGuiBGcolor, 0
 IniRead, SetGuiBGcolor2, settings.ini, OtherSub, SetGuiBGcolor2, FFD2D2
-if (SetGuiBGcolor)
-{
+if (SetGuiBGcolor) {
 	Gui, Color, %SetGuiBGcolor2%
+} else {
+	Gui, Color, F0F0F0 
 }
 Gui Add, Edit, x110 y17 w100 h21 vtitle ginisettings , %title%
 Gui Add, Text,  x220 y20 w80 h20 , 代號：
@@ -353,9 +354,9 @@ Gui, Add, CheckBox, x180 y%Tab2_Y% w50 h20 gAnchorsettings vCamp2 checked%Camp2%
 Gui, Add, CheckBox, x230 y%Tab2_Y% w50 h20 gAnchorsettings vCamp3 checked%Camp3% , 重櫻
 Gui, Add, CheckBox, x280 y%Tab2_Y% w50 h20 gAnchorsettings vCamp4 checked%Camp4% , 鐵血
 Gui, Add, CheckBox, x330 y%Tab2_Y% w50 h20 gAnchorsettings vCamp5 checked%Camp5% , 東煌
-Tab2_Y+=30
-Gui, Add, CheckBox, x80 y%Tab2_Y% w80 h20 gAnchorsettings vCamp6 checked%Camp6% , 北方聯合
-Gui, Add, CheckBox, x160 y%Tab2_Y% w50 h20 gAnchorsettings vCamp7 checked%Camp7% , 其他
+
+Gui, Add, CheckBox, x380 y%Tab2_Y% w50 h20 gAnchorsettings vCamp6 checked%Camp6% , 北方
+Gui, Add, CheckBox, x430 y%Tab2_Y% w50 h20 gAnchorsettings vCamp7 checked%Camp7% , 其他
 
 iniread, RarityAll, settings.ini, Battle, RarityAll, 1 ;全部
 iniread, Rarity1, settings.ini, Battle, Rarity1, 1 ;普通
@@ -375,7 +376,7 @@ Guicontrol, disable, Rarity4
 
 iniread, DailyGoalSub, settings.ini, Battle, DailyGoalSub
 ;~ Gui, Add, GroupBox, x11 y280 w457 h75, ` 
-Tab2_Y+=33 ;270
+Tab2_Y+=43 ;270
 Gui, Add, CheckBox, x30 y%Tab2_Y% w200 h20 gAnchorsettings vDailyGoalSub checked%DailyGoalSub% , 自動執行每日任務：指派：
 Tab2_Y-=2 ;268
 iniread, DailyParty, settings.ini, Battle, DailyParty, 第一艦隊
@@ -423,17 +424,18 @@ Gui, Add, CheckBox, x30 y%Tab2_Y% w230 h20 gAnchorsettings vOperationSub checked
 Tab2_Y-=2
 iniread, Operationenemy, settings.ini, Battle, Operationenemy, 隨機的
 if Operationenemy=隨機的
-	Gui, Add, DropDownList, x260 y%Tab2_Y% w80 h150 vOperationenemy gAnchorsettings, 隨機的||最弱的|最左邊|最右邊|
+	Gui, Add, DropDownList, x260 y%Tab2_Y% w70 h150 vOperationenemy gAnchorsettings, 隨機的||最弱的|最左邊|最右邊|
 else if Operationenemy=最弱的
-	Gui, Add, DropDownList, x260 y%Tab2_Y% w80 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的||最左邊|最右邊|
+	Gui, Add, DropDownList, x260 y%Tab2_Y% w70 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的||最左邊|最右邊|
 else if Operationenemy=最左邊
-	Gui, Add, DropDownList, x260 y%Tab2_Y% w80 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的|最左邊||最右邊|
+	Gui, Add, DropDownList, x260 y%Tab2_Y% w70 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的|最左邊||最右邊|
 else if Operationenemy=最右邊
-	Gui, Add, DropDownList, x260 y%Tab2_Y% w80 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的|最左邊|最右邊||
+	Gui, Add, DropDownList, x260 y%Tab2_Y% w70 h150 vOperationenemy gAnchorsettings, 隨機的|最弱的|最左邊|最右邊||
 else 
-	Gui, Add, DropDownList, x260 y%Tab2_Y% w80 h150 vOperationenemy gAnchorsettings, 隨機的||最弱的|最左邊|最右邊|
-
+	Gui, Add, DropDownList, x260 y%Tab2_Y% w70 h150 vOperationenemy gAnchorsettings, 隨機的||最弱的|最左邊|最右邊|
+Tab2_Y-=2
 Gui, Add, button, x355 y%Tab2_Y% w100 h24 gResetOperationSub vResetOperation, 重置演習 
+
 iniread, Leave_Operatio, settings.ini, Battle, Leave_Operatio
 Tab2_Y+=30
 Gui, Add, CheckBox, x50 y%Tab2_Y% w100 h20 gAnchorsettings vLeave_Operatio checked%Leave_Operatio% , 我方血量＜
@@ -448,6 +450,13 @@ Gui, Add, Slider, x310 y%Tab2_Y% w50 h30 gAnchorsettings vOperatioEnHpBar range1
 Tab2_Y+=2
 Gui, Add, Text, x360 y%Tab2_Y% w20 h20 vOperatioEnHpBarUpdate , %OperatioEnHpBar% 
 Gui, Add, Text, x380 y%Tab2_Y% w80 h20 vOperatioEnHpBarPercent, `%，時撤退
+
+Tab2_Y+=30
+IniRead, ResetOperationTime, settings.ini, Battle, ResetOperationTime, 1
+IniRead, ResetOperationTime2, settings.ini, Battle, ResetOperationTime2, 1050, 2250
+Gui, Add, CheckBox, x50 y%Tab2_Y% w120 h20 gAnchorsettings vResetOperationTime checked%ResetOperationTime% , 自動重置時間
+Gui, Add, Edit, x170 y%Tab2_Y% w120 h20 gAnchorsettings vResetOperationTime2 , %ResetOperationTime2%
+
 
 Gui, Tab, 出擊３
 Tab_Y := 90
@@ -886,6 +895,8 @@ Guicontrolget, OperatioMyHpBar
 Guicontrolget, OperatioMyHpBarUpdate
 Guicontrolget, OperatioEnHpBar
 Guicontrolget, OperatioEnHpBarUpdate
+Guicontrolget, ResetOperationTime
+Guicontrolget, ResetOperationTime2
 Iniwrite, %IndexAll%, settings.ini, Battle, IndexAll ;全部
 Iniwrite, %Index1%, settings.ini, Battle, Index1 ;前排先鋒
 Iniwrite, %Index2%, settings.ini, Battle, Index2 ;後排主力
@@ -923,6 +934,8 @@ Iniwrite, %Operationenemy%, settings.ini, Battle, Operationenemy
 Iniwrite, %Leave_Operatio%, settings.ini, Battle, Leave_Operatio
 Iniwrite, %OperatioMyHpBar%, settings.ini, Battle, OperatioMyHpBar ;演習時的我方血量
 Iniwrite, %OperatioEnHpBar%, settings.ini, Battle, OperatioEnHpBar ;演習時的敵方血量
+Iniwrite, %ResetOperationTime%, settings.ini, Battle, ResetOperationTime
+Iniwrite, %ResetOperationTime2%, settings.ini, Battle, ResetOperationTime2
 Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
 Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
 Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar
@@ -1118,6 +1131,7 @@ Guicontrol, disable, Timetobattle1
 Guicontrol, disable, Timetobattle2
 Guicontrol, disable, StopBattleTime3
 Guicontrol, disable, CloneWindowforDWM
+Guicontrol, disable, ResetOperationTime2
 return
 
 Start:
@@ -1331,11 +1345,21 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0800 or Nowtime=2000)
+	if (NowTime=0001 or Nowtime=1201)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
-		OperationDone := VarSetCapacity  ;重置演習判斷
-		iniWrite, 0, settings.ini, Battle, OperationYesterday
+	}
+	if (ResetOperationTime) ;如果有勾選自動重置演習
+	{
+		ResetOperationTime3 := StrSplit(ResetOperationTime2, ",")
+		for k, Resettime in ResetOperationTime3
+		{
+			if (NowTime=Resettime)
+			{
+				OperationDone := VarSetCapacity  ;重置演習判斷
+				iniWrite, 0, settings.ini, Battle, OperationYesterday
+			}
+		}
 	}
 	MainCheck := CheckArray(DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871))
 	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
@@ -1723,7 +1747,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		Random, y, 537, 551
 		C_Click(x, y)
 	}
-	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1)
+	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1 and SwitchParty<1)
 	{
 		FightRoundsDone := 1
 		if FightRoundsDo3=撤退
