@@ -4996,6 +4996,11 @@ DelegationMission() {
 				break
 			}
 		}
+		else if (A_index=100 or A_index=120 or A_index=140 or A_index=160)
+		{
+			LogShow("似乎卡住了，嘗試點擊上方1")
+			C_Click(629, 73)
+		}
 	}
 	C_Click(51, 283) ;緊急
 	Loop
@@ -5014,9 +5019,9 @@ DelegationMission() {
 			UrgentTask := 0
 		}
 	}
-	Loop, 260
+	Loop
 	{
-		sleep 300
+		sleep 500
 		if (DwmCheckcolor(181, 136, 11358530))
 		{
 			LogShow("完成委託任務")
@@ -5038,6 +5043,11 @@ DelegationMission() {
 			{			
 				break
 			}
+		}
+		else if (A_index=100 or A_index=120 or A_index=140 or A_index=160)
+		{
+			LogShow("似乎卡住了，嘗試點擊上方2")
+			C_Click(629, 73)
 		}
 	}
 	if (UrgentTask=0)
