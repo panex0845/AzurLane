@@ -1364,6 +1364,10 @@ sleep 200
 GuiControl, Enable, ResetOperation
 return
 
+ResetOperationClock:
+ResetOperationDone := VarSetCapacity
+return
+
 Mainsub: ;優先檢查出擊以外的其他功能
 LDplayerCheck := CheckArray(DwmCheckcolor(13, 25, 16041247), DwmCheckcolor(23, 25, 16041247))
 Formattime, Nowtime, ,HHmm
@@ -1377,7 +1381,7 @@ else if LDplayerCheck
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
 	}
-	if (ResetOperationTime) ;如果有勾選自動重置演習
+	if (ResetOperationTime and ResetOperationDone<1) ;如果有勾選自動重置演習
 	{
 		ResetOperationTime3 := StrSplit(ResetOperationTime2, ",")
 		for k, Resettime in ResetOperationTime3
@@ -1391,10 +1395,13 @@ else if LDplayerCheck
 						LogShow("自動重置演習。")
 					}
 				iniWrite, 0, settings.ini, Battle, OperationYesterday
+				ResetOperationDone := 1
+				Settimer, ResetOperationClock, -61000
 				BTN_Formation := "|<>*207$71.1y3zzzsA3sAA7w7zwzkM7kssDsDzkzUk0001tk000T1UU003VUzz1y33zUDj11zy3w6Dy0Q003zw7sAzw3s0A7zsDkNzkDU0sDzkTUbz0z11k000z1Tw1wADUzz1y2TkVkET1zyDw6S61UVy3zzjsANw066Q3zyDkQTk0QwM0007UsT02vsE240D1kQ04k0048ky3UsAAUE08FVw71Vk93U0EX3sD0D00T40V67kQ1w03zk12ADUs7s06tU000T00DU1Al048Uy30y02MU08FVw61s04lU8EX3sA3UkB"
 				if (Find(x, y, 838, 395, 938, 455, BTN_Formation))
 				{
 					C_Click(1080, 403)
+					sleep 2000
 				}
 			}
 		}
@@ -3520,6 +3527,14 @@ LogShow("開始演習。")
 Loop
 {
 	sleep 1000
+	None_Operation := "|<>*133$37.sTwzT3s3wS70M1yA30A0T41V24D20kV27XkEEV3lw880Vsy440Esz2208QTV104CDkUU267sME137wA8EVXy6481lz30C0lzVk7lwzzyD"
+	if (Find(x, y, 1135, 158, 1235, 218, None_Operation)) ;演習次數剩餘0次
+	{
+			LogShow("演習次數剩餘0次，演習結束！")
+			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
+			C_Click(1239, 72) ;回到首頁
+			break
+	}
 	if (DwmCheckcolor(138, 61, 15201279) and DwmCheckcolor(154, 71, 14085119))  ;演習介面隨機
 	{
 		if (Operationenemy="最弱的")
