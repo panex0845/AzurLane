@@ -559,15 +559,19 @@ iniread, TechTarget_02, settings.ini, TechacademySub, TechTarget_02, 1
 iniread, TechTarget_03, settings.ini, TechacademySub, TechTarget_03, 1
 iniread, TechTarget_04, settings.ini, TechacademySub, TechTarget_04, 1
 iniread, TechTarget_05, settings.ini, TechacademySub, TechTarget_05, 1
-Tab_Y -= 2
+Tab_Y -= 3
 Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_01 checked%TechTarget_01% , 定向研發
 Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_02 checked%TechTarget_02% , 資金募集
 Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_03 checked%TechTarget_03% , 數據蒐集
 Gui, Add, CheckBox, x380 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_04 checked%TechTarget_04% , 艦裝解析
 Tab_Y += 25
 Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechTarget_05 checked%TechTarget_05% , 研究委託
-
-
+Tab_Y += 30
+;~ Gui, Add, Text, x30 y%Tab_Y% w80 h20, 研發消耗：
+;~ Tab_Y -= 3
+;~ Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Coin checked%TechExpend_Coin% , 金幣
+;~ Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Free checked%TechExpend_Free% , 免費
+;~ Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Other checked%TechExpend_Other% , 其他
 
 Gui, Tab, 任　務
 iniread, MissionSub, settings.ini, MissionSub, MissionSub
@@ -1381,7 +1385,17 @@ else if LDplayerCheck
 			if (NowTime=Resettime)
 			{
 				OperationDone := VarSetCapacity  ;重置演習判斷
+				iniread, OperationYesterday, settings.ini, Battle, OperationYesterday
+					if (OperationYesterday>=1)
+					{
+						LogShow("自動重置演習。")
+					}
 				iniWrite, 0, settings.ini, Battle, OperationYesterday
+				BTN_Formation := "|<>*207$71.1y3zzzsA3sAA7w7zwzkM7kssDsDzkzUk0001tk000T1UU003VUzz1y33zUDj11zy3w6Dy0Q003zw7sAzw3s0A7zsDkNzkDU0sDzkTUbz0z11k000z1Tw1wADUzz1y2TkVkET1zyDw6S61UVy3zzjsANw066Q3zyDkQTk0QwM0007UsT02vsE240D1kQ04k0048ky3UsAAUE08FVw71Vk93U0EX3sD0D00T40V67kQ1w03zk12ADUs7s06tU000T00DU1Al048Uy30y02MU08FVw61s04lU8EX3sA3UkB"
+				if (Find(x, y, 838, 395, 938, 455, BTN_Formation))
+				{
+					C_Click(1080, 403)
+				}
 			}
 		}
 	}
@@ -1801,7 +1815,13 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 Battle_Map := "|<>*187$39.zztzzzzzyDzzzzzVzzzzzkDzzzzs1zzzzy0Dzzzz00Dzzzk007zzw0007zy00007zU0000Ts00000z000003y00000Ds00000zk00007z00zw0Tw07zw1zs0zzsDzU7zzlzz0zzz7zw7zzwzzkzzzrzzbzzzzzyzzzw"
 if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 {
-	
+	if (StopAnchor=1)
+	{
+		LogShow("停止出擊中，返回上一頁")
+		sleep 500
+		C_Click(56, 86)
+		return
+	}
 	if (IsDetect<1)
 		LogShow("偵查中。")
 	sleep 1000
@@ -2829,6 +2849,12 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 			Goto, OperationSub
 			}
 		}
+	}
+	if (StopAnchor=1)
+	{
+		LogShow("停止出擊中，返回首頁")
+		C_Click(1228, 72)
+		return
 	}
 	if (BattleTimes) ;如果有勾選出擊N輪
 	{
