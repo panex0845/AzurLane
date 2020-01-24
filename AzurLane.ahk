@@ -1951,7 +1951,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						bulletFailed++
 						break
@@ -1997,7 +1997,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279) and !(DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215))) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						questFailed++
 						break
@@ -2055,7 +2055,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					if (DwmCheckcolor(135, 57, 14085119) and xx>147 and yy>200 and xx<MapX2 and yy<MapY2) 
 					{
 						C_Click(xx, yy)
-						if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+						if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))  ;16250871
 						{
 							BossFailed++
 							LogShow("哎呀哎呀，前往BOSS的路徑被擋住了！")
@@ -2311,7 +2311,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					C_Click(xx, yy)
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871)) 
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						BossFailed++
 						LogShow("哎呀哎呀，前往BOSS的路徑被擋住了！")
@@ -2358,7 +2358,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed2++
 						LogShow("哎呀哎呀，前往運輸艦隊的路徑被擋住了！")
@@ -2391,7 +2391,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed++
 						LogShow("哎呀哎呀，前往航空艦隊的路徑被擋住了！")
@@ -2424,7 +2424,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed++
 						LogShow("哎呀哎呀，前往航空艦隊的路徑被擋住了！")
@@ -2457,7 +2457,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed4++
 						LogShow("哎呀哎呀，前往偵查艦隊的路徑被擋住了！")
@@ -2491,7 +2491,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed3++
 						LogShow("哎呀哎呀，前往主力艦隊的路徑被擋住了！")
@@ -2524,7 +2524,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (DwmCheckcolor(516, 357, 16250871))  ;16250871
+					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						Plane_TargetFailed1++
 						LogShow("哎呀哎呀，前往航空器的路徑被擋住了！")
