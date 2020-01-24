@@ -3540,8 +3540,7 @@ LogShow("開始演習。")
 Loop
 {
 	sleep 500
-	None_Operation := "|<>*150$38.zzzzzzzDzTztz0zXls7U7ssA0sEy83264Da0lVV3lsAMMEwT3664D7klVX3XwAMMksz366ACDklVX3bwAMMklz3664ATkkVU7DwA0w3Xz3UTvzzzzzzzzzzzs"
-	if (Find(x, y, 1135, 158, 1235, 218, None_Operation)) ;演習次數剩餘0次
+	if (GdipImageSearch(x, y, "img/None_Operation.png", 100, 8, 1060, 173, 1213, 205)) ;演習次數剩餘0次
 	{
 			LogShow("演習次數剩餘0次，演習結束！")
 			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
