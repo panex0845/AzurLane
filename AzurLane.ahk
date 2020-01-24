@@ -492,8 +492,9 @@ else
 	Gui, Add, DropDownList, x375 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHpDo  Choose%Retreat_LowHpDo%, 重新來過||
 Tab_Y+=30
 iniread, Stop_LowHp, settings.ini, Battle, Stop_LowHp, 0
+iniread, Stop_LowHP_SP, settings.ini, Battle, Stop_LowHP_SP, 0
 Gui, Add, CheckBox, x50 y%Tab_Y% w180 h20 gAnchor3settings vStop_LowHp checked%Stop_LowHp% , 討伐BOSS時不退出戰鬥
-
+Gui, Add, CheckBox, x250 y%Tab_Y% w180 h20 gAnchor3settings vStop_LowHP_SP checked%Stop_LowHP_SP% , 更換隊伍後不退出戰鬥
 
 Gui, Tab, 學　院
 iniread, AcademySub, settings.ini, Academy, AcademySub
@@ -973,6 +974,7 @@ Guicontrolget, Retreat_LowHp
 Guicontrolget, Retreat_LowHpBar
 Guicontrolget, Retreat_LowHpDo
 Guicontrolget, Stop_LowHp
+Guicontrolget, Stop_LowHP_SP
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
@@ -980,8 +982,9 @@ Iniwrite, %Retreat_LowHp%, settings.ini, Battle, Retreat_LowHp
 Iniwrite, %Retreat_LowHpBar%, settings.ini, Battle, Retreat_LowHpBar
 Iniwrite, %Retreat_LowHpDo%, settings.ini, Battle, Retreat_LowHpDo
 Iniwrite, %Stop_LowHp%, settings.ini, Battle, Stop_LowHp
+Iniwrite, %Stop_LowHP_SP%, settings.ini, Battle, Stop_LowHP_SP
 Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
-Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp
+Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp, Stop_LowHP_SP
 Critical, off
 return
 
@@ -1735,7 +1738,7 @@ if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) a
 		}
 	}
 	AnchorTimes++ ;統計出擊次數
-	Global AnchorTimes
+	Global AnchorTimes, switchparty
 	FightRoundsDoCount++ ;統計當艦隊A每出擊
 	rate := Round(AnchorFailedTimes/AnchorTimes*100, 2)
 	GuiControl, ,AnchorTimesText, 出擊次數：%AnchorTimes% 次 ｜ 全軍覆沒：%AnchorFailedTimes% 次 ｜ 翻船機率：%rate%`%
@@ -2753,7 +2756,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		{
 			Break
 		}
-	} 
+	} until !(Find(x, y, 750, 682, 850, 742, Battle_Map))
 }
 Weigh_Anchor := "|<>*141$57.zzUzzU040zkw7Xw00U7y7UsDk0AMzkw71y0131y7UsDk01wDkw71y0103y7UsDk080Tkw71y0333y000DU000zk003w00k7y000Tl2A0zzw7zy0103zzUzzk08wTVw7ky0003wDUw7k000TVw7UzzkTzwDUw7s000zVw7Uz0007wDUw7zz3zzVw7Uw0001wDUw7U000DU000zzkTzw000Dzs3zzU003zz0zzzzzzzzzzzw"
 if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
@@ -6102,6 +6105,12 @@ Battle()
 								if (debugmode)
 									LogShow("BOSS出現，停止撤退！")
 							}
+						}
+						if (Stop_LowHP_SP and switchparty>=1 and NotRetreat<1)
+						{
+							NotRetreat := 1
+							if (debugmode)
+								LogShow("已交換隊伍，停止撤退！")
 						}
 						if ((OriginalHP-NowHP)>=Retreat_LowHpBar and NotRetreat<1) ;HP過低撤退
 						{
