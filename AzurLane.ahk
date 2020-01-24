@@ -4978,6 +4978,10 @@ return
 DelegationMission() {
 	點擊繼續 := "|<>*172$68.zzzrzbzzrzrzw0tz0A7wmNzz/CTk39yQ2jzmXbw0a7Z03zw8s703lm0Ezz0C0mG0wY2DzmHXw0WC301jw0ty0A7UlbPztyTmH1y407zk3Xw00799bzw0U7003kGtvzts1k03s00azU2SS00Tx03zs1bbU07kGQzzp9tk00Q027zk2SM003E01zx207zbzY00PyGs1zVztA02zzyyTszzzzzs"
 	委託 :="|<>*145$53.k001z7zsDU003z7w0D000DyD00zzUzzwS0Tk000600EzU000A07Vz0000Tzz3zk007zzy7zUkEDk1wDw3UkDU3sS0D1kDzzk00S7kTzs00sDy3w00060000s0U7w0001zzwDs0003U3sTy3z1z07kzw3y3y0DVzw3k7wQT3nw10Tssy7Xw01zllwD6000DU3sS0000D07s007y0S0Dk1zzzzwTzk3"
+	進行中 := "|<>*201$57.zrzzDzzzDww9zlU1zsz3X7wQ0Dz7w8073k1zszn00kzzy007kszMzzk00w77z7zyT77k0Dl00nsw101wM06T7U8tz3z7nswl01kTsy00680C3z7k00l7DyTsy006803nz7nswl00STszz7y0zznz7zsz03syT0zz7ss07ns7zszjk0yTVzzDw"
+	NoneDelegation := "|<>*170$58.zzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzss000DzzzzXU000zzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXU"
+	緊急 := "|<>*138$35.000000000003zzzzzzzzzzzzzzz3zk01w0DU03k0T0161ky00A00Q0ky00s00Q01s0Ms03s0Dk07U0z00DUCC00y00Q28w00s49w03kA1U11U0367W81bzzzzzw"
+
 	Loop
 	{
 		if (Find(x, y, 97, 34, 197, 94, 委託))
@@ -5001,13 +5005,9 @@ DelegationMission() {
 			LogShow("每日獲得道具，點擊繼續")
 			C_Click(636, 91)
 		}
-		else if (DwmCheckcolor(443, 205, 8699499) or DwmCheckcolor(443, 205, 6515067)) ;任務都在進行中 or 都沒接到任務
+		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 459, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
 		{
-			sleep 1500
-			if (DwmCheckcolor(443, 205, 8699499) or DwmCheckcolor(443, 205, 6515067))
-			{
-				break
-			}
+			break
 		}
 		else if (A_index=100 or A_index=120 or A_index=140 or A_index=160)
 		{
@@ -5020,21 +5020,9 @@ DelegationMission() {
 	{
 		sleep 300
 	} until DwmCheckcolor(53, 295, 16252820) ;等待切換到緊急頁面
-	if (DwmCheckcolor(143, 205, 12404034) or DwmCheckcolor(144, 348, 12404034) or DwmCheckcolor(145, 494, 12404034) or DwmCheckcolor(143, 641, 12404034))  ;接獲緊急任務
-	{
-		sleep 2000
-		if (DwmCheckcolor(143, 205, 12404034) or DwmCheckcolor(144, 348, 12404034) or DwmCheckcolor(145, 494, 12404034) or DwmCheckcolor(143, 641, 12404034))  ;接獲緊急任務
-		{
-			UrgentTask := 1
-		}
-		else
-		{
-			UrgentTask := 0
-		}
-	}
 	Loop
 	{
-		sleep 500
+		sleep 200
 		if (DwmCheckcolor(181, 136, 11358530))
 		{
 			LogShow("完成委託任務")
@@ -5049,28 +5037,25 @@ DelegationMission() {
 			LogShow("緊急獲得道具，點擊繼續")
 			C_Click(636, 91)
 		}
-		else if (DwmCheckcolor(435, 204, 7042444) or DwmCheckcolor(371, 204, 8699499) or DwmCheckcolor(1141, 385, 9718090) or DwmCheckcolor(145, 202, 12404034) or DwmCheckcolor(433, 205, 6516091)) ;第一個任務為灰階狀態 或 進行中 或沒有接到任務
+		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 459, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
 		{
-			sleep 1500
-			if (DwmCheckcolor(435, 204, 7042444) or DwmCheckcolor(371, 204, 8699499) or DwmCheckcolor(1141, 385, 9718090) or DwmCheckcolor(145, 202, 12404034) or DwmCheckcolor(433, 205, 6516091))
-			{			
-				break
-			}
+			break
 		}
 		else if (A_index=100 or A_index=120 or A_index=140 or A_index=160)
 		{
 			LogShow("似乎卡住了，嘗試點擊上方2")
 			C_Click(629, 73)
 		}
+		else if (Find(x, y, 0, 278, 100, 338, 緊急))
+		{
+			failedcount++
+			if (failedcount>20)
+				break
+		}
 	}
-	if (UrgentTask=0)
-	{
-		UrgentTask := VarSetCapacity
-	}
-	else
+	if (Find(x, y, 364, 177, 450, 725, NoneDelegation))  ;接獲緊急任務
 	{
 		DelegationMission3()
-		UrgentTask := VarSetCapacity
 	}
 	C_Click(53, 191) ;每日
 	sleep 300
