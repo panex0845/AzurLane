@@ -44,7 +44,7 @@ RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir 
 if (ldplayer="") {
 	RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
 	if (ldplayer="") {
-		MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試重新安裝。
+		MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試：`n`n1. 重新安裝模擬器。`n`n2. 手動指定路徑： Win+R → Regedit `n　HKEY_CURRENT_USER, Software\Changzhi\LDPlayer `n　底下新增 InstallDir
 	Exitapp
 	}
 }
@@ -5016,6 +5016,7 @@ DelegationMission() {
 		}
 	}
 	C_Click(51, 283) ;緊急
+	sleep 1500
 	Loop
 	{
 		sleep 300
@@ -5037,7 +5038,7 @@ DelegationMission() {
 			LogShow("緊急獲得道具，點擊繼續")
 			C_Click(636, 91)
 		}
-		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 459, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
+		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 465, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
 		{
 			break
 		}
@@ -5053,7 +5054,7 @@ DelegationMission() {
 				break
 		}
 	}
-	if (Find(x, y, 364, 177, 450, 725, NoneDelegation))  ;接獲緊急任務
+	if (Find(x, y, 364, 177, 465, 725, NoneDelegation))  ;接獲緊急任務
 	{
 		DelegationMission3()
 	}
