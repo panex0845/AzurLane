@@ -3539,8 +3539,8 @@ OperationSub:
 LogShow("開始演習。")
 Loop
 {
-	sleep 1000
-	None_Operation := "|<>*133$37.sTwzT3s3wS70M1yA30A0T41V24D20kV27XkEEV3lw880Vsy440Esz2208QTV104CDkUU267sME137wA8EVXy6481lz30C0lzVk7lwzzyD"
+	sleep 500
+	None_Operation := "|<>*150$38.zzzzzzzDzTztz0zXls7U7ssA0sEy83264Da0lVV3lsAMMEwT3664D7klVX3XwAMMksz366ACDklVX3bwAMMklz3664ATkkVU7DwA0w3Xz3UTvzzzzzzzzzzzs"
 	if (Find(x, y, 1135, 158, 1235, 218, None_Operation)) ;演習次數剩餘0次
 	{
 			LogShow("演習次數剩餘0次，演習結束！")
