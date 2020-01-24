@@ -5005,7 +5005,7 @@ DelegationMission() {
 			LogShow("每日獲得道具，點擊繼續")
 			C_Click(636, 91)
 		}
-		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 459, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
+		else if (Find(x, y, 359, 175, 465, 250, 進行中) or Find(x, y, 359, 175, 465, 250, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
 		{
 			break
 		}
