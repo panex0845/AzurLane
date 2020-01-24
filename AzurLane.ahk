@@ -1388,9 +1388,14 @@ if !LDplayerCheck ;檢查模擬器有沒有被縮小
 }
 else if LDplayerCheck
 {
-	if (NowTime=0001 or Nowtime=1201)
+	if (NowTime=0001 or Nowtime=1301)
 	{
 		DailyDone := VarSetCapacity ;重置每日判斷
+		if !(ResetOperationTime)
+		{
+			OperationDone := VarSetCapacity  ;重置演習判斷
+			ResetOperationDone := 1
+		}
 	}
 	if (ResetOperationTime and ResetOperationDone<1) ;如果有勾選自動重置演習
 	{
@@ -2849,6 +2854,10 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 		iniread, OperationYesterday, settings.ini, Battle, OperationYesterday
 		FormatTime, OperationToday, ,dd
 		if (OperationYesterday=OperationToday)
+		{
+			OperationDone := 1
+		}
+		else if (ResetOperationTime and OperationYesterday>=1)
 		{
 			OperationDone := 1
 		}
