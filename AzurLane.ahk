@@ -1432,7 +1432,7 @@ else if LDplayerCheck
 		gosub, MissionSub
 		sleep 500
 	}
-	Living_AreaCheck := DwmCheckcolor(627, 712, 11882818) ;生活圈驚嘆號
+	Living_AreaCheck := Find(x, y, 580, 681, 680, 741, "|<>*167$7.zswSD7XlswTzjXvk") ;生活圈驚嘆號
 	if (AcademySub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		sleep 500
@@ -1462,7 +1462,7 @@ else if LDplayerCheck
 		}
 		sleep 500
 	}
-	Living_AreaCheck := DwmCheckcolor(627, 712, 11882818) ;生活圈驚嘆號
+	Living_AreaCheck := Find(x, y, 580, 681, 680, 741, "|<>*167$7.zswSD7XlswTzjXvk") ;生活圈驚嘆號
 	if (DormSub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
 		
@@ -1700,7 +1700,9 @@ if (AnchorCheck and AnchorCheck2 and MainCheck and StopAnchor<1)
 	C_Click(x,y) ;於首頁點擊點擊右邊"出擊"
 	sleep 2000
 }
-if ((DwmCheckcolor(1234, 649, 16777215) or DwmCheckcolor(1234, 649, 16250871)) and DwmCheckcolor(1109, 605, 3224625) and  DwmCheckcolor(31, 621, 16777215)) ;在出擊的編隊頁面
+Formation := "|<>*98$71.VkwCRxwCwDRzTCvAPlwxniPyyxmMbfvvjQLxxvVlD3rrSuDvtbPZQrjjNqTrsSvzvjzS7izzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU00000000000zzzzzzzzzzzz" ;左上方FORMATION字樣
+Formation2 := "|<>*166$22.0zy03zs3zzyDzzszzzXzzyzjzzQTzssTzkkk7Vk0DVU1z50Dy11zw0Dzk0Tz01rs06DzwszzzXzzy1zy2" ;左下角那台小坦克
+if (Find(x, y, 164, 42, 264, 102, Formation) and Find(x, y, 0, 587, 86, 647, Formation2)) ;在出擊的編隊頁面
 {
 	sleep 300
     if (DwmCheckcolor(773, 155, 15695211) and Autobattle="自動") ;Auto Battle >> ON
@@ -2929,14 +2931,14 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 	FightRoundsDoCount := VarSetCapacity ;將艦隊A每出擊次數歸零
 	FightRoundsDone := VarSetCapacity ;將艦隊A每出擊次數歸零
 	sleep 1000 ;判斷現在位於第幾關 1 2 3 4 5 6 7 8 9 
-	Chapter1 := DwmCheckcolor(221, 523, 16777215)  ;第一關 1-1
-	Chapter2 := DwmCheckcolor(887, 533, 16777215) ;第二關 2-1
-	Chapter3 := DwmCheckcolor(453, 296, 16777215) ;第三關 3-1
-	Chapter4 := DwmCheckcolor(292, 372, 16777215) ;第四關 4-1
-	Chapter5 := DwmCheckcolor(292, 434, 16777215) ;第五關 5-1
-	Chapter6 := DwmCheckcolor(988, 575, 16777215) ;第六關 6-1
-	Chapter7 := DwmCheckcolor(279, 558, 16777215) ;第七關 7-1
-	Chapter8 := DwmCheckcolor(623, 256, 16777215) ; 第八關 8-1
+	Chapter1 := Find(x, y, 162, 499, 262, 559, "|<>*132$25.wTzwQDzw87zs03zs21zy1kzzksTzsQDzwC40C72073V03VkzzksTzsQDzwC7zy73zz2")  ;第一關 1-1
+	Chapter2 := Find(x, y, 830, 500, 930, 560, "|<>*139$26.UTzy03zz00Tz067zU1Vzw0ETzkwDzwC3zz3VU1kkM0Q8C0727zzk1zzw03zz00zzk0Dzw8") ;第二關 2-1
+	Chapter3 := Find(x, y, 419, 263, 519, 323, "|<>*141$27.UDzz01zzk07zs0Ezy027zs7kzzksDzy71zzks40C7kU1k240C0Ezzk27zy00zzk0Dzy41zzkU") ;第三關 3-1
+	Chapter4 := Find(x, y, 252, 349, 352, 409, "|<>*137$27.w7zz70zzks7zs60zy0k7zs60zzkW7zy4EzzkW40C0EU1k000C00Tzk03zy7kzzky7zy7kzzkU") ;第四關 4-1
+	Chapter5 := Find(x, y, 256, 409, 356, 469, "|<>*135$27.0Dzz00zzk0Dzs0Tzy00Dzs00zzk07zy0Ezzky40C7kU1k240C0Ezzk27zy00zzk07zy41zzkU") ;第五關 5-1
+	Chapter6 := Find(x, y, 933, 541, 1033, 601, "|<>*137$27.kDzz40zzk07zs0Ezy03zzs0Hzzk07zy00zzk240C0EU1k240C0Ezzk27zy0EzzkU7zy61zzkU") ;第六關 6-1
+	Chapter7 := Find(x, y, 222, 524, 322, 584, "|<>*131$25.0Dzw07zw03zs7Vzs3kzy1kzzksTzsQDzwC40C72073303VVzzkkzzsMTzwADzy4Dzz2") ;第七關 7-1
+	Chapter8 := Find(x, y, 568, 230, 668, 290, "|<>*146$27.UDzz01zzk07zs0Ezy027zs0EzzkUDzy41zzk040C0EU1k240C0Ezzk27zy0Ezzk07zy41zzkU") ; 第八關 8-1
 	Chapter9 := 0
 	Chapter10 := 0
 	Chapter11 := 0
@@ -3529,7 +3531,6 @@ Try
 	Message_Center()
 	NewWife()
 	GetCard()
-	GetItem2()
 	GetItem()
 	battlevictory()
 	GuLuGuLuLu()
@@ -3686,7 +3687,6 @@ Loop
 		Message_Center()
 		NewWife()
 		GetCard()
-		GetItem2()
 		GetItem()
 		battlevictory()
 		GuLuGuLuLu()
@@ -3732,7 +3732,6 @@ Loop
 		LogShow("LoginBreak")
 		break
 	}
-	GetItem2()
 	GetItem()
 	CloseEventList()
 	sleep 1000
@@ -3953,7 +3952,6 @@ if  (DailyGoalSub and DailyDone<1)
 					Message_Center()
 					NewWife()
 					GetCard()
-					GetItem2()
 					GetItem()
 					battlevictory()
 					GuLuGuLuLu()
@@ -4096,7 +4094,6 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 			}
 		}
 		GetItem()
-		GetItem2()
 	}
 	LoopVar := VarSetCapacity
 	if (Rmenu=1)
@@ -4722,7 +4719,6 @@ if (AcademyDone<1)
 					Break
 				}
 				GetItem()
-				GetItem2()
 				CloseEventList()
 				sleep 1000
 			}
@@ -5265,23 +5261,10 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 
 GetItem()
 {
-	if (DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(613, 257, 16777215) and DwmCheckcolor(715, 274, 16777215) and DwmCheckcolor(622, 275, 7574271)) ;獲得道具
+	GetItems := "|<>*157$65.zzzzzzzzzzzzzrzjzzrzrzU7Ds1UzaHDz/CTk3NyQ6jiIQzU4kwc0TQ8s703lm0Ews1k6GE7YYFtmHXw1WC301XU7Dk1Uw6Qv7tyTmH1y407i0QTU0Ex9AyQ0U7003kGtszD0C00T00IlU2SS00Tx03z0Aww00yWHbbJ9tk00R427C0Hn000O00Cx207zbzY00NmL0DwDz9U0HzyyTszzzzzy"
+	if (Find(x, y, 462, 418, 839, 646, GetItems)) ;獲得道具
 	{
 		LogShow("獲得道具，點擊繼續！")
-		C_Click(638, 519)
-	}
-}
-
-GetItem2()
-{
-	if (DwmCheckcolor(576, 186, 16777215) and DwmCheckcolor(711, 187, 16777215) and DwmCheckcolor(613, 187, 16777215) and DwmCheckcolor(641, 199, 8104703)) ;獲得道具
-	{
-		LogShow("獲得道具，點擊繼續2！")
-		C_Click(638, 519)
-	}
-	else if (DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215) and DwmCheckcolor(730, 270, 13041663))
-	{
-		LogShow("獲得道具，點擊繼續3！")
 		C_Click(638, 519)
 	}
 }
@@ -5374,7 +5357,8 @@ Message_Normal()
 
 UnknowWife()
 {
-	if (GdiGetPixel(811, 548)=4294967295 and GdiGetPixel(441, 346)=4283584850) ;未知腳色(確認)
+	UnknowWife := "|<>*153$70.14AMFVXxsP8MCMNVb3AHV4UcvUiCy7X64L3Xj3srkSA81w6Cy3WD0skk3k8zsC0x1X30DE3yksVq6AA0xUDv3W7MMlsXq8viCARll7WDQlQssEX7YyNtnzzzzzzzzzzrc"
+	if (Find(x, y, 390, 343, 490, 403, UnknowWife)) ;未知腳色(確認)
 	{
 		LogShow("未知腳色(確認)！")
 		C_Click(811, 546)
@@ -5383,7 +5367,8 @@ UnknowWife()
 
 Battle_End()
 {
-	if (DwmGetPixel(1108, 699)=16777215 and DwmGetPixel(914, 680)=16777215 and DwmGetPixel(98, 242)=16777215) and DwmCheckcolor(13, 25, 16041247) ;確定
+	Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U00030000006000000ATzzzzyMzzzzzwlzzzzztXU0lzzn600003aA00007AM0000CMk0000QlzzzzztXzzzzzn7zzzzzaDzwzzzAM01zbyM"
+	if (Find(x, y, 866, 655, 966, 715, Battle_End)) ;確定
 	{
 		LogShow("結算畫面，點擊確定！")
 		Random, x, 1015, 1160
@@ -5864,16 +5849,17 @@ ChooseParty(Byref StopAnchor)
 
 Battle_Operation()
 {
-	 if (DwmCheckcolor(1225, 83, 16249847) and DwmCheckcolor(1240, 83, 16249847))
+	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
+	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
 		Loop
 		{
 			sleep 400
-			if !(DwmCheckcolor(1225, 83, 16249847))
+			if !(Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 			{
 				sleep 1000
-				if !(DwmCheckcolor(1225, 83, 16249847))
+				if !(Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 				{
 					Break
 				}
@@ -5963,16 +5949,17 @@ Battle_Operation()
 
 Battle()
 {
-	 if (DwmCheckcolor(1225, 83, 16249847) and DwmCheckcolor(1240, 83, 16249847))
+	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
+	 if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
 		Loop
 		{
 			sleep 1000
-			if !(DwmCheckcolor(1225, 83, 16249847))
+			if !(Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 			{
 				sleep 1000
-				if !(DwmCheckcolor(1225, 83, 16249847))
+				if !(Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 				{
 					Break
 				}
