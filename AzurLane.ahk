@@ -1701,45 +1701,43 @@ if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor) and StopAnchor<1)
 	C_Click(x,y) ;於首頁點擊點擊右邊"出擊"
 	sleep 2000
 }
-Formation := "|<>*98$71.VkwCRxwCwDRzTCvAPlwxniPyyxmMbfvvjQLxxvVlD3rrSuDvtbPZQrjjNqTrsSvzvjzS7izzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU00000000000zzzzzzzzzzzz" ;左上方FORMATION字樣
-Formation2 := "|<>*166$22.0zy03zs3zzyDzzszzzXzzyzjzzQTzssTzkkk7Vk0DVU1z50Dy11zw0Dzk0Tz01rs06DzwszzzXzzy1zy2" ;左下角那台小坦克
-if (Find(x, y, 164, 42, 264, 102, Formation) and Find(x, y, 0, 587, 86, 647, Formation2)) ;在出擊的編隊頁面
+if (Find(x, y, 164, 42, 264, 102, Formation_Upp) and Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;在出擊的編隊頁面
 {
-	sleep 300
-    if (DwmCheckcolor(773, 155, 15695211) and Autobattle="自動") ;Auto Battle >> ON
+    if (Find(x, y, 726, 127, 826, 187, Auto_Battle_Off) and Autobattle="自動") ;Auto Battle >> ON
     {
 		LogShow("開啟自律模式")
         C_Click(819, 160)
     }
-	else if (DwmCheckcolor(779, 153, 574331) and Autobattle="半自動")
+	else if (Find(x, y, 728, 128, 828, 188, Auto_Battle_On) and Autobattle="半自動")
 	{
 		LogShow("開啟半自動模式")
 		C_Click(819, 160)
 	}
-	else if (DwmCheckcolor(779, 153, 574331) and Autobattle="關閉")
+	else if (Find(x, y, 728, 128, 828, 188, Auto_Battle_On) and Autobattle="關閉")
 	{
 		LogShow("關閉自律模式")
 		C_Click(819, 160)
 	}
-	if (DwmCheckcolor(121, 568, 16777215) and (Use_FixKit)) ;如果有維修工具
+	if (!Find(x, y, 79, 555, 179, 615, None_Kit) and (Use_FixKit)) ;如果有維修工具
 	{
 		Loop, 100
 		{
-			if (DwmCheckcolor(121, 568, 16777215)) ;如果有維修工具
+			if (!Find(x, y, 79, 555, 179, 615, None_Kit)) ;如果有維修工具
 			{
 				C_Click(119, 570) ;使用維修工具
+				sleep 500
 			}
-			else if (DwmCheckcolor(331, 223, 16777215) and DwmCheckcolor(422, 358, 16777215)) ; 跳出訊息選單
+			if (Find(x, y, 707, 451, 807, 511, Using_Kit)) ; 跳出訊息選單
 			{
-				C_Click(755, 481) ;點擊使用
-				if (DwmCheckcolor(411, 358, 16250871)) ;如果HP是滿的
-				{
-					C_Click(530, 480) ;點擊取消
-				}
+				C_Click(x, y) ;點擊使用
 				sleep 1000
 			}
+			if (Find(x, y, 479, 452, 579, 512, Using_kit_Cancel)) ;如果HP是滿的
+			{
+				C_Click(x, y) ;點擊取消
+			}
 			sleep 300
-			if (DwmCheckcolor(132, 59, 14610431)) ;回到編隊頁面
+			if (Find(x, y, 164, 42, 264, 102, Formation_Upp)) ;回到編隊頁面
 			{
 				break
 			}	
@@ -1770,12 +1768,12 @@ if (Find(x, y, 164, 42, 264, 102, Formation) and Find(x, y, 0, 587, 86, 647, For
 	SearchLoopcount := VarSetCapacity
 	SearchFailedMessage := VarSetCapacity
 	SearchLoopcountFailed2 := VarSetCapacity
-    if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(460, 562, 16777215) and DwmCheckcolor(811, 561, 16777215)) ;心情低落
+    if (Find(x, y, 700, 500, 880, 600, Academy_BTN_Confirm)) ;心情低落
     {
 		if mood=強制出戰
 		{
 			LogShow("老婆心情低落：提督SAMA沒人性")
-			C_Click(788, 551)
+			C_Click(x, y)
 		}
 		else if mood=不再出擊
 		{
@@ -1837,13 +1835,7 @@ if (Find(x, y, 164, 42, 264, 102, Formation) and Find(x, y, 0, 587, 86, 647, For
         C_Click(1230, 74)
 		StopAnchor := 1
     }
-    Loop, 15 ;等待回到主頁面
-    {
-        sleep 1000
-    } until DwmCheckcolor(12, 200, 16777215)
-    
 }
-Battle_Map := "|<>*187$39.zztzzzzzyDzzzzzVzzzzzkDzzzzs1zzzzy0Dzzzz00Dzzzk007zzw0007zy00007zU0000Ts00000z000003y00000Ds00000zk00007z00zw0Tw07zw1zs0zzsDzU7zzlzz0zzz7zw7zzwzzkzzzrzzbzzzzzyzzzw"
 if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 {
 	if (StopAnchor=1)
@@ -1959,7 +1951,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,300,148,215)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -1969,7 +1961,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 2000
 				}
-				if (DwmCheckcolor(1235, 652, 16777215)) ;規避失敗
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
 					Break
 				}
@@ -2005,7 +1997,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(750,300,650,300)
 					break
 				}
-				if (DwmCheckcolor(135, 57, 14085119) or DwmCheckcolor(164, 61, 15201279) and !(DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215))) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2015,7 +2007,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 2000
 				}
-				if (DwmCheckcolor(1235, 652, 16777215)) ;規避失敗，進入編隊畫面
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
 					Break
 				}
@@ -2063,7 +2055,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					xx := x
 					yy := y
-					if (DwmCheckcolor(135, 57, 14085119) and xx>147 and yy>200 and xx<MapX2 and yy<MapY2) 
+					if (Find(x, y, 750, 682, 850, 742, Battle_Map) and xx>147 and yy>200 and xx<MapX2 and yy<MapY2) 
 					{
 						C_Click(xx, yy)
 						if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))  ;16250871
@@ -2078,7 +2070,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 							break
 						}
 					}
-					else if (DwmCheckcolor(135, 57, 14085119) and xx<290 and yy<195) 
+					else if (Find(x, y, 750, 682, 850, 742, Battle_Map) and xx<290 and yy<195) 
 					{
 						random, swipeboss, 1, 2
 						if swipeboss=1
@@ -2091,11 +2083,11 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 						}
 						break
 					}
-					if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+					if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 					{
 						sleep 1000
 					}
-					if (DwmCheckcolor(1235, 652, 16777215)) ;進入戰鬥界面
+					if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;進入戰鬥界面
 					{
 						Break
 					}
@@ -2341,7 +2333,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 4050
 					BackAttack()
-					if !(DwmCheckcolor(1234, 651,16777215) and DwmCheckcolor(1076, 653,16777215) and BossFailed<1) ; 如果沒有成功進入戰鬥，再試一次
+					if !(Find(x, y, 0, 587, 86, 647, Formation_Tank) and BossFailed<1) ; 如果沒有成功進入戰鬥，再試一次
 					{
 						C_Click(xx, yy)
 						sleep 2050
@@ -2366,7 +2358,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2378,7 +2370,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2399,7 +2391,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2411,7 +2403,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2432,7 +2424,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2444,7 +2436,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2465,7 +2457,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2477,7 +2469,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2499,7 +2491,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2511,7 +2503,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2532,7 +2524,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(138,215,148,300)
 					break
 				}
-				if (DwmCheckcolor(795, 712, 16777215) or DwmCheckcolor(795, 712, 16250871)) ;如果在限時(無限時)地圖
+				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2544,7 +2536,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 1500
 				}
-				if (DwmCheckcolor(1235, 652, 16777215))
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank))
 				{
 					Break
 				}
@@ -2581,21 +2573,21 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				C_Click(xx, yy)
 				C_Click(xx, yy)
 			}
-			if (DwmCheckcolor(516, 357, 16250871)) 
+			if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy")) 
 			{
 				BossFailed++
 				return
 			}
 			sleep 4050
 			BackAttack()
-			if !(DwmCheckcolor(1234, 651,16777215) and DwmCheckcolor(1076, 653,16777215) and BossFailed<1) ; 如果沒有成功進入戰鬥，再試一次
+			if !(Find(x, y, 0, 587, 86, 647, Formation_Tank) and BossFailed<1) ; 如果沒有成功進入戰鬥，再試一次
 			{
 				C_Click(xx, yy)
 				sleep 2050
 			}
 			return
 		}
-		if (SearchLoopcount>3 and DwmCheckcolor(793, 711, 16777215))
+		if (SearchLoopcount>3 and Find(x, y, 750, 682, 850, 742, Battle_Map))
 		{
 			if (SearchFailedMessage<1)
 			{
@@ -2760,46 +2752,39 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			}
 		}
 		SearchLoopcount++
-		if (!DwmCheckcolor(758, 699, 12996946) and !DwmCheckcolor(172, 68, 14085119))
-		{
-			Break
-		}
 	} until !(Find(x, y, 750, 682, 850, 742, Battle_Map))
 }
-Weigh_Anchor := "|<>*141$57.zzUzzU040zkw7Xw00U7y7UsDk0AMzkw71y0131y7UsDk01wDkw71y0103y7UsDk080Tkw71y0333y000DU000zk003w00k7y000Tl2A0zzw7zy0103zzUzzk08wTVw7ky0003wDUw7k000TVw7UzzkTzwDUw7s000zVw7Uz0007wDUw7zz3zzVw7Uw0001wDUw7U000DU000zzkTzw000Dzs3zzU003zz0zzzzzzzzzzzw"
 if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 {
-	CommisionDone := DwmCheckcolor(1063, 682, 16776175) ;軍事委託的驚嘆號出現
-	CommisionBtn := DwmCheckcolor(928, 681, 9220764) ;軍事委託的按鈕
-	if (MissionSub and  CommisionDone and CommisionBtn) ;委託任務已完成
+	if (MissionSub and Find(x, y, 1014, 651, 1114, 711, CommisionDone)) ;委託任務已完成
 	{
 		LogShow("執行軍事委託(主線)！")
 		C_Click(1006, 712)
 		sleep 1000
 		Loop, 60
 		{
-			if (DwmCheckcolor(928, 681, 9220764))
+			if (Find(x, y, 1014, 651, 1114, 711, CommisionDone))
 			{
 				C_Click(1006, 712)
 				sleep 1000
 			}
-			sleep 500
-		} Until DwmCheckcolor(135, 58, 15725567)
-		sleep 1500
+			sleep 300
+		} Until Find(x, y, 99, 33, 199, 93, Commision_Delegation)
+		sleep 1000
 		DelegationMission()
 		sleep 1000
-		Loop, 10
+		Loop, 30
 		{
-			if (DwmCheckcolor(167, 64, 15201279))
+			if (Find(x, y, 99, 33, 199, 93, Commision_Delegation))
 			{
 				C_Click(58, 92)
-				sleep 3000
+				sleep 2000
 			}
-			else if (DwmCheckcolor(143, 686, 16777215))
+			else if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor))
 			{
 				break
 			}
-			sleep 1000
+			sleep 500
 		}
 	}
 	if (DailyGoalSub and DailyDone<1)
@@ -2829,20 +2814,21 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 		}
 		if (DailyDone=0)
 		{
-			if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(784, 692, 16777215))
+			if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor) and Find(x, y, 774, 684, 874, 744, Daily_Task))
 			{ ;如果在出擊頁面檢查到每日還沒執行
 				LogShow("執行每日任務！")
 				Loop
 				{
-					if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(784, 692, 16777215))  ;如果在出擊頁面檢查到每日還沒執行
+					if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor) and Find(x, y, 774, 684, 874, 744, Daily_Task))  ;如果在出擊頁面檢查到每日還沒執行
 					{
 						C_Click(826, 709) ;嘗試進入每日頁面
 						sleep 3000
 					}
-					if (DwmCheckcolor(30, 395, 16777215) and DwmCheckcolor(154, 61, 15201279) and DwmCheckcolor(1250, 394, 16777215))
+					if (Find(x, y, 98, 33, 198, 93, DailyRaid))
 					{
 						Break ;成功進入每日頁面
 					}
+					sleep 500
 				}
 			Goto, DailyGoalSub
 			}
@@ -2866,17 +2852,17 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 		}
 		else
 		{
-			if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(1130, 686, 16773086))
+			if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor) and Find(x, y, 1078, 663, 1178, 723, BTN_Exercise))
 			{ ;如果在出擊頁面檢查到演習還沒執行
 				LogShow("自動執行演習！")
 				Loop
 				{
-					if (DwmCheckcolor(45, 702, 16777215) and DwmCheckcolor(746, 717, 10864623) and DwmCheckcolor(1130, 686, 16773086))  ;如果在出擊頁面檢查到演習還沒執行
+					if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor) and Find(x, y, 1078, 663, 1178, 723, BTN_Exercise)) ;如果在出擊頁面檢查到演習還沒執行
 					{
 						C_Click(1177, 706) ;嘗試進入演習頁面
 						sleep 3000
 					}
-					if (DwmCheckcolor(137, 61, 15201279) and DwmCheckcolor(170, 69, 14610431)) ;左上"演習"
+					if (Find(x, y, 99, 35, 199, 95, Operation_Upp)) ;左上"演習"
 					{
 						Break ;成功進入每日頁面
 					}
@@ -3032,13 +3018,13 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 		sleep 1000
 		C_Click(1228, 68)
 		sleep 1000
-		Loop, 20
+		Loop, 30
 		{
-			if (DwmCheckcolor(132, 54, 14085119) and DwmCheckcolor(160, 72, 14085119)) ;如果還在出擊頁面
+			if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;如果還在出擊頁面
 			{
 				C_Click(1228, 68)
 			}
-			else if (DwmCheckcolor(12, 201, 16777215)) ;成功回到首頁
+			else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor)) ;成功回到首頁
 			{
 				Break
 			}
@@ -3049,15 +3035,15 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 	else if AnchorMode=普通
 	{
 		LogShow("選擇攻略地圖，難度：普通")
-		if (DwmCheckcolor(58, 681, 16777215) or DwmCheckcolor(51, 684, 16777215)) ;一般關卡的困難 OR 活動難度的困難
+		if (Find(x, y, 22, 677, 272, 737, HardMode)) ;一般關卡的困難 OR 活動難度的困難
 		{
 			;不做任何事
 		}
-		else if (DwmCheckcolor(58, 681, 7047894) or DwmCheckcolor(51, 684, 6523606))
+		else if (Find(x, y, 22, 677, 272, 737, NormalMode))
 		{
 			C_Click(99,703)
 			sleep 1000
-			if !(DwmCheckcolor(58, 681, 16777215) or DwmCheckcolor(51, 684, 16777215))
+			if !(Find(x, y, 22, 677, 272, 737, HardMode))
 			{
 				LogShow("難度選擇為普通時發生錯誤1")
 				return
@@ -3076,15 +3062,15 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 	else if AnchorMode=困難
 	{
 		LogShow("選擇攻略地圖，難度：困難")
-		if (DwmCheckcolor(58, 681, 7047894) or DwmCheckcolor(51, 684, 6523606))
+		if (Find(x, y, 22, 677, 272, 737, NormalMode))
 		{
 			;不做任何事
 		}
-		else if (DwmCheckcolor(58, 681, 16777215) or DwmCheckcolor(51, 684, 16777215))
+		else if (Find(x, y, 22, 677, 272, 737, HardMode))
 		{
 			C_Click(99,703)
 			sleep 1000
-			if !(DwmCheckcolor(58, 681, 7047894) or DwmCheckcolor(51, 684, 6523606))
+			if !(Find(x, y, 22, 677, 272, 737, NormalMode))
 			{
 				LogShow("難度選擇為困難時發生錯誤1")
 				return
@@ -3553,7 +3539,7 @@ OperationSub:
 LogShow("開始演習。")
 Loop
 {
-	sleep 500
+	sleep 300
 	if (GdipImageSearch(x, y, "img/None_Operation.png", 100, 8, 1060, 173, 1213, 205)) ;演習次數剩餘0次
 	{
 			LogShow("演習次數剩餘0次，演習結束！")
@@ -3561,7 +3547,7 @@ Loop
 			C_Click(1239, 72) ;回到首頁
 			break
 	}
-	if (DwmCheckcolor(138, 61, 15201279) and DwmCheckcolor(154, 71, 14085119))  ;演習介面隨機
+	if (Find(x, y, 99, 35, 199, 95, Operation_Upp))  ;演習介面隨機
 	{
 		if (Operationenemy="最弱的")
 		{
@@ -3611,49 +3597,40 @@ Loop
 			if clickpos=1
 			{
 				C_Click(226, 286)
-				sleep 1000
 			}
 			else if clickpos=2
 			{
 				C_Click(453, 286)
-				sleep 1000
 			}
 			else if clickpos=3
 			{
 				C_Click(700, 286)
-				sleep 1000
 			}
 			else if clickpos=4
 			{
 				C_Click(941, 286)
-				sleep 1000
 			}
 		}
 		else if (Operationenemy="最左邊")
 		{
 			C_Click(226, 286)
-			sleep 1000
 		}
 		else if (Operationenemy="最右邊")
 		{
 			C_Click(941, 286)
-			sleep 1000
 		}
 	}
-	else if (DwmCheckcolor(664, 231, 16777215) and DwmCheckcolor(752, 246, 16777215) and DwmCheckcolor(728, 604, 16238402)) ;演習對手訊息
+	else if (Find(x, y, 560, 568, 660, 628, Operation_Start)) ;演習對手訊息
 	{
 		C_Click(647, 608)
-		Loop
-		{
-			sleep 500
-		} until DwmCheckcolor(1233, 650, 16777215)
+		sleep 500
 	}
-	else if (DwmCheckcolor(133, 59, 15200255) and DwmCheckcolor(152, 65, 14610431) and DwmCheckcolor(169, 63, 15201279)) ;編隊畫面
+	else if (Find(x, y, 98, 33, 198, 93, Operation_Formation)) ;編隊畫面
 	{
 		LogShow("演習出擊。")
 		C_Click(1089, 689)
 		sleep 1300
-		if (DwmCheckcolor(529, 359, 16249847) and DwmCheckcolor(997, 65, 16729459))
+		if (Find(x, y, 98, 33, 198, 93, Operation_Formation))
 		{
 			LogShow("演習結束！")
 			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
@@ -3661,7 +3638,7 @@ Loop
 			break
 		}
 		sleep 5000
-		if (DwmCheckcolor(998, 65, 16729459) and DwmCheckcolor(785, 65, 16773987)) ;點了出擊過了5秒還是沒出擊
+		if (Find(x, y, 98, 33, 198, 93, Operation_Formation)) ;點了出擊過了5秒還是沒出擊
 		{
 			LogShow("演習異常，強制結束！")
 			Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
@@ -3669,7 +3646,7 @@ Loop
 			break
 		}
 	}
-	else if (DwmCheckcolor(208, 58, 14085119) and DwmCheckcolor(198, 62, 14085119) and DwmCheckcolor(102, 663, 16239426)) ;誤點商店
+	else if (Find(x, y, 101, 33, 201, 93, Operation_Shop)) ;誤點商店
 	{
 		C_Click(57, 90) ;誤點商店，自動離開
 	}
@@ -3761,12 +3738,12 @@ if  (DailyGoalSub and DailyDone<1)
 		LogShow("已完成每日任務。")
 		Loop
 		{
-			if (DwmCheckcolor(30, 397, 16777215) and DwmCheckcolor(1252, 397, 16777215) and DwmCheckcolor(170, 64, 15201279)) ;如果在每日頁面
+			if (Find(x, y, 97, 34, 197, 94, DailyYraid)) ;如果在每日頁面
 			{
 				LogShow("返回主選單。")
 				C_Click(1242, 69)
 			}
-			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(974, 427, 5947127)) ;如果成功返回首頁
+			if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor)) ;如果成功返回首頁
 			{
 				Break
 			}
@@ -3778,16 +3755,9 @@ if  (DailyGoalSub and DailyDone<1)
 		Formattime, Checkweek, , Wday ;星期的天數 (1 – 7). 星期天為 1.
 		Loop
 		{
-			if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(728, 433, 10268333))
+			if (Find(x, y, 348, 162, 448, 222, Daily_LV))
 			{
-				LogShow("每日提示，今日不再顯示！")
-				C_Click(790, 497)
-				C_Click(641, 559)
-			}
-			if (DwmCheckcolor(384, 192, 16768825) and DwmCheckcolor(397, 190, 16768825))
-			{
-				;~ Swipe(652,166,652,610)
-				sleep 1000
+				sleep 300
 				if ((Checkweek=1 or Checkweek=4 or Checkweek=7) and DailyGoalRedAction=1) or ((Checkweek=3 or Checkweek=6) and DailyGoalGreenAction=1) or ((Checkweek=2 or Checkweek=5) and DailyGoalBlueAction=1)
 				{
 					C_Click(721, 262)
@@ -3805,8 +3775,8 @@ if  (DailyGoalSub and DailyDone<1)
 					C_Click(756, 552)
 				}
 				sleep 1000
-				if (DwmCheckcolor(477, 361, 15724527) and DwmCheckcolor(997, 66, 16729459)) ;如果出現驚嘆號 (多確認一個紅尖尖 避免誤判)
-				{		
+				if (Find(x, y, 427, 328, 527, 388, Daily_Ico)) ;如果出現驚嘆號 (多確認一個紅尖尖 避免誤判)
+				{
 					if (Checkweek=1 and CheckweekCount<1 and DailyGoalSunday) ;如果是禮拜天  (打左邊)
 					{
 						CheckweekCount := 1
@@ -3833,12 +3803,12 @@ if  (DailyGoalSub and DailyDone<1)
 						Logshow("每日任務次數用盡，返回主選單。")
 						Loop, 30
 						{
-							if (DwmCheckcolor(169, 59, 16251903)) ;檢查每日頁面左上角 每日的日
+							if (Find(x, y, 97, 34, 197, 94, DailyYraid)) ;檢查每日頁面左上角 每日
 							{
 								C_Click(1242, 66)
 								sleep 2000
 							}
-							if (DwmCheckcolor(12, 200, 16777215)) ;檢查首頁白點
+							if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 							{
 								DailyBreak := 1
 								DailyDone := 1
@@ -3857,12 +3827,12 @@ if  (DailyGoalSub and DailyDone<1)
 				}
 				sleep 2000
 			}
-			else if (DwmCheckcolor(1075, 655, 16777215) and DwmCheckcolor(1234, 650, 16777215) and DwmCheckcolor(1222, 656, 16239426))
+			else if (Find(x, y, 100, 34, 200, 94, Daily_Formation))
 			{
 				if (ChooseDailyParty<1) ;第一次執行時判斷使用第幾隊 寫法偷懶 等有閒再來改
 				{
 					Logshow("選擇每日艦隊中。")
-					sleep 1500
+					sleep 1000
 					Loop, 5
 					{
 						C_Click(39, 372) ;偷懶...不判斷目前第幾隊 直接點左邊5下換回第一艦隊
@@ -3923,7 +3893,7 @@ if  (DailyGoalSub and DailyDone<1)
 						{
 							C_Click(1230, 68) ;返回主選單
 						}
-						else if (DwmCheckcolor(12, 200, 16777215))
+						else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 						{
 							Break
 						}
@@ -3932,7 +3902,7 @@ if  (DailyGoalSub and DailyDone<1)
 					return
 				}
 			}
-			else if (DwmCheckcolor(30, 395, 16777215) and DwmCheckcolor(1251, 396, 16777215) and DwmCheckcolor(170, 59, 16251903))   ;如果在每日選擇關卡頁面，選中間那個
+			else if (Find(x, y, 0, 364, 91, 424, Daily_Left) and Find(x, y, 1196, 366, 1296, 426, Daily_Right))   ;如果在每日選擇關卡頁面，選中間那個
 			{
 				C_Click(642, 423)
 			}
@@ -4019,9 +3989,9 @@ if (MissionCheck) ;如果有任務獎勵
         {
             C_Click(811, 546)
         }
-		else if (DwmCheckcolor(1273, 67, 10858165)) ;劇情
+		else if (Find(x, y, 1161, 46, 1261, 106, SkipBtn)) ;劇情
         {
-            C_Click(811, 546)
+            C_Click(811, 546)	 
         }
         else if (Find(x, y, 1084, 153, 1184, 213, MissionPage_MoveForward) or Find(x, y, 233, 334, 333, 394, MissionPage_List_Empty))
         {
@@ -4055,7 +4025,7 @@ if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 			C_Click(x, y) ;點擊軍事委託完成
 			sleep 2500
 		}
-		if (Find(x, y, 243, 93, 343, 153, Delegation_Incredible) or Find(x, y, 243, 93, 343, 153, Delegation_Perfect)) ;出現委託成功S頁面
+		if (Find(x, y, 200, 80, 450, 180, Delegation_Incredible) or Find(x, y, 200, 80, 450, 180, Delegation_Perfect)) ;出現委託成功S頁面
 		{
 			break
 		}
@@ -4064,7 +4034,7 @@ if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 	Loop
 	{
 		sleep 500
-		if (Find(x, y, 243, 93, 343, 153, Delegation_Incredible) or Find(x, y, 243, 93, 343, 153, Delegation_Perfect)) ;委託成功 S
+		if (Find(x, y, 200, 80, 450, 180, Delegation_Incredible) or Find(x, y, 200, 80, 450, 180, Delegation_Perfect)) ;委託成功 S
 		{
 			C_Click(639, 141) ;隨便點
 			sleep 1500
@@ -5224,7 +5194,8 @@ GetItem()
 
 GetCard()
 {
-	if (DwmCheckcolor(71, 412, 16777215) and DwmCheckcolor(57, 514, 16777215) and DwmCheckcolor(70, 607, 16777215) and DwmCheckcolor(52, 694, 16777215) and DwmCheckcolor(13, 25, 16041247)) ;獲得新卡片
+	GetCards := "|<>*162$31.zzj0DzzX07zzU0HzzU0TzzU0TzzU0TzzU0Q0zU8S0TUCT0DUDzU7UDzk3UDzs1UD0Q0kDUC0QDk70DDs3U7zw1k3zy0s1zz0Q0k3UC0M1k70A0s3U60Q1k30C0s1U70Q0k"
+	if (Find(x, y, 1051, 622, 1151, 682, GetCards)) ;獲得新卡片
 	{
 		sleep 1500
 		Capture() ;拍照
@@ -5248,7 +5219,14 @@ NewWife()
 
 Message_Center()
 {
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215) and !DwmCheckcolor(810, 557, 16777215)) ;中央訊息 按鈕在下方
+	Tips := "|<>*181$64.kSC00z0y7AD3kMS1y2000Q001sDs8000l3y7UzkzkzyADsS3zjb7bskzVsDxy007b3y7UzXs00BwDsS3y7Vz1zknVsC067w7z227UzVs80Q000S3y7U01zUz1sDsS7w7y3y7UzVsTkTsDsS3y7Uz1zUzVsDsS007y0y7UzVsTkTsEsS3y7Vz1zV1VsDsS3w7wC67UzVs00Tks8S3y7Vz1z7UVsDl6DwTsS200w63zzzXwMC3Uw000ATzVsC3s001nzy7VwTk00C"
+	if (Find(x, y, 571, 537, 671, 597, Tips))
+	{
+		LogShow("每日提示，今日不再顯示！")
+		C_Click(790, 497)
+		C_Click(641, 559)
+	}
+	else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215) and !DwmCheckcolor(810, 557, 16777215)) ;中央訊息 按鈕在下方
 	{
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
@@ -5258,48 +5236,37 @@ Message_Center()
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
 	}
-	else if (DwmCheckcolor(330, 196, 16777215) and DwmCheckcolor(414, 210, 16777215) and DwmCheckcolor(664, 389, 16773086) and DwmCheckcolor(728, 433, 10268333))
-	{
-		LogShow("每日提示，今日不再顯示！")
-		C_Click(790, 497)
-		C_Click(641, 559)
-	}
 }
 
 Message_Normal()
 {
-	Confirmbtn := dwmgetpixel(742, 548)
-	CancelBtn := dwmgetpixel(440, 546)
-	CancelBtn_Fix := dwmgetpixel(908, 241) ;12718146~13818146
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(376, 231, 16777215) and DwmCheckcolor(800, 550, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
+	Message_Inform := "|<>*178$64.y6wC3zk000zwlksDz1zw7k033Vzw7zkTzzwC7zkTz1zzzksTz0007zyD3Vzw7zkTzkQC7zkTz1z03ksTz1zw7zzz01zw000Tzxw07zkTz1zzW00Tz1zw7w073Vzw7zkTzzwC7zkTz1zzzksTz0007wyD3Uzw7zkTk0QC3zkSTDz31ksDzs8TTwA73krzUUyDkkQD3Ta73sD31kw5yMQCkQA73k7VVlt1kkQD0Q63z6331ky1kM008A073s73U00VkkwDkQS003y"
+	Message_Cancel := "|<>*205$71.zzXzzzzUzw7Tzz1zzzzUnsAA003zzzzUlkMC7Vzwzzz1VUkQD3zkzzy611XsS7z0zzzP22DkwAy0zzzq44zVsTy3zsTCM+z00vsDzsCXkMy7VrkTzkN000QD3jUzzkG3z0sS7D1zzV47z3kwCS7zzqMDy7VsSsDzzskTwD00wkTzzlU00S7VtVzzzb000wD3k3zzyC3zVsS7k7zzsQ7z3kwDUTzzlsDy7Vs30zzz3kTsD00T3zzs7U00M01y3zzwD1zkk03s3zzsS3zVU67U3zzkQ7z31wD41zzUsDy7"
+	Message_Reconnect := "|<>*173$71.zzzzzzzzzzzzyTzzzzzzzzzzw00DUA0DU60Tm00T0M0T0A0zbzwywrwySNtyTztxtjtwwnnwk0HvnTnttbblU0bk6w7k30D3zzDUBzzU30Q7zyTSPzzzb7tC0Qywk0zyT7qQ0txtU1k000wttnvnHnk003tnnbk6rbyTlznbbD0BaTlzkzbDCSSPAy0Q0DC0Qwwr3s0M0SQ0tttj7wwnnwtznnnSDttbbtrzbbasTnnDDnzzCTBaDU60TbzUQkMSD0A0zDzVzVryySNtzzzzzzzzzzzzzzzzzzzzzzzz"
+	Message_FixKit := "|<>*160$48.zzzzznzz0107zXzz0207z00zAT77y00z03b7wTlzDnWDsTVzDXkTk00703sTU007ATkTzzzbATU7zzz70073y007zXTny007z3rzzzzbw63zw007k0Bzw007s0szzwTzw3sDzyTzU007taDnU0Tbt77lwwtzl7bNswsTn7y8Vwy7XU0Q7UzbrU0TzVzzzw1zU"
+	Message_FixKit2 := "|<>*152$71.zzzzzzs01zzzzzzzzzU07zzzzzzzzy00TzzzzzzUTs01zzzzzzz0Tk07zxzzzzy0zU0Dzlzzzzw1y00Tz3zzzzs3w00zw7zzzs00801zkDzzzk00E01z0TzzzU00U01w0zzzz001000E1zzzy00200003zzzw00000007zzzzk7U0000DzzzzUC00000zzzzz0M00001zzzzy0000007zzzzw000000Tzzzs0000000zzzz00000003zzzw0000000TzzzU0000001zzzy00000Q03zzzs00001y07zz"
+
+	
+	if (Find(x, y, 446, 333, 546, 393, Message_Reconnect) and Find(x, y, 320, 150, 460, 350, Message_Inform) and Find(x, y, 441, 450, 541, 650, Message_Cancel))
+	{
+		LogShow("遊戲斷線，嘗試重連") ;有取消跟確認的
+		C_Click(785, 544)
+	}
+	else if (Find(x, y, 320, 150, 460, 350, Message_Inform) and Find(x, y, 441, 450, 541, 650, Message_Cancel))
 	{
 		LogShow("出現訊息，點擊取消！") ;有取消跟確認的
 		Random, x, 423, 537
 		Random, y, 554, 573
 		C_Click(x, y)
 	}
-	else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(376, 231, 16777215) and DwmCheckcolor(810, 556, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000) and IsBetween(CancelBtn, 8000000, 11000000))
-	{
-		LogShow("出現訊息，點擊取消2！") ;有取消跟確認的
-		Random, x, 423, 537
-		Random, y, 554, 573
-		C_Click(x, y)
-	}
-	else if (DwmCheckcolor(330, 229, 16777215) and DwmCheckcolor(375, 246, 16777215) and DwmCheckcolor(468, 562, 16777215) and DwmCheckcolor(810, 567, 16777215) and IsBetween(Confirmbtn, 3000000, 5000000))
-	{
-		LogShow("出現訊息，點擊取消3！") ;有取消跟確認的
-		Random, x, 423, 562
-		Random, y, 549, 580
-		C_Click(x, y)
-	}
-	else if (DwmCheckcolor(331, 222, 16777215) and DwmCheckcolor(382, 245, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn_Fix, 12718146, 13818146))
+	else if (Find(x, y, 467, 279, 567, 339, Message_FixKit))
 	{
 		LogShow("出現維修工具，點擊取消！") ;有取消跟確認的
 		Random, x, 466, 578
 		Random, y, 471, 493
 		C_Click(x, y)
 	}
-	else if (DwmCheckcolor(332, 226, 16777215) and DwmCheckcolor(396, 244, 16777215) and DwmCheckcolor(412, 365, 16777215) and DwmCheckcolor(777, 480, 16777215) and IsBetween(CancelBtn_Fix, 12718146, 13818146))
+	else if (Find(x, y, 372, 319, 472, 379, Message_FixKit2))
 	{
 		LogShow("出現維修工具，點擊取消2！") ;有取消跟確認的
 		Random, x, 458, 576
@@ -5332,9 +5299,8 @@ Battle_End()
 
 Message_Story()
 {
-	SkipBtn := DwmCheckcolor(1244, 67, 13553622) 
-	SkipBtn2 := DwmCheckcolor(1245, 68, 13553622)
-	 if (SkipBtn and SkipBtn2)
+	SkipBtn :="|<>*136$43.zzzzzzzy3sQCC0Q0QA63040C671U26327Uk11zU7kMQU3k3sACM0s0w60D0A0S307w6471U27331Ukz01VUkMTk1ks8ADw1sS6C7zzzzzzzw"
+	 if (Find(x, y, 1161, 46, 1261, 106, SkipBtn))
 	{
 		LogShow("劇情對話，自動略過")
 		C_Click(1200, 74)
@@ -5613,11 +5579,11 @@ shipsfull(byref StopAnchor)
 
 ToMap()
 {
-	if (DwmCheckcolor(869, 531, 14587474) and DwmCheckcolor(1045, 532, 16777215) and DwmCheckcolor(1045, 550, 16238402))
+	if (Find(x, y, 868, 517, 968, 577, ToMap_Start))
 	{
 		if (WeekMode) ;周回模式開關
 		{
-			if (DwmCheckcolor(1045, 630, 9737876)) ;
+			if (Find(x, y, 996, 602, 1096, 662, Mode_off)) ;
 			{
 				LogShow("開啟周回模式")
 				C_Click(1022, 631)
@@ -5625,7 +5591,7 @@ ToMap()
 		}
 		else if !(WeekMode)
 		{
-			if (DwmCheckcolor(1010, 631, 8710143))
+			if (Find(x, y, 958, 602, 1058, 662, Mode_on))
 			{
 				LogShow("關閉周回模式")
 				C_Click(1012, 631)
@@ -5641,7 +5607,7 @@ ToMap()
 ChooseParty(Byref StopAnchor)
 {
 	Global
-	if (DwmCheckcolor(991, 619, 14586450) and DwmCheckcolor(1167, 636, 16238402) and DwmCheckcolor(1174, 617, 16777215))
+	if (Find(x, y, 112, 97, 212, 157, Fleet_Select))
 	{
 		LogShow("選擇出擊艦隊中。")
 		if (AnchorMode="普通") and !(AnchorChapter="S.P.")
@@ -5650,7 +5616,7 @@ ChooseParty(Byref StopAnchor)
 			sleep 300
 			C_Click(1060, 230) ;開啟第一艦隊的選擇選單
 			sleep 500
-			if (DwmCheckcolor(1061, 343, 12422738)) ;如果選單沒有正確開啟
+			if (Find(x, y, 1012, 329, 1112, 389, Fleet_Select_Party2)) ;如果選單沒有正確開啟
 				return
 			if ChooseParty1=第一艦隊
 				C_Click(1093, 296) 
@@ -5669,8 +5635,11 @@ ChooseParty(Byref StopAnchor)
 				sleep 500
 				C_Click(1053, 368)	;開啟第二艦隊的選擇選單
 				sleep 500
-				if (DwmCheckcolor(1059, 624, 16777215)) ;如果選單沒有正確開啟
+				if (Find(x, y, 1047, 601, 1147, 661, Fleet_Start)) ;如果選單沒有正確開啟
+				{
+					C_Click(1161, 126)
 					return
+				}
 			}
 			if ChooseParty2=第一艦隊
 				C_Click(1103, 431)
@@ -5706,7 +5675,7 @@ ChooseParty(Byref StopAnchor)
 			sleep 2000
 			return StopAnchor
 		}
-		else if DwmCheckcolor(424, 361, 15724527) and AnchorMode="困難"
+		else if Find(x, y, 377, 328, 477, 388, Fleet_Done) and AnchorMode="困難"
 		{
 			LogShow("困難模式次數已用盡，停止出擊到永久。")
 			StopAnchor := 1
@@ -5718,7 +5687,7 @@ ChooseParty(Byref StopAnchor)
 		Loop, 20
 		{
 			sleep 500
-			if (DwmCheckcolor(766, 701, 12996946) and DwmCheckcolor(1257, 712, 16239426)) ;如果進入地圖頁面 檢測"撤退" "迎擊"
+			if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果進入地圖頁面 
 			{
 				if (SwitchPartyAtFirstTime and (ChooseParty2!="不使用" or AnchorMode="困難"))
 				{
@@ -5745,59 +5714,6 @@ ChooseParty(Byref StopAnchor)
 		} 
 	}
 }
-
-		;~ if (!(SwitchPartyAtFirstTime) and (ChooseParty2!="不使用" and AnchorMode="普通")) ;先把主要隊伍移到中間，避免BOSS出現卡住
-		;~ {
-			;~ Loop
-			;~ {
-				;~ MapScan1 := DwmGetPixel(364, 351)
-				;~ sleep 200
-				;~ MapScan2 := DwmGetPixel(364, 351)
-			;~ } until MapScan1=MapScan2
-			;~ sleep 1000
-			;~ Random, x, 963, 1096
-			;~ Random, y, 701, 728
-			;~ C_Click(x,y) ;點擊"切換"
-			;~ Swipe(210, 228, 735, 423)
-			;~ Swipe(477, 297, 1107, 596)
-			;~ Loop
-			;~ {
-				;~ x := 350, y := 220
-				;~ Random, xx, 0, 750
-				;~ Random, yy, 0, 400
-				;~ x1 := x+xx, y1 := y+yy
-				;~ x2 := x1-100, y2 := y1-100
-				;~ Swipe(x1, y1, x2, y2)
-				;~ AlignCenterCount++
-			;~ } until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 300, 550, 1000, 750)) or AlignCenterCount>10
-			;~ y1 := y-1
-			;~ y2 := y+1
-			;~ AlignCenterCount := VarSetCapacity
-			;~ Loop 
-			;~ {
-				;~ if (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2))
-					;~ break
-				;~ Random, y, 180, 650
-				;~ Swipe(650, y, 430, y)
-				;~ AlignCenterCount++
-			;~ } until (GdipImageSearch(x, y, "img/Map_Lower.png", 1, 1, 125, y1, 220, y2)) or AlignCenterCount>10
-			;~ AlignCenterCount := VarSetCapacity
-			;~ if (AnchorChapter="7" and AnchorChapter2="2")
-			;~ {
-				;~ Movepixel := Dwmgetpixel(596, 383)
-				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-				;~ C_Click(596, 383) ;先把主要隊伍移到中間，避免BOSS出現卡住
-			;~ }
-			;~ Loop 
-			;~ {
-				;~ sleep 500
-				;~ MoveCount++
-			;~ } until (Movepixel!=Dwmgetpixel(596, 383) and DwmCheckcolor(794, 713, 16777215)) or MoveCount>20
-			;~ Random, x, 963, 1096
-			;~ Random, y, 701, 728
-			;~ sleep 1500
-			;~ C_Click(x,y) ;點擊"切換"
-		;~ }
 
 Battle_Operation()
 {
@@ -6138,7 +6054,8 @@ GuLuGuLuLu()
 
 CloseEventList()
 {
-	if (DwmCheckcolor(96, 42, 5937919) and DwmCheckcolor(1231, 69, 14088191) and DwmCheckcolor(202, 57, 16251903) and DwmCheckcolor(212, 67, 14610431))
+	EventList := "|<>*161$71.67zkz1zw0606ADzXU01s0805sTy7003kVU0TU1wS007U067l03k084D3V01W07W0E0S7203y4C0E20w0AUaA8Q0U8Vslt9AMEs3013k0E0MkVw6607U0U1lV3s480Dk007X27V83UTU00764D6000z3zsCA8Q0003y000QMEs000Dw000tkVk1zzzsTz1zV3zyFWDk003W6704X6TVzwD4AC116Az000TMsQG2Dsy001zVktY4QFzUkS861n8M0Xw3UwEA7aEk160D00xsDzzk7w1z03zzzzzzzzzzzz"
+	if (Find(x, y, 148, 33, 248, 93, EventList))
 	{
 		LogShow("關閉活動總覽")
 		C_Click(1240,66)
@@ -6147,10 +6064,12 @@ CloseEventList()
 
 SystemNotify()
 {
-	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(13, 25, 16041247))
+	Announce := "|<>*160$60.zUTDzzVsD1z0zbzzUs00z1zXzz0000y1zVzz3sDzy3zkzz7sDzw7zkDyDsDzwDDk7yTsDwsD3s1zzsDskS1w0xzs7kky0w1s0000Xy1y3zzzzz7w3z7zzzzzDw7zzzbzz7zs7zzzVzy3zsDzzzU001zkTXzzUzy1zkzVzzUzy3zVzkTzUzy3z3zkDzUzy3y7zkDzUzy3s0007zUzy3s00A7zUzy3s01w3zUTy3s0Dw3zU003w3zy7zUzy3U"
+	Announce_Check := "|<>*144$29.zzzz7zzzw7zzzk7zzz0Dzzw0Tzzk1zzz07zzw0Tnzk1y3z07s3w0TU3k1z0307z000Tz001zy007zz00Tzz01zzz07zzz0Tzzz1zzzz7zzzzTzzk"
+	if (Find(x, y, 117, 75, 217, 135, Announce))
 	{
 		LogShow("出現系統公告，不再顯示")
-		if !(DwmCheckcolor(997, 109, 8716180))
+		if !(Find(x, y, 946, 78, 1046, 138, Announce_Check))
 		{
 			C_Click(994, 110)
 		}
