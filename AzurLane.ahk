@@ -17,6 +17,7 @@ Exitapp
 #Persistent
 #SingleInstance, force
 #include Gdip.dll
+#include Textfiles.dll
 If !pToken := Gdip_Startup() {
    MsgBox "Gdiplus failed to start. Please ensure you have gdiplus on your system"
    ExitApp
@@ -1380,7 +1381,7 @@ ResetOperationDone := VarSetCapacity
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := CheckArray(DwmCheckcolor(13, 25, 16041247), DwmCheckcolor(23, 25, 16041247))
+LDplayerCheck := Find(x, y, 1119, 0, 1219, 46, LdPlayerLogo)
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -1413,8 +1414,7 @@ else if LDplayerCheck
 				iniWrite, 0, settings.ini, Battle, OperationYesterday
 				ResetOperationDone := 1
 				Settimer, ResetOperationClock, -61000
-				BTN_Formation := "|<>*207$71.1y3zzzsA3sAA7w7zwzkM7kssDsDzkzUk0001tk000T1UU003VUzz1y33zUDj11zy3w6Dy0Q003zw7sAzw3s0A7zsDkNzkDU0sDzkTUbz0z11k000z1Tw1wADUzz1y2TkVkET1zyDw6S61UVy3zzjsANw066Q3zyDkQTk0QwM0007UsT02vsE240D1kQ04k0048ky3UsAAUE08FVw71Vk93U0EX3sD0D00T40V67kQ1w03zk12ADUs7s06tU000T00DU1Al048Uy30y02MU08FVw61s04lU8EX3sA3UkB"
-				if (Find(x, y, 838, 395, 938, 455, BTN_Formation))
+				if (Find(x, y, 734, 401, 834, 461, MainPage_Btn_Formation))
 				{
 					C_Click(1080, 403)
 					sleep 2000
@@ -1422,18 +1422,18 @@ else if LDplayerCheck
 			}
 		}
 	}
-	MainCheck := CheckArray(DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871))
-	Formation := DwmCheckcolor(895, 415, 16777215) ;編隊BTN
-	WeighAnchor := DwmCheckcolor(1035, 345, 16777215) ;出擊BTN
-	MissionCheck := DwmCheckcolor(947, 710, 16774127) ;任務驚嘆號
-	if (MissionSub and ((MissionCheck and MainCheck and Formation and WeighAnchor) or (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)))) ;任務 or 軍事委託
+	Formation := Find(x, y, 734, 401, 834, 461, MainPage_Btn_Formation) ;編隊BTN
+	WeighAnchor := Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor) ;出擊BTN
+	MissionCheck := Find(x, y, 868, 680, 968, 740, MainPage_MissionDone) ;任務完成
+	MissionCheck2 :=Find(x, y, 2, 154, 102, 214, MainPage_N_Done)
+	if (MissionSub and (MissionCheck or MissionCheck2)) ;任務 or 軍事委託
 	{
 		sleep 500
 		gosub, MissionSub
 		sleep 500
 	}
 	Living_AreaCheck := Find(x, y, 580, 681, 680, 741, "|<>*167$7.zswSD7XlswTzjXvk") ;生活圈驚嘆號
-	if (AcademySub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
+	if (AcademySub and Living_AreaCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		sleep 500
 		Random, x, 501, 624
@@ -1441,12 +1441,12 @@ else if LDplayerCheck
 		C_Click(x, y)
 		Loop
 		{
-			if (DwmCheckcolor(414, 366, 16753308) and DwmCheckcolor(921, 411, 6516100)) ;等待進入學院/後宅選單
+			if (Find(x, y, 403, 472, 503, 532, WaitingforAcademy)) ;等待進入學院/後宅選單
 				break
 			sleep 500
 		}
 		sleep 500
-		if (DwmCheckcolor(521, 270, 11884882)) ;
+		if (Find(x, y, 479, 239, 579, 299, AcademyDoneIco)) ;
 		{
 			LogShow("執行學院任務！")
 			gosub, AcademySub
@@ -1463,21 +1463,20 @@ else if LDplayerCheck
 		sleep 500
 	}
 	Living_AreaCheck := Find(x, y, 580, 681, 680, 741, "|<>*167$7.zswSD7XlswTzjXvk") ;生活圈驚嘆號
-	if (DormSub and Living_AreaCheck and MainCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
+	if (DormSub and Living_AreaCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
-		
 		sleep 500
 		Random, x, 501, 624
 		Random, y, 713, 738
 		C_Click(x, y)
 		Loop
 		{
-			if (DwmCheckcolor(414, 366, 16753308) and DwmCheckcolor(921, 411, 6516100)) ;等待進入學院/後宅選單
+			if (Find(x, y, 403, 472, 503, 532, WaitingforAcademy)) ;等待進入學院/後宅選單
 				break
 			sleep 500
 		}
 		sleep 500
-		if (DwmCheckcolor(951, 271, 13001042)) ;
+		if (Find(x, y, 907, 238, 1007, 298, DormIco)) ;
 		{
 			LogShow("執行後宅任務！")
 			gosub, DormSub
@@ -1493,18 +1492,24 @@ else if LDplayerCheck
 		}
 		sleep 500
 	}
-	TechacademyCheck := DwmCheckcolor(790, 710, 16776175)
-	if (TechacademySub and TechacademyCheck and MainCheck and Formation and WeighAnchor and TechacademyDone<1)
+	TechacademyCheck := Find(x, y, 716, 683, 816, 743, MainPage_ResearchDeptDone)
+	if (TechacademySub and TechacademyCheck and Formation and WeighAnchor and TechacademyDone<1)
 	{
 		sleep 500
 		Random, x, 660, 775
 		Random, y, 713, 738
 		C_Click(x, y)
-		sleep 500
+		sleep 1000
 		Loop
 		{
-			if (DwmCheckcolor(329, 516, 3224633) and DwmCheckcolor(916, 518, 3224633) and DwmCheckcolor(286, 312, 10268374))
+			if (Find(x, y, 101, 33, 201, 93, TechPage_ResearchDept))
 				break ;等待進入科研選單
+			if Find(x, y, 716, 683, 816, 743, MainPage_ResearchDeptDone) 
+			{
+				Random, x, 660, 775
+				Random, y, 713, 738
+				C_Click(x, y)
+			}
 		}
 		gosub, TechacademySub
 	}
@@ -1546,7 +1551,7 @@ return
 
 
 TechacademySub: ;科研
-Techacademy_Done := DwmCheckcolor(441, 503, 13528410)
+Techacademy_Done := Find(x, y, 396, 471, 496, 531, TechPage_TechDone)
 Shipworks_Done := 0 ;暫時無用
 if (Techacademy_Done) ;軍部研究室OK
 {
@@ -1555,27 +1560,22 @@ if (Techacademy_Done) ;軍部研究室OK
 	Random, y, 331, 479
 	C_Click(x, y)
 	sleep 1000
+	科研目標 := [定向研發, 資金募集, 數據蒐集, 艦裝解析, 研究委託, 試驗品募集, 基礎研究, 0]
 	Loop
 	{
-		if (DwmCheckcolor(608, 626, 10878951, 50)) ;研發已完成(綠色)
+		if (Find(x, y, 612, 601, 712, 661, TechPage_TechComplete)) ;研發已完成(綠色)
 		{
 			C_Click(614, 282)
-			sleep 2000
-			C_Click(640, 716) ;獲得道具
 		}
-		if (DwmCheckcolor(605, 626, 8101582, 40) and DwmCheckcolor(636, 642, 16777215)) ;等待研發(查看詳情)
+		if (Find(x, y, 611, 602, 711, 662, TechPage_ViewDetails)) ;等待研發(查看詳情)
 		{
 			C_Click(633, 281)
 		}
-		定向研發 := "|<>*170$68.zXzzzzzzzzzzkTzyDzU00w0007z3zs00TU001k00D3V7k0zsQ003lsFw0Dz73zkwS4TUbzzkU4D7V7k000A813U81w000724Es00DwzVzkV4C003k8MTw8F3U8Fw260724Ew20T33U1kU4D0U7k0MTw813k8Fy027z20Ew24Tw01zkzwC037z000QDs3k0ly0Q07Xy1zwQTkU"
-		資金募集 := "|<>*169$65.73zw03zlszs407s07w007W02DUy7s00D404T3wDs00w0s3w00DU01w1U3s00T003s423kkkS007k007zVzw00DU00D003s00T000S007k00y000wAADU00zU01w8MTU63s003sEVy0A7U007kV3w007k00Dz3zkUkDY00y007y01y0TUw007kA3sE"
-		數據蒐集 := "|<>*172$66.wT7wTXzwQDyU37wTUD4MTwU21wT0D4MTw000s00D4E1w001s00D401sU01wE0D41XwU0FwE0T413wwQ3w1UD413w003w1UT407w003w00D487w027sE0D4ADw037sF0D4ADz017sE0D0A7s003wF0D087sV23wE0D083yk61wF8Dw03wk6Fs10Dw1VwU0Ms00jw1lsU"
-		艦裝解析 := "|<>*141$66.zzzzzzzzzzyUU1s3VzXk3wU01s3Vz001w000s00D081k000w00D081k003s3Vy00Vw00Ds3Vz001k00Ts00D00Xk00Vs00D07Dk001tUTz007k00Ts00D001k0E3s00D001k001z0CT007k001y20T001k001w70T701k401s7Uy667o000y0kSA67oA00y0sCAC7wU"
-		研究委託 := "|<>*145$69.zzzzzzzzzXzs007z1zs00TX0E1s00D003s4D4D001zsDz0XsVs00D001zwT4DUM3k00D0XsVw70Tz1zsA20D0M3w80Tz000zVzz1X3s020DsDzkAMDy0MVs01z001sA34D00Ds00D0UMVzVlzVy3s424DwCDw30T0UEVz1lzk0Ds424DkS7z03z0U1Vw7kDk07s7wCT1y3zzzz1U"
-		試驗品募集 := "|<>*143$57.nzTzzzzzzwDkC0U7s030S1kA0z00M00S103szXz01k00T7wM00S033szX0y7kDzz3wTzky103s03007k80T00M00y103zzzzV7k00Q0U048z003U400V7s40Q8U048z0X7V400V3k40Q8U040S003U40001k00Q0U01sTs43U40U"
-		基礎研究 := "|<>*171$59.lz7zzzzzU1VwDkMsy000007UU0Q12A00TX00wC4Q01z605sw8s03wA8/VsFky7sMEL3kXU0Dk4Ui0V300TUTzw0067kz000kW4000S001l48U00w3l3W8FVV3s0UD4EW003k10S8V700TU27wF2DwDz00Ts0AE00S001k0MU00zwM3zllU"
-		科研目標 := [定向研發, 資金募集, 數據蒐集, 艦裝解析, 研究委託, 試驗品募集, 基礎研究, 0]
-		if (DwmCheckcolor(505, 598, 5936854)) ;開始研發
+		if (Find(x, y, 519, 395, 786, 689, Touch_to_Contunue)) ;點擊繼續
+		{
+			C_Click(x, y)
+		}		
+		if (Find(x, y, 432, 588, 532, 648, TechPage_StartTech)) ;開始研發
 		{
 			for k, v in 科研目標
 			{
@@ -1590,7 +1590,6 @@ if (Techacademy_Done) ;軍部研究室OK
 				C_Click(x, y)
 				Loop
 				{
-					查看詳情 :="|<>*206$65.zzDzzzzszXzzyTzs000z7v0003k001yDq0007U01zU3g000Dzlzz00Ts0Tz000S00zU0Ty000zzlwCM7zsTzw0zUww3U000s1y00070001zzA000C0003U4O001zsTzz08wDz3zU00zzzs007y001zzzk00DsDz3s1zXzsTU007k2D000y000DU0S001wFzsT60w003xU00yATzzzzz001w0z0003yDz3s1y0007w007k3w000Ds00DX7zzzzzlzsT6DU"
 					if (Find(x, y, 613, 602, 713, 662, 查看詳情)) {
 						C_Click(895, 270)
 						break
@@ -1611,6 +1610,13 @@ if (Techacademy_Done) ;軍部研究室OK
 				LogShow("開始研發")
 				C_Click(507, 617)
 				sleep 1000
+				if (Find(x, y, 429, 330, 529, 390, TechPage_Is_Teching))
+				{
+					LogShow("已經有研發科目，嘗試切換項目")
+					C_Click(698, 705)
+					sleep 1000
+					C_Click(888, 248)
+				}
 			}
 		}
 		if (DwmCheckcolor(438, 618, 9742022) and DwmCheckcolor(579, 618, 9740998) and DwmCheckcolor(532, 618, 13552598)) ;缺少研發道具
@@ -1620,12 +1626,11 @@ if (Techacademy_Done) ;軍部研究室OK
 			sleep 1000
 			C_Click(885, 265)
 		}
-		需要消耗 :="|<>*174$68.zzzzzzzzjzDs007k003ktnnzbzw000z6QwztzzzDDztnCE003znXzzwnAzbwy001zzgv891DbDCTzzDm2EHtnnbXs07zbzyQwtwSTtk90zU00TnbzTyTzs007ztzo000zyTzzy01000Dz7zzzU0TyTzU001yNzrz7zzlyDzaTxU00TwzbznU0NvnbyDlzws06SwtzU8zySTxbjCTzUDzbbzNvnbzU0TntzqSwVw0z0wyT1rjMT7zyTzbss"
 		if (Find(x, y, 343, 224, 934, 532, 需要消耗))
 		{
 			C_Click(791, 552)
 		}
-		if (DwmCheckcolor(505, 603, 14575954)) ;已經開始研發(停止研發按鈕)
+		if (Find(x, y, 426, 588, 526, 648, TechPage_Stop_Teching)) ;已經開始研發(停止研發按鈕)
 		{
 			LogShow("離開軍部科研室")
 			C_Click(714, 712)
@@ -1633,7 +1638,7 @@ if (Techacademy_Done) ;軍部研究室OK
 			C_Click(1227, 71)
 			Loop
 			{
-				if (DwmCheckcolor(12, 200, 16777215))
+				if (Find(x, y, 734, 401, 834, 461, MainPage_Btn_Formation))
 					break
 				sleep 500
 			}
@@ -1691,9 +1696,7 @@ return
 AnchorSub: ;出擊
 AnchorCheck := DwmCheckcolor(1036, 346, 16777215)
 AnchorCheck2 := DwmCheckcolor(1096, 331, 16769924)
-MainCheck := [DwmCheckcolor(12, 200, 16777215), DwmCheckcolor(12, 200, 16250871)]  ;主選單圖示
-MainCheck := CheckArray(MainCheck*)
-if (AnchorCheck and AnchorCheck2 and MainCheck and StopAnchor<1)
+if (AnchorCheck and AnchorCheck2 and StopAnchor<1)
 {
 	Random, x, 1025, 1145
 	Random, y, 356, 453
@@ -3973,32 +3976,32 @@ if  (DailyGoalSub and DailyDone<1)
 return
 
 MissionSub:
-if (MissionCheck and MainCheck) ;如果有任務獎勵
+if (MissionCheck) ;如果有任務獎勵
 {
     LogShow("發現任務獎勵！")
     C_Click(883, 725) ;點擊任務按紐
 	sleep 1000
 	Loop
 	{
-		if (DwmCheckcolor(948, 709, 16772071)) 
+		if (Find(x, y, 868, 680, 968, 740, MainPage_MissionDone)) 
 		{
 			C_Click(883, 725) ;點擊任務按紐
 			sleep 1000
 		}
 		sleep 500
-	} until DwmCheckcolor(51, 199, 16243588) ;等待進入任務界面 (偵測金色的"全部")
+	} until Find(x, y, 2, 154, 102, 214, MissionPage_All) ;等待進入任務界面 (偵測金色的"全部")
     Loop
     {
-        if (DwmCheckcolor(1070, 91, 13019697) and DwmCheckcolor(1198, 117, 12410186)) ;全部領取任務獎勵
+        if (Find(x, y, 1023, 29, 1123, 89, MissionPage_ReveiveAward)) ;全部領取任務獎勵
         {
             LogShow("領取全部任務獎勵！")
             C_Click(1068, 63)
         }
-        else if (DwmCheckcolor(594, 223, 16766794) and DwmCheckcolor(1198, 117, 12410186)) ;領取第一個任務獎勵
+        else if (Find(x, y, 1087, 152, 1187, 212, MissionPage_ReveiveAward_1)) ;領取第一個任務獎勵
         {
             C_Click(1136, 187)
         }
-		else if (DwmCheckcolor(712, 182, 16777215) and DwmCheckcolor(576, 188, 16777215)) ;獲得道具
+		else if (Find(x, y, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
 		{
 			C_Click(636, 91)
 		}
@@ -4022,39 +4025,39 @@ if (MissionCheck and MainCheck) ;如果有任務獎勵
         {
             C_Click(811, 546)
         }
-        else if (DwmCheckcolor(1147, 183, 15198183) or DwmCheckcolor(1140, 395, 9718090))
+        else if (Find(x, y, 1084, 153, 1184, 213, MissionPage_MoveForward) or Find(x, y, 233, 334, 333, 394, MissionPage_List_Empty))
         {
             LogShow("獎勵領取結束，返回主選單！")
             C_Click(1227, 69)
 			MissionDone := 1
 			sleep 1000
         }
-		else if (DwmCheckcolor(13, 200, 16777215) and MissionDone=1)
+		else if (Find(x, y, 734, 401, 834, 461, MainPage_Btn_Formation) and MissionDone=1)
 		{
 			MissionDone :=0
 			break
 		}
         sleep 500
-    } 
+    }
 }
-if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;在主選單偵測到軍事任務已完成
+if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 {
 	LogShow("執行軍事委託")
 	C_Click(20, 200)
 	sleep 1000
 	Loop
 	{
-		if (DwmCheckcolor(46, 181, 16774127))
+		if (Find(x, y, 2, 154, 102, 214, MainPage_N_Done))
 		{
 			C_Click(20, 200)
 			sleep 1000
 		}
-		if (DwmCheckcolor(495, 321, 15704642)) ;出現選單
+		if (Find(x, y, 392, 288, 492, 348, Delegation_Done)) ;出現選單"完成"
 		{
-			C_Click(444, 318) ;點擊軍事委託完成
+			C_Click(x, y) ;點擊軍事委託完成
 			sleep 2500
 		}
-		else if (DwmCheckcolor(1216, 75, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;出現委託成功S頁面
+		if (Find(x, y, 243, 93, 343, 153, Delegation_Incredible) or Find(x, y, 243, 93, 343, 153, Delegation_Perfect)) ;出現委託成功S頁面
 		{
 			break
 		}
@@ -4062,18 +4065,22 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 	}
 	Loop
 	{
-		sleep 1000
-		if (DwmCheckcolor(1226, 74, 16777215) or DwmCheckcolor(1215, 76, 16777215)) ;委託成功 S
+		sleep 500
+		if (Find(x, y, 243, 93, 343, 153, Delegation_Incredible) or Find(x, y, 243, 93, 343, 153, Delegation_Perfect)) ;委託成功 S
 		{
 			C_Click(639, 141) ;隨便點
-			sleep 1000
-		}
-		else if (DwmCheckcolor(461, 316, 16777215) and DwmCheckcolor(432, 321, 16777215) and DwmCheckcolor(268, 348, 9240551) and DwmCheckcolor(237, 355, 9240551)) ;如果已經"空閒"
-		{
-			C_Click(441, 314)
 			sleep 1500
 		}
-		else if (DwmCheckcolor(135, 57, 15726591) and DwmCheckcolor(167, 59, 16251903)) ;成功進入委託頁面
+		else if (Find(x, y, 203, 320, 303, 380, Delegation_idle)) ;如果已經"空閒"
+		{
+			sleep 500
+			if (Find(x, y, 203, 320, 303, 380, Delegation_idle))
+			{
+				C_Click(441, 314)
+				sleep 1500
+			}
+		}
+		else if (Find(x, y, 99, 34, 199, 94, DelegationPage_in_Delegation)) ;成功進入委託頁面
 		{
 			Rmenu := 1
 			break
@@ -4081,7 +4088,7 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 		else
 		{
 			LoopVar++
-			if (LoopVar=30 or LoopVar=40 or LoopVar=50 or LoopVar=60 or LoopVar=70)
+			if (LoopVar=50 or LoopVar=60 or LoopVar=70)
 			{
 				C_Click(514, 116)
 			}
@@ -4103,12 +4110,12 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 		sleep 1000
 		Loop, 30
 		{
-			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
+			if (Find(x, y, 150, 163, 250, 223, Delegation_Canteen))
 			{
 				C_Click(1246, 89)
-				sleep 2000
+				sleep 1000
 			}
-			else if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(975, 430, 5946103) and DwmCheckcolor(1142, 442, 14592594))
+			else  if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 			{
 				break
 			}
@@ -4117,14 +4124,14 @@ if (DwmCheckcolor(46, 181, 16774127) and DwmCheckcolor(1140, 335, 14577994)) ;�
 	}
 	else
 	{
-		Loop, 20
+		Loop, 30
 		{
-			if (DwmCheckcolor(109, 172, 4876692) and DwmCheckcolor(101, 203, 16248815))
+			if (Find(x, y, 150, 163, 250, 223, Delegation_Canteen))
 			{
 				C_Click(1246, 89)
-				sleep 2000
+				sleep 1000
 			}
-			if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(975, 430, 5946103) and DwmCheckcolor(1142, 442, 14592594))
+			else  if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 			{
 				break
 			}
@@ -4146,24 +4153,16 @@ if (AcademyDone<1)
 	Loop ;等待進入學院
 	{
 		sleep 500
-		if (DwmCheckcolor(627, 712, 11882818))
+		if (Find(x, y, 97, 34, 197, 94, AcademyPage_Academy))
 		{
-			C_Click(580, 727)
-			sleep 1000
-		}
-		Academycount++
-		if (DwmCheckcolor(135, 72, 14085119) and DwmCheckcolor(169, 70, 14609407))
-		{
-			sleep 1200
 			break
 		}
-		else if (Academycount=200)
+		else if (A_index=200)
 		{
 			Logshow("AcademySub Error")
 			return ;不再執行
 		}
 	}
-	Academycount := VarSetCapacity
 	Loop
 	{
 		if (GdipImageSearch(x, y, "img/AcademyOil.png", 100, 8, 95, 298, 542, 723) and AcademyOil and GetOil<1) ;
@@ -4182,18 +4181,17 @@ if (AcademyDone<1)
 				fullycoin := 1
 			}
 		}
-		if (DwmCheckcolor(1097, 233, 16777215) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
+		if (Find(x, y, 1021, 202, 1121, 262, text) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
 		{
 			LogShow("商店街發大財")
 			C_Click(1113, 210)
 			Loop, 20
 			{
 				sleep 500
-			} until DwmCheckcolor(101, 662, 16239426) ;檢查是否進入商店
+			} until Find(x, y, 98, 32, 198, 92, AcademyPage_into_Shop) ;檢查是否進入商店
 			ShopX1 := 430, ShopY1 := 150, ShopX2 := 1250, ShopY2 := 620
 			Loop
 			{
-				外觀裝備箱:="|<>*110$70.vxzrTziyzvrTbnw00SvvziQyTDwWQtD7yU0kAzn9nUU3nXDCHy8UDnnzSQxvDueQkDjt00bgTW8HYwT77wAkzPXCu0QQDS78w2Qndzw01wQnYM3AXzkQrtnw0kS00DQ0TDDt7/z4txnBwwzUAjksDrArbnyFqyLlzQ0MzDs2Pz9XxrB7wzU3XsDXrRbzzzzzzzzzxzs"
 				if (Find(x, y, ShopX1, ShopY1, ShopX2, ShopY2, 外觀裝備箱) and Item_Equ_Box1 and Item_Equ_Box1Coin<1) ;如果有外觀裝備箱
 				{
 					Item_Equ_Box1Pos := dwmgetpixel(x,y)
@@ -4315,7 +4313,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Cube.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Cube and CubeCoin<1) ;如果有心智魔方
+				if (GdipImageSearch(x, y, "img/Cube.png", 113, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Cube and CubeCoin<1) ;如果有心智魔方
 				{
 					CubePos := dwmgetpixel(x,y)
 					LogShow("購買心智魔方(金幣)")
@@ -4345,7 +4343,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Aircraft.png", 113, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Aircraft and Part_AircraftCoin<1) 
 				{
 					Part_AircraftPos := dwmgetpixel(x,y)
 					LogShow("購買艦載機部件T3(金幣)")
@@ -4375,7 +4373,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Cannon.png", 113, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Cannon and Part_CannonCoin<1) 
 				{
 					Part_CannonPos := dwmgetpixel(x,y)
 					LogShow("購買主砲部件T3(金幣)")
@@ -4405,7 +4403,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_torpedo.png", 113, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_torpedo and Part_torpedoCoin<1) 
 				{
 					Part_torpedoPos := dwmgetpixel(x,y)
 					LogShow("購買魚雷部件T3(金幣)")
@@ -4435,7 +4433,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Anti_Aircraft.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Anti_Aircraft and Part_Anti_AircraftCoin<1) 
+				if (GdipImageSearch(x, y, "img/Part_Anti_Aircraft.png", 113, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Anti_Aircraft and Part_Anti_AircraftCoin<1) 
 				{
 					Part_Anti_AircraftPos := dwmgetpixel(x,y)
 					LogShow("購買防空砲部件(金幣)")
@@ -4465,7 +4463,7 @@ if (AcademyDone<1)
 						sleep 600
 					}
 				}
-				if (GdipImageSearch(x, y, "img/Part_Common.png", 115, 8, ShopX1, ShopY1, ShopX2, ShopY2) and Part_Common and Part_CommonCoin<1) 
+				if (Find(x, y, ShopX1, ShopY1, ShopX2, ShopY2, 通用部件T3) and Part_Common and Part_CommonCoin<1) 
 				{
 					Part_CommonPos := dwmgetpixel(x,y)
 					LogShow("購買共通部件(金幣)")
@@ -4477,7 +4475,7 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 400, 500, 570, 650, BTN_Cancel)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
@@ -4556,7 +4554,7 @@ if (AcademyDone<1)
 					}
 				}
 				ShopCount++
-				if (ShopCount>15)
+				if (ShopCount>10)
 				{
 					AcademyShopDone := 1
 					ShopCount := VarSetCapacity
@@ -4571,34 +4569,13 @@ if (AcademyDone<1)
 				sleep 500
 			}
 		}
-		if (DwmCheckcolor(875, 178, 16776175) and AcademyTactics and learnt<1) ;學院出現！
+		if (Find(x, y, 825, 146, 925, 206, AcademyDoneIco2) and AcademyTactics and learnt<1) ;學院出現！
 		{
 			LogShow("我們真的學不來！")
 			C_Click(740, 166) ;點擊學院
-			sleep 3000
-			Loop, 30
-			{
-				if ((DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(811, 548, 16777215) and DwmCheckcolor(460, 541, 16777215) and DwmCheckcolor(414, 225, 16777215))) ;之前版本確認按鈕在中間
-				{
-					C_Click(789, 546) ;點擊確認
-					Break
-				}
-				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(810, 556, 16777215))
-				{
-					C_Click(789, 546) ;點擊確認
-					Break ;確認按鈕偏下面
-				}
-				else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(660, 558, 16777215)) ;技能LV10
-				{
-					C_Click(635, 545) ;點擊確認
-					Break ;確認按鈕偏下面
-				}
-				sleep 500
-			}  
+			sleep 3000  
 			Loop
 			{
-				繼續學習 :="|<>*168$70.xzSTxznzyTTzbBvzb00D1V0yQb/yQ01wy7nnmYjvznzkHMD90VzAU0T1xUtYrbtbzzyy7nYmIbaE07s8EA300Q3AnTbAxkQxxkQnBs001sk07tE07U007900TBzzyTzyNYnbtm03tU0N0HSz0807a01Y5/GQ4U0TzyDzo23zyTtzzXzeHDTdM07zwTyZ9PSZbyQ000+I11uG01zzDzdGkrh80Dzwzwr00ArlkzznznQ00nQDkzsDzzzzzzrzrzVzy"
-
 				if (Find(x, y, 343, 224, 934, 532, 繼續學習))
 				{
 					LogShow("繼續學習！")
@@ -4608,11 +4585,10 @@ if (AcademyDone<1)
 				{
 					C_Click(643, 545) ;點擊確定
 				}
-				else if (DwmCheckcolor(873, 649, 16777215) and DwmCheckcolor(1151, 654, 16777215) and DwmCheckcolor(915, 666, 16777215)) ;選擇課本頁面
+				else if (Find(x, y, 1031, 624, 1131, 684, StartLesson)) ;選擇課本頁面
 				{
 					If (150expbookonly)
 					{
-						sleep 1000
 						if (GdipImageSearch(x, y, "img/150exp.png", 110, 8, 100, 100, 1200, 650)) ;如果找到150% EXP課本
 						{
 							LogShow("使用150%經驗課本！")
@@ -4642,15 +4618,15 @@ if (AcademyDone<1)
 				{
 					C_Click(639, 545)
 				}
-				else if (DwmCheckcolor(329, 210, 16777215) and DwmCheckcolor(414, 223, 16777215) and DwmCheckcolor(810, 558, 16777215)) 
+				else if (Find(x, y, 700, 500, 860, 650, Academy_BTN_Confirm)) 
 				{
 					LogShow("確認使用教材以訓練技能！")
-					C_Click(789, 541)
+					C_Click(x, y)
 				}
-				else if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(208, 59, 14610431))
+				else if (Find(x, y, 102, 33, 202, 93, Academy_In_Academy))
 				{
 					sleep 4000
-					if (DwmCheckcolor(225, 67, 14085119) and DwmCheckcolor(208, 59, 14610431))
+					if (Find(x, y, 102, 33, 202, 93, Academy_In_Academy))
 					{
 						LogShow("學習結束～！")
 						learnt := 1
@@ -4694,10 +4670,9 @@ if (AcademyDone<1)
 				}
 			}
 		}
-		
 		sleep 300
 		Academycount++
-		if (Academycount>20)
+		if (Academycount>15)
 		{
 			LogShow("離開學院。")
 			GetOil := VarSetCapacity
@@ -4706,21 +4681,21 @@ if (AcademyDone<1)
 			learnt := VarSetCapacity
 			AcademyShopDone := VarSetCapacity
 			AcademyDone := 1
-			Settimer, AcademyClock, -1800000 ;30分鐘後再開始檢查
+			Settimer, AcademyClock, -900000 ;15分鐘後再開始檢查
 			Loop, 60
 			{
-				if (DwmCheckcolor(170, 68, 14610431))
+				if (Find(x, y, 97, 34, 197, 94, AcademyPage_Academy))
 				{
 					C_Click(38,92)
 					sleep 3000
 				}
-				else if (DwmCheckcolor(12, 202, 16777215))
+				else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 				{
 					Break
 				}
 				GetItem()
 				CloseEventList()
-				sleep 1000
+				sleep 500
 			}
 			break
 		}
@@ -4734,7 +4709,7 @@ AcademyDone := VarSetCapacity
 return
 
 WinSub:
-LDplayerCheck := [DwmCheckcolor(13, 25, 16041247), CloneWindowforDWM]
+LDplayerCheck := [Find(x, y, 1119, 0, 1219, 46, LdPlayerLogo), CloneWindowforDWM]
 if !LDplayerCheck[1] or LDplayerCheck[2]
 {
 	WinGet, Wincheck, MinMax, %title%
@@ -4773,70 +4748,56 @@ if (DormDone<1) ;後宅發現任務
 	sleep 1000
 	Loop ;等待進入後宅
 	{
-		if (DwmCheckcolor(790, 710, 16244694))
+		sleep 500
+		if (Find(x, y, 907, 238, 1007, 298, DormIco)) ;
 		{
-			C_Click(723, 727)
+			Random, x, 750, 938
+			Random, y, 290, 508
+			C_Click(x, y)
 			sleep 1000
 		}
-		DormCount++
-		sleep 500
 		GuLuGuLuLu()
-		if (DwmCheckcolor(30, 88, 14071320) and DwmCheckcolor(109, 578, 16711688))
+		if (Find(x, y, 0, 59, 91, 119, DormPage_in_Dorm))
 		{
-			sleep 1500
+			sleep 500
 			break
 		}
-		else if (DwmCheckcolor(724, 670, 16776191) and DwmCheckcolor(565, 124, 16777215))
+		else if (Find(x, y, 1057, 631, 1157, 691, DormPage_Exp_Confirm))
 		{
-			C_Click(1110, 657) ;獲得經驗 按確定
+			C_Click(x, y) ;獲得經驗 按確定
 		}
 		else if (DormCount=200)
 		{
 			LogShow("DormSub Error")
 			return
 		}
+		DormCount++
 	}
 	DormCount := VarSetCapacity
 	Loop
 	{
 		GuLuGuLuLu() ;如果太過飢餓 
-		if (DwmCheckcolor(190, 90, 16711688) and DwmCheckcolor(1206, 115, 16765852) and DwmCheckcolor(665, 687, 16250871))
-		{
+		if (Find(x, y, 53, 168, 153, 228, DormPage_Training))
 			C_Click(1261, 464) ;點到訓練自動離開
-		}
-		else if (DwmCheckcolor(372, 337, 11924356) and DwmCheckcolor(458, 344, 9235282) and DwmCheckcolor(450, 292, 8090037))
-		{
+		if (DwmCheckcolor(372, 337, 11924356) and DwmCheckcolor(458, 344, 9235282) and DwmCheckcolor(450, 292, 8090037))
 			C_Click(1261, 464) ;點到施工自動離開
-		}
-		else if (DwmCheckcolor(528, 348, 14588572) and DwmCheckcolor(469, 313, 16777215) and DwmCheckcolor(636, 532, 16761682))
-		{
-			C_Click(617, 115) ;點到換層自動離開
-		}
-		else if (DwmCheckcolor(292, 295, 15180378) and DwmCheckcolor(701, 565, 16777215) and DwmCheckcolor(726, 329, 14604238))
-		{
+		if (Find(x, y, 592, 477, 692, 537, DormPage_Cancel))
+			C_Click(x, y) ;點到換層自動離開
+		if (Find(x, y, 277, 482, 377, 542, DormPage_Supplies))
 			C_Click(617, 115) ;點到存糧自動離開
-		}
-		else if (DwmCheckcolor(1096, 541, 16236114) and DwmCheckcolor(104, 586, 16776191) and DwmCheckcolor(1173, 687, 16761657))
-		{
+		if (Find(x, y, 92, 513, 192, 573, DormPage_Subject))
 			C_Click(37, 90) ;點到管理自動離開
-		}
-		else if (DwmCheckcolor(689, 108, 15694195) and DwmCheckcolor(995, 90, 16729459) and DwmCheckcolor(797, 104, 16236114))
-		{
+		if (Find(x, y, 98, 208, 198, 268, DormPage_Subject_Shop))
 			C_Click(1200, 68) ;點到商店自動離開
-		}
-		else if (DwmCheckcolor(827, 235, 5403053) and DwmCheckcolor(331, 209, 16777215) and DwmCheckcolor(619, 292, 61439))
-		{
+		if (Find(x, y, 591, 533, 691, 593, DormPage_Inform_Confirm))
 			C_Click(638, 545) ;點到訊息自動離開
-		}
-		else if (DwmCheckcolor(218, 51, 0) and DwmCheckcolor(331, 209, 16777215) and DwmCheckcolor(619, 292, 61439))
-		{
+		if (Find(x, y, 301, 87, 401, 147, DormPage_Share))
 			C_Click(1299, 646) ;點到分享自動離開
-		}
-		else if (DwmCheckcolor(724, 670, 16776191) and DwmCheckcolor(565, 124, 16777215))
-		{
+		if (Find(x, y, 1057, 631, 1157, 691, DormPage_Exp_Confirm))
 			C_Click(1110, 657) ;獲得經驗 按確定
-		}
-		else if (DormFood and DormFoodDone<1)
+		if (Find(x, y, 470, 452, 570, 512, DormPage_NickName))
+			C_Click(x, y) ;點到取名自動離開
+		if (DormFood and DormFoodDone<1)
 		{
 			FoodX := Ceil((550-30)*(DormFoodBar/100)+30)
 			if (DwmGetpixel(FoodX, 725)<8000000) ;存糧進度條
@@ -4846,7 +4807,7 @@ if (DormDone<1) ;後宅發現任務
 				FoodCheck := 0
 			}
 			;~ FoodCheck := DwmCheckcolor(FoodX, 729, 5394770) 
-			FoodCheck2 := DwmCheckcolor(48, 686, 16764746) ;左下黃十字
+			FoodCheck2 := Find(x, y, 0, 657, 98, 717, DormPage_YellowCross) ;左下黃十字
 			if (FoodCheck and FoodCheck2)
 			{
 				if (DormFoodBar>=50 and DormFoodBar<65)
@@ -4907,7 +4868,7 @@ if (DormDone<1) ;後宅發現任務
 		}
 		sleep 300
 		Dormcount++
-		if (Dormcount>20)
+		if (Dormcount>15)
 		{
 			LogShow("離開後宅。")
 			Dorm_Coin := VarSetCapacity
@@ -4916,18 +4877,18 @@ if (DormDone<1) ;後宅發現任務
 			DormFoodDone := VarSetCapacity
 			DormDone := 1
 			Settimer, DormClock, -1800000 ;半小時檢查一次
-			Loop, 20
+			Loop, 30
 			{
-				if (DwmCheckcolor(95, 573, 16711680))
+				if (Find(x, y, 0, 59, 91, 119, DormPage_in_Dorm))
 				{
-					C_Click(38,92)
-					sleep 3000
+					C_Click(x, y)
+					sleep 2000
 				}
-				else if (DwmCheckcolor(12, 202, 16777215))
+				else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 				{
 					Break
 				}
-				sleep 1000
+				sleep 500
 			}
 			break
 		}
@@ -4988,6 +4949,8 @@ DelegationMission() {
 	進行中 := "|<>*201$57.zrzzDzzzDww9zlU1zsz3X7wQ0Dz7w8073k1zszn00kzzy007kszMzzk00w77z7zyT77k0Dl00nsw101wM06T7U8tz3z7nswl01kTsy00680C3z7k00l7DyTsy006803nz7nswl00STszz7y0zznz7zsz03syT0zz7ss07ns7zszjk0yTVzzDw"
 	NoneDelegation := "|<>*170$58.zzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzss000DzzzzXU000zzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXU"
 	緊急 := "|<>*138$35.000000000003zzzzzzzzzzzzzzz3zk01w0DU03k0T0161ky00A00Q0ky00s00Q01s0Ms03s0Dk07U0z00DUCC00y00Q28w00s49w03kA1U11U0367W81bzzzzzw"
+	Delegation_Empty := "|<>*155$65.UTXsz0Tk3tsTz7lySTwztkzy73wyztzn9zwC7txznzmE7tRDnnzbzVUTmGTUDzDzXDzagz7zyTzCTzANyTzwzyQzyNnwzztzws3wvbtzznzts7xzTvzzjzvk"
+
 
 	Loop
 	{
@@ -5045,7 +5008,7 @@ DelegationMission() {
 			LogShow("緊急獲得道具，點擊繼續")
 			C_Click(636, 91)
 		}
-		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 465, 235, NoneDelegation)) ;任務都在進行中 or 都沒接到任務
+		else if (Find(x, y, 359, 175, 459, 235, 進行中) or Find(x, y, 359, 175, 465, 235, NoneDelegation) or Find(x, y, 325, 334, 425, 394, Delegation_Empty)) ;任務都在進行中 or 都沒接到任務
 		{
 			break
 		}
@@ -5226,32 +5189,24 @@ Loop, 30  ;等待選單開啟
 
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
-	V := IsBetween(DwmGetPixel(295, 84), 6500000, 7621517) ;檢查"VIC"TORY的顏色
-	I := IsBetween(DwmGetPixel(452, 84), 6500000, 7621517)
-	C := IsBetween(DwmGetPixel(528, 84), 6500000, 7621517)
-	4Corner := [DwmCheckcolor(123, 650, 16777215), DwmCheckcolor(139, 666, 16777215), DwmCheckcolor(125, 682, 16777215), DwmCheckcolor(110, 666, 16777215)] ;右下角四個閃爍正方形
-	4Corner2 := [DwmCheckcolor(68, 703, 16777215), DwmCheckcolor(68, 703, 528417)] ;位於四個角落的移動方點
-	Z := DwmCheckcolor(661, 405, 16777215) ; "戰"鬥
-	D := DwmCheckcolor(685, 406, 16777215) ; 戰"鬥"
-	D2 := IsBetween(DwmGetPixel(397, 87), 10359570, 12400000) ;檢查"DEF"EAT的顏色 11359570
-	E := IsBetween(DwmGetPixel(570, 87), 10359570, 12400000)
-	F := IsBetween(DwmGetPixel(723, 87), 10359570, 12400000)
+	Victory := Find(x, y, 783, 385, 883, 445, Battle_Victory)
+	IsTouch_to_continue := Find(x, y, 287, 641, 387, 701, Battle_Touch_to_Continue)
 	;~ Global
-	if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and D2 and E and F and Z and D)
+	if (Victory and IsTouch_to_continue)
+	{
+		LogShow("敵艦討伐完畢。")
+		Random, x, 100, 1000
+		Random, y, 100, 600
+		sleep 500
+		C_Click(x, y)
+	}
+	else if (IsTouch_to_continue and !Victory) ;點擊繼續
 	{
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
 		rate := Round(AnchorFailedTimes/AnchorTimes*100, 2)
 		Message = 出擊: %AnchorTimes% 次　覆沒：%AnchorFailedTimes% 次　機率： %rate%`%
 		LogShow(Message)
-		Random, x, 100, 1000
-		Random, y, 100, 600
-		sleep 500
-		C_Click(x, y)
-	}
-	else if ((CheckArray(4Corner*) or CheckArray(4Corner2*)) and V and I and C and Z and D) ;點擊繼續
-	{
-		LogShow("敵艦討伐完畢。")
 		Random, x, 100, 1000
 		Random, y, 100, 600
 		sleep 500
@@ -5367,7 +5322,6 @@ UnknowWife()
 
 Battle_End()
 {
-	Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U00030000006000000ATzzzzyMzzzzzwlzzzzztXU0lzzn600003aA00007AM0000CMk0000QlzzzzztXzzzzzn7zzzzzaDzwzzzAM01zbyM"
 	if (Find(x, y, 866, 655, 966, 715, Battle_End)) ;確定
 	{
 		LogShow("結算畫面，點擊確定！")
