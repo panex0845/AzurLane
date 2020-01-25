@@ -102,7 +102,7 @@ Delegation_Canteen := "|<>*162$70.xzzzzzzzzzzzzzzyzzrzszzswTjvzyDz0zzlVyT7zsTw3z
 
 
 ;//////////科研////////////////
-MainPage_ResearchDeptDone := "|<>*143$65.zzzzzzzzyzzzzzzzzzzvzzzzzzzzzzjlzzzzzzzzyzXzzzzzzzzvz7yQj7Ty77DyDwvxyzxiyzwTokvwDvQNzszhhrvzqvtzlzvzlrzXlpzXzzzzzzzzxzzzzzzzzzzxzDzzzzzzzzxwT" ;首頁的科研完成驚嘆號
+MainPage_ResearchDeptDone := "|<>*169$5.z6AMlX6Dxlry" ;首頁的科研完成驚嘆號
 
 TechPage_ResearchDept := "|<>*152$54.w1zVzzzzzU1DVw0001U11Vw0001sD0Vw0001wD0VzVw67wDsVzVw6701yVz1w6701zVz0A67007Vy0A67sC1Vy0A63sC1Vw0800s7VVw6800k7tVw6801k3zVz6A67U3zVz6A67U200D6A670+00D6A674C00D6A67AC00T6AC7QDzVz2AC7wDzVz0AC7wDzVz08S7wDzVzzsy7wDzVzzty7zzzVzzvy7U" ;科研頁面左上角"科研"
 
@@ -114,7 +114,8 @@ TechPage_StartTech := "|<>*195$71.w0000z03kDzVs0001y07Uzz3kM043s061zz7U0007k0A23
 
 TechPage_Is_Teching := "|<>*154$7.tkMDDzzlkMA631UkMA631UkMCDjzU" ;已經在研發
 
-TechPage_Stop_Teching := "|<>*154$7.tkMDDzzlkMA631UkMA631UkMCDjzU" ;停止研發
+TechPage_Stop_Teching := "|<>*186$59.sDkDzzzkDzkTUTzzzUTz0000Tzz0zy0000zzy1zw0003zzw3zsDzzzz3s7zUM00Dy3kDz0k00Tw7UTy3UE0zsD00w7001zkS00MC003zUw00UA007z1s01UM00Ty3kDz0U00Dw7UTy1000TsD0zw2000zkS1zs43y1zUw3zk8003z1s7zUE00Dy3kDz0k00Tw7UTy1zUzzsD0zw3z1zzkS1zs7y3zzUw3zkD07zw0000US0Dzk0001"
+ ;停止研發
 
 TechPage_ViewDetails := "|<>*208$50.zzzzzzzzzzbzzzzwDztzzU003U001s000s000T0Vzy0007zszzzU3zw001zkYDz000TktkTzVzzkSS1k000M000Q000600070001c007zVzzyDzlzk00TU00Ts007s007w7zlyDzly000TU00T0007s007t7zly001yk00Tzzzzw007U001z7zls000Tk00S0007w007zzzzz7zls"
  ;已經在研發

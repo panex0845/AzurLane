@@ -1492,7 +1492,7 @@ else if LDplayerCheck
 		}
 		sleep 500
 	}
-	TechacademyCheck := Find(x, y, 716, 683, 816, 743, MainPage_ResearchDeptDone)
+	TechacademyCheck := Find(x, y, 740, 684, 840, 744, MainPage_ResearchDeptDone)
 	if (TechacademySub and TechacademyCheck and Formation and WeighAnchor and TechacademyDone<1)
 	{
 		sleep 500
@@ -1630,7 +1630,7 @@ if (Techacademy_Done) ;軍部研究室OK
 		{
 			C_Click(791, 552)
 		}
-		if (Find(x, y, 426, 588, 526, 648, TechPage_Stop_Teching)) ;已經開始研發(停止研發按鈕)
+		if (Find(x, y, 422, 587, 522, 647, TechPage_Stop_Teching)) ;已經開始研發(停止研發按鈕)
 		{
 			LogShow("離開軍部科研室")
 			C_Click(714, 712)
@@ -1694,9 +1694,7 @@ if (Find(x, y, 1064, 285, 1200, 334, 夢中茶會))
 return
 
 AnchorSub: ;出擊
-AnchorCheck := DwmCheckcolor(1036, 346, 16777215)
-AnchorCheck2 := DwmCheckcolor(1096, 331, 16769924)
-if (AnchorCheck and AnchorCheck2 and StopAnchor<1)
+if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor) and StopAnchor<1)
 {
 	Random, x, 1025, 1145
 	Random, y, 356, 453
