@@ -1381,7 +1381,7 @@ ResetOperationDone := VarSetCapacity
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := Find(x, y, 1119, 0, 1219, 46, LdPlayerLogo)
+LDplayerCheck := Find(x, y, 1000, 0, 1200, 50, LdPlayerLogo)
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -3516,7 +3516,6 @@ Try
 	UnknowWife()
 	Message_Normal()
 	Message_Center()
-	NewWife()
 	GetCard()
 	GetItem()
 	battlevictory()
@@ -3663,7 +3662,6 @@ Loop
 		UnknowWife()
 		Message_Normal()
 		Message_Center()
-		NewWife()
 		GetCard()
 		GetItem()
 		battlevictory()
@@ -3921,7 +3919,6 @@ if  (DailyGoalSub and DailyDone<1)
 					UnknowWife()
 					Message_Normal()
 					Message_Center()
-					NewWife()
 					GetCard()
 					GetItem()
 					battlevictory()
@@ -4033,11 +4030,11 @@ if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 	}
 	Loop
 	{
-		sleep 500
+		sleep 400
 		if (Find(x, y, 200, 80, 450, 180, Delegation_Incredible) or Find(x, y, 200, 80, 450, 180, Delegation_Perfect)) ;委託成功 S
 		{
 			C_Click(639, 141) ;隨便點
-			sleep 1500
+			sleep 1000
 		}
 		else if (Find(x, y, 203, 320, 303, 380, Delegation_idle)) ;如果已經"空閒"
 		{
@@ -5200,20 +5197,12 @@ GetCard()
 		sleep 1500
 		Capture() ;拍照
 		C_Click(604, 349) ;離開介面
-		if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 224, 16777215) and DwmCheckcolor(811, 546, 16777215) and DwmCheckcolor(13, 25, 16041247))
+		sleep 500
+		if (Find(x, y, 720, 500, 850, 620, Academy_BTN_Confirm))
 		{
 			LogShow("獲得新卡片，自動上鎖！")
-			C_Click(791, 543) ;上鎖
+			C_Click(x, y) ;上鎖
 		}
-	}
-}
-
-NewWife()
-{
-	if (DwmCheckcolor(810, 549, 16777215) and DwmCheckcolor(414, 225, 16777215) and DwmCheckcolor(459, 544, 16777215) and DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(896, 229, 16777215) and DwmCheckcolor(718, 388, 16777207) and DwmCheckcolor(13, 25, 16041247)) ;訊息自動確認
-	{
-		LogShow("撿到老婆，簽字簽字！")
-		C_Click(788, 545)
 	}
 }
 
@@ -5332,38 +5321,29 @@ BackAttack()
 
 shipsfull(byref StopAnchor)
 {
-	SortBtn := DwmGetPixel(398, 553) ; 3762597 4355509 4881853
-	PlusBtn := DwmGetPixel(595, 549)
-	StrnBtn := DwmGetPixel(796, 547)
-	XBtn := DwmGetPixel(906, 231)
-	Isbetween(Var, Min, Max)
-	if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(897, 230, 16777215) and Isbetween(SortBtn, 3650000, 4900000) and Isbetween(PlusBtn, 3650000, 4900000) and Isbetween(StrnBtn, 3650000, 4900000) and Isbetween(XBtn, 12300000, 13800000))
+	if (Find(x, y, 400, 300, 600, 500, SF_Ship_is_Full))
 	{
 		if shipsfull=停止出擊
 		{
 			LogShow("船䲧已滿：停止出擊。")
 			Traytip, Azur Lane, 船䲧已滿：停止出擊。
 			C_Click(896,231)
+			sleep 500
+			C_Click(1227,71)
 			Loop
 			{
-				if (DwmCheckcolor(1234, 650, 16777215) and DwmCheckcolor(997, 194, 8685204)) or (DwmCheckcolor(1234, 650, 16250871) and DwmCheckcolor(1234, 650, 16250871)) ;進入戰鬥的編隊頁面 (出擊、目標底下箭頭) 點擊右上HOME回首頁
+				if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;進入戰鬥的編隊頁面 
 				{
 					C_Click(1227,71)
-					sleep 2000
+					sleep 1000
 				}
-				else if (DwmCheckcolor(944, 540, 16250871) and DwmCheckcolor(1047, 531, 16250871))
+				if (Find(x, y, 400, 300, 600, 500, SF_Ship_is_Full))
 				{
-					C_Click(1034,210)
-					sleep 1500
+					C_Click(896,231)
+					sleep 1000
 				}
-				else if (DwmCheckcolor(143, 688, 16777215))
+				if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor)) ;回到首頁
 				{
-					C_Click(58,89)
-					sleep 1500
-				}
-				else if (DwmCheckcolor(12, 200, 16777215)) ;回到首頁 偵測左方稜形白點
-				{
-					StopAnchor := 1 ;不再出擊
 					Break
 				}
 				else
@@ -5389,37 +5369,37 @@ shipsfull(byref StopAnchor)
 		else if shipsfull=整理船䲧
 		{
 			LogShow("船䲧已滿：開始整理。")
-			C_Click(437, 539)
+			C_Click(437, 546)
 			Loop ;等待進入船䲧畫面
 			{
 				sleep 400
 				shipcount++
-				if (shipcount>50)
+				if (shipcount>100)
 				{
 					LogShow("等待進入船䲧的過程中發生錯誤")
 					StopAnchor := 1 ;不再出擊
 					return StopAnchor
 				}
-			} until (DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215))
+			} until Find(x, y, 96, 32, 196, 92, SF_In_Dock)
 			shipcount := VarSetCapacity
-			sleep 1300
+			sleep 1000
 			Loop
 			{
-				if (DwmCheckcolor(830, 700, 16777215) and DwmCheckcolor(599, 710, 16777215))
+				if (Find(x, y, 96, 32, 196, 92, SF_In_Dock))
 				{
 					C_Click(1136, 64) ;開啟篩選
 					Loop
 					{
 						sleep 400
 						shipcount++
-						if (shipcount>50)
+						if (shipcount>100)
 						{
 							LogShow("等待進入篩選清單的過程中發生錯誤")
 							StopAnchor := 1 ;不再出擊
 							return StopAnchor
 						}
-					} until (DwmCheckcolor(71, 125, 16777215) and DwmCheckcolor(112, 259, 16777215) and DwmCheckcolor(13, 25, 16041247))
-					sleep 1300
+					} until Find(x, y, 32, 97, 132, 157, Dock_Sort)
+					sleep 1000
 					shipcount := VarSetCapacity
 					C_Click(502, 129) ;排序 等級
 					C_Click(363, 266) ;索引 全部
@@ -5456,7 +5436,7 @@ shipsfull(byref StopAnchor)
 					if (Camp6)
 						C_Click(356, 457)
 					if (Camp7)
-						C_Click(513, 457)
+						C_Click(666, 457)
 					if (Rarity1)
 						C_Click(513, 529)
 					if (Rarity2)
@@ -5465,19 +5445,19 @@ shipsfull(byref StopAnchor)
 						C_Click(833, 529)
 					if (Rarity4)
 						C_Click(991, 529)
-					if (DwmCheckcolor(821, 702, 16777215)) ;檢查"確定"
+					if (Find(x, y, 32, 97, 132, 157, Dock_Sort)) ;
 					{
-						if ((Rarity1) and DwmCheckcolor(478, 530, 7043468)) or ((Rarity2) and DwmCheckcolor(636, 530, 7043468)) or ((Rarity3) and DwmCheckcolor(792, 527, 7043460))
+						if ((Rarity1) and GdipImageSearch(x, y, "img/Dock_Rarity_02_N.png", 40, 8, 445, 514, 576, 552)) or ((Rarity2) and GdipImageSearch(x, y, "img/Dock_Rarity_03_N.png", 40, 8, 605, 514, 732, 553)) or ((Rarity3) and GdipImageSearch(x, y, "img/Dock_Rarity_04_N.png", 40, 8, 763, 514, 891, 553))
 						{
-							LogShow("排序角色出錯，強制停止")
+							LogShow("篩選腳色過程中出現出錯，強制停止1")
 							Loop
 							{
 								sleep 5000
 							}
 						}
-						if ((Rarity1) and !DwmCheckcolor(480, 532, 4878757)) or ((Rarity2) and !DwmCheckcolor(636, 532, 5403045)) or ((Rarity3) and !DwmCheckcolor(792, 532, 4877733))
+						if ((Rarity1) and !GdipImageSearch(x, y, "img/Dock_Rarity_02_Y.png", 40, 8, 453, 513, 571, 552)) or ((Rarity2) and !GdipImageSearch(x, y, "img/Dock_Rarity_03_Y.png", 40, 8, 608, 514, 731, 552)) or ((Rarity3) and !GdipImageSearch(x, y, "img/Dock_Rarity_04_Y.png", 40, 8, 766, 513, 887, 552))
 						{
-							LogShow("排序角色出錯，強制停止")
+							LogShow("篩選腳色過程中出現出錯，強制停止2")
 							Loop
 							{
 								sleep 5000
@@ -5485,7 +5465,7 @@ shipsfull(byref StopAnchor)
 						}
 						C_Click(796, 702) ;點擊確定
 						sleep 1000
-						if (DwmCheckcolor(280, 397, 16777215) and DwmCheckcolor(1141, 380, 9718090) and DwmCheckcolor(1141, 423, 9718090)) ;如果篩選完畢發現沒有船可以退役
+						if (Find(x, y, 77, 370, 177, 430, Dock_Ship_Empty)) ;如果篩選完畢發現沒有船可以退役
 						{
 							LogShow("篩選後已經無符合條件的船艦，強制停止")
 							StopAnchor := 1
@@ -5508,26 +5488,29 @@ shipsfull(byref StopAnchor)
 			LogShow("排序退役腳色完畢，開始退役。")
 			Loop
 			{
-				if (DwmCheckcolor(1035, 683, 16777215) and DwmCheckcolor(825, 684, 16777215) and DwmCheckcolor(156, 84, 16777215))
-					C_Click(1014,677)  ;退役確定 左下角可獲得金幣...
+				if (Find(x, y, 247, 84, 347, 144, Dock_Inform))
+					C_Click(1014,677)  ;退役確定 
 				else if (DwmCheckcolor(330, 208, 16777215) and DwmCheckcolor(523, 546, 16777215) and DwmCheckcolor(811, 555, 16777215)) ;如果有角色等級不為1(確定)
 					C_Click(787,546)  
-				else if (DwmCheckcolor(576, 261, 16777215) and DwmCheckcolor(598, 273, 16777215) and DwmCheckcolor(675, 260, 16777215) and DwmCheckcolor(712, 256, 16777215) and DwmCheckcolor(634, 267, 16777215)) ;獲得道具(一行)
-					C_Click(636, 91)
-				else if (DwmCheckcolor(211, 175, 16777215) and DwmCheckcolor(255, 195, 16777215) and DwmCheckcolor(294, 190, 16777215) and  DwmCheckcolor(732, 578, 16777215) and DwmCheckcolor(978, 582, 16777215)) ;拆裝(確定)
+				else if (Find(x, y, 500, 430, 765, 650, Touch_to_Contunue)) ;獲得道具(一行)
+					C_Click(x, y)
+				else if (Find(x, y, 500, 150, 700, 400, Dock_Get_Items_2))
+					C_Click(x, y)
+				else if (Find(x, y, 909, 551, 1009, 611, Dock_UnEqu_Confirm)) ;拆裝(確定)
 					C_Click(979, 580)
-				else if (DwmCheckcolor(212, 154, 16777215) and DwmCheckcolor(451, 605, 16777215) and DwmCheckcolor(506, 608, 16777215) and DwmCheckcolor(827, 606, 16777215)) ;將獲得以下材料
+				else if (Find(x, y, 532, 151, 632, 211, Dock_Get_Items)) ;將獲得以下材料
 					C_Click(805, 605)
-				else if (DwmCheckcolor(102, 408, 16777215) and DwmCheckcolor(184, 403, 16777215) and DwmCheckcolor(386, 405, 16777215)) ;暫無符合條件的艦船
+				else if (Find(x, y, 77, 370, 177, 430, Dock_Ship_Empty)) ;暫無符合條件的艦船
 				{
+					sleep 300
 					C_Click(64, 91)
 					Logshow("退役結束")
 					break
 				}
-				else if (!(DwmCheckcolor(266, 403, 16777215) and DwmCheckcolor(1141, 388, 9718090)) and (DwmCheckcolor(879, 709, 16777215) and DwmCheckcolor(1101, 706, 10856101))) ;第一位還沒被退役
+				else if (Find(x, y, 96, 32, 196, 92, SF_In_Dock) and !Find(x, y, 77, 370, 177, 430, Dock_Ship_Empty)) ;第一位還沒被退役
 				{
 					DockCount++
-					if (DockCount>30 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
+					if (DockCount>30 and Find(x, y, 96, 32, 196, 92, SF_In_Dock)) ;偵測"船塢"
 					{
 						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
 						DockCount := VarSetCapacity
@@ -5561,7 +5544,7 @@ shipsfull(byref StopAnchor)
 				Try
 				{
 					IsDockCount++
-					if (IsDockCount>300 and DwmCheckcolor(154, 60, 15201279) and DwmCheckcolor(173, 70, 14085119)) ;偵測"船塢"
+					if (IsDockCount>300 and Find(x, y, 96, 32, 196, 92, SF_In_Dock)) ;偵測"船塢"
 					{
 						C_Click(64, 91) ;避免出現一些問題(例如船未上鎖)，強制結束退役
 						IsDockCount := VarSetCapacity
