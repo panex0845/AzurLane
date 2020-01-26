@@ -1611,7 +1611,7 @@ if (Techacademy_Done) ;軍部研究室OK
 		{
 			C_Click(633, 281)
 		}
-		if (Find(x, y, 519, 395, 786, 689, Touch_to_Contunue)) ;點擊繼續
+		if (Find(x, y, 450, 130, 830, 330, Touch_to_Contunue)) ;點擊繼續
 		{
 			C_Click(x, y)
 		}		
@@ -2077,7 +2077,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					Break
 				}
-				if (Find(n, m, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
+				if (Find(n, m, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具
 				{
 					sleep 1200
 					C_Click(276, 619)
@@ -4029,7 +4029,7 @@ if (MissionCheck) ;如果有任務獎勵
         {
             C_Click(1136, 187)
         }
-		else if (Find(x, y, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
+		else if (Find(x, y, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具
 		{
 			C_Click(636, 91)
 		}
@@ -5551,7 +5551,7 @@ shipsfull(byref StopAnchor)
 					C_Click(1014,677)  ;退役確定 
 				else if (DwmCheckcolor(330, 208, 16777215) and DwmCheckcolor(523, 546, 16777215) and DwmCheckcolor(811, 555, 16777215)) ;如果有角色等級不為1(確定)
 					C_Click(787,546)  
-				else if (Find(x, y, 500, 430, 765, 650, Touch_to_Contunue)) ;獲得道具(一行)
+				else if (Find(x, y, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具(一行)
 					C_Click(x, y)
 				else if (Find(x, y, 500, 150, 700, 400, Dock_Get_Items_2))
 					C_Click(x, y)
