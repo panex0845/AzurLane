@@ -1,6 +1,6 @@
 ﻿
 ;////////雷電模擬器///////////
-LdPlayerLogo := "|<>*104$52.zzzzzzzzy00Tzzzzzs01zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU07zzzU0600Tzzy00Tzzzzzzzzzzzzzzzzzzzzzzzzzs01zzzzzzU07zzzzzzzzzzzzzzs"
+LdPlayerLogo := "|<>*104$16.zzy00M01zzzzzzzzU0600Tzzzzzzzs01U07zzs"
 
 ;///////一些按鈕/////////
 
@@ -8,7 +8,7 @@ MainPage_Btn_WeighAnchor := "|<>*198$51.77gtXnCCAwxrgwxttbbyzrDrDCQvqytzttnnwbrD
 
 BTN_Cancel := "|<>*204$71.000Tzzzw6C31kwDzbzzsAA63VsTy7zzkk8AT3kzs7zzvMEFy7Vbk7zzykUbwD3zkTz3tn1Ls07T1zz1oS37kwCy3zy38003VsRw7zy2ETs73ktsDzw8UzsS7Vnkzzyn1zkwD3r1zzz63zVs07a3zzyA003kwDADzzws007VsS8TzzlkTwD3ky0zzz3UzsS7Vw3zzyD1zkwD0M7zzsS3z1s03sTzz0w00200DkTzzVsDy400T0Tzz3kTwA0kw0Tzy3UzsMDVsUDzw71zktz3XUDzsC3s1zy7D0TzkQ7w3"
 
-
+global MainPage_Btn_WeighAnchor
 
 ;//////////學院//////////////
 
@@ -85,6 +85,8 @@ MissionPage_List_Empty := "|<>*140$67.zzzzzzzzzzzk7syTk7s0ySNzwSDtlzXzCAzyD7wwzl
 MainPage_Btn_Formation := "|<>*133$71.000SBtvXb00Q0QUMLbCCQ00k1r0ASSsts008DS0ANnlb000KxvU0bj6Q0P0Prj08SsNU3b0jTyk021Y0CSkxvvk00C01tnnrzjM00807bjTSyxs3k03SQxxzvroDS0BtvrrjjSkxs1rbjSTyxz3riDSyxvvvriDSyRtvrbzjTsxzuLjjSyyxvnrjgSSxtzvrzjTyxvvrjzjSyRvvnbjSSyxzsrzjLyxvvvrjhzyxXvrbjjTytzvr7jSyzxzvXzzSQxtvvrzbTyxtnrzjTzwAzvrr5TzxxzkLzjTwtzvr"
 
 SkipBtn :="|<>*136$43.zzzzzzzy3sQCC0Q0QA63040C671U26327Uk11zU7kMQU3k3sACM0s0w60D0A0S307w6471U27331Ukz01VUkMTk1ks8ADw1sS6C7zzzzzzzw"
+
+global Touch_to_Contunue
 
 ;//////軍事委託//////////
 
@@ -191,7 +193,7 @@ Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U0003000000
 Battle_Map := "|<>*187$39.zztzzzzzyDzzzzzVzzzzzkDzzzzs1zzzzy0Dzzzz00Dzzzk007zzw0007zy00007zU0000Ts00000z000003y00000Ds00000zk00007z00zw0Tw07zw1zs0zzsDzU7zzlzz0zzz7zw7zzwzzkzzzrzzbzzzzzyzzzw"
 Weigh_Anchor := "|<>*141$57.zzUzzU040zkw7Xw00U7y7UsDk0AMzkw71y0131y7UsDk01wDkw71y0103y7UsDk080Tkw71y0333y000DU000zk003w00k7y000Tl2A0zzw7zy0103zzUzzk08wTVw7ky0003wDUw7k000TVw7UzzkTzwDUw7s000zVw7Uz0007wDUw7zz3zzVw7Uw0001wDUw7U000DU000zzkTzw000Dzs3zzU003zz0zzzzzzzzzzzw"
 
-global Battle_Victory, Battle_Touch_to_Continue, Battle_End
+global Battle_Victory, Battle_Touch_to_Continue, Battle_End, Formation_Tank
 
 ;///////////tomap//////////
 
@@ -213,3 +215,24 @@ Fleet_Start := "|<>*217$63.zUz0zzUT0Tzy3sTzs7w3zzkT7Xz1zkTzy7lsDkTy3rzsk00wDzsQ8
 Fleet_Done := "|<>*154$10.TnzjDsTVzDzzzzDsT1w7kT1w7kT1w7kT1w7kT1y7xy"
 
 global Fleet_Select, Fleet_Select_Party2, Fleet_Start, Fleet_Done
+
+
+;/////////shipsfull//////////船塢已滿
+
+SF_Ship_is_Full := "|<>*170$71.zzzzzzzzzzzzyTzztzbzzzzztz0znyDzU01zny1zbU1y001y0RvzD01zzznwwvrySTnzzzbvtrjwwzbxzzDonDT09zDvzyThaSznk0TrzwzN9wzbbzzjztyy3sTDDzz003k0jzyS00y007U1zzww01wzzDrn07ttzzvzzzda0DmE0DrzzzPByTUU0TjzzwmPww7zgzTzyNortkwd9yzzwntjnzvPHxzznbnTbzarbtzzbTa0DzBjDk00AsQ0Twvkzk00xtvwzzzVzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+SF_In_Dock := "|<>*143$53.sDzzz3w7zkT03y600C0607sA00Q0A0DkM00sQMMT00zVk8kky0003UFVVw00070271w600S00C1sADzwC0y3kM00003zzUk0000zzz1U000100y33zz3W01w60061403sA00A28S7kQ00M0EwDUkEEl0VsTUUUVXl3kw01137W7Vs2GG4D4D3kQYY8s807bl90HkE0TzqG0jVU1zzzy3U"
+
+Dock_Sort := "|<>*176$64.sDsMDzzz1zTUzVUzzzw7sy3y62TXzkT1s3kM0y1z1k3U31U1sDzz7y0A63zUzzwTsDsMDy3zz0zUzVUzsA001y3y63zUzzU7sDsM9y3wC3zUb1U3sDk0zy0U60DUzkTzk7kMDy3zVzw0zVUzsDy7sk3y63zUzsT10DsMDy200060zVUbsDw7kO3y62DUzkS3sDkM0S3z1szUs1U3sTw7by3y63zVzkTzsDsMDy7z1zzUzVUzkzw7zs3y63z3zkTzUDsMDwTk1zy"
+Dock_Ship_Empty := "|<>*164$65.lV67zzU0007U04Dny1103z248D1w2667y00E03k4AADw00VUzU8MMTsEV31yMEkkzk0263zkVVV7U2AQ7zV3307y60sDU00008003kTy4AADzsTDUzw8MMTzkwz1zsEkkzz3zw7zkVVVzwDzkTzV332Ts000Tz2660TkTz0zy44A0TUzy3z00000z1zw7zzzzzzy000DzvjjVzw3zkTzb77UzsDzUzyCD3UzkTz1zsQC7UzUzy3z0sQ70z0007y1kwD1y3zsDw7VsS3"
+
+Dock_Inform := "|<>*160$60.zzzzzzzzzzXlyS0C07U1XkyS0A07U1XkSSDwTbXtXkCS7wTbXlXn2S1wTbU1XnUS1wTbU3XnsSDwTbX3XnwSDw07XVrvyTTy0DrtzzzzzzzzzzU"
+
+Dock_UnEqu_Confirm := "|<>*184$70.kT000zzXy3w73sky7zs0000AD23tzz1zzz0kw83jzs7zzwC7lX7zzUTzz1sTwAPzy1zzsDVzll3zw0000SCS007zzzkDzs0MsTzzzz0zz113Vzzzzw3zwAAC7zzzzkDzkk0sFzzy10wT31003zzsA3UwAA63zzzVs01kkksTzzy7Uzz333VzzzkS3zwAAC6Tzz3sTzskkM0zzw7VzzX3107zzkC7zwAAC7zzy40Tzk0ksTzzss0zz133Vnzz3k000AQC67zwTU00Ezk00DzXz001jz1zzzwzz006"
+
+Dock_Get_Items := "|<>*164$46.yTnzzyQyNyDyNsltbk1w800aSD7kyQyNXQzbn3tYQbwCATaSsT4k061sXwm7Dzbkzzc03yS6TwNlzt1tzlU0zaTby6030E03mNly900C9U0NbzblaTzaQyTiE06NttztU0tbnbzj7baTCTwy0wtztzXs1nbw7sM30zTlzznza"
+
+Dock_Get_Items_2 :="|<>*191$71.k71sSTw1zzz30C3UsTs3zzk20Q000zU700000sD3ty0Dzw3k1kS7VwUTzw663U001nUzzk8Q71zwTz1zs01sCTzkzy20003kM000zs7ly1zUyTy0zkDkS3z1yTs7zUTUM7y3yTUDz0z0kDsDw60zy1z1UTkTw03zw3y3Uw0zw00Ls7za1s1zw00TkDzk3s7zU01zUTzk7kDs3U7z0zzUTUy1zsDy3zz1zDzzzzzyTzzDy"
+
+
+
+global SF_Ship_is_Full, SF_In_Dock, Dock_Sort, Dock_Ship_Empty, Dock_Inform, Dock_UnEqu_Confirm, Dock_Get_Items, Dock_Get_Items_2
