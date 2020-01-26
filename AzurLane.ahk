@@ -663,8 +663,8 @@ Gui, Add, Text, x250 y%TAB_Y% w100 h20 , `%
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
-EmulatorResolution_W := 1318
-EmulatorResolution_H := 758
+EmulatorResolution_W := 1318  ;夜神 1284
+EmulatorResolution_H := 758 ;夜神 754
 Global EmulatorResolution_W, EmulatorResolution_H
 
 IniRead, azur_x, settings.ini, Winposition, azur_x, 0
@@ -1417,7 +1417,7 @@ ResetOperationDone := VarSetCapacity
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := Find(x, y, 1000, 0, 1200, 50, LdPlayerLogo)
+LDplayerCheck := Find(x, y, 1000, 0, 1200, 50, LdPlayerLogo) ; 夜神 LDplayerCheck := 1
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -1979,12 +1979,12 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (yy>660)
 				{
-					Swipe(138,300,148,215)
+					Swipe(238,400,248,315)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2020,12 +2020,12 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (yy>660)
 				{
-					Swipe(138,300,148,215)
+					Swipe(238,400,248,315)
 					break
 				}
 				if (xx>1180 and yy>420)
@@ -2111,7 +2111,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 						random, swipeboss, 1, 2
 						if swipeboss=1
 						{
-							Swipe(138,215,148,300)  ;下
+							Swipe(238,315,248,400)  ;下
 						}
 						else if swipeboss=2
 						{
@@ -2145,23 +2145,35 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					TargetFailed2 := 1
 					TargetFailed3 := 1
 					TargetFailed4 := 1
-					Loop, 20
+					boss := Dwmgetpixel(x, y)
+					C_Click(1035, 715) ;切換隊伍
+					sleep 300
+					if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
 					{
-						boss := Dwmgetpixel(x, y)
-						if (Dwmgetpixel(x, y)=boss)
+					}
+					else 
+					{
+						Loop, 20
 						{
-							C_Click(1035, 715) ;切換隊伍
-							if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
+							if (Dwmgetpixel(x, y)=boss)
 							{
-								Break
+								C_Click(1035, 715) ;切換隊伍
+								if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
+								{
+									Break
+								}
+								sleep 300
+								if (Dwmgetpixel(x, y)!=boss)
+								{
+									break
+								}
 							}
-							sleep 1000
-							if (Dwmgetpixel(x, y)!=boss)
+							else if (Dwmgetpixel(x, y)!=boss)
 							{
 								break
 							}
+							sleep 300
 						}
-						sleep 300
 					}
 					GuiControlGet, AnchorChapter
 					if (AnchorChapter="異色1") ;異色格地圖太大，直接滑動到BOSS可能的出生點
@@ -2391,7 +2403,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2424,7 +2436,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2457,7 +2469,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2490,7 +2502,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2524,7 +2536,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2557,7 +2569,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(138,215,148,300)
+					Swipe(238,315,248,400)
 					break
 				}
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2587,7 +2599,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			yy := y 
 			if (xx<360 and yy<195)
 			{
-				Swipe(138,215,148,300)
+				Swipe(238,315,248,400)
 				return
 			}
 			if (SearchLoopcount>15 and ossaction="能不攻擊就不攻擊")
@@ -5230,18 +5242,14 @@ GetCard()
 Message_Center()
 {
 	Tips := "|<>*181$64.kSC00z0y7AD3kMS1y2000Q001sDs8000l3y7UzkzkzyADsS3zjb7bskzVsDxy007b3y7UzXs00BwDsS3y7Vz1zknVsC067w7z227UzVs80Q000S3y7U01zUz1sDsS7w7y3y7UzVsTkTsDsS3y7Uz1zUzVsDsS007y0y7UzVsTkTsEsS3y7Vz1zV1VsDsS3w7wC67UzVs00Tks8S3y7Vz1z7UVsDl6DwTsS200w63zzzXwMC3Uw000ATzVsC3s001nzy7VwTk00C"
+	Center_Confirm := "|<>*182$70.sDW00Tzk0003Uw8T3zw7zzwC7VUwTzUTzzksS48rzy1zzw7VwlVzzsDzzUyDz64zzUzzw3kvsMUzz4000D37U03zzzw7zw0AC7zzzzkTzkkksTzzzz1zy323VDzzkQ7rsA0A0Tzz0kSDUkk01zzw71kC333VzzzkQ00kAAC7zzz3kTzEkksHzzwD1zz333V7zzUw7zwAAA0Tzy1kTzkkkkTzzs31zz333Vzzz307zw0AC7zzwS000kkksMzzls0033D311zyDk00ATw007zlzk00zzkzzzzTzs02"
 	if (Find(x, y, 571, 537, 671, 597, Tips))
 	{
 		LogShow("每日提示，今日不再顯示！")
 		C_Click(790, 497)
 		C_Click(641, 559)
 	}
-	else if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(414, 225, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215) and !DwmCheckcolor(810, 557, 16777215)) ;中央訊息 按鈕在下方
-	{
-		LogShow("中央訊息，點擊確認！")
-		C_Click(635, 542)
-	}
-	else if (DwmCheckcolor(329, 229, 16777215) and DwmCheckcolor(375, 248, 16777215) and DwmCheckcolor(414, 245, 16777215) and (DwmGetPixel(640, 545)>4300000 and  DwmGetPixel(640, 545)<6500000) and !DwmCheckcolor(858, 548, 16777215) and !DwmCheckcolor(810, 557, 16777215)) ;中央訊息
+	else if (Find(x, y, 580, 500, 695, 600, Center_Confirm)) ;中央訊息 按鈕在下方
 	{
 		LogShow("中央訊息，點擊確認！")
 		C_Click(635, 542)
@@ -6205,6 +6213,7 @@ ColorVariation(Color1, Color2) {
 }
 
 DwmCheckcolor(x, y, color="", Variation=15) {
+	; 夜神 x := x+1, y := y-4
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
@@ -6268,6 +6277,7 @@ LogShow2(logData) {
 }
 
 DwmGetPixel(x, y) {
+	; 夜神 x := x+1, y := y-4
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
