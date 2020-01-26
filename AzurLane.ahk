@@ -578,6 +578,8 @@ Tab_Y += 30
 ;~ Gui, Add, CheckBox, x110 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Coin checked%TechExpend_Coin% , 金幣
 ;~ Gui, Add, CheckBox, x200 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Free checked%TechExpend_Free% , 免費
 ;~ Gui, Add, CheckBox, x290 y%Tab_Y% w80 h20 gTechacademysettings vTechExpend_Other checked%TechExpend_Other% , 其他
+iniread, Tech_NoCoin, settings.ini, TechacademySub, Tech_NoCoin, 0
+Gui, Add, CheckBox, x30 y%Tab_Y% w100 h20 gTechacademysettings vTech_NoCoin checked%Tech_NoCoin% , 不使用金幣
 
 Gui, Tab, 任　務
 iniread, MissionSub, settings.ini, MissionSub, MissionSub
@@ -1080,6 +1082,7 @@ Guicontrolget, TechTarget_04 ;艦裝解析
 Guicontrolget, TechTarget_05 ;研究委託
 Guicontrolget, TechTarget_06 ;試驗品募集
 Guicontrolget, TechTarget_07 ;基礎研究
+Guicontrolget, Tech_NoCoin
 Iniwrite, %TechacademySub%, settings.ini, TechacademySub, TechacademySub
 Iniwrite, %TechTarget_01%, settings.ini, TechacademySub, TechTarget_01
 Iniwrite, %TechTarget_02%, settings.ini, TechacademySub, TechTarget_02
@@ -1088,6 +1091,7 @@ Iniwrite, %TechTarget_04%, settings.ini, TechacademySub, TechTarget_04
 Iniwrite, %TechTarget_05%, settings.ini, TechacademySub, TechTarget_05
 Iniwrite, %TechTarget_06%, settings.ini, TechacademySub, TechTarget_06
 Iniwrite, %TechTarget_07%, settings.ini, TechacademySub, TechTarget_07
+Iniwrite, %Tech_NoCoin%, settings.ini, TechacademySub, Tech_NoCoin
 Critical, off
 return
 
@@ -1641,6 +1645,31 @@ if (Techacademy_Done) ;軍部研究室OK
 				sleep 1000
 				C_Click(885, 252)
 			}
+			if (Tech_NoCoin and Tech_NoCoincount<5)
+			{
+				sleep 1500
+				if (Find(x, y, 800, 420, 1070, 510, Tech_NoCoinIco))
+				{
+					LogShow("不使用金幣，嘗試切換")
+					Tech_NoCoincount++
+					C_Click(698, 705)
+					sleep 1000
+					C_Click(888, 248)
+				}
+				else
+				{
+					LogShow("開始研發")
+					C_Click(507, 617)
+					sleep 1000
+					if (Find(x, y, 429, 330, 529, 390, TechPage_Is_Teching))
+					{
+						LogShow("已經有研發科目，嘗試切換項目")
+						C_Click(698, 705)
+						sleep 1000
+						C_Click(888, 248)
+					}
+				}
+			}
 			else
 			{
 				LogShow("開始研發")
@@ -1669,6 +1698,7 @@ if (Techacademy_Done) ;軍部研究室OK
 		if (Find(x, y, 422, 587, 522, 647, TechPage_Stop_Teching)) ;已經開始研發(停止研發按鈕)
 		{
 			LogShow("離開軍部科研室")
+			Tech_NoCoincount := VarSetCapacity
 			C_Click(714, 712)
 			sleep 500
 			C_Click(1227, 71)
