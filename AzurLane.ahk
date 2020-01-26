@@ -587,19 +587,18 @@ Gui, Tab, 其　他
 Tab_Y := 90
 Gui, Add, button, x30 y%TAB_Y% w120 h20 vdebug gDebug2, 測試取色
 Gui, Add, button, x180 y%TAB_Y% w120 h20 gForumSub, GitHub
+Gui, Add, button, x330 y%TAB_Y% w120 h20 gDiscordSub, Discord
 Tab_Y += 30
 Gui, Add, button, x30 y%TAB_Y% w120 h20 gstartemulatorsub, 啟動模擬器
-Gui, Add, button, x180 y%TAB_Y% w120 h20 gDiscordSub, Discord
-Tab_Y += 30
+Gui, Add, button, x180 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
+Gui, Add, button, x330 y%TAB_Y% w120 h20 gOperationSub, 執行演習
 ;~ Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
 ;~ Tab_Y += 30
-Gui, Add, button, x30 y%TAB_Y% w120 h20 gDailyGoalSub2, 執行每日任務
-Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate, 檢查更新
-iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
-Gui, Add, Checkbox, x320 y%TAB_Y% w125 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查
+;~ Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate, 檢查更新
 Tab_Y += 30
-Gui, Add, button, x30 y%TAB_Y% w120 h20 gOperationSub, 執行演習
-Gui, Add, button, x180 y%TAB_Y% w120 h20 gAutopuzzle, 自動拼圖
+iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
+Gui, Add, Checkbox, x30 y%TAB_Y% w160 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查更新
+;~ Gui, Add, button, x180 y%TAB_Y% w120 h20 gAutopuzzle, 自動拼圖
 Tab_Y += 30
 iniread, GuiHideX, settings.ini, OtherSub, GuiHideX
 Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
@@ -637,9 +636,22 @@ Iniread, SendFromAHK, settings.ini, OtherSub, SendFromAHK, 1
 Iniread, SendFromADB, settings.ini, OtherSub, SendFromADB, 0
 Gui, Add, Radio,  x110 y%TAB_Y% w120 h20 gOthersettings vSendFromAHK checked%SendFromAHK% , 模擬滑鼠點擊
 Gui, Add, Radio,  x230 y%TAB_Y% w150 h20 gOthersettings vSendFromADB checked%SendFromADB% , ADB發送點擊指令
-Tab_Y += 25
+Tab_Y += 35
+Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 容許誤差：文字
+IniRead, Value_Err0, settings.ini, OtherSub, Value_Err0, 0
+Tab_Y -= 3
+Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gOthersettings vValue_Err0 range0-50 +ToolTip , %Value_Err0%
+Tab_Y += 3
+Gui, Add, Text, x220 y%TAB_Y% w30 h20 vValue_Err0BarUpdate , %Value_Err0BarUpdate% 
+Gui, Add, Text, x250 y%TAB_Y% w100 h20 , `%
 
-
+Gui, Add, Text,  x280 y%TAB_Y%  w50 h20 , 背景
+IniRead, Value_Err1, settings.ini, OtherSub, Value_Err1, 0
+Tab_Y -= 3
+Gui, Add, Slider, x310 y%TAB_Y% w80 h30 gOthersettings vValue_Err1 range0-50 +ToolTip , %Value_Err1%
+Tab_Y += 3
+Gui, Add, Text, x400 y%TAB_Y% w30 h20 vValue_Err1BarUpdate , %Value_Err1BarUpdate% 
+Gui, Add, Text, x430 y%TAB_Y% w100 h20 , `%
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
@@ -1049,6 +1061,7 @@ Global DormFood
 Critical, off
 return
 
+
 Techacademysettings: ;科研設定
 Critical
 Guicontrolget, TechacademySub
@@ -1092,6 +1105,10 @@ Guicontrolget, AHKMode
 Guicontrolget, CloneWindowforDWM
 Guicontrolget, SendFromAHK
 Guicontrolget, SendFromADB
+Guicontrolget, Value_Err0
+Guicontrolget, Value_Err0BarUpdate
+Guicontrolget, Value_Err1
+Guicontrolget, Value_Err1BarUpdate
 Iniwrite, %CheckUpdate%, settings.ini, OtherSub, CheckUpdate
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
@@ -1105,7 +1122,14 @@ Iniwrite, %AHKMode%, settings.ini, OtherSub, AHKMode
 Iniwrite, %CloneWindowforDWM%, settings.ini, OtherSub, CloneWindowforDWM
 Iniwrite, %SendFromAHK%, settings.ini, OtherSub, SendFromAHK
 Iniwrite, %SendFromADB%, settings.ini, OtherSub, SendFromADB
-Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB
+Iniwrite, %Value_Err0%, settings.ini, OtherSub, Value_Err0
+Iniwrite, %Value_Err1%, settings.ini, OtherSub, Value_Err1
+Err0_V := Round(Value_Err0/100, 2)
+Err1_V := Round(Value_Err1/100, 2)
+Guicontrol, ,Value_Err0BarUpdate, %Err0_V%
+Guicontrol, ,Value_Err1BarUpdate, %Err1_V%
+
+Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB, Err0_V, Err1_V
 Critical, off
 return
 
@@ -3527,13 +3551,6 @@ Try
 }
 return
 
-BtnCheck:
-    Withdraw := DwmCheckcolor(772, 706, 12996946)  ; 撤退
-    Offensive := DwmCheckcolor(1234, 703, 16239426) ;Checkcolor(1234, 703, 4294429506)
-    WeighAnchor1 := DwmCheckcolor(122, 72, 14085119)  ;Checkcolor(748, 716, 4289054703) ;左上角 出 
-    WeighAnchor2 := DwmCheckcolor(160, 73, 14085119) ;Checkcolor(942, 680, 4286291604) ;左上角 擊
-return 
-
 OperationSub:
 LogShow("開始演習。")
 Loop
@@ -3681,33 +3698,25 @@ Allowance = %AllowanceValue%
 Global UniqueID, Allowance
 Loop
 {
-	AutoLoginIn()
-	if (DwmCheckcolor(1259, 695, 16777215) and DwmCheckcolor(1240, 700, 22957) and DwmCheckcolor(13, 25, 16041247))
+	if (Find(x, y, 1197, 704, 1297, 764, CRIWare))
 	{
 		LogShow("位於遊戲首頁，自動登入")
 		sleep 5000
 		C_Click(642, 420)
 		sleep 5000
 	}
-	if (DwmCheckcolor(144, 93, 16777215) and DwmCheckcolor(183, 93, 16777215) and DwmCheckcolor(1222, 152, 16241474) and DwmCheckcolor(13, 25, 16041247))
-	{
-		LogShow("出現系統公告，不再顯示")
-		if !(DwmCheckcolor(212, 67, 2171953))
-		{
-			C_Click(994, 110)
-		}
-		C_Click(1193, 103)
-	}
 	if (DwmCheckcolor(296, 210, 16777215) and DwmCheckcolor(453, 242, 16777215) and DwmCheckcolor(789, 533, 15176225)) ;更新提示
 	{
 		LogShow("開始自動更新")
 		C_Click(786, 534)
 	}
-	if (DwmCheckcolor(894, 422, 16777215) and DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(998, 63, 16729459))
+	if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 	{
-		LogShow("LoginBreak")
+		LogShow("自動登入完畢。")
 		break
 	}
+	AutoLoginIn()
+	SystemNotify()
 	GetItem()
 	CloseEventList()
 	sleep 1000
@@ -6289,7 +6298,7 @@ AutoLoginIn() ;預設登入Google帳號
 {
 	if (AutoLogin)
 	{
-		If (DwmCheckcolor(472, 473, 10075364) and DwmCheckcolor(505, 274, 9342606) and DwmCheckcolor(740, 510, 2129103)) ;斷線的登入頁面(密碼登入)
+		If (Find(x, y, 589, 435, 689, 495, Login_In)) ;斷線的登入頁面(密碼登入)
 		{
 			LogShow("遊戲斷線，開始重登")
 			C_Click(777, 254) ;快速登入
@@ -6297,35 +6306,33 @@ AutoLoginIn() ;預設登入Google帳號
 			Loop
 			{
 				sleep 500
-				If (DwmCheckcolor(472, 473, 10075364) and DwmCheckcolor(505, 274, 9342606) and DwmCheckcolor(740, 510, 2129103)) ;斷線的登入頁面(密碼登入)
+				If (Find(x, y, 589, 435, 689, 495, Login_In)) ;斷線的登入頁面(密碼登入)
 				{
 					C_Click(777, 254) ;快速登入
 					sleep 500
 				}
-				else if (DwmCheckcolor(557, 580, 1668852) and DwmCheckcolor(721, 575, 14502713)) ;FB or Google
+				else if (Find(x, y, 658, 555, 758, 615, Login_Google)) ;FB or Google
 				{
 					C_Click(704, 586) ;GOOGLE登入
 					sleep 500
 				}
-				else if (DwmCheckcolor(338, 186, 16777215) and DwmCheckcolor(649, 297, 2105636) and DwmCheckcolor(683, 292, 2105636)) ;選擇帳戶
+				else if (Find(x, y, 554, 270, 654, 330, Select_Account)) ;選擇帳戶
 				{
 					C_Click(442, 455) ;第一個帳戶
-					sleep 500
+					sleep 1000
 				}
-				else if (DwmCheckcolor(1220, 705, 16777215) and DwmCheckcolor(1240, 700, 22957)) ;位於首頁
+				else if (Find(x, y, 1197, 704, 1297, 764, CRIWare)) ;位於首頁
 				{
 					C_Click(587, 377)
 					sleep 500
 				}
-				else if (DwmCheckcolor(12, 200, 16777215) and DwmCheckcolor(577, 63, 3224625) and DwmCheckcolor(997, 64, 16729459))
+				else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
 				{
-					;~ iniwrite, 1, settings.ini, OtherSub, Autostart
-					sleep 3000
-					return
+					break
 				}
 			}
 		}
-		else if (DwmCheckcolor(1262, 704, 16777215) and DwmCheckcolor(1240, 718, 22957) and DwmCheckcolor(145, 103, 1063027)) ;登入伺服器選擇頁面
+		else if (Find(x, y, 1197, 704, 1297, 764, CRIWare)) ;登入伺服器選擇頁面
 		{
 			sleep 3000
 			Random, x, 231, 1051
@@ -6381,12 +6388,12 @@ VC(Array){
 	return DwmCheckColor(Array[1], Array[2], Array[3], Array[4])	
 }
 
-Find(byref x, byref y, x1, y1, x2, y2, text, err0 := 0, err1 := 0) {
+Find(byref x, byref y, x1, y1, x2, y2, text) {
 	WinGetPos, wx, wy, ww, wh, %title%
 	id := WinExist(title)
 	BindWindow(id)
 	xx1 := wx+x1, yy1 := wy+y1, xx2 := wx+x2, yy2 := wy+y2
-	if (ok := FindText(xx1, yy1, xx2, yy2 , err0, err1, text))	{
+	if (ok := FindText(xx1, yy1, xx2, yy2 , Err0_V, Err1_V, text))	{
 		X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
 		x := x-wx, y:=y-wy
 		return 1

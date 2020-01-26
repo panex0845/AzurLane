@@ -233,6 +233,17 @@ Dock_Get_Items := "|<>*164$46.yTnzzyQyNyDyNsltbk1w800aSD7kyQyNXQzbn3tYQbwCATaSsT
 
 Dock_Get_Items_2 :="|<>*191$71.k71sSTw1zzz30C3UsTs3zzk20Q000zU700000sD3ty0Dzw3k1kS7VwUTzw663U001nUzzk8Q71zwTz1zs01sCTzkzy20003kM000zs7ly1zUyTy0zkDkS3z1yTs7zUTUM7y3yTUDz0z0kDsDw60zy1z1UTkTw03zw3y3Uw0zw00Ls7za1s1zw00TkDzk3s7zU01zUTzk7kDs3U7z0zzUTUy1zsDy3zz1zDzzzzzyTzzDy"
 
-
-
 global SF_Ship_is_Full, SF_In_Dock, Dock_Sort, Dock_Ship_Empty, Dock_Inform, Dock_UnEqu_Confirm, Dock_Get_Items, Dock_Get_Items_2
+
+
+;////////AutoLogin/////////
+
+Login_In := "|<>*215$46.zzTzzzzy08lzzzzs0WDzlzzzX1jz3zzACATy7zsFsVzwTzsDkTzszzk01zzVzy003zy7zVzy7zsDwDzwDz0zl008zwFzw00zzl3znzXzyCDzDyDzssTwzszz7lzk03zsTXz00DzXy7zDnzwTwDwSDz1zsTlszsDzk00033zzU000CTzzM"
+
+Login_Google := "|<>*185$35.zs00Dzz0007zw000Dzk000zz01w3zy0Dy7zs1zzTzk7zzzz0Tzzzy0zzzzw3zzzzk7zzzzUTy0030zw0061zs00A3zk00M7zU00k7z001kDzzs7UDzzUD0Tzz0T0Tzw1y0Tzk3y0Dy0Dw07k0T"
+
+Select_Account := "|<>*151$68.T73i3U71lnXXtkvUs1kQQssSTyzy0Q77CC37zjzUzxzzzU1k3UEDzTzzs0Q7s73zbzzy071y3k700Q001zzzs1k07000TyTy0Q3zzyzUy00071zzzjs1UQ01kDzznyDzzw0QU1k03XzzzU7tzzzkszzzs1yzzzwC0M700zDzzz3U61k0zUD0s0tzzzwDk1kC0CTzzz3w0Q703bzzzk70zzzUs1UM01kDzzsC1w7U0Q3zzy3Xy1y0700Q00sz07s1k07U0D700Q0QDzzzDy000073zzzs"
+
+CRIWare := "|<>*173$50.7D14W8QQnnstAaD75srCHNXN0sAnYqQqEC3AthbBY30zCPFHlksDXbIIsMC3ssrBD43UqCBnvF0TAnXAqoE3nAsn8hb08F40W89kU"
+
+global Login_In, Login_Google, Select_Account, CRIWare
