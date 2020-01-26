@@ -4146,7 +4146,7 @@ if (AcademyDone<1)
 				fullycoin := 1
 			}
 		}
-		if (Find(x, y, 1021, 202, 1121, 262, text) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
+		if (Find(x, y, 1021, 202, 1121, 262, AcademyPage_Shop) and AcademyShop and AcademyShopDone<1) ;商店出現 "！" DwmCheckcolor(1132, 213, 16774127)
 		{
 			LogShow("商店街發大財")
 			C_Click(1113, 210)
