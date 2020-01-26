@@ -2017,7 +2017,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(238,400,248,315)
 					break
 				}
-				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
+				if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2027,7 +2027,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 2000
 				}
-				if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
+				if (Find(n, m, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
 					Break
 				}
@@ -2063,7 +2063,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					Swipe(750,300,650,300)
 					break
 				}
-				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
+				if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
@@ -2073,11 +2073,11 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					}
 					sleep 2000
 				}
-				if (Find(x, y, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
+				if (Find(n, m, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
 					Break
 				}
-				if (Find(x, y, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
+				if (Find(n, m, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
 				{
 					sleep 1200
 					C_Click(276, 619)
@@ -2121,10 +2121,10 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					xx := x
 					yy := y
-					if (Find(x, y, 750, 682, 850, 742, Battle_Map) and xx>147 and yy>200 and xx<MapX2 and yy<MapY2) 
+					if (Find(n, m, 750, 682, 850, 742, Battle_Map) and xx>147 and yy>200 and xx<MapX2 and yy<MapY2) 
 					{
 						C_Click(xx, yy)
-						if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))  ;16250871
+						if (Find(n, m, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))  ;16250871
 						{
 							BossFailed++
 							LogShow("哎呀哎呀，前往BOSS的路徑被擋住了！")
@@ -2136,7 +2136,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 							break
 						}
 					}
-					else if (Find(x, y, 750, 682, 850, 742, Battle_Map) and xx<290 and yy<195) 
+					else if (Find(n, m, 750, 682, 850, 742, Battle_Map) and xx<290 and yy<195) 
 					{
 						random, swipeboss, 1, 2
 						if swipeboss=1
