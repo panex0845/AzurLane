@@ -2077,7 +2077,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					Break
 				}
-				if (DwmCheckcolor(576, 258, 16777215) and DwmCheckcolor(712, 258, 16777215)) ;獲得道具
+				if (Find(x, y, 580, 400, 700, 720, Touch_to_Contunue)) ;獲得道具
 				{
 					sleep 1200
 					C_Click(276, 619)
@@ -4232,13 +4232,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊裝備箱
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Item_Equ_Box1Coin++
 								Random, xx, 423, 558
@@ -4263,13 +4263,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								AtkCoin++
 								Random, xx, 423, 558
@@ -4293,13 +4293,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								DefCoin++
 								Random, xx, 423, 558
@@ -4323,13 +4323,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊課本
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								SupCoin++
 								Random, xx, 423, 558
@@ -4353,13 +4353,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊魔方
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								CubeCoin++
 								Random, xx, 423, 558
@@ -4383,13 +4383,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Part_AircraftCoin++
 								Random, xx, 423, 558
@@ -4413,13 +4413,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Part_CannonCoin++
 								Random, xx, 423, 558
@@ -4443,13 +4443,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Part_torpedoCoin++
 								Random, xx, 423, 558
@@ -4473,13 +4473,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Part_Anti_AircraftCoin++
 								Random, xx, 423, 558
@@ -4509,9 +4509,9 @@ if (AcademyDone<1)
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
-								Part_Anti_AircraftCoin++
+								Part_CommonCoin++
 								Random, xx, 423, 558
 								Random, yy, 543, 569
 								C_Click(xx,yy) ;點擊取消
@@ -4533,13 +4533,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Item_WaterCoin++
 								Random, xx, 423, 558
@@ -4563,13 +4563,13 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (DwmCheckcolor(331, 210, 16777215) or DwmCheckcolor(330, 230, 16777215)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
 							C_Click(xx,yy) ;隨機點擊"兌換"鈕
 							sleep 4000
-							if (DwmCheckcolor(331, 210, 16777215) and DwmCheckcolor(414, 225, 16777215)) ;如果金幣不足
+							if (Find(x, y, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
 							{
 								Item_TempuraCoin++
 								Random, xx, 423, 558
