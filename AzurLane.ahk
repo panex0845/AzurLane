@@ -1614,7 +1614,7 @@ if (Techacademy_Done) ;軍部研究室OK
 		if (Find(x, y, 450, 130, 830, 330, Touch_to_Contunue)) ;點擊繼續
 		{
 			C_Click(x, y)
-		}		
+		}
 		if (Find(x, y, 432, 588, 532, 648, TechPage_StartTech)) ;開始研發
 		{
 			for k, v in 科研目標
@@ -1684,7 +1684,7 @@ if (Techacademy_Done) ;軍部研究室OK
 				}
 			}
 		}
-		if (DwmCheckcolor(438, 618, 9742022) and DwmCheckcolor(579, 618, 9740998) and DwmCheckcolor(532, 618, 13552598)) ;缺少研發道具
+		if (DwmCheckcolor(438, 618, 9742022) and DwmCheckcolor(579, 618, 9740998) and DwmCheckcolor(532, 618, 13552598))  or (DwmCheckcolor(438, 618, 8692422) and DwmCheckcolor(579, 618, 8691398) and DwmCheckcolor(532, 618, 13028302))  ;缺少研發道具
 		{
 			LogShow("缺少研究道具")
 			C_Click(657, 713)
