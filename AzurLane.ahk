@@ -595,26 +595,25 @@ Gui, Add, button, x330 y%TAB_Y% w120 h20 gOperationSub, 執行演習
 ;~ Gui, Add, button, x30 y%TAB_Y% w120 h20 gAdjustGetPixelMode, 調整取色方式
 ;~ Tab_Y += 30
 ;~ Gui, Add, button, x180 y%TAB_Y% w120 h20 gIsUpdate, 檢查更新
+;~ Gui, Add, button, x180 y%TAB_Y% w120 h20 gAutopuzzle, 自動拼圖
 Tab_Y += 30
 iniread, CheckUpdate, settings.ini, OtherSub, CheckUpdate, 0
 Gui, Add, Checkbox, x30 y%TAB_Y% w160 h20 gOthersettings vCheckUpdate checked%CheckUpdate% , 啟動時自動檢查更新
-;~ Gui, Add, button, x180 y%TAB_Y% w120 h20 gAutopuzzle, 自動拼圖
-Tab_Y += 30
 iniread, GuiHideX, settings.ini, OtherSub, GuiHideX
-Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
+Gui, Add, CheckBox, x240 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiHideX% , 按X隱藏本視窗，而非關閉
+
 Tab_Y += 30
 iniread, EmulatorCrushCheck, settings.ini, OtherSub, EmulatorCrushCheck
 Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vEmulatorCrushCheck checked%EmulatorCrushCheck% , 自動檢查模擬器是否當機
-Tab_Y += 30
 iniread, AutoLogin, settings.ini, OtherSub, AutoLogin
-Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vAutoLogin checked%AutoLogin% , 斷線自動重登(Google帳號)
+Gui, Add, CheckBox, x240 y%TAB_Y% w200 h20 gOthersettings vAutoLogin checked%AutoLogin% , 斷線自動重登(Google帳號)
 Tab_Y += 30
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
 Tab_Y -= 1
 Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
 Gui Add, Button, x255 y%TAB_Y% w120 h21 gHexadecimalSub , 色票查詢工具
 Tab_Y += 30
-iniread, DebugMode, settings.ini, OtherSub, DebugMode
+iniread, DebugMode, settings.ini, OtherSub, DebugMode, 0
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , DebugMode
 Tab_Y += 32
 Iniread, DwmMode, settings.ini, OtherSub, DwmMode, 1
@@ -652,6 +651,15 @@ Gui, Add, Slider, x310 y%TAB_Y% w80 h30 gOthersettings vValue_Err1 range0-50 +To
 Tab_Y += 3
 Gui, Add, Text, x400 y%TAB_Y% w30 h20 vValue_Err1BarUpdate , %Value_Err1BarUpdate% 
 Gui, Add, Text, x430 y%TAB_Y% w100 h20 , `%
+Tab_Y += 30
+Gui, Add, Text,  x105 y%TAB_Y%  w40 h20 , 圖片
+IniRead, Value_Pic, settings.ini, OtherSub, Value_Pic, 0
+Tab_Y -= 3
+Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gOthersettings vValue_Pic range0-50 +ToolTip , %Value_Pic%
+Tab_Y += 3
+Gui, Add, Text, x220 y%TAB_Y% w30 h20 vValue_PicBarUpdate , %Value_PicBarUpdate% 
+Gui, Add, Text, x250 y%TAB_Y% w100 h20 , `%
+
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
@@ -1109,6 +1117,8 @@ Guicontrolget, Value_Err0
 Guicontrolget, Value_Err0BarUpdate
 Guicontrolget, Value_Err1
 Guicontrolget, Value_Err1BarUpdate
+Guicontrolget, Value_Pic
+Guicontrolget, Value_PicBarUpdate
 Iniwrite, %CheckUpdate%, settings.ini, OtherSub, CheckUpdate
 Iniwrite, %GuiHideX%, settings.ini, OtherSub, GuiHideX
 Iniwrite, %EmulatorCrushCheck%, settings.ini, OtherSub, EmulatorCrushCheck
@@ -1124,12 +1134,14 @@ Iniwrite, %SendFromAHK%, settings.ini, OtherSub, SendFromAHK
 Iniwrite, %SendFromADB%, settings.ini, OtherSub, SendFromADB
 Iniwrite, %Value_Err0%, settings.ini, OtherSub, Value_Err0
 Iniwrite, %Value_Err1%, settings.ini, OtherSub, Value_Err1
-Err0_V := Round(Value_Err0/100, 2)
-Err1_V := Round(Value_Err1/100, 2)
+Iniwrite, %Value_Pic%, settings.ini, OtherSub, Value_Pic
+Err0_V := if (Value_Err0!=0) ? Round(Value_Err0/100, 2) : 0.00
+Err1_V := if (Value_Err1!=0) ? Round(Value_Err1/100, 2) : 0.00
+Value_Pic := if Value_Pic!=0 ? Round(Value_Pic/10, 2) : 0.00
 Guicontrol, ,Value_Err0BarUpdate, %Err0_V%
 Guicontrol, ,Value_Err1BarUpdate, %Err1_V%
-
-Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB, Err0_V, Err1_V
+Guicontrol, ,Value_PicBarUpdate, %Value_Pic%
+Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB, Err0_V, Err1_V, Value_Pic
 Critical, off
 return
 
@@ -6230,7 +6242,10 @@ DwmCheckcolor(x, y, color="", Variation=15) {
 }
 
 GdipImageSearch(byref x, byref y, imagePath = "img/picturehere.png",  Variation=100, direction = 1, x1=0, y1=0, x2=0, y2=0) {
-    pBitmap := Gdip_BitmapFromHWND(UniqueID)
+    if (Value_Pic!=0) {
+		Variation := if (Variation>=2) ? Variation+Value_Pic : Variation
+	}
+	pBitmap := Gdip_BitmapFromHWND(UniqueID)
 	bmpNeedle := Gdip_CreateBitmapFromFile(imagePath)
     Gdip_ImageSearch(pBitmap, bmpNeedle, LIST, x1, y1, x2, y2, Variation, , direction, 1)
     Gdip_DisposeImage(bmpNeedle)
