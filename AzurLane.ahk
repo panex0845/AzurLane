@@ -667,7 +667,15 @@ Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gOthersettings vValue_Pic range0-50 +Too
 Tab_Y += 3
 Gui, Add, Text, x220 y%TAB_Y% w30 h20 vValue_PicBarUpdate , %Value_PicBarUpdate% 
 Gui, Add, Text, x250 y%TAB_Y% w100 h20 , `%
-Tab_Y += 30
+Tab_Y += 35
+Gui, Add, Text,  x30 y%TAB_Y%  w120 h20 , 檢測頻率：每　
+IniRead, MainsubTimer, settings.ini, OtherSub, MainsubTimer, 3
+Tab_Y -= 3
+Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gMainsubTimersettings vMainsubTimer range2-10 +ToolTip , %MainsubTimer%
+Tab_Y += 3
+Gui, Add, Text, x220 y%TAB_Y% w20 h20 vMainsubTimerBarUpdate , %MainsubTimerBarUpdate% 
+Gui, Add, Text, x240 y%TAB_Y% w100 h20 , 秒/次
+
 ;~ Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
 ;~ Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
 ;~ Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
@@ -760,7 +768,11 @@ While (InStr(FileExist("fy"), "D"))
 	LogShow("發現雷電的廣告檔案，自動刪除")
 }
 SetWorkingDir, %DefaultDir%
-While !(FileExist("ChangeLog.txt")) {
+if FileExist("ChangeLog.md") {
+	FileMove, ChangeLog.md, ChangeLog.txt, 1
+}
+if !(FileExist("ChangeLog.txt")) {
+	LogShow("ChangeLog檔案遺失，重新下載")
 	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
 }
 return
@@ -836,6 +848,7 @@ gosub, Academysettings
 gosub, Dormsettings
 gosub, Missionsettings
 gosub, Othersettings
+gosub, MainsubTimersettings
 return
 
 inisettings: ;一般設定
@@ -1152,6 +1165,7 @@ Iniwrite, %SendFromADB%, settings.ini, OtherSub, SendFromADB
 Iniwrite, %Value_Err0%, settings.ini, OtherSub, Value_Err0
 Iniwrite, %Value_Err1%, settings.ini, OtherSub, Value_Err1
 Iniwrite, %Value_Pic%, settings.ini, OtherSub, Value_Pic
+Iniwrite, %MainsubTimer%, settings.ini, OtherSub, MainsubTimer
 Err0_V := if (Value_Err0!=0) ? Round(Value_Err0/100, 2) : 0.00
 Err1_V := if (Value_Err1!=0) ? Round(Value_Err1/100, 2) : 0.00
 Value_Pic := if Value_Pic!=0 ? Round(Value_Pic/10, 2) : 0.00
@@ -1159,6 +1173,18 @@ Guicontrol, ,Value_Err0BarUpdate, %Err0_V%
 Guicontrol, ,Value_Err1BarUpdate, %Err1_V%
 Guicontrol, ,Value_PicBarUpdate, %Value_Pic%
 Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB, Err0_V, Err1_V, Value_Pic
+
+Critical, off
+return
+
+MainsubTimersettings:
+Critical
+Guicontrolget, MainsubTimer
+Guicontrol, ,MainsubTimerBarUpdate, %MainsubTimer%
+if (Is_Start=1){
+	MainsubTime := MainsubTimer*1000
+	Settimer, Mainsub, %MainsubTime%
+}
 Critical, off
 return
 
@@ -1177,9 +1203,6 @@ Gui, show
 return
 
 CloneWindowSub:
-;~ DefaultDir = %A_WorkingDir%
-;~ SetWorkingDir, %ldplayer%
-;~ SetWorkingDir, DefaultDir
 Gui, CloneWindow:New, -Caption +ToolWindow, CloneWindow-%title% ;創造一個GUI
 Gui, CloneWindow:Show, w1318 h758,  ;創造一個GUI
 if !(debugMode)
@@ -1188,7 +1211,7 @@ CloneTitle = CloneWindow-%title%
 CloneWindow := WinExist(CloneTitle)
 Global CloneTitle, CloneWindow
 DC := DllCall("user32.dll\GetDCEx", "UInt", CloneWindow, "UInt", 0, "UInt", 2)
-Settimer, CloneWindowSub2, 500
+Settimer, CloneWindowSub2, %MainsubTime%
 return
 
 CloneWindowSub2:
@@ -1242,12 +1265,14 @@ LogShow("開始！")
 WinRestore,  %title%
 WinMove,  %title%, , , , %EmulatorResolution_W%, %EmulatorResolution_H%
 WinSet, Transparent, off, %title%
-Settimer, Mainsub, 2500
+MainsubTime := MainsubTimer*1000
+Settimer, Mainsub, %MainsubTime%
 Settimer, WinSub, 3200
 if (DWMmode and CloneWindowforDWM)
 	gosub, CloneWindowSub
 if (EmulatorCrushCheck)
 	Settimer, EmulatorCrushCheckSub, 60000
+Is_Start := 1
 return
 
 ForumSub:
@@ -1294,6 +1319,7 @@ if (NewVersion!=OldVersion) {
 		FileMove, temp.txt, ChangeLog.txt, 1
 		TrayTip, AzurLane, 更新檔下載完畢
 		LogShow("下載完畢")
+		Run, AzurLane v%NewVersion%.zip
 	}
 	IfMsgBox No
 	{
@@ -1302,7 +1328,7 @@ if (NewVersion!=OldVersion) {
 	}
 }
 else {
-	LogShow("沒有新版本可供下載")
+	LogShow("目前是最新版本")
 	FileDelete, temp.txt
 }
 NewVersion := ""
@@ -4724,6 +4750,8 @@ if (AcademyDone<1)
 			AcademyShopDone := VarSetCapacity
 			AcademyDone := 1
 			Settimer, AcademyClock, -900000 ;15分鐘後再開始檢查
+			C_Click(38,92)
+			sleep 1000
 			Loop, 60
 			{
 				if (Find(x, y, 97, 34, 197, 94, AcademyPage_Academy))
@@ -4914,7 +4942,9 @@ if (DormDone<1) ;後宅發現任務
 			DormFoodDone := VarSetCapacity
 			DormDone := 1
 			Settimer, DormClock, -1800000 ;半小時檢查一次
-			Loop, 30
+			C_Click(35, 86)
+			sleep 500
+			Loop, 60
 			{
 				if (Find(x, y, 0, 59, 91, 119, DormPage_in_Dorm))
 				{
