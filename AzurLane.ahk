@@ -12,6 +12,9 @@ if not A_IsAdmin { ;強制用管理員開啟
 Run *RunAs "%A_ScriptFullPath%"
 Exitapp
 }
+if FileExist("ChangeLog.md") {
+	FileMove, ChangeLog.md, ChangeLog.txt, 1
+}
 
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #Persistent
@@ -768,13 +771,6 @@ While (InStr(FileExist("fy"), "D"))
 	LogShow("發現雷電的廣告檔案，自動刪除")
 }
 SetWorkingDir, %DefaultDir%
-if FileExist("ChangeLog.md") {
-	FileMove, ChangeLog.md, ChangeLog.txt, 1
-}
-if !(FileExist("ChangeLog.txt")) {
-	LogShow("ChangeLog檔案遺失，重新下載")
-	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
-}
 return
 
 Debug2:
@@ -1295,7 +1291,7 @@ Loop, Parse, ThisVersion
     OldVersion .= A_LoopField
 }
 if (OldVersion="") {
-	UrlDownloadToFile, %VersionUrl%, ChangeLog.txt
+	LogShow("ChangeLog檔案遺失，無法自動更新")
 	return
 }
 message = 檢查更新中，目前版本: %OldVersion%
@@ -1314,12 +1310,13 @@ if (NewVersion!=OldVersion) {
 	MsgBox, 16388, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
 	IfMsgBox Yes
 	{
+		Guicontrol, disable, Start
 		LogShow("下載更新檔中，請稍後…")
+		FileDelete, temp.txt
 		UrlDownloadToFile, %FileUrl%, AzurLane v%NewVersion%.zip
-		FileMove, temp.txt, ChangeLog.txt, 1
-		TrayTip, AzurLane, 更新檔下載完畢
-		LogShow("下載完畢")
-		Run, AzurLane v%NewVersion%.zip
+		TrayTip, AzurLane, 更新檔下載完畢，`n`n請手動安裝更新檔。
+		LogShow("下載完畢，請手動安裝更新檔")
+		Guicontrol, enable, Start
 	}
 	IfMsgBox No
 	{
@@ -4076,10 +4073,10 @@ if (MissionCheck) ;如果有任務獎勵
         {
             C_Click(641, 597)
         }
-        else if (DwmCheckcolor(71, 606, 16777215) and DwmCheckcolor(53, 693, 16777215) and DwmCheckcolor(1108, 656, 16777215)) ;獲得腳色
-        {
-            C_Click(604, 349)
-        }
+        else if (Find(x, y, 1051, 622, 1151, 682, GetCards)) ;獲得新卡片
+		{
+			C_Click(567, 289)
+		}
         else if (GdiGetPixel(915, 232)=4291714403 and GdiGetPixel(815, 232)=4283594165) ;是否鎖定該腳色(否)
         {
             C_Click(489, 546)
@@ -5292,7 +5289,6 @@ GetItem()
 
 GetCard()
 {
-	GetCards := "|<>*162$31.zzj0DzzX07zzU0HzzU0TzzU0TzzU0TzzU0Q0zU8S0TUCT0DUDzU7UDzk3UDzs1UD0Q0kDUC0QDk70DDs3U7zw1k3zy0s1zz0Q0k3UC0M1k70A0s3U60Q1k30C0s1U70Q0k"
 	if (Find(x, y, 1051, 622, 1151, 682, GetCards)) ;獲得新卡片
 	{
 		sleep 1500
@@ -5553,9 +5549,27 @@ shipsfull(byref StopAnchor)
 							}
 							return
 						}
+						if ((Rarity1) and !(DwmCheckcolor(473, 533, 4877733))) or ((Rarity2) and !(DwmCheckcolor(632, 530, 4876700))) or ((Rarity3) and !(DwmCheckcolor(790, 530, 4876709)))
+						{
+							LogShow("篩選腳色過程中出現出錯，強制停止01")
+							Loop
+							{
+								sleep 5000
+							}
+							return
+						}
 						if ((Rarity1) and !GdipImageSearch(x, y, "img/Dock_Rarity_02_Y.png", 40, 8, 453, 513, 571, 552)) or ((Rarity2) and !GdipImageSearch(x, y, "img/Dock_Rarity_03_Y.png", 40, 8, 608, 514, 731, 552)) or ((Rarity3) and !GdipImageSearch(x, y, "img/Dock_Rarity_04_Y.png", 40, 8, 766, 513, 887, 552))
 						{
 							LogShow("篩選腳色過程中出現出錯，強制停止2")
+							Loop
+							{
+								sleep 5000
+							}
+							return
+						}
+						if ((Rarity1) and DwmCheckcolor(476, 529, 7043468)) or ((Rarity2) and DwmCheckcolor(633, 529, 7042436)) or ((Rarity3) and DwmCheckcolor(789, 531, 7043468))
+						{
+							LogShow("篩選腳色過程中出現出錯，強制停止02")
 							Loop
 							{
 								sleep 5000
@@ -6506,6 +6520,7 @@ Find(byref x, byref y, x1, y1, x2, y2, text) {
 	x := "", y := ""
 	return 0
 }
+
 
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680

@@ -278,5 +278,6 @@ Game_Update := "|<>*207$66.U0T3vzzzUzzwDq3lztzUz7wDU3Uzsz0y3wD67lzU0000sS63nz1zz
 global Login_In, Login_Google, Select_Account, CRIWare
 
 
+GetCards := "|<>*162$31.zzj0DzzX07zzU0HzzU0TzzU0TzzU0TzzU0Q0zU8S0TUCT0DUDzU7UDzk3UDzs1UD0Q0kDUC0QDk70DDs3U7zw1k3zy0s1zz0Q0k3UC0M1k70A0s3U60Q1k30C0s1U70Q0k"
 
-
+global GetCards
