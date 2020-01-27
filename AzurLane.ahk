@@ -5477,7 +5477,9 @@ shipsfull(byref StopAnchor)
 				}
 			} until Find(x, y, 96, 32, 196, 92, SF_In_Dock)
 			shipcount := VarSetCapacity
-			sleep 1000
+			sleep 500
+			Gosub, Anchorsettings
+			sleep 500
 			Loop
 			{
 				if (Find(x, y, 96, 32, 196, 92, SF_In_Dock))
@@ -5487,7 +5489,7 @@ shipsfull(byref StopAnchor)
 					{
 						sleep 400
 						shipcount++
-						if (shipcount>100)
+						if (shipcount>200)
 						{
 							LogShow("等待進入篩選清單的過程中發生錯誤")
 							StopAnchor := 1 ;不再出擊
@@ -5549,6 +5551,7 @@ shipsfull(byref StopAnchor)
 							{
 								sleep 5000
 							}
+							return
 						}
 						if ((Rarity1) and !GdipImageSearch(x, y, "img/Dock_Rarity_02_Y.png", 40, 8, 453, 513, 571, 552)) or ((Rarity2) and !GdipImageSearch(x, y, "img/Dock_Rarity_03_Y.png", 40, 8, 608, 514, 731, 552)) or ((Rarity3) and !GdipImageSearch(x, y, "img/Dock_Rarity_04_Y.png", 40, 8, 766, 513, 887, 552))
 						{
@@ -5557,8 +5560,21 @@ shipsfull(byref StopAnchor)
 							{
 								sleep 5000
 							}
+							return
 						}
-						C_Click(796, 702) ;點擊確定
+						if ((Rarity1) and GdipImageSearch(x, y, "img/Dock_Rarity_02_Y.png", 40, 8, 453, 513, 571, 552)) or ((Rarity2) and GdipImageSearch(x, y, "img/Dock_Rarity_03_Y.png", 40, 8, 608, 514, 731, 552)) or ((Rarity3) and GdipImageSearch(x, y, "img/Dock_Rarity_04_Y.png", 40, 8, 766, 513, 887, 552))
+						{
+							C_Click(796, 702) ;點擊確定
+						}
+						else
+						{
+							LogShow("篩選腳色過程中出現出錯，強制停止3")
+							Loop
+							{
+								sleep 5000
+							}
+							return
+						}
 						sleep 1000
 						if (Find(x, y, 77, 370, 177, 430, Dock_Ship_Empty)) ;如果篩選完畢發現沒有船可以退役
 						{
