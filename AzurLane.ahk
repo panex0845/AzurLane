@@ -45,8 +45,14 @@ RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir 
 if (ldplayer="") {
 	RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
 	if (ldplayer="") {
-		MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試：`n`n1. 重新安裝模擬器。`n`n2. 手動指定路徑： Win+R → Regedit `n　HKEY_CURRENT_USER, Software\Changzhi\LDPlayer `n　底下新增 InstallDir
-	Exitapp
+		RegRead, ldplayer, HKEY_CURRENT_USER, Software\XuanZhi\LDPlayer, InstallDir ; Ldplayer 4.0+ version
+		if (ldplayer="") {
+			MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試：`n`n1. 重新安裝模擬器。`n`n2. 手動指定路徑： Win+R → Regedit `n　HKEY_CURRENT_USER, Software\Changzhi\LDPlayer `n　底下新增 InstallDir
+		Exitapp
+		} else {
+			MsgBox, 16, 設定精靈, 不支援雷電模擬器4.0。
+			ExitApp
+		}
 	}
 }
 Global ldplayer
@@ -661,11 +667,18 @@ Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gOthersettings vValue_Pic range0-50 +Too
 Tab_Y += 3
 Gui, Add, Text, x220 y%TAB_Y% w30 h20 vValue_PicBarUpdate , %Value_PicBarUpdate% 
 Gui, Add, Text, x250 y%TAB_Y% w100 h20 , `%
+Tab_Y += 30
+;~ Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
+;~ Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
+;~ Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
+;~ Tab_Y -= 3
+;~ Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
+;~ Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
 
-EmulatorResolution_W := 1318  ;夜神 1284
+EmulatorResolution_W := 1318  ; 雷電4.0 1322 夜神 1284
 EmulatorResolution_H := 758 ;夜神 754
 Global EmulatorResolution_W, EmulatorResolution_H
 
@@ -1421,7 +1434,7 @@ ResetOperationDone := VarSetCapacity
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := Find(x, y, 1000, 0, 1200, 50, LdPlayerLogo) ; 夜神 LDplayerCheck := 1
+LDplayerCheck := Find(x, y, 0, 0, 50, 35, LdPlayerLogo) ; 夜神 LDplayerCheck := 1
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -2178,7 +2191,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					boss := Dwmgetpixel(x, y)
 					C_Click(1035, 715) ;切換隊伍
 					sleep 300
-					if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
+					if (Find(x, y, 440, 328, 540, 388, Switch_NoParty)) ;沒有艦隊可以切換
 					{
 					}
 					else 
@@ -2188,7 +2201,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 							if (Dwmgetpixel(x, y)=boss)
 							{
 								C_Click(1035, 715) ;切換隊伍
-								if (DwmCheckcolor(490, 362, 15723503)) ;沒有艦隊可以切換
+								if (Find(x, y, 440, 328, 540, 388, Switch_NoParty)) ;沒有艦隊可以切換
 								{
 									Break
 								}
@@ -3759,7 +3772,7 @@ Loop
 		C_Click(642, 420)
 		sleep 5000
 	}
-	if (DwmCheckcolor(296, 210, 16777215) and DwmCheckcolor(453, 242, 16777215) and DwmCheckcolor(789, 533, 15176225)) ;更新提示
+	if (Find(x, y, 420, 450, 850, 600, Game_Update)) ;更新提示
 	{
 		LogShow("開始自動更新")
 		C_Click(786, 534)
@@ -4136,7 +4149,8 @@ if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 		Rmenu := VarSetCapacity
 		DelegationMission()
 		sleep 1000
-		Loop, 30
+		C_Click(1246, 89)
+		Loop, 50
 		{
 			if (Find(x, y, 150, 163, 250, 223, Delegation_Canteen))
 			{
@@ -4152,7 +4166,7 @@ if (MissionCheck2) ;在主選單偵測到軍事任務已完成
 	}
 	else
 	{
-		Loop, 30
+		Loop, 50
 		{
 			if (Find(x, y, 150, 163, 250, 223, Delegation_Canteen))
 			{
@@ -4746,11 +4760,6 @@ if !LDplayerCheck[1] or LDplayerCheck[2]
 		LogShow("視窗被縮小，等待自動恢復")
 		WinRestore, %title%
 	}
-	else if Wincheck=1
-	{
-		WinRestore, %title%
-		LogShow("視窗被放大，等待自動恢復")
-	}
 }
 return
 
@@ -5218,7 +5227,7 @@ Loop, 30  ;等待選單開啟
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
 	Victory := Find(x, y, 783, 385, 883, 445, Battle_Victory)
-	IsTouch_to_continue := Find(x, y, 287, 641, 387, 701, Battle_Touch_to_Continue)
+	IsTouch_to_continue := Find(x, y, 623, 367, 723, 427, Battle_Touch_to_Continue)
 	;~ Global
 	if (Victory and IsTouch_to_continue)
 	{
@@ -5244,8 +5253,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 
 GetItem()
 {
-	GetItems := "|<>*157$65.zzzzzzzzzzzzzrzjzzrzrzU7Ds1UzaHDz/CTk3NyQ6jiIQzU4kwc0TQ8s703lm0Ews1k6GE7YYFtmHXw1WC301XU7Dk1Uw6Qv7tyTmH1y407i0QTU0Ex9AyQ0U7003kGtszD0C00T00IlU2SS00Tx03z0Aww00yWHbbJ9tk00R427C0Hn000O00Cx207zbzY00NmL0DwDz9U0HzyyTszzzzzy"
-	if (Find(x, y, 462, 418, 839, 646, GetItems)) ;獲得道具
+	if (Find(x, y, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具
 	{
 		LogShow("獲得道具，點擊繼續！")
 		C_Click(638, 519)
@@ -5325,7 +5333,6 @@ Message_Normal()
 
 UnknowWife()
 {
-	UnknowWife := "|<>*153$70.14AMFVXxsP8MCMNVb3AHV4UcvUiCy7X64L3Xj3srkSA81w6Cy3WD0skk3k8zsC0x1X30DE3yksVq6AA0xUDv3W7MMlsXq8viCARll7WDQlQssEX7YyNtnzzzzzzzzzzrc"
 	if (Find(x, y, 390, 343, 490, 403, UnknowWife)) ;未知腳色(確認)
 	{
 		LogShow("未知腳色(確認)！")
@@ -5347,7 +5354,6 @@ Battle_End()
 
 Message_Story()
 {
-	SkipBtn :="|<>*136$43.zzzzzzzy3sQCC0Q0QA63040C671U26327Uk11zU7kMQU3k3sACM0s0w60D0A0S307w6471U27331Ukz01VUkMTk1ks8ADw1sS6C7zzzzzzzw"
 	 if (Find(x, y, 1161, 46, 1261, 106, SkipBtn))
 	{
 		LogShow("劇情對話，自動略過")
@@ -5359,7 +5365,7 @@ Message_Story()
 
 BackAttack()
 {
-	 if (DwmCheckcolor(417, 389, 16777215) and DwmCheckcolor(842, 401, 16777215) and DwmCheckcolor(1096, 521, 16777215) and DwmCheckcolor(351, 417, 16735595)) ;遇襲
+	if (Find(x, y, 765, 471, 865, 531, Battle_BackAttack)) ;遇襲
 	{
 		if Assault=迎擊
 		{
@@ -5860,7 +5866,7 @@ Battle_Operation()
 Battle()
 {
 	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
-	 if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
+	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
 		Loop
@@ -6003,9 +6009,7 @@ Battle()
 						}
 						if (Stop_LowHp and NotRetreat<1) ;如果檢測到打王則不撤退
 						{
-							Bossicon := DwmCheckcolor(371, 61, 16777215)
-							Bossicon2 :=DwmCheckcolor(331, 63, 16777215)
-							if (Bossicon and Bossicon2 and Dwmgetpixel(192, 79)!=16777215) 
+							if (Find(x, y, 292, 31, 392, 91, Battle_BossIco)) 
 							{
 								NotRetreat := 1
 								if (debugmode)
@@ -6025,37 +6029,37 @@ Battle()
 							LogShow(Message)
 							Message = 旗艦消耗高於%Retreat_LowHpBar%`%，%Retreat_LowHpDo%
 							LogShow(Message)
-							Loop, 200
+							Loop, 300
 							{
-								if (DwmCheckcolor(1226, 82, 16249847)) ;點擊暫停按紐
+								if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause)) ;點擊暫停按紐
 								{
 									Random, x, 1152, 1256
 									Random, y, 69, 88
 									C_Click(x, y)
 									sleep 1000
 								}
-								else if (DwmCheckcolor(261, 191, 16777215)) ;退出戰鬥
+								else if (Find(x, y, 439, 500, 539, 600, Battle_Exit_Battle)) ;退出戰鬥
 								{
 									Random, x, 443, 567
 									Random, y, 540, 569
 									C_Click(x, y)
 									sleep 1000
 								}
-								else if (DwmCheckcolor(330, 209, 16777215) or DwmCheckcolor(747, 554, 11359562, 30)) ;確認退出
+								else if (Find(x, y, 767, 500, 850, 600, Battle_Exit_Battle)) ;確認退出
 								{
 									Random, x, 726, 862
 									Random, y, 544, 570
 									C_Click(x, y)
 									sleep 2000
 								}
-								else if (DwmCheckcolor(1256, 695, 16777215)) ;迎擊
+								else if (Find(x, y, 1124, 677, 1224, 737, Battle_Defensive)) ;迎擊
 								{
 									Random, x, 1163, 1244
 									Random, y, 700, 725
 									C_Click(x, y)
 									sleep 1000
 								}
-								else if (DwmCheckcolor(1235, 650, 16777215)) ;再次出擊
+								else if (Find(x, y, 1029, 628, 1129, 688, Battle_Weigh)) ;再次出擊
 								{
 									Random, x, 1060, 1221
 									Random, y, 658, 692
