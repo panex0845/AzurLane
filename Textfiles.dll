@@ -1,6 +1,7 @@
 ﻿
 ;////////雷電模擬器///////////
-LdPlayerLogo := "|<>*104$16.zzy00M01zzzzzzzzU0600Tzzzzzzzs01U07zzs"
+LdPlayerLogo := "|<>*102$21.zkTzk0Tw01z007k00Q0s1UTkA7b00ts0C/U1kQ0DbU1xs4DS0zzU8A031U0MA071U1sA0zU"
+
 
 ;///////一些按鈕/////////
 
@@ -79,7 +80,7 @@ MissionPage_ReveiveAward := "|<>*198$59.z3C03w7U01yAAA3s1y7w000MDVVwTzzjkkz719sw
 
 MissionPage_ReveiveAward_1 := "|<>*184$71.w3zy3zzzzVzzkD003zz001zzU7wDzzy003wz23svzzy3VzkyC4HXzzw7000sS001zzsC6z0lwEy3zzkQBy37UVwDzzU0PwC073sTzz1kvkNzy7kzzy3VrUzzw01zzw73j1zzsT3zzsC7C7ztky7zzkQCMDzVVwDzzU0QkT0100Tzz1kwVzy23Uzzy3Vs3zwADVzzw73kDzssT3zzsC7kTzXky7zzkEDVznDU0Dzy00T1zkz3sTzw0Ew1zUy33zzs3Vs1zUy11zzsT3W0zVw71zzny7C0z3kz1zzzwAy3" ;左邊的領取
 
-Touch_to_Contunue := "|<>*191$71.w6UsDTz0y7zXk71sSTw1zzz30C3UsTs3zzk60Q000zU700080sD3ty0Dzw3U1kS7VwUTzw663U001nUzzk8Q71zwTz1zs03sCTzkzy20007kM000zs7ly1zUyTy0zkDkS3z1yTs7zUTUM7y3yTUDz0z0kDsDw60zy1z1UTkTw03zw3y3Us0zw00Ls7za1s1zw00TkDzk3s7zU01zUTzk7kDs3U7z0zzUTUy1zsDy3zz1zDzzzzzyTzzDw"
+Touch_to_Contunue := "|<>*190$38.zUo71vzk71sSTs1kQ73y0Q000z071sTDU1kS7VskQ000AQ71zwST1nzy7TkE000zw7nzk7z1yTs3zkTnw1zsDw60zy3zU0Ts0zw00T0DzU03s7zU01y1z0Q0zUy1zsDtzzzzrU"
 
 MissionPage_MoveForward := "|<>*173$71.z3sw7zzw7zUTzDrs7zzkTzVs0000DzzWzzbbzzzzzzyAM00DxzyTzzts7sDbkzw3zzzUDkT00kMDzzz1zUy70VkTzzw3z1wC33UzzzsDy3sQ671zzzUzw7ksAC3zzz0zsDVkMQ7zzw1zkS00ksDzzs3zUs71VkTzzY7z1kC33UzzyMC000Q671zzzkTw7ksAC3zzzUzsDU0MQ7zzz1zkT3UksDzzy3zUyD1VkTzzw7z1wS37UzzzsDy3sw7z1zzzkTw7nsDy3zzzUzsDb0T07zzz1zkTT1zUTzzy3zUx"
 
@@ -110,8 +111,7 @@ Delegation_idle := "|<>*156$41.zbzzzzzz7zyQnXyDjwMX6w6Dsl69bADk2032NzX4MAAzz68ls
 
 DelegationPage_in_Delegation := "|<>*145$53.k001z7zsDU003z7w0D000DyD00zzUzzwS0Tk000600EzU000A07Vz0000Tzz3zk007zzy7zUkEDk1wDw3UkDU3sS0D1kDzzk00S7kTzs00sDy3w00060000s0U7w0001zzwDs0003U3sTy3z1z07kzw3y3y0DVzw3k7wQT3nw10Tssy7Xw01zllwD6000DU3sS0000D07s007y0S0Dk1zzzzwTzk3"
 
-Delegation_Canteen := "|<>*162$70.xzzzzzzzzzzzzzzyzzrzszzswTjvzyDz0zzlVyT7zsTw3zz600sy7XzVXzztzzXsMzwB1zz7wy003zVW0sw01zy7TwTA710y7tsMz3zYs0W8zU01vU0Dm6AXyC67yDszysm3ssMTsz3zv3s7U01zU0DzA3UyC67yDkzwlaDssMTs03z368zU01zXwDyAMVyC67yDsDsVm3vsT7sk1zW00A000TXUDy6z3zy7zw0UDsTkTzsTzkDUzVzVzzVzz3z1nDyTzyDzyTyDs"
-
+Delegation_Canteen := "|<>*161$21.vzzTTzllzy4T3lXsMw007zsRzD37s00T733ssMT003ssMT733s00T733vsT0000zsTzz3zzsTzz7zU"
 
 
 ;//////////科研////////////////
@@ -184,7 +184,7 @@ NormalMode := "|<>*195$71.zy7Xzz3zzUzvzwTTzz3yy3zzU0003y3w0TzzzssPzw7w7zzzXlklzw
 Auto_Battle_On := "|<>*77$30.w1y7sk0S3sUsS3sVwC1sXy60s3y60s3y60M3y6483y6683y660XyC70VwC7UksS7ks0y7ky3zzzU"
 Auto_Battle_Off := "|<>*89$40.s1y030303s0A08S7VzlzVwCDz7wDsszwTkzXXzlz3y60700TsM0Q00zVVzlz3yC7z7wDkszwTsT3XzlzksSDz7zU3szwTzUzzzzzU"
 
-None_Kit := "|<>*82$71.3zsC0700DzU07zky0C00Tz00DzXw0Q00zy00Tzjs0s01zw00zzzk3z0zzs01wzz07y1ztk03lzw0Tw3znU07Xzk1zs7s700D7z07zkDUC00TDz0zzzz0Q00yTzzzzzw8M01wzzzzzzsEk03tzzzzzzkVU07nzzzzzzV300Dbzzzzzz2600TDzzzzzy4A00yTzzzzzw8M01s01zzzs0Ek03k03zzzk0VU07zzzzzzzV300DzzzzzzzUC00TzzzzzzzUw00zzzzzzzzzs0000000000000000000000001"
+None_Kit := "|<>*71$25.w3zzy1ztz0zwzUTUTkDUDzzU3zzkVzzsEzzw8Tzy4Dzz27zzV3zzkVzs0Ezw00Tzy0DzzU7zzk7zzzzk"
 
 Using_Kit := "|<>*183$71.w7w77zzU0007kTsA3zz1s7kDUU003zy3sDUz1zUzzzw7kT1w7z1zzzsDUy3sRy3XzzkT1w7ksM63zzUy3sD0kMA3zz0000S1VkQ7zy0000s33UsTzw7kT1k671kzzsDUy3UAC3VzzkT1w7EMQ73zzUy3sDUkMA7zz1w7kT1UUMDzy3sDUy33UsTzw7001w6D1zzzsD003sDy3zzzkz1w7kTQDzzzVy3sDUz0Tzzz3w7kT1y0zzzwDsDUy3y1zzzsTkT1w7w0zzzlzUy3sDk00zzXz1U7kT001zyDy3UD"
 Using_kit_Cancel := "|<>*205$69.VsTzTzzkMMA4D3ztzzy311VVsTy7zzsw88QD3TUTzzxV17VsTw3zsTg88w63jUzz1s713VsRw7zw7EM0AD3jUzzkG000VsRw7zy6ETs4D3bUzzsa3zVVsSsDzzwkTwA73n1zzz63z1UkSMDzztk00AD3l3zzyC3z1VsT0TzzlkTwAD3s7zzwS3zVVs70zzz3kTsA41wDzzkS00100TVzzz3kTs803s7zzsS3zV08T0Dzz3kTw8D3k0zzsC3zV7sS81zz1kTc/z3XUDzsC3w1zsMy3zz1kTkA"
@@ -193,14 +193,31 @@ Formation_Upp := "|<>*98$71.VkwCRxwCwDRzTCvAPlwxniPyyxmMbfvvjQLxxvVlD3rrSuDvtbPZ
 Formation_Tank := "|<>*166$22.0zy03zs3zzyDzzszzzXzzyzjzzQTzssTzkkk7Vk0DVU1z50Dy11zw0Dzk0Tz01rs06DzwszzzXzzy1zy2" ;左下角那台小坦克
 
 Battle_Victory := "|<>*111$34.zzzzzvzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzxzzzDznzztzzbzzDzzDztzzyTzDzzwztzzztzDzzzntzzzzbDzzzz9zzzzyTzzzU"
-Battle_Touch_to_Continue := "|<>*114$66.03U1syD07Xw0701syC07Xwsz7ssyCDbXwsz7ssyCDzU0sz7ssyCDzU0sz7ssyCDbXwsz7ssyCD7Xwsz01w0C07XwwzU1w0T0DnwU"
+Battle_Touch_to_Continue := "|<>*143$29.bzzzC3szU07Uw080000EMT3UUkC011080200U0467ks8A3U0EE200U00011zzy23zzw47zzs8DzzkETzzUUzzz11zzy23zzw6"
 
 Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U00030000006000000ATzzzzyMzzzzzwlzzzzztXU0lzzn600003aA00007AM0000CMk0000QlzzzzztXzzzzzn7zzzzzaDzwzzzAM01zbyM"
 
 Battle_Map := "|<>*187$39.zztzzzzzyDzzzzzVzzzzzkDzzzzs1zzzzy0Dzzzz00Dzzzk007zzw0007zy00007zU0000Ts00000z000003y00000Ds00000zk00007z00zw0Tw07zw1zs0zzsDzU7zzlzz0zzz7zw7zzwzzkzzzrzzbzzzzzyzzzw"
 Weigh_Anchor := "|<>*141$57.zzUzzU040zkw7Xw00U7y7UsDk0AMzkw71y0131y7UsDk01wDkw71y0103y7UsDk080Tkw71y0333y000DU000zk003w00k7y000Tl2A0zzw7zy0103zzUzzk08wTVw7ky0003wDUw7k000TVw7UzzkTzwDUw7s000zVw7Uz0007wDUw7zz3zzVw7Uw0001wDUw7U000DU000zzkTzw000Dzs3zzU003zz0zzzzzzzzzzzw"
 
-global Battle_Victory, Battle_Touch_to_Continue, Battle_End, Formation_Tank
+Battle_BackAttack := "|<>*172$28.zzrzxzy7zkzkDrVu0SC3UEs8C71UksQC33VksSS73VzsQC7DVksQC73VUMQC61VksQC73VksQC730EsQA131kkAA731kkQCD33ktwCT3zkzs"
+
+SkipBtn :="|<>*136$43.zzzzzzzy3sQCC0Q0QA63040C671U26327Uk11zU7kMQU3k3sACM0s0w60D0A0S307w6471U27331Ukz01VUkMTk1ks8ADw1sS6C7zzzzzzzw"
+
+UnknowWife := "|<>*153$70.14AMFVXxsP8MCMNVb3AHV4UcvUiCy7X64L3Xj3srkSA81w6Cy3WD0skk3k8zsC0x1X30DE3yksVq6AA0xUDv3W7MMlsXq8viCARll7WDQlQssEX7YyNtnzzzzzzzzzzrc"
+
+Battle_BossIco := "|<>*146$58.zw7zkDz0zu0kM1UUA20s31U6200M2UA60M801U3zUM1Uzs3zDy1U61zkDzUA60M0100C0kM1UU400s31U660EM3zw7zsDz0zy"
+
+Battle_Exit_Battle := "|<>*178$27.zyDzzzkTzzy3zzzkTTky7kQ7ky3Uy7kQ7ky3Uy7kQ7ky3Uy7kQ7ky3Uy3kQ0003Uw3kTDkS7zy3zsTkTV1y3w0DkTU1y3w0DkTUU"
+Battle_Defensive := "|<>*217$25.VzVzsTkTw70CD7XU3rlkVxssEwQQ806C4D37273XV33lkVUMsEU0E8M024DU307k3U3slkXstsFwzwDwzy7sbz7sk3nUQ001DU01jy00k"
+
+Battle_Weigh := "|<>*207$27.zy3zzzkTzzy3zy7kT3ky3sS7kT3ky3sS7kT3ky3sS7kT3ky3sS7kT3UQ3kQ20M3sy3sTzkTjTy3xsDkTU1y3w0DkTU1y3w0DkTUU"
+
+Switch_NoParty := "|<>*147$11.wDsTtzzzzzDwDkTUz1y3w7sDkTUz1y3w7sDkTkzrs"
+
+
+global Battle_Victory, Battle_Touch_to_Continue, Battle_End, Formation_Tank, Battle_BackAttack, SkipBtn, UnknowWife, Battle_BossIco
+global Battle_Exit_Battle, Battle_Defensive, Battle_Weigh, Switch_NoParty
 
 ;///////////tomap//////////
 
@@ -253,4 +270,12 @@ Select_Account := "|<>*151$68.T73i3U71lnXXtkvUs1kQQssSTyzy0Q77CC37zjzUzxzzzU1k3U
 
 CRIWare := "|<>*173$50.7D14W8QQnnstAaD75srCHNXN0sAnYqQqEC3AthbBY30zCPFHlksDXbIIsMC3ssrBD43UqCBnvF0TAnXAqoE3nAsn8hb08F40W89kU"
 
+Game_Update := "|<>*207$66.U0T3vzzzUzzwDq3lztzUz7wDU3Uzsz0y3wD67lzU0000sS63nz1zzz1sS41bz1zzy7sTAMzz1zzsDsTsMnz1zzkDszssVza000Dkls01zzz1zzk0kkzzzz1zzkkUkzzzz1zzkkUkrzyD1xzUk0k3zy31szUkk01zy71sDUkkkzzw700D0kkkzzw71zzkkkkrzw71zzkkkk3zwD1zzkkk01zw71zzkkkkTzs11zzk0kkzzsE1zzkUkktzks000kkkkkzlw001kzk00TXy003U"
+
+
+
 global Login_In, Login_Google, Select_Account, CRIWare
+
+
+
+
