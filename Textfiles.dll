@@ -194,7 +194,7 @@ Formation_Upp := "|<>*98$71.VkwCRxwCwDRzTCvAPlwxniPyyxmMbfvvjQLxxvVlD3rrSuDvtbPZ
 Formation_Tank := "|<>*166$22.0zy03zs3zzyDzzszzzXzzyzjzzQTzssTzkkk7Vk0DVU1z50Dy11zw0Dzk0Tz01rs06DzwszzzXzzy1zy2" ;左下角那台小坦克
 
 Battle_Victory := "|<>*111$34.zzzzzvzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzxzzzDznzztzzbzzDzzDztzzyTzDzzwztzzztzDzzzntzzzzbDzzzz9zzzzyTzzzU"
-Battle_Touch_to_Continue := "|<>*143$29.bzzzC3szU07Uw080000EMT3UUkC011080200U0467ks8A3U0EE200U00011zzy23zzw47zzs8DzzkETzzUUzzz11zzy23zzw6"
+Battle_Touch_to_Continue := "|<>*200$24.zzyzaNyzjxyzfpyzjpyzjxy0jhy0jxyzU1yzyTyzyTyzk1yzyDU1yTbtyTjtU0jtzzjtzvjtphjtxhjtjyU1jzU1zzjtU"
 
 Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U00030000006000000ATzzzzyMzzzzzwlzzzzztXU0lzzn600003aA00007AM0000CMk0000QlzzzzztXzzzzzn7zzzzzaDzwzzzAM01zbyM"
 

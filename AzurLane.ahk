@@ -5254,7 +5254,7 @@ Loop, 30  ;等待選單開啟
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
 	Victory := Find(x, y, 783, 385, 883, 445, Battle_Victory)
-	IsTouch_to_continue := Find(x, y, 623, 367, 723, 427, Battle_Touch_to_Continue)
+	IsTouch_to_continue := Find(x, y, 122, 637, 222, 697, Battle_Touch_to_Continue)
 	;~ Global
 	if (Victory and IsTouch_to_continue)
 	{
