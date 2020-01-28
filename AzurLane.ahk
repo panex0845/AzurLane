@@ -105,6 +105,7 @@ Gui, Add, Button, x20 y470 w100 h20 gstart vstart , 開始
 Gui, Add, Button, x140 y470 w100 h20 greload vreload, 停止
 Gui, Add, Button, x260 y470 w100 h20 gReAnchorSub vReAnchorSub, 再次出擊
 Gui, Add, Button, x510 y470 w100 h20 gReSizeWindowSub vReSizeWindowSub, 調整視窗
+Guicontrol, disable, start
 
 
 Gui, Add, button, x810 y470 w100 h20 gexitsub, 結束 
@@ -732,7 +733,6 @@ Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
 Global UniqueID
 Global Allowance
-LogShow("啟動完畢，等待開始")
 Gosub, whitealbum
 Settimer, whitealbum, 10000 ;很重要!
 iniread, Autostart, settings.ini, OtherSub, Autostart, 0
@@ -797,6 +797,8 @@ While (InStr(FileExist("fy"), "D"))
 	LogShow("發現雷電的廣告檔案，自動刪除")
 }
 SetWorkingDir, %DefaultDir%
+LogShow("啟動完畢，等待開始")
+Guicontrol, Enable, start
 return
 
 Debug2:
@@ -1342,7 +1344,6 @@ Loop, Parse, ThisVersion
   If A_LoopField is Number
     NewVersion .= A_LoopField
 }
-FileDelete, temp.txt
 filename = AzurLane v%NewVersion%.zip
 OnMessage(0x53, "Update_HELP")
 if (FileExist(filename))
@@ -1375,6 +1376,7 @@ else if (NewVersion!=OldVersion) {
 else {
 	LogShow("目前是最新版本")
 }
+FileDelete, temp.txt
 NewVersion := ""
 OldVersion := ""
 return
