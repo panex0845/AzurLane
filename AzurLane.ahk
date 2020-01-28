@@ -487,7 +487,7 @@ if FightRoundsDo3=更換艦隊Ｂ
 else if FightRoundsDo3=撤退
 	Gui, Add, DropDownList, x290 y%Tab_Y% w100 h200 gAnchor3settings vFightRoundsDo3  Choose%FightRoundsDo3%, 更換艦隊Ｂ|撤退||
 Tab_Y+=30
-iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp
+iniread, Retreat_LowHp, settings.ini, Battle, Retreat_LowHp, 0
 Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vRetreat_LowHp checked%Retreat_LowHp% , 旗艦消耗高於
 IniRead, Retreat_LowHpBar, settings.ini, Battle, Retreat_LowHpBar, 30
 Gui, Add, Slider, x140 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHpBar range15-90 +ToolTip , %Retreat_LowHpBar%
@@ -505,6 +505,24 @@ iniread, Stop_LowHp, settings.ini, Battle, Stop_LowHp, 0
 iniread, Stop_LowHP_SP, settings.ini, Battle, Stop_LowHP_SP, 0
 Gui, Add, CheckBox, x50 y%Tab_Y% w180 h20 gAnchor3settings vStop_LowHp checked%Stop_LowHp% , 討伐BOSS時不退出戰鬥
 Gui, Add, CheckBox, x250 y%Tab_Y% w180 h20 gAnchor3settings vStop_LowHP_SP checked%Stop_LowHP_SP% , 更換隊伍後不退出戰鬥
+
+Tab_Y+=30
+iniread, Retreat_LowHp2, settings.ini, Battle, Retreat_LowHp2, 0
+Gui, Add, CheckBox, x30 y%Tab_Y% w170 h20 gAnchor3settings vRetreat_LowHp2 checked%Retreat_LowHp2% , 戰鬥結束，旗艦HP低於
+IniRead, Retreat_LowHp2Bar, settings.ini, Battle, Retreat_LowHp2Bar, 30
+Gui, Add, Slider, x200 y%Tab_Y% w100 h30 gAnchor3settings vRetreat_LowHp2Bar range5-90 +ToolTip , %Retreat_LowHp2Bar%
+Tab_Y+=4
+Gui, Add, Text, x310 y%Tab_Y% w20 h20 vRetreat_LowHp2BarUpdate , %Retreat_Low2HpBar% 
+Gui, Add, Text, x330 y%Tab_Y% w120 h20 , `% 
+Tab_Y-=4
+iniread, Retreat_LowHp2Do, settings.ini, Battle, Retreat_LowHp2Do, 更換隊伍
+if Retreat_LowHp2Do=更換隊伍
+	Gui, Add, DropDownList, x350 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHp2Do  Choose%Retreat_LowHp2Do%, 更換隊伍||撤退|
+else
+	Gui, Add, DropDownList, x350 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHp2Do  Choose%Retreat_LowHp2Do%, 更換隊伍|撤退||
+Tab_Y+=30
+
+
 
 Gui, Tab, 學　院
 iniread, AcademySub, settings.ini, Academy, AcademySub
@@ -1020,6 +1038,9 @@ Guicontrolget, Retreat_LowHpBar
 Guicontrolget, Retreat_LowHpDo
 Guicontrolget, Stop_LowHp
 Guicontrolget, Stop_LowHP_SP
+Guicontrolget, Retreat_LowHp2
+Guicontrolget, Retreat_LowHp2Bar
+Guicontrolget, Retreat_LowHp2Do
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
@@ -1028,8 +1049,12 @@ Iniwrite, %Retreat_LowHpBar%, settings.ini, Battle, Retreat_LowHpBar
 Iniwrite, %Retreat_LowHpDo%, settings.ini, Battle, Retreat_LowHpDo
 Iniwrite, %Stop_LowHp%, settings.ini, Battle, Stop_LowHp
 Iniwrite, %Stop_LowHP_SP%, settings.ini, Battle, Stop_LowHP_SP
+Iniwrite, %Retreat_LowHp2%, settings.ini, Battle, Retreat_LowHp2
+Iniwrite, %Retreat_LowHp2Bar%, settings.ini, Battle, Retreat_LowHp2Bar
+Iniwrite, %Retreat_LowHp2Do%, settings.ini, Battle, Retreat_LowHp2Do
 Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
-Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp, Stop_LowHP_SP
+Guicontrol, ,Retreat_LowHp2BarUpdate, %Retreat_LowHp2Bar%
+Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp, Stop_LowHP_SP, Retreat_LowHp2, Retreat_LowHp2Bar, Retreat_LowHp2Do
 Critical, off
 return
 
@@ -1294,7 +1319,7 @@ if (OldVersion="") {
 	LogShow("ChangeLog檔案遺失，無法自動更新")
 	return
 }
-message = 檢查更新中，目前版本: %OldVersion%
+message = 檢查更新中，當前版本：v%OldVersion%
 LogShow(message)
 VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 FileUrl := "https://github.com/panex0845/AzurLane/archive/master.zip"
@@ -1305,28 +1330,38 @@ Loop, Parse, ThisVersion
   If A_LoopField is Number
     NewVersion .= A_LoopField
 }
+FileDelete, temp.txt
+filename = AzurLane v%NewVersion%.zip
 OnMessage(0x53, "Update_HELP")
-if (NewVersion!=OldVersion) {
+if (FileExist(filename))
+{
+	message = `　　更新檔 %filename% 已下載完畢，請手動安裝。
+	LogShow2("------------------------------------------------------------------------------")
+	LogShow2(message)
+	LogShow2("------------------------------------------------------------------------------")
+}
+else if (NewVersion!=OldVersion) {
 	MsgBox, 16388, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
 	IfMsgBox Yes
 	{
 		Guicontrol, disable, Start
 		LogShow("下載更新檔中，請稍後…")
 		FileDelete, temp.txt
-		UrlDownloadToFile, %FileUrl%, AzurLane v%NewVersion%.zip
+		UrlDownloadToFile, %FileUrl%, %filename%
 		TrayTip, AzurLane, 更新檔下載完畢，`n`n請手動安裝更新檔。
-		LogShow("下載完畢，請手動安裝更新檔")
+		message = `　　更新檔 %filename% 已下載完畢，請手動安裝。
+		LogShow2("------------------------------------------------------------------------------")
+		LogShow2(message)
+		LogShow2("------------------------------------------------------------------------------")
 		Guicontrol, enable, Start
 	}
 	IfMsgBox No
 	{
 		LogShow("取消")
-		FileDelete, temp.txt
 	}
 }
 else {
 	LogShow("目前是最新版本")
-	FileDelete, temp.txt
 }
 NewVersion := ""
 OldVersion := ""
@@ -1959,6 +1994,27 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		Random, x, 1197, 1257
 		Random, y, 537, 551
 		C_Click(x, y)
+	}
+	if (NowHP>=1 and Retreat_LowHp2 and SwitchParty<1 and (NowHp<=Retreat_LowHp2Bar))
+	{
+		Message = 戰鬥結束旗艦HP低於 %NowHP%`%，開始%Retreat_LowHp2Do%。
+		LogShow(Message)
+		if (Retreat_LowHp2Do="更換隊伍")
+		{
+			SwitchParty := 1
+			sleep 500
+			C_Click(1030, 713)
+			sleep 2000
+		}
+		else if (Retreat_LowHp2Do="撤退")
+		{
+			sleep 1000
+			C_Click(827, 715)
+			sleep 1000
+			C_Click(785, 548)
+			sleep 2000
+			return
+		}
 	}
 	if (FightRoundsDo and ((FightRoundsDoCount=FightRoundsDo2) or (FightRoundsDo2="或沒子彈" and GdipImageSearch(n, n, "img/Bullet_None.png", 10, SearchDirection, 129, 96, 1271, 677))) and FightRoundsDone<1 and SwitchParty<1)
 	{
@@ -3031,6 +3087,7 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 	WeighAnchorCount++ ;判斷目前出擊次數
 	FightRoundsDoCount := VarSetCapacity ;將艦隊A每出擊次數歸零
 	FightRoundsDone := VarSetCapacity ;將艦隊A每出擊次數歸零
+	NowHP := VarSetCapacity ;清空目前HP
 	sleep 1000 ;判斷現在位於第幾關 1 2 3 4 5 6 7 8 9 
 	Chapter1 := Find(x, y, 162, 499, 262, 559, "|<>*132$25.wTzwQDzw87zs03zs21zy1kzzksTzsQDzwC40C72073V03VkzzksTzsQDzwC7zy73zz2")  ;第一關 1-1
 	Chapter2 := Find(x, y, 830, 500, 930, 560, "|<>*139$26.UTzy03zz00Tz067zU1Vzw0ETzkwDzwC3zz3VU1kkM0Q8C0727zzk1zzw03zz00zzk0Dzw8") ;第二關 2-1
@@ -5926,6 +5983,7 @@ Battle_Operation()
 Battle()
 {
 	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
+	global NowHP
 	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
@@ -6141,6 +6199,26 @@ Battle()
 						}
 					}
 				}
+			}
+			if (!(Retreat_LowHp) and Retreat_LowHp2) ;旗艦HP過低撤退
+			{
+				DetectHP_Pos := [10, 410, 105, 490]
+				Hp_Variation := 30
+				if (GdipImageSearch(x, y, "img/battle/LowHP.png", Hp_Variation, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+				{
+					NowHP := Ceil((x-10)/85*100)
+					if (debugMode)
+					{
+						HpdebugMode++
+						if (HpdebugMode=5)
+						{
+							Message = 旗艦血量： %NowHP%`%
+							LogShow(Message)
+							HpdebugMode := VarSetCapacity
+						}
+					}
+				}
+				sleep 100
 			}
 		} 
 		battletime := VarSetCapacity
@@ -6520,7 +6598,6 @@ Find(byref x, byref y, x1, y1, x2, y2, text) {
 	x := "", y := ""
 	return 0
 }
-
 
 ;~ F3::
 ;~ MapX1 := 10, MapY1 := 100, MapX2 := 1261, MapY2 := 680
