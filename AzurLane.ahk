@@ -521,6 +521,14 @@ if Retreat_LowHp2Do=更換隊伍
 else
 	Gui, Add, DropDownList, x350 y%Tab_Y% w85 h200 gAnchor3settings vRetreat_LowHp2Do  Choose%Retreat_LowHp2Do%, 更換隊伍|撤退||
 Tab_Y+=30
+iniread, Take_ItemQuest, settings.ini, Battle, Take_ItemQuest, 0
+iniread, Take_ItemQuestNum, settings.ini, Battle, Take_ItemQuestNum, 3
+Gui, Add, CheckBox, x30 y%Tab_Y% w120 h20 gAnchor3settings vTake_ItemQuest checked%Take_ItemQuest%, 拾取神秘物資
+Tab_Y -= 2
+	Gui, Add, DropDownList, x150 y%Tab_Y% w40 h200 gAnchor3settings vTake_ItemQuestNum  Choose%Take_ItemQuestNum%, 1|2|3||4|5|
+Tab_Y +=5
+Gui, Add, Text, x200 y%Tab_Y% w80 h20 , 次後撤退
+
 
 
 
@@ -1041,6 +1049,8 @@ Guicontrolget, Stop_LowHP_SP
 Guicontrolget, Retreat_LowHp2
 Guicontrolget, Retreat_LowHp2Bar
 Guicontrolget, Retreat_LowHp2Do
+Guicontrolget, Take_ItemQuest
+Guicontrolget, Take_ItemQuestNum
 Iniwrite, %FightRoundsDo%, settings.ini, Battle, FightRoundsDo ;當艦隊A....
 Iniwrite, %FightRoundsDo2%, settings.ini, Battle, FightRoundsDo2 ;出擊次數
 Iniwrite, %FightRoundsDo3%, settings.ini, Battle, FightRoundsDo3 ; 做什麼事
@@ -1052,6 +1062,8 @@ Iniwrite, %Stop_LowHP_SP%, settings.ini, Battle, Stop_LowHP_SP
 Iniwrite, %Retreat_LowHp2%, settings.ini, Battle, Retreat_LowHp2
 Iniwrite, %Retreat_LowHp2Bar%, settings.ini, Battle, Retreat_LowHp2Bar
 Iniwrite, %Retreat_LowHp2Do%, settings.ini, Battle, Retreat_LowHp2Do
+Iniwrite, %Take_ItemQuest%, settings.ini, Battle, Take_ItemQuest
+Iniwrite, %Take_ItemQuestNum%, settings.ini, Battle, Take_ItemQuestNum
 Guicontrol, ,Retreat_LowHpBarUpdate, %Retreat_LowHpBar%
 Guicontrol, ,Retreat_LowHp2BarUpdate, %Retreat_LowHp2Bar%
 Global Retreat_LowHp, Retreat_LowHpBar, Retreat_LowHpDo, Stop_LowHp, Stop_LowHP_SP, Retreat_LowHp2, Retreat_LowHp2Bar, Retreat_LowHp2Do
@@ -1721,8 +1733,9 @@ if (Techacademy_Done) ;軍部研究室OK
 				sleep 1500
 				if (Find(x, y, 800, 420, 1070, 510, Tech_NoCoinIco))
 				{
-					LogShow("不使用金幣，嘗試切換")
 					Tech_NoCoincount++
+					message = 不使用金幣，嘗試切換研發項目 %Tech_NoCoincount%
+					LogShow(message)
 					C_Click(698, 705)
 					sleep 1000
 					C_Click(888, 248)
@@ -2138,21 +2151,25 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			LogShow("嗶嗶嚕嗶～發現：神秘物資！")
 			xx := x
 			yy := y + 70
-			Loop, 4
+			TakeQuest++
+			Loop, 6
 			{
 				if (xx<360 and yy<195)
 				{
 					Swipe(238,315,248,400)
+					TakeQuest--
 					break
 				}
 				if (yy>660)
 				{
 					Swipe(238,400,248,315)
+					TakeQuest--
 					break
 				}
 				if (xx>1180 and yy>420)
 				{
 					Swipe(750,300,650,300)
+					TakeQuest--
 					break
 				}
 				if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
@@ -2161,12 +2178,14 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						questFailed++
+						TakeQuest--
 						break
 					}
-					sleep 2000
+					sleep 2200
 				}
 				if (Find(n, m, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
+					TakeQuest--
 					Break
 				}
 				if (Find(n, m, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具
@@ -2183,6 +2202,17 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				sleep 1000
 			}
 			IsDetect := 1
+			return
+		}
+		if (Take_ItemQuest and TakeQuest>=Take_ItemQuestNum) ;拾取神秘物資N次後撤退
+		{
+			Message = 已拾取神秘物資 %TakeQuest% 次，撤退。
+			LogShow(Message)
+			sleep 1000
+			C_Click(827, 715)
+			sleep 1000
+			C_Click(785, 548)
+			sleep 2000
 			return
 		}
 		if (GdipImageSearch(x, y, "img/targetboss_1.png", 0, SearchDirection, MapX1, MapY1, MapX2, MapY2) and BossFailed<1) and (Bossaction="優先攻擊－當前隊伍" or Bossaction="優先攻擊－切換隊伍" or Bossaction="撤退") ;ＢＯＳＳ
@@ -3087,6 +3117,7 @@ if (Find(x, y, 95, 34, 195, 94, Weigh_Anchor)) ;在出擊選擇關卡的頁面
 	WeighAnchorCount++ ;判斷目前出擊次數
 	FightRoundsDoCount := VarSetCapacity ;將艦隊A每出擊次數歸零
 	FightRoundsDone := VarSetCapacity ;將艦隊A每出擊次數歸零
+	TakeQuest := VarSetCapacity ;將拿取神祕物資次數歸零
 	NowHP := VarSetCapacity ;清空目前HP
 	sleep 1000 ;判斷現在位於第幾關 1 2 3 4 5 6 7 8 9 
 	Chapter1 := Find(x, y, 162, 499, 262, 559, "|<>*132$25.wTzwQDzw87zs03zs21zy1kzzksTzsQDzwC40C72073V03VkzzksTzsQDzwC7zy73zz2")  ;第一關 1-1
