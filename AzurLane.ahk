@@ -2148,10 +2148,11 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		}
 		if (GdipImageSearch(x, y, "img/quest.png", 8, SearchDirection, MapX1, MapY1, MapX2, MapY2) and questFailed<1 and Item_Quest) ;
 		{
-			LogShow("嗶嗶嚕嗶～發現：神秘物資！")
+			TakeQuest++
+			Message = 嗶嗶嚕嗶～發現：神秘物資 %TakeQuest% 次！
+			LogShow(Message)
 			xx := x
 			yy := y + 70
-			TakeQuest++
 			Loop, 6
 			{
 				if (xx<360 and yy<195)
