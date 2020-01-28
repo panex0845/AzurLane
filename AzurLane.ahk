@@ -6191,6 +6191,10 @@ Battle()
 					}
 					else
 					{
+						if (GdipImageSearch(x, y, "img/battle/LowHP.png", Hp_Variation, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
+						{
+							NowHP := Ceil((x-10)/85*100)
+						}
 						if (ShowLog<1)
 						{
 							Message = 目前HP(%OriginalHP%`%)扣除: %Retreat_LowHpBar%`%後小於1，不撤退。
