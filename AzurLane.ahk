@@ -4631,7 +4631,7 @@ if (AcademyDone<1)
 							yy := y+8
 							C_Click(xx,yy) ;點擊
 						}
-						if (Find(x, y, 400, 500, 570, 650, Shop_exchange)) ;跳出購買訊息
+						if (Find(x, y, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
 						{
 							Random, xx, 713, 863
 							Random, yy, 543, 569
