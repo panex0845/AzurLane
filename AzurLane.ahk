@@ -797,6 +797,21 @@ While (InStr(FileExist("fy"), "D"))
 	LogShow("發現雷電的廣告檔案，自動刪除")
 }
 SetWorkingDir, %DefaultDir%
+if (substr(A_osversion, 1, 2)!=10)
+{
+	iniread, OsVersionCheck, settings.ini, Osversion, OsVersionCheck
+	Text := "在作業系統非Windows10的環境下，本程式可能無法正確運作。`n`n請嘗試：`n`n1.　更新您的作業系統至Windows10。`n`n2.　<a href=""https://www.google.com/search?q=關閉Aero特效"">關閉Aero特效</a>。`n"
+	OsVersionCheckText := "不再提示"
+	if (OsVersionCheck!=1)
+	{
+		Result := MsgBoxEx(Text, "提示", "OK", 4, OsVersionCheckText, "-SysMenu AlwaysOnTop", 0, 0, "s12 c0x000000", "Segoe UI")
+		if (OsVersionCheckText=1) {
+			iniwrite, 1, settings.ini, Osversion, OsVersionCheck
+		} else {
+			iniwrite, 0, settings.ini, Osversion, OsVersionCheck
+		}
+	}
+}
 LogShow("啟動完畢，等待開始")
 Guicontrol, Enable, start
 return
@@ -949,7 +964,7 @@ Iniwrite, %TimetoBattle2%, settings.ini, Battle, TimetoBattle2
 Iniwrite, %StopBattleTime%, settings.ini, Battle, StopBattleTime
 Iniwrite, %StopBattleTime2%, settings.ini, Battle, StopBattleTime2
 Iniwrite, %StopBattleTime3%, settings.ini, Battle, StopBattleTime3
-Global Assault, Autobattle, shipsfull, ChooseParty1, ChooseParty2, AnchorMode, SwitchPartyAtFirstTime, WeekMode, AnchorChapter, AnchorChapter2
+Global Assault, Autobattle, shipsfull, ChooseParty1, ChooseParty2, AnchorMode, SwitchPartyAtFirstTime, WeekMode, AnchorChapter, AnchorChapter2, mood
 
 ;////出擊2/////// TAB2
 Guicontrolget, IndexAll
@@ -1261,8 +1276,10 @@ return
 
 GuiClose:
 if GuiHideX {
-	Traytip, 訊息, 　`nAzurLane (%title%) 背景執行中!`n　, 2
+	;~ Traytip, 訊息, 　`nAzurLane (%title%) 於背景執行中!`n　, 1
 	Gui, Hide
+	Text = AzurLane - %title% `n`n於背景執行中
+	MsgBoxEx(Text, "通知", "", [188, "imageres.dll"], "", "-SysMenu", 0, 1.5, "s12 c0x000000", "Segoe UI", "0xFFFFFF")
 } else {
 	WindowName = Azur Lane - %title%
 	wingetpos, azur_x, azur_y,, WindowName
@@ -1330,10 +1347,16 @@ Loop, Parse, ThisVersion
     OldVersion .= A_LoopField
 }
 if (OldVersion="") {
-	LogShow("ChangeLog檔案遺失，無法自動更新")
+	LogShow2("------------------------------------------------------------------------------")
+	message = `　　　ChangeLog檔案遺失，無法正確判斷目前版本，
+	LogShow2(message)
+	LogShow2(" ")
+	message = `　　　　　請嘗試重新安裝本程式或手動更新。
+	LogShow2(message)
+	LogShow2("------------------------------------------------------------------------------")
 	return
 }
-message = 檢查更新中，當前版本：v%OldVersion%
+message = 檢查更新中，目前版本 v%OldVersion%。
 LogShow(message)
 VersionUrl := "https://raw.githubusercontent.com/panex0845/AzurLane/master/ChangeLog.md"
 FileUrl := "https://github.com/panex0845/AzurLane/archive/master.zip"
@@ -1346,16 +1369,18 @@ Loop, Parse, ThisVersion
 }
 filename = AzurLane v%NewVersion%.zip
 OnMessage(0x53, "Update_HELP")
-if (FileExist(filename))
+if (FileExist(filename) and NewVersion!=OldVersion)
 {
-	message = `　　更新檔 %filename% 已下載完畢，請手動安裝。
+	
 	LogShow2("------------------------------------------------------------------------------")
+	message = `　　更新檔 %filename% 已下載完畢，請手動安裝。
 	LogShow2(message)
 	LogShow2("------------------------------------------------------------------------------")
 }
 else if (NewVersion!=OldVersion) {
-	MsgBox, 16388, 設定精靈, GitHub版本：%NewVersion%，是否自動下載？
-	IfMsgBox Yes
+	Gui +OwnDialogs
+	MsgBox, 0x4041, 設定精靈, 目前版本：%OldVersion%`n`nGitHub版本：%NewVersion%，是否自動下載？
+	IfMsgBox OK
 	{
 		Guicontrol, disable, Start
 		LogShow("下載更新檔中，請稍後…")
@@ -1368,7 +1393,7 @@ else if (NewVersion!=OldVersion) {
 		LogShow2("------------------------------------------------------------------------------")
 		Guicontrol, enable, Start
 	}
-	IfMsgBox No
+	else IfMsgBox Cancel
 	{
 		LogShow("取消")
 	}
@@ -1709,7 +1734,22 @@ if (Techacademy_Done) ;軍部研究室OK
 			}
 			if (k=1 and !TechTarget_01) or (k=2 and !TechTarget_02) or (k=3 and !TechTarget_03) or (k=3 and !TechTarget_03) or (k=4 and !TechTarget_04) or (k=5 and !TechTarget_05) or (k=6 and !TechTarget_06) or (k=7 and !TechTarget_07) 
 			{
-				LogShow("更換科研項目")
+				if k=1
+					k=定向研發
+				if k=2 
+					k=資金募集
+				if k=3
+					k=數據蒐集
+				if k=4 
+					k=艦裝解析
+				if k=5 
+					k=研究委託
+				if k=6 
+					k=試驗募集
+				if k=7 
+					k=基礎研究
+				message = 項目 %k% 不研發，更換科研項目。
+				LogShow(message)
 				Random, x, 320, 980
 				Random, y ,690, 720
 				C_Click(x, y)
@@ -2101,7 +2141,14 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 	Loop, 100
 	{
 		sleep 300
-		Random, SearchDirection, 1, 8
+		if (AnchorChapter=7 and AnchorChapter2=2)
+		{
+			SearchDirection := 1
+		}
+		else
+		{
+			Random, SearchDirection, 1, 8
+		}
 		if (DwmCheckcolor(1102, 480, 16768842))
 		{
 			LogShow("關閉陣型列表")
@@ -2159,51 +2206,58 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 			{
 				if (xx<360 and yy<195)
 				{
-					Swipe(238,315,248,400)
 					TakeQuest--
+					Swipe(238,315,248,400)
 					break
 				}
 				if (yy>660)
 				{
-					Swipe(238,400,248,315)
 					TakeQuest--
+					Swipe(238,400,248,315)
 					break
 				}
 				if (xx>1180 and yy>420)
 				{
-					Swipe(750,300,650,300)
 					TakeQuest--
+					Swipe(750,300,650,300)
 					break
 				}
 				if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
+					sleep 300
 					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						questFailed++
 						TakeQuest--
+						Message = 哎呀哎呀，前往神秘物資的路徑被擋住了！ 
+						LogShow(Message)
+						sleep 300
 						break
 					}
-					sleep 2200
+					sleep 2000
 				}
 				if (Find(n, m, 0, 587, 86, 647, Formation_Tank)) ;規避失敗
 				{
+					Message = 規避伏擊失敗。
+					LogShow(Message)
 					TakeQuest--
 					Break
 				}
 				if (Find(n, m, 450, 130, 830, 330, Touch_to_Contunue)) ;獲得道具
 				{
-					sleep 1200
 					C_Click(276, 619)
 					Break
 				}
 				if (DwmCheckcolor(449, 359, 16249847)) ;撿到子彈
 				{
+					sleep 1000
 					break
 				}
 				BackAttack()
 				sleep 1000
 			}
+			sleep 300
 			IsDetect := 1
 			return
 		}
@@ -3872,7 +3926,8 @@ Loop
 return
 
 startemulatorSub:
-run, dnconsole.exe launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
+runwait, dnconsole.exe globalsetting --fastplay 0 --cleanmode 1, %ldplayer%, Hide
+runwait, dnconsole.exe launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
 sleep 10000
 Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
@@ -5904,7 +5959,12 @@ ChooseParty(Byref StopAnchor)
 					C_Click(x,y) ;點擊"切換"
 					sleep 1000
 				}
-				if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
+				if (AnchorChapter="7" and AnchorChapter2="2") ;如果是7-2 往右邊拖曳 以偵測左邊問號
+				{
+					sleep 1000
+					Swipe(500, 400, 780, 600)
+				}
+				else if ((AnchorChapter="S.P.") and AnchorChapter2="3") ;如果是SP3 先往左上拉 避免開場的多次偵測
 				{
 					Swipe(272, 419, 1100, 422)
 				}
@@ -6216,6 +6276,15 @@ Battle()
 									Random, x, 1060, 1221
 									Random, y, 658, 692
 									C_Click(x, y)
+									sleep 1000
+									if (Find(x, y, 700, 500, 880, 600, Academy_BTN_Confirm)) ;心情低落
+									{
+										if mood=強制出戰
+										{
+											LogShow("老婆心情低落：提督SAMA沒人性")
+											C_Click(x, y)
+										}
+									}
 									break
 								}
 								sleep 350
@@ -6635,6 +6704,102 @@ Find(byref x, byref y, x1, y1, x2, y2, text) {
 	}
 	x := "", y := ""
 	return 0
+}
+
+
+MsgBoxEx(Text, Title := "", Buttons := "", Icon := "", ByRef CheckText := "", Styles := "", Owner := "", Timeout := "", FontOptions := "", FontName := "", BGColor := "", Callback := "") {
+    Static hWnd, y2, p, px, pw, c, cw, cy, ch, f, o, gL, hBtn, lb, DHW, ww, Off, k, v, RetVal
+    Static Sound := {2: "*48", 4: "*16", 5: "*64"}
+
+    Gui New, hWndhWnd LabelMsgBoxEx -0xA0000
+    Gui % (Owner) ? "+Owner" . Owner : ""
+    Gui Font
+    Gui Font, % (FontOptions) ? FontOptions : "s9", % (FontName) ? FontName : "Segoe UI"
+    Gui Color, % (BGColor) ? BGColor : "White"
+    Gui Margin, 10, 12
+
+    If (IsObject(Icon)) {
+        Gui Add, Picture, % "x20 y24 w32 h32 Icon" . Icon[1], % (Icon[2] != "") ? Icon[2] : "shell32.dll"
+    } Else If (Icon + 0) {
+        Gui Add, Picture, x20 y24 Icon%Icon% w32 h32, user32.dll
+        SoundPlay % Sound[Icon]
+    }
+
+    Gui Add, Link, % "x" . (Icon ? 65 : 20) . " y" . (InStr(Text, "`n") ? 24 : 32) . " vc", %Text%
+    GuicontrolGet c, Pos
+    GuiControl Move, c, % "w" . (cw + 30)
+    y2 := (cy + ch < 52) ? 90 : cy + ch + 34
+
+    Gui Add, Text, vf -Background ; Footer
+
+    Gui Font
+    Gui Font, s9, Segoe UI
+    px := 42
+    If (CheckText != "") {
+        CheckText := StrReplace(CheckText, "*",, ErrorLevel)
+        Gui Add, CheckBox, vCheckText x12 y%y2% h26 -Wrap -Background AltSubmit Checked%ErrorLevel%, %CheckText%
+        GuicontrolGet p, Pos, CheckText
+        px := px + pw + 10
+    }
+
+    o := {}
+    Loop Parse, Buttons, |, *
+    {
+        gL := (Callback != "" && InStr(A_LoopField, "...")) ? Callback : "MsgBoxExBUTTON"
+        Gui Add, Button, hWndhBtn g%gL% x%px% w90 y%y2% h26 -Wrap, %A_Loopfield%
+        lb := hBtn
+        o[hBtn] := px
+        px += 98
+    }
+    GuiControl +Default, % (RegExMatch(Buttons, "([^\*\|]*)\*", Match)) ? Match1 : StrSplit(Buttons, "|")[1]
+
+    Gui Show, Autosize Center Hide, %Title%
+    DHW := A_DetectHiddenWindows
+    DetectHiddenWindows On
+    WinGetPos,,, ww,, ahk_id %hWnd%
+    GuiControlGet p, Pos, %lb% ; Last button
+    Off := ww - (((px + pw + 14) * A_ScreenDPI) // 96)
+    For k, v in o {
+        GuiControl Move, %k%, % "x" . (v + Off)
+    }
+    Guicontrol MoveDraw, f, % "x-1 y" . (y2 - 10) . " w" . ww . " h" . 48
+
+    Gui Show
+    Gui +SysMenu %Styles%
+    DetectHiddenWindows %DHW%
+
+    If (Timeout) {
+        SetTimer MsgBoxExTIMEOUT, % Round(Timeout) * 1000
+    }
+
+    If (Owner) {
+        WinSet Disable,, ahk_id %Owner%
+    }
+
+    GuiControl Focus, f
+    Gui Font
+    WinWaitClose ahk_id %hWnd%
+    Return RetVal
+
+    MsgBoxExESCAPE:
+    MsgBoxExCLOSE:
+    MsgBoxExTIMEOUT:
+    MsgBoxExBUTTON:
+        SetTimer MsgBoxExTIMEOUT, Delete
+
+        If (A_ThisLabel == "MsgBoxExBUTTON") {
+            RetVal := StrReplace(A_GuiControl, "&")
+        } Else {
+            RetVal := (A_ThisLabel == "MsgBoxExTIMEOUT") ? "Timeout" : "Cancel"
+        }
+
+        If (Owner) {
+            WinSet Enable,, ahk_id %Owner%
+        }
+
+        Gui Submit
+        Gui %hWnd%: Destroy
+    Return
 }
 
 ;~ F3::
