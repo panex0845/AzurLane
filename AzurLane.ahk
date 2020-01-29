@@ -812,6 +812,25 @@ if (substr(A_osversion, 1, 2)!=10)
 		}
 	}
 }
+IfWinNotExist, ahk_exe NVDisplay.Container.exe
+{
+	iniread, VideoCardCheck, settings.ini, VideoCard, VideoCardCheck
+	Text := "未偵測到Nvidia顯示卡驅動程式。"
+	. "`n`n`n請注意，在非使用Nvidia顯示卡的情況下，本程式取色有關功能可能無法正確運作。"
+	. "`n`n如果您使用的是:`n`n1. Nvidia顯示卡，請嘗試"
+	. "<a href=""https://www.nvidia.com.tw/Download/index.aspx?lang=tw"">更新顯示卡驅動程式</a>。"
+	. "`n`n2. AMD顯示卡，因為作者沒有AMD顯示卡，所以無法排除此問題。"
+	VideoCardCheckText := "不再提示"
+	if (VideoCardCheck!=1)
+	{
+		Result := MsgBoxEx(Text, "提示", "OK", 4, VideoCardCheckText, "-SysMenu AlwaysOnTop", 0, 0, "s12 c0x000000", "Segoe UI")
+		if (VideoCardCheckText=1) {
+			iniwrite, 1, settings.ini, VideoCard, VideoCardCheck
+		} else {
+			iniwrite, 0, settings.ini, VideoCard, VideoCardCheck
+		}
+	}
+}
 LogShow("啟動完畢，等待開始")
 Guicontrol, Enable, start
 return
@@ -2232,10 +2251,13 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 						{
 							yy := yy+100
 							message = 前往神秘物資的路徑被擋住了，嘗試攻擊下方部隊。
-							C_Click(xx, yy)
-							C_Click(xx, yy)
+							LogShow(Message)
+							Click_Fleet(xx, yy)
 						}
+						else 
+						{
 						LogShow(Message)
+						}
 						sleep 300
 						break
 					}
@@ -6850,6 +6872,24 @@ MsgBoxEx(Text, Title := "", Buttons := "", Icon := "", ByRef CheckText := "", St
         Gui Submit
         Gui %hWnd%: Destroy
     Return
+}
+
+Click_Fleet(x, y)
+{
+	Loop, 15
+	{
+		if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
+		{
+			C_Click(x, y)
+			sleep 1500
+		}
+		if (Find(n, m, 0, 587, 86, 647, Formation_Tank))
+		{
+			Break
+		}
+		BackAttack()
+		sleep 500
+	}
 }
 
 ;~ F3::
