@@ -168,6 +168,8 @@ Daily_Right := "|<>*158$24.U0Tzk0Dzs07zw03zy01zz00zzU0Tzk0Dzs07zw03zy01zz00zz00z
 
 Daily_Ico := "|<>*142$11.Dszvlz1y3yDzzzzlz1y3w7sDkTUz1y3w7sDkTUz1y3yDyz" ;每日的驚嘆號
 
+global Daily_Formation
+
 ;//////////演習///////////
 BTN_Exercise := "|<>*188$35.08w00U0000101000u02000204T00409w00807s0QE0zk1wU1DU3w02T07s04y0DKE0s0SgU000wN0E01tl0U003W10007611z0A423C0NA43g0mM4003AsC00CFsT03zc"
 Operation_Upp := "|<>*141$52.3000Q00024001k00080zy70U0UU000Q2023z007w8C80w00zw0k0VzVzw00024003k0008E00D3lDUV000zy3zzwC73w000QE00Dk001k000z00064003w7zkMEsQDkTz1V000z00064007w000ME00Tk001VwADz1zw47UkTw7zUEk7UDk00320z0T000A8Dz1w001s"
@@ -175,7 +177,7 @@ Operation_Start := "|<>*213$65.k0300T1zs7zUsC7Vy3zkDz1kQD3wAT0zy3UsS7sMC3Tw01k0D
 Operation_Formation := "|<>*147$53.sTkTy0MS7lk00w0kQD3U01s10067003k200AE7y7W400F0DwD4DUTW000S8S1y0E01w0k7w0U07s208433zzk400C6007U8k0M400D0D03l000S8Q070008wM00C002Fsk20Q0003lUs0Ts007X7U0mY00D0C01U800S0E0U8E18w0010E02Fs2630U84Xlxs730k87XzUD63WkD7z0zzz7xyDzzz"
 Operation_Shop := "|<>*154$53.szklz3z1zlk00y7w1zzU01sTk3s1003kzU3k3wDz2623k7sDw8MC3w800s0Uy3kk01k3007VU03U600j0267sD01w000DUDzzk000S6DzzUM00s0E060EUVk0U0A0133U100M0227zW7kwA00D9ADVsQ00SG8T3ksEEwWEy7VkVVl4VwD3V33W900S72074G00wC40S8Y03wTzzzzzzzzzzzzzzzz"
 
-
+global Operation_Upp
 
 ;///////////戰鬥////////////
 
@@ -218,9 +220,10 @@ Battle_Weigh := "|<>*207$27.zy3zzzkTzzy3zy7kT3ky3sS7kT3ky3sS7kT3ky3sS7kT3ky3sS7k
 
 Switch_NoParty := "|<>*147$11.wDsTtzzzzzDwDkTUz1y3w7sDkTUz1y3w7sDkTkzrs"
 
+BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
 
 global Battle_Victory, Battle_Touch_to_Continue, Battle_End, Formation_Tank, Battle_BackAttack, SkipBtn, UnknowWife, Battle_BossIco
-global Battle_Exit_Battle, Battle_Defensive, Battle_Weigh, Switch_NoParty
+global Battle_Exit_Battle, Battle_Defensive, Battle_Weigh, Switch_NoParty, BTN_Pause
 
 ;///////////tomap//////////
 

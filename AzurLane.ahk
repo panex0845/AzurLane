@@ -708,10 +708,10 @@ Gui, Add, Text, x240 y%TAB_Y% w100 h20 , 秒/次
 
 Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
 Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
-Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
-Tab_Y -= 3
-Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
-Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
+;~ Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
+;~ Tab_Y -= 3
+;~ Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
+;~ Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
@@ -5507,6 +5507,28 @@ Message_Normal()
 	}
 }
 
+Four_Chicken() {
+	Chicken_Face := "|<>*185$16.k0PU1y07s0DU0k000401w0Ds0zU1w01UU"
+	if (Find(x, y, 516, 339, 616, 399, Chicken_Face)) {
+		LogShow("網路不穩定，發現四隻小雞！")
+		Loop
+		{
+			if (Find(x, y, 516, 339, 616, 399, Chicken_Face)) {
+				Chicken++
+			}
+			if (Chicken=60) {
+				LogShow("重新連線逾時，重新啟動模擬器。")
+				LogShow("但是其實還沒做，卡住了")
+			}
+			if (A_index>120)
+			{
+				break
+			}
+			sleep 1000
+		}
+	}
+}
+
 UnknowWife()
 {
 	if (Find(x, y, 390, 343, 490, 403, UnknowWife)) ;未知腳色(確認)
@@ -5980,7 +6002,6 @@ ChooseParty(Byref StopAnchor)
 
 Battle_Operation()
 {
-	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
 	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
@@ -6013,26 +6034,39 @@ Battle_Operation()
 						LogShow("我方血量過低，自動離開戰鬥")
 						Loop, 100
 						{
-							if (DwmCheckcolor(1241, 82, 16249847))
+							if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause)) ;點擊暫停按紐
 							{
-								C_Click(1210, 82) ;點擊暫停
+								Random, x, 1152, 1256
+								Random, y, 69, 88
+								C_Click(x, y)
 								sleep 1000
 							}
-							else if (DwmCheckcolor(457, 549, 16777215))
+							else if (Find(x, y, 439, 500, 539, 600, Battle_Exit_Battle)) ;退出戰鬥
 							{
-								C_Click(504, 553) ;退出戰鬥
+								Random, x, 443, 567
+								Random, y, 540, 569
+								C_Click(x, y)
 								sleep 1000
 							}
-							else if (DwmCheckcolor(330, 209, 16777215) and (Dwmgetpixel(744, 549)>9650000 and Dwmgetpixel(744, 549)<13626362))
+							else if (Find(x, y, 767, 500, 850, 600, Battle_Exit_Battle)) ;確認退出
 							{
-								C_Click(790, 544) ;拋棄獲得的資源 道具 腳色
+								Random, x, 726, 862
+								Random, y, 544, 570
+								C_Click(x, y)
+								sleep 2000
+							}
+							else if (Find(x, y, 1124, 677, 1224, 737, Battle_Defensive)) ;迎擊
+							{
+								Random, x, 1163, 1244
+								Random, y, 700, 725
+								C_Click(x, y)
 								sleep 1000
 							}
-							else if (DwmCheckcolor(1231, 666, 16239426) and DwmCheckcolor(1235, 650, 16777215)) ;回到編隊出擊頁面
+							else if (Find(x, y, 100, 34, 200, 94, Daily_Formation)) ;回到編隊出擊頁面
 							{
 								C_Click(59, 90) ;返回上一頁
 							}
-							else if (DwmCheckcolor(153, 69, 14609407) and DwmCheckcolor(170, 70, 14609407)) ;回到演習頁面
+							else if (Find(x, y, 99, 35, 199, 95, Operation_Upp)) ;回到演習頁面
 							{
 								C_Click(1142, 395) ;更換對手
 								IsChanged++
@@ -6055,21 +6089,34 @@ Battle_Operation()
 				Loop, 999
 				{
 					sleep 500
-					if (DwmCheckcolor(1241, 82, 16249847))
+					if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause)) ;點擊暫停按紐
 					{
-						C_Click(1210, 82) ;點擊暫停
+						Random, x, 1152, 1256
+						Random, y, 69, 88
+						C_Click(x, y)
 						sleep 1000
 					}
-					if (DwmCheckcolor(457, 549, 16777215) and DwmCheckcolor(457, 549, 16777215))
+					else if (Find(x, y, 439, 500, 539, 600, Battle_Exit_Battle)) ;退出戰鬥
 					{
-						C_Click(504, 553) ;退出戰鬥
+						Random, x, 443, 567
+						Random, y, 540, 569
+						C_Click(x, y)
 						sleep 1000
 					}
-					if (DwmCheckcolor(330, 209, 16777215) and DwmCheckcolor(821, 535, 16777215))
+					else if (Find(x, y, 767, 500, 850, 600, Battle_Exit_Battle)) ;確認退出
 					{
-						C_Click(790, 544) ;拋棄獲得的資源 道具 腳色
-						sleep 10000
-						break
+						Random, x, 726, 862
+						Random, y, 544, 570
+						C_Click(x, y)
+						sleep 2000
+					}
+					else if (Find(x, y, 100, 34, 200, 94, Daily_Formation)) ;回到編隊出擊頁面
+					{
+						C_Click(59, 90) ;返回上一頁
+					}
+					else if (Find(x, y, 99, 35, 199, 95, Operation_Upp)) ;回到演習頁面
+					{
+						Break
 					}
 				}
 			}
@@ -6080,7 +6127,6 @@ Battle_Operation()
 
 Battle()
 {
-	BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
 	global NowHP
 	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
