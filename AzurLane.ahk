@@ -706,12 +706,12 @@ Tab_Y += 3
 Gui, Add, Text, x220 y%TAB_Y% w20 h20 vMainsubTimerBarUpdate , %MainsubTimerBarUpdate% 
 Gui, Add, Text, x240 y%TAB_Y% w100 h20 , 秒/次
 
-;~ Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
-;~ Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
-;~ Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
-;~ Tab_Y -= 3
-;~ Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
-;~ Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
+Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
+Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
+Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
+Tab_Y -= 3
+Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
+Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
 
 
 ;///////////////////     GUI Right Side  End ///////////////////
@@ -1532,6 +1532,10 @@ return
 
 Mainsub: ;優先檢查出擊以外的其他功能
 LDplayerCheck := Find(x, y, 0, 0, 50, 35, LdPlayerLogo) ; 夜神 LDplayerCheck := 1
+if (LDplayerCheck=0) {
+	LogShow("無法正確偵測到雷電模擬器。")
+	sleep 1000
+}
 Formattime, Nowtime, ,HHmm
 if !LDplayerCheck ;檢查模擬器有沒有被縮小
 {
@@ -2141,14 +2145,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 	Loop, 100
 	{
 		sleep 300
-		if (AnchorChapter=7 and AnchorChapter2=2)
-		{
-			SearchDirection := 1
-		}
-		else
-		{
-			Random, SearchDirection, 1, 8
-		}
+		Random, SearchDirection, 1, 8
 		if (DwmCheckcolor(1102, 480, 16768842))
 		{
 			LogShow("關閉陣型列表")
@@ -2174,7 +2171,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(n, m, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						bulletFailed++
 						break
@@ -2226,11 +2223,18 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					C_Click(xx, yy)
 					sleep 300
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(n, m, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						questFailed++
 						TakeQuest--
 						Message = 哎呀哎呀，前往神秘物資的路徑被擋住了！ 
+						if (AnchorChapter=7 and AnchorChapter2=2 and xx<290 and yy<414)
+						{
+							yy := yy+100
+							message = 前往神秘物資的路徑被擋住了，嘗試攻擊下方部隊。
+							C_Click(xx, yy)
+							C_Click(xx, yy)
+						}
 						LogShow(Message)
 						sleep 300
 						break
@@ -2571,7 +2575,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				{
 					C_Click(xx, yy)
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						BossFailed++
 						LogShow("哎呀哎呀，前往BOSS的路徑被擋住了！")
@@ -2618,7 +2622,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed2++
 						LogShow("哎呀哎呀，前往運輸艦隊的路徑被擋住了！")
@@ -2651,7 +2655,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed++
 						LogShow("哎呀哎呀，前往航空艦隊的路徑被擋住了！")
@@ -2684,7 +2688,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed++
 						LogShow("哎呀哎呀，前往航空艦隊的路徑被擋住了！")
@@ -2717,7 +2721,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed4++
 						LogShow("哎呀哎呀，前往偵查艦隊的路徑被擋住了！")
@@ -2751,7 +2755,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						TargetFailed3++
 						LogShow("哎呀哎呀，前往主力艦隊的路徑被擋住了！")
@@ -2784,7 +2788,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				if (Find(x, y, 750, 682, 850, 742, Battle_Map)) ;如果在限時(無限時)地圖
 				{
 					C_Click(xx, yy)
-					if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
+					if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy"))
 					{
 						Plane_TargetFailed1++
 						LogShow("哎呀哎呀，前往航空器的路徑被擋住了！")
@@ -2830,7 +2834,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 				C_Click(xx, yy)
 				C_Click(xx, yy)
 			}
-			if (Find(x, y, 465, 329, 565, 389, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy")) 
+			if (Find(x, y, 495, 330, 530, 390, "|<>*200$8.zyT3kyTzzyT3kwD3kwD3kwD3kwD3kzy")) 
 			{
 				BossFailed++
 				return
