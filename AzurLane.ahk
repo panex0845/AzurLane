@@ -648,11 +648,12 @@ Gui, Add, CheckBox, x240 y%TAB_Y% w200 h20 gOthersettings vAutoLogin checked%Aut
 Tab_Y += 30
 Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vSetGuiBGcolor checked%SetGuiBGcolor% , 自訂背景顏色 0x
 Tab_Y -= 1
-Gui Add, Edit, x155 y%TAB_Y% w80 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
-Gui Add, Button, x255 y%TAB_Y% w120 h21 gHexadecimalSub , 色票查詢工具
+Gui Add, Edit, x155 y%TAB_Y% w70 h21 vSetGuiBGcolor2 gOthersettings Limit6, %SetGuiBGcolor2%
+Gui Add, Button, x240 y%TAB_Y% w120 h21 gHexadecimalSub , 色票查詢工具
+
 Tab_Y += 30
 iniread, DebugMode, settings.ini, OtherSub, DebugMode, 0
-Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , DebugMode
+Gui, Add, CheckBox, x30 y%TAB_Y% w125 h20 gOthersettings vDebugMode checked%DebugMode% , 除錯模式
 Tab_Y += 32
 Iniread, DwmMode, settings.ini, OtherSub, DwmMode, 1
 Iniread, GdiMode, settings.ini, OtherSub, GdiMode, 0
@@ -1263,8 +1264,8 @@ WindowName = Azur Lane - %title%
 wingetpos, azur_x, azur_y,, WindowName
 iniwrite, %azur_x%, settings.ini, Winposition, azur_x
 iniwrite, %azur_y%, settings.ini, Winposition, azur_y
-Critical, off
 exitapp
+Critical, off
 return
 
 Showsub:
@@ -1968,7 +1969,7 @@ if (Find(x, y, 164, 42, 264, 102, Formation_Upp) and Find(x, y, 0, 587, 86, 647,
 	Random, y, 656, 690
 	C_Click(x, y) ;於編隊頁面點擊右下 "出擊"
 	sleep 500
-	shipsfull(StopAnchor)
+	shipsfull()
 	IsDetect := VarSetCapacity
     TargetFailed := VarSetCapacity
     TargetFailed2 := VarSetCapacity
@@ -2075,7 +2076,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 	}
 	if (NowHP>=1 and Retreat_LowHp2 and SwitchParty<1 and (NowHp<=Retreat_LowHp2Bar))
 	{
-		Message = 戰鬥結束旗艦HP低於 %NowHP%`%，開始%Retreat_LowHp2Do%。
+		Message = 旗艦HP剩餘於 %NowHP%`%＜%Retreat_LowHp2Bar%`%，%Retreat_LowHp2Do%。
 		LogShow(Message)
 		if (Retreat_LowHp2Do="更換隊伍")
 		{
@@ -2164,7 +2165,14 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 	Loop, 100
 	{
 		sleep 300
-		Random, SearchDirection, 1, 8
+		if (AnchorChapter=7 and AnchorChapter2=2) ;7-2從左邊開始偵查到右邊 提高拿到左邊"？"的機率
+		{
+			SearchDirection := 1
+		}
+		else
+		{
+			Random, SearchDirection, 1, 8
+		}
 		if (DwmCheckcolor(1102, 480, 16768842))
 		{
 			LogShow("關閉陣型列表")
@@ -3794,7 +3802,7 @@ Try
 	Battle()
 	ChooseParty(StopAnchor)
 	ToMap()
-	shipsfull(StopAnchor)
+	shipsfull()
 	BackAttack()
 	Message_Story()
 	Battle_End()
@@ -3933,7 +3941,7 @@ Loop
 		Battle_Operation()
 		ChooseParty(StopAnchor)
 		ToMap()
-		shipsfull(StopAnchor)
+		shipsfull()
 		BackAttack()
 		Message_Story()
 		Battle_End()
@@ -4183,7 +4191,7 @@ if  (DailyGoalSub and DailyDone<1)
 					Battle()
 					ChooseParty(StopAnchor)
 					ToMap()
-					shipsfull(StopAnchor)
+					shipsfull()
 					BackAttack()
 					Message_Story()
 					Battle_End()
@@ -5604,8 +5612,9 @@ BackAttack()
 	}
 }
 
-shipsfull(byref StopAnchor)
+shipsfull()
 {
+	global StopAnchor
 	if (Find(x, y, 400, 300, 600, 500, SF_Ship_is_Full))
 	{
 		if shipsfull=停止出擊
@@ -5629,6 +5638,8 @@ shipsfull(byref StopAnchor)
 				}
 				if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor)) ;回到首頁
 				{
+					StopAnchor := 1 ;不再出擊
+					return StopAnchor
 					Break
 				}
 				else
@@ -5637,6 +5648,7 @@ shipsfull(byref StopAnchor)
 					if (BreakShipsfailed>=50)
 					{
 						StopAnchor := 1 ;不再出擊
+						return StopAnchor
 						Break
 					}
 				}
