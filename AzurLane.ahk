@@ -6179,6 +6179,7 @@ Battle_Operation()
 	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
+		Start_BattleTime := 
 		Loop
 		{
 			sleep 400
@@ -6190,20 +6191,40 @@ Battle_Operation()
 					Break
 				}
 			}
-			if (Leave_Operatio and IsChanged<6) ;快輸了自動離開
+			if (Leave_Operatio and IsChanged<20) ;快輸了自動離開 重試20次
 			{
 				; 我方血量起點 X: 584 Y: 87  Color : 15672353 終點 X: 274 
 				; 敵方血量起點 X: 694 Y: 87 Color : 15672353 終點 X: 1001
-				MyTargetHP_X := Ceil((274-584)*(OperatioMyHpBar/100)+584)
-				EnTargetHP_X := Ceil((1001-694)*(OperatioEnHpBar/100)+694)
-				MyTargetHP := DwmGetpixel(MyTargetHP_X, 87) ;15672336
-				EnTargetHP := DwmGetpixel(EnTargetHP_X, 87) ;15672336
-				if (DwmCheckcolor(584, 87, 15672353) and MyTargetHP<15630000 and DwmCheckcolor(694, 87, 15672353) and (EnTargetHP>15650000 and EnTargetHP<15690000))
+				MyHpbar := [271, 79, 586, 90]
+				EmHpbar := [692, 79, 1004, 90]
+				if (GdipImageSearch(myhpx, my, "img\battle\OperationHp.png", 50, 1, MyHpbar[1], MyHpbar[2], MyHpbar[3], MyHpbar[4]) and GdipImageSearch(emhpx, ey, "img\battle\OperationHp.png", 50, 8, EmHpbar[1], EmHpbar[2], EmHpbar[3], EmHpbar[4]))
+				{
+					Myhp := 100-Ceil((myhpx-MyHpbar[1])/(MyHpbar[3]-MyHpbar[1])*100)  ; 0~315
+					Emhp := Ceil(((emhpx-EmHpbar[1])/(EmHpbar[3]-EmHpbar[1]))*100) ; 0~312
+					Guicontrol, ,starttext, 目前狀態：演習中，我方HP:  %Myhp% `% VS 敵方HP:  %Emhp% `%。
+				}
+				else
+				{
+					Myhp := 100 ;"偵測失敗"
+					Emhp := 100 ;"偵測失敗"
+					Guicontrol, ,starttext, 目前狀態：演習中。
+				}
+				if (Myhp<OperatioMyHpBar and Emhp>OperatioEnHpBar)
 				{
 					sleep 1000
-					MyTargetHP := DwmGetpixel(MyTargetHP_X, 87) ;15672336
-					EnTargetHP := DwmGetpixel(EnTargetHP_X, 87) ;15672336
-					if (DwmCheckcolor(584, 87, 15672353) and MyTargetHP<15630000 and DwmCheckcolor(694, 87, 15672353) and (EnTargetHP>15630000 and EnTargetHP<15690000))   ;再檢查一次
+					if (GdipImageSearch(myhpx, my, "img\battle\OperationHp.png", 50, 1, MyHpbar[1], MyHpbar[2], MyHpbar[3], MyHpbar[4]) and GdipImageSearch(emhpx, ey, "img\battle\OperationHp.png", 50, 8, EmHpbar[1], EmHpbar[2], EmHpbar[3], EmHpbar[4]))
+					{
+						Myhp := 100-Ceil((myhpx-MyHpbar[1])/(MyHpbar[3]-MyHpbar[1])*100)  ; 0~315
+						Emhp := Ceil(((emhpx-EmHpbar[1])/(EmHpbar[3]-EmHpbar[1]))*100) ; 0~312
+						Guicontrol, ,starttext, 目前狀態：演習中，我方HP:  %Myhp% `% VS 敵方HP:  %Emhp% `%。
+					}
+					else
+					{
+						Myhp := 100 ;"偵測失敗"
+						Emhp := 100 ;"偵測失敗"
+						Guicontrol, ,starttext, 目前狀態：演習中。
+					}
+					if (Myhp<OperatioMyHpBar and Emhp>OperatioEnHpBar)   ;再檢查一次
 					{
 						LogShow("我方血量過低，自動離開戰鬥")
 						Loop, 100
