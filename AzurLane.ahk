@@ -51,10 +51,14 @@ if (ldplayer="") {
 		RegRead, ldplayer, HKEY_CURRENT_USER, Software\XuanZhi\LDPlayer, InstallDir ; Ldplayer 4.0+ version
 		if (ldplayer="") {
 			MsgBox, 16, 設定精靈, 未能偵測到雷電模擬器的安裝路徑，請嘗試：`n`n1. 重新安裝模擬器。`n`n2. 手動指定路徑： Win+R → Regedit `n　HKEY_CURRENT_USER, Software\Changzhi\LDPlayer `n　底下新增 InstallDir
-		Exitapp
+			MsgBox 0x21, 設定精靈, 未能找到到雷電模擬器路徑，是否繼續設定？
+			IfMsgBox OK, {
+				;////do notthing////////
+			} Else IfMsgBox Cancel, {
+				ExitApp
+			}
 		} else {
-			MsgBox, 16, 設定精靈, 不支援雷電模擬器4.0。
-			ExitApp
+			MsgBox, 16, 設定精靈, 雷電模擬器4.0僅供測試使用，`n`n如遇到任何問題，建議更換3.x版本。
 		}
 	}
 }
@@ -531,21 +535,24 @@ Tab_Y +=5
 Gui, Add, Text, x200 y%Tab_Y% w80 h20 , 次後撤退
 
 
-
-
 Gui, Tab, 學　院
+Tab_Y := 90 ;///////////學院///////////////
 iniread, AcademySub, settings.ini, Academy, AcademySub
-Gui, Add, CheckBox, x30 y90 w150 h20 gAcademysettings vAcademySub checked%AcademySub% +c4400FF, 啟動自動學院
+Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gAcademysettings vAcademySub checked%AcademySub% +c4400FF, 啟動自動學院
+Tab_Y +=30
 iniread, AcademyOil, settings.ini, Academy, AcademyOil, 1
-Gui, Add, CheckBox, x30 y120 w150 h20 gAcademysettings vAcademyOil checked%AcademyOil%, 自動採集石油
+Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gAcademysettings vAcademyOil checked%AcademyOil%, 採集石油
+Tab_Y +=30
 iniread, AcademyCoin, settings.ini, Academy, AcademyCoin, 1
-Gui, Add, CheckBox, x30 y150 w150 h20 gAcademysettings vAcademyCoin checked%AcademyCoin%, 自動蒐集金幣
+Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gAcademysettings vAcademyCoin checked%AcademyCoin%, 領取金幣
+Tab_Y +=30
 iniread, AcademyTactics, settings.ini, Academy, AcademyTactics, 1
-Gui, Add, CheckBox, x30 y180 w120 h20 gAcademysettings vAcademyTactics checked%AcademyTactics%, 自動學習技能
+Gui, Add, CheckBox, x30 y%Tab_Y% w80 h20 gAcademysettings vAcademyTactics checked%AcademyTactics%, 學習技能
 iniread, 150expbookonly, settings.ini, Academy, 150expbookonly, 1
-Gui, Add, CheckBox, x160 y180 w200 h20 gAcademysettings v150expbookonly checked%150expbookonly%, 僅使用150`%經驗的課本
+Gui, Add, CheckBox, x120 y%Tab_Y% w200 h20 gAcademysettings v150expbookonly checked%150expbookonly%, 僅使用150`%經驗的課本
+Tab_Y +=30
 iniread, AcademyShop, settings.ini, Academy, AcademyShop, 1
-Gui, Add, CheckBox, x30 y210 w220 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 自動購買軍火商物品`(金幣)
+Gui, Add, CheckBox, x30 y%Tab_Y% w220 h20 gAcademysettings vAcademyShop checked%AcademyShop%, 購買補給商店軍火商`(金幣)
 iniread, SkillBook_ATK, settings.ini, Academy, SkillBook_ATK, 1
 iniread, SkillBook_DEF, settings.ini, Academy, SkillBook_DEF, 1
 iniread, SkillBook_SUP, settings.ini, Academy, SkillBook_SUP, 1
@@ -558,33 +565,45 @@ iniread, Part_Common, settings.ini, Academy, Part_Common, 0
 iniread, Item_Equ_Box1, settings.ini, Academy, Item_Equ_Box1, 0
 iniread, Item_Water, settings.ini, Academy, Item_Water, 0
 iniread, Item_Tempura, settings.ini, Academy, Item_Tempura, 0
-Gui, Add, CheckBox, x50 y240 w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
-Gui, Add, CheckBox, x140 y240 w80 h20 gAcademysettings vSkillBook_DEF checked%SkillBook_DEF%, 防禦教材
-Gui, Add, CheckBox, x230 y240 w80 h20 gAcademysettings vSkillBook_SUP checked%SkillBook_SUP%, 輔助教材
-Gui, Add, CheckBox, x320 y240 w80 h20 gAcademysettings vCube checked%Cube%, 心智魔方
-Gui, Add, CheckBox, x50 y270 w110 h20 gAcademysettings vPart_Aircraft checked%Part_Aircraft%, 艦載機部件T3
-Gui, Add, CheckBox, x170 y270 w100 h20 gAcademysettings vPart_Cannon checked%Part_Cannon%, 主砲部件T3
-Gui, Add, CheckBox, x280 y270 w100 h20 gAcademysettings vPart_torpedo checked%Part_torpedo%, 魚雷部件T3
-Gui, Add, CheckBox, x50 y300 w110 h20 gAcademysettings vPart_Anti_Aircraft checked%Part_Anti_Aircraft%, 防空砲部件T3
-Gui, Add, CheckBox, x170 y300 w110 h20 gAcademysettings vPart_Common checked%Part_Common%, 共通部件T3
-Gui, Add, CheckBox, x280 y300 w110 h20 gAcademysettings vItem_Equ_Box1 checked%Item_Equ_Box1%, 外觀裝備箱
-Gui, Add, CheckBox, x50 y330 w100 h20 gAcademysettings vItem_Water checked%Item_Water%, 秘製冷卻水
-Gui, Add, CheckBox, x170 y330 w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
+Tab_Y +=30
+Gui, Add, CheckBox, x50 y%Tab_Y% w80 h20 gAcademysettings vSkillBook_ATK checked%SkillBook_ATK%, 攻擊教材
+Gui, Add, CheckBox, x140 y%Tab_Y% w80 h20 gAcademysettings vSkillBook_DEF checked%SkillBook_DEF%, 防禦教材
+Gui, Add, CheckBox, x230 y%Tab_Y% w80 h20 gAcademysettings vSkillBook_SUP checked%SkillBook_SUP%, 輔助教材
+Gui, Add, CheckBox, x320 y%Tab_Y% w80 h20 gAcademysettings vCube checked%Cube%, 心智魔方
+Tab_Y +=30
+Gui, Add, CheckBox, x50 y%Tab_Y% w110 h20 gAcademysettings vPart_Aircraft checked%Part_Aircraft%, 艦載機部件T3
+Gui, Add, CheckBox, x170 y%Tab_Y% w100 h20 gAcademysettings vPart_Cannon checked%Part_Cannon%, 主砲部件T3
+Gui, Add, CheckBox, x270 y%Tab_Y% w100 h20 gAcademysettings vPart_torpedo checked%Part_torpedo%, 魚雷部件T3
+Gui, Add, CheckBox, x370 y%Tab_Y% w110 h20 gAcademysettings vPart_Anti_Aircraft checked%Part_Anti_Aircraft%, 防空砲部件T3
+Tab_Y +=30
+Gui, Add, CheckBox, x50 y%Tab_Y% w110 h20 gAcademysettings vPart_Common checked%Part_Common%, 共通部件T3
+Gui, Add, CheckBox, x170 y%Tab_Y% w100 h20 gAcademysettings vItem_Equ_Box1 checked%Item_Equ_Box1%, 外觀裝備箱
+Gui, Add, CheckBox, x270 y%Tab_Y% w100 h20 gAcademysettings vItem_Water checked%Item_Water%, 秘製冷卻水
+Gui, Add, CheckBox, x370 y%Tab_Y% w80 h20 gAcademysettings vItem_Tempura checked%Item_Tempura%, 天婦羅
+Tab_Y +=30
+iniread, Item_Ex4_Box, settings.ini, Academy, Item_Ex4_Box, 0
+Gui, Add, CheckBox, x50 y%Tab_Y% w120 h20 gAcademysettings vItem_Ex4_Box checked%Item_Ex4_Box%, 科技箱T4`(功勳)
 
 Gui, Tab, 後　宅
+Tab_Y :=90 ;////////////後宅//////////////
 iniread, DormSub, settings.ini, Dorm, DormSub
-Gui, Add, CheckBox, x30 y90 w150 h20 gDormsettings vDormSub checked%DormSub% +c4400FF, 啟動自動整理後宅
+Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gDormsettings vDormSub checked%DormSub% +c4400FF, 啟動自動後宅
+Tab_Y +=30
 iniread, DormCoin, settings.ini, Dorm, DormCoin, 1
-Gui, Add, CheckBox, x30 y120 w150 h20 gDormsettings vDormCoin checked%DormCoin%, 自動蒐集傢俱幣
+Gui, Add, CheckBox, x30 y%Tab_Y% w110 h20 gDormsettings vDormCoin checked%DormCoin%, 領取傢俱幣
+Tab_Y +=30
 iniread, Dormheart, settings.ini, Dorm, Dormheart, 1
-Gui, Add, CheckBox, x30 y150 w150 h20 gDormsettings vDormheart checked%Dormheart%, 自動撈取海洋之心
-
+Gui, Add, CheckBox, x30 y%Tab_Y% w130 h20 gDormsettings vDormheart checked%Dormheart%, 打撈海洋之心
+Tab_Y +=30
 iniread, DormFood, settings.ini, Dorm, DormFood
-Gui, Add, CheckBox, x30 y180 w80 h20 gDormsettings vDormFood checked%DormFood%, 糧食低於
+Gui, Add, CheckBox, x30 y%Tab_Y% w80 h20 gDormsettings vDormFood checked%DormFood%, 糧食低於
+Tab_Y -=2
 IniRead, DormFoodBar, settings.ini, Dorm, DormFoodBar, 80
-Gui, Add, Slider, x110 y178 w100 h30 gDormsettings vDormFoodBar range10-80 +ToolTip , %DormFoodBar%
-Gui, Add, Text, x215 y180 w20 h20 vDormFoodBarUpdate , %DormFoodBarUpdate% 
-Gui, Add, Text, x240 y180 w100 h20 vTestbar1Percent, `%自動補給
+Gui, Add, Slider, x110 y%Tab_Y% w100 h30 gDormsettings vDormFoodBar range10-80 +ToolTip , %DormFoodBar%
+Tab_Y +=2
+Gui, Add, Text, x215 y%Tab_Y% w20 h20 vDormFoodBarUpdate , %DormFoodBarUpdate% 
+Gui, Add, Text, x240 y%Tab_Y% w100 h20 vTestbar1Percent, `%自動補給
+
 
 Gui, Tab, 科　研
 Tab_Y := 90
@@ -642,7 +661,7 @@ Gui, Add, CheckBox, x240 y%TAB_Y% w200 h20 gOthersettings vGuiHideX checked%GuiH
 
 Tab_Y += 30
 iniread, EmulatorCrushCheck, settings.ini, OtherSub, EmulatorCrushCheck
-Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vEmulatorCrushCheck checked%EmulatorCrushCheck% , 自動檢查模擬器是否當機
+Gui, Add, CheckBox, x30 y%TAB_Y% w200 h20 gOthersettings vEmulatorCrushCheck checked%EmulatorCrushCheck% , 模擬器或輔助卡住自動重啟
 iniread, AutoLogin, settings.ini, OtherSub, AutoLogin
 Gui, Add, CheckBox, x240 y%TAB_Y% w200 h20 gOthersettings vAutoLogin checked%AutoLogin% , 斷線自動重登(Google帳號)
 Tab_Y += 30
@@ -665,8 +684,7 @@ Gui, Add, Radio,  x110 y%TAB_Y% w60 h20 gOthersettings vDwmMode checked%DwmMode%
 
 Gui, Add, Radio,  x180 y%TAB_Y% w50 h20 gOthersettings vGdiMode checked%GdiMode% , GDI
 Gui, Add, Radio,  x240 y%TAB_Y% w60 h20 gOthersettings vAHKMode checked%AHKMode% , AHK
-Tab_Y += 25
-Gui, Add, CheckBox, x110 y%TAB_Y% w300 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造一個隱形視窗對其取色`(for DWM)
+Gui, Add, CheckBox, x310 y%TAB_Y% w300 h20 gOthersettings vCloneWindowforDWM checked%CloneWindowforDWM% , 創造隱形視窗`(DWM)
 Tab_Y += 30
 Gui, Add, Text,  x30 y%TAB_Y%  w100 h20 , 點擊方式：
 Tab_Y -= 3
@@ -706,20 +724,43 @@ Gui, Add, Slider, x140 y%TAB_Y% w80 h30 gMainsubTimersettings vMainsubTimer rang
 Tab_Y += 3
 Gui, Add, Text, x220 y%TAB_Y% w20 h20 vMainsubTimerBarUpdate , %MainsubTimerBarUpdate% 
 Gui, Add, Text, x240 y%TAB_Y% w100 h20 , 秒/次
-
-Iniread, Ldplayer3, settings.ini, OtherSub, Ldplayer3, 1
-Iniread, Ldplayer4, settings.ini, OtherSub, Ldplayer4, 0
-;~ Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
-;~ Tab_Y -= 3
-;~ Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gOthersettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
-;~ Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gOthersettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
-
-
+Tab_Y += 30
+Iniread, Ldplayer3, settings.ini, EmulatorSub, Ldplayer3, 1
+Iniread, Ldplayer4, settings.ini, EmulatorSub, Ldplayer4, 0
+Iniread, NoxPlayer5, settings.ini, EmulatorSub, NoxPlayer5, 0
+Gui, Add, Text,  x30 y%TAB_Y%  w140 h20 , 模  擬  器：
+Tab_Y -= 3
+Gui, Add, Radio,  x110 y%TAB_Y% w80 h20 gEmulatorsettings vLdplayer3 checked%Ldplayer3% , 雷電3.x
+Gui, Add, Radio,  x190 y%TAB_Y% w80 h20 gEmulatorsettings vLdplayer4 checked%Ldplayer4% , 雷電4.x
+Gui, Add, Radio,  x270 y%TAB_Y% w80 h20 gEmulatorsettings vNoxPlayer5 checked%NoxPlayer5% , 夜神
+Global Ldplayer3, Ldplayer4, NoxPlayer5
 ;///////////////////     GUI Right Side  End ///////////////////
 
-EmulatorResolution_W := 1318  ; 雷電4.0 1322 夜神 1284
-EmulatorResolution_H := 758 ;夜神 754
-Global EmulatorResolution_W, EmulatorResolution_H
+if (Ldplayer3) {
+	EmulatorResolution_W := 1318  ; 雷電4.0 1322 夜神 1284
+	EmulatorResolution_H := 758 ;夜神 754
+	RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\dnplayer-tw, InstallDir ; Ldplayer 3.76以下版本
+	if (ldplayer="") {
+		RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
+	}
+	Consolefile = "dnconsole.exe"
+} else if (Ldplayer4) {
+	EmulatorResolution_W := 1322  ; 雷電4.0 1322 夜神 1284
+	EmulatorResolution_H := 758 ;夜神 754
+	RegRead, ldplayer, HKEY_CURRENT_USER, Software\XuanZhi\LDPlayer, InstallDir ; Ldplayer 4.0+ version
+	Consolefile = "dnconsole.exe"
+} else if (NoxPlayer5) {
+	EmulatorResolution_W := 1284  ; 雷電4.0 1322 夜神 1284
+	EmulatorResolution_H := 754 ;夜神 754
+	iniRead, ldplayer, settings.ini, NoxInstallDir, NoxInstallDir
+	if (ldplayer="" or ldplayer="ERROR")
+	{
+		InputBox, ldplayer, 設定精靈, 請輸入夜神模擬器的路徑`n`n例如: C:\Program Files\Nox\bin
+		iniwrite, %ldplayer%, settings.ini, NoxInstallDir, NoxInstallDir
+	}
+	Consolefile = "NoxConsole.exe"
+}
+Global EmulatorResolution_W, EmulatorResolution_H, Consolefile
 
 IniRead, azur_x, settings.ini, Winposition, azur_x, 0
 IniRead, azur_y, settings.ini, Winposition, azur_y, 0
@@ -1129,6 +1170,7 @@ Guicontrolget, Part_Common
 Guicontrolget, Item_Equ_Box1
 Guicontrolget, Item_Water
 Guicontrolget, Item_Tempura
+Guicontrolget, Item_Ex4_Box
 Iniwrite, %AcademySub%, settings.ini, Academy, AcademySub
 Iniwrite, %AcademyOil%, settings.ini, Academy, AcademyOil
 Iniwrite, %AcademyCoin%, settings.ini, Academy, AcademyCoin
@@ -1147,6 +1189,7 @@ Iniwrite, %Part_Common%, settings.ini, Academy, Part_Common
 Iniwrite, %Item_Equ_Box1%, settings.ini, Academy, Item_Equ_Box1
 Iniwrite, %Item_Water%, settings.ini, Academy, Item_Water
 Iniwrite, %Item_Tempura%, settings.ini, Academy, Item_Tempura
+Iniwrite, %Item_Ex4_Box%, settings.ini, Academy, Item_Ex4_Box
 Critical, off
 return
 
@@ -1236,6 +1279,7 @@ Iniwrite, %Value_Err0%, settings.ini, OtherSub, Value_Err0
 Iniwrite, %Value_Err1%, settings.ini, OtherSub, Value_Err1
 Iniwrite, %Value_Pic%, settings.ini, OtherSub, Value_Pic
 Iniwrite, %MainsubTimer%, settings.ini, OtherSub, MainsubTimer
+
 Err0_V := if (Value_Err0!=0) ? Round(Value_Err0/100, 2) : 0.00
 Err1_V := if (Value_Err1!=0) ? Round(Value_Err1/100, 2) : 0.00
 Value_Pic := if Value_Pic!=0 ? Round(Value_Pic/10, 2) : 0.00
@@ -1243,8 +1287,25 @@ Guicontrol, ,Value_Err0BarUpdate, %Err0_V%
 Guicontrol, ,Value_Err1BarUpdate, %Err1_V%
 Guicontrol, ,Value_PicBarUpdate, %Value_Pic%
 Global AutoLogin, DebugMode, DwmMode, GdiMode, AHKMode, CloneWindowforDWM, SendFromAHK, SendFromADB, Err0_V, Err1_V, Value_Pic
-
 Critical, off
+return
+
+Emulatorsettings:
+Guicontrolget, Ldplayer3
+Guicontrolget, Ldplayer4
+Guicontrolget, NoxPlayer5
+Iniwrite, %Ldplayer3%, settings.ini, EmulatorSub, Ldplayer3
+Iniwrite, %Ldplayer4%, settings.ini, EmulatorSub, Ldplayer4
+Iniwrite, %NoxPlayer5%, settings.ini, EmulatorSub, NoxPlayer5
+Global Ldplayer3, Ldplayer4, NoxPlayer5
+if (NoxPlayer5)
+{
+	Text = 使用夜神模擬器將導致自動重啟及ADB點擊功能失效
+	MsgBoxEx(Text, "注意", "OK", 5, "", "-SysMenu AlwaysOnTop", WinExist("A"), 0, "s11 c0x000000", "Segoe UI")
+}
+Text = 切換模擬器版本，自動重啟。
+MsgBoxEx(Text, "設定精靈", "", [229, "imageres.dll"], "", "-SysMenu AlwaysOnTop", WinExist("A"), 2, "s11 c0x000000", "Segoe UI")
+reload
 return
 
 MainsubTimersettings:
@@ -1320,6 +1381,9 @@ Guicontrol, disable, Timetobattle2
 Guicontrol, disable, StopBattleTime3
 Guicontrol, disable, CloneWindowforDWM
 Guicontrol, disable, ResetOperationTime2
+Guicontrol, disable, Ldplayer3
+Guicontrol, disable, Ldplayer4
+Guicontrol, disable, NoxPlayer5
 return
 
 Start:
@@ -1342,7 +1406,7 @@ Settimer, Mainsub, %MainsubTime%
 Settimer, WinSub, 3200
 if (DWMmode and CloneWindowforDWM)
 	gosub, CloneWindowSub
-if (EmulatorCrushCheck)
+if (EmulatorCrushCheck and !Noxplayer5)
 	Settimer, EmulatorCrushCheckSub, 60000
 Is_Start := 1
 return
@@ -1484,7 +1548,7 @@ if (CheckArray2(GameCrushed_1920x1080*) or CheckArray2(GameCrushed_1280x720*)) ;
 	EmulatorCrushCheckCount := VarSetCapacity
 	iniwrite, "=======遊戲閃退，自動重啟=======", settings.ini, OtherSub, AutostartMessage
 	iniwrite, 1, settings.ini, OtherSub, Autostart
-	runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+	runwait, %Consolefile% quit --index %emulatoradb% , %ldplayer%, Hide
 	sleep 10000
 	reload
 }
@@ -1524,7 +1588,7 @@ Loop, 3
 										EmulatorCrushCheckCount := VarSetCapacity
 										iniwrite, "=========模擬器當機，自動重啟=========", settings.ini, OtherSub, AutostartMessage
 										iniwrite, 1, settings.ini, OtherSub, Autostart
-										runwait, dnconsole.exe quit --index %emulatoradb% , %ldplayer%, Hide
+										runwait, %Consolefile% quit --index %emulatoradb% , %ldplayer%, Hide
 										sleep 10000
 										reload
 									}
@@ -1551,9 +1615,14 @@ ResetOperationDone := VarSetCapacity
 return
 
 Mainsub: ;優先檢查出擊以外的其他功能
-LDplayerCheck := Find(x, y, 0, 0, 50, 35, LdPlayerLogo) ; 夜神 LDplayerCheck := 1
+if (Noxplayer5)
+{
+	LDplayerCheck := Find(x, y, 0, 0, 60, 35, NoxPlayerLogo) 
+} else {
+	LDplayerCheck := Find(x, y, 0, 0, 60, 35, LdPlayerLogo) 
+}
 if (LDplayerCheck=0) {
-	LogShow("無法正確偵測到雷電模擬器。")
+	LogShow("無法正確偵測到模擬器。")
 	sleep 1000
 }
 Formattime, Nowtime, ,HHmm
@@ -2167,7 +2236,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		sleep 300
 		if (AnchorChapter=7 and AnchorChapter2=2) ;7-2從左邊開始偵查到右邊 提高拿到左邊"？"的機率
 		{
-			SearchDirection := 1
+			SearchDirection := 5
 		}
 		else
 		{
@@ -2258,7 +2327,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 						if (AnchorChapter=7 and AnchorChapter2=2 and xx<290 and yy<414)
 						{
 							yy := yy+100
-							message = 前往神秘物資的路徑被擋住了，嘗試攻擊下方部隊。
+							message = 前往神秘物資路徑受阻，攻擊下方部隊。
 							LogShow(Message)
 							Click_Fleet(xx, yy)
 						}
@@ -3960,8 +4029,8 @@ Loop
 return
 
 startemulatorSub:
-runwait, dnconsole.exe globalsetting --fastplay 0 --cleanmode 1, %ldplayer%, Hide
-runwait, dnconsole.exe launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
+runwait, %Consolefile% globalsetting --fastplay 0 --cleanmode 1, %ldplayer%, Hide
+runwait, %Consolefile% launchex --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
 sleep 10000
 Winget, UniqueID,, %title%
 Allowance = %AllowanceValue%
@@ -4799,6 +4868,41 @@ if (AcademyDone<1)
 					}
 				}
 				ShopCount++
+				if (Item_Ex4_Box and ShopCount>=7 and ShopCount<=10)
+				{
+					if (Find(x, y, 700, 651, 1034, 711, supply)) ;軍需商店
+					{
+						C_Click(x, y)
+					}
+					if (Find(x, y, ShopX1, ShopY1, ShopX2, ShopY2, 科技箱T4) and Item_Box_T4Coin<1) ;T4裝備箱
+					{
+						Item_Box_T4 := dwmgetpixel(x,y)
+						Loop, 20
+						{
+							if (dwmgetpixel(x,y)=Item_Box_T4)
+							{
+								C_Click(x, y)
+								sleep 500
+							}
+							if (Find(n, m, 700, 500, 860, 600, Shop_exchange)) ;跳出購買訊息
+							{
+								Random, xx, 713, 863
+								Random, yy, 543, 569
+								C_Click(xx,yy) ;隨機點擊"兌換"鈕
+								sleep 4000
+								if (Find(n, m, 700, 500, 850, 600, Shop_Confirm)) ;如果金幣不足
+								{
+									Item_Box_T4Coin++
+									Random, xx, 423, 558
+									Random, yy, 543, 569
+									C_Click(xx,yy) ;點擊取消
+								}
+							Break
+							}
+							sleep 500
+						}
+					}
+				}
 				if (ShopCount>10)
 				{
 					AcademyShopDone := 1
@@ -4927,13 +5031,13 @@ if (AcademyDone<1)
 			AcademyShopDone := VarSetCapacity
 			AcademyDone := 1
 			Settimer, AcademyClock, -900000 ;15分鐘後再開始檢查
-			C_Click(38,92)
+			C_Click(38, 92)
 			sleep 2000
 			Loop, 60
 			{
-				if (Find(x, y, 97, 34, 197, 94, AcademyPage_Academy))
+				if (Find(x, y, 86, 34, 186, 94, AcademyPage_Academy))
 				{
-					C_Click(38,92)
+					C_Click(38, 92)
 					sleep 3000
 				}
 				else if (Find(x, y, 996, 362, 1096, 422, MainPage_Btn_WeighAnchor))
@@ -5194,8 +5298,6 @@ DelegationMission() {
 	NoneDelegation := "|<>*170$58.zzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzss000DzzzzXU000zzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXzzzzzzzzyDzzzzzzzzszzzzzzzzzXU"
 	緊急 := "|<>*138$35.000000000003zzzzzzzzzzzzzzz3zk01w0DU03k0T0161ky00A00Q0ky00s00Q01s0Ms03s0Dk07U0z00DUCC00y00Q28w00s49w03kA1U11U0367W81bzzzzzw"
 	Delegation_Empty := "|<>*155$65.UTXsz0Tk3tsTz7lySTwztkzy73wyztzn9zwC7txznzmE7tRDnnzbzVUTmGTUDzDzXDzagz7zyTzCTzANyTzwzyQzyNnwzztzws3wvbtzznzts7xzTvzzjzvk"
-
-
 	Loop
 	{
 		if (Find(x, y, 97, 34, 197, 94, 委託))
@@ -5437,8 +5539,20 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 	IsTouch_to_continue := Find(x, y, 122, 637, 222, 697, Battle_Touch_to_Continue)
 	;~ Global
 	if (Victory and IsTouch_to_continue)
-	{
-		LogShow("敵艦討伐完畢。")
+	{	
+		if (Find(x, y, 790, 438, 870, 498, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU")) ; 有隊員倒下
+		{
+			message = 敵艦討伐完畢（隊員受重創）。
+		} 
+		else if (Find(x, y, 790, 449, 870, 548, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU"))
+		{
+			message = 敵艦討伐完畢（戰鬥時間逾120秒）。
+		}
+		else 
+		{
+			message = 敵艦討伐完畢。
+		}
+		LogShow(message)
 		Random, x, 100, 1000
 		Random, y, 100, 600
 		sleep 500
@@ -5660,8 +5774,9 @@ shipsfull()
 		{
 			LogShow("船䲧已滿：關閉模擬器。")
 			sleep 500
-			run, dnconsole.exe quit --index %emulatoradb%, %ldplayer%, Hide
+			run, %Consolefile% quit --index %emulatoradb%, %ldplayer%, Hide
 			sleep 500
+			Settimer, EmulatorCrushCheckSub, off
 		}
 		else if shipsfull=整理船䲧
 		{
@@ -6512,7 +6627,7 @@ C_Click(PosX, PosY) {
 		sleep 800
 	} else if (SendfromADB){
 		y := y - 36
-		Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
+		Runwait, ld.exe -s %emulastoradb% input tap %x% %y%, %ldplayer%, Hide
 		sleep 600
 	}
 }
@@ -6576,7 +6691,9 @@ ColorVariation(Color1, Color2) {
 }
 
 DwmCheckcolor(x, y, color="", Variation=15) {
-	; 夜神 x := x+1, y := y-4
+	if (NoxPlayer5) {
+		x := x+1, y := y-4
+	}
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
@@ -6640,7 +6757,9 @@ LogShow2(logData) {
 }
 
 DwmGetPixel(x, y) {
-	; 夜神 x := x+1, y := y-4
+	if (NoxPlayer5) {
+		x := x+1, y := y-4
+	}
 	if (GdiMode) {
 		pBitmap:= Gdip_BitmapFromHWND(UniqueID)
 		Argb := Gdip_GetPixel(pBitmap, x, y)
