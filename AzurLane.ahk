@@ -1704,16 +1704,14 @@ else if LDplayerCheck
 	if (AcademySub and Living_AreaCheck and Formation and WeighAnchor and AcademyDone<1) ;學院
 	{
 		sleep 500
-		Random, x, 501, 624
-		Random, y, 713, 738
-		C_Click(x, y)
+		AC_Click(501, 713, 624, 738)
 		Loop
 		{
 			if (Find(x, y, 403, 472, 503, 532, WaitingforAcademy)) ;等待進入學院/後宅選單
 				break
 			sleep 500
 		}
-		sleep 500
+		sleep 1200
 		if (Find(x, y, 479, 239, 579, 299, AcademyDoneIco)) ;
 		{
 			LogShow("執行學院任務！")
@@ -1721,9 +1719,7 @@ else if LDplayerCheck
 		}
 		else 
 		{
-			Random, x, 570, 680
-			Random, y, 285, 500
-			C_Click(x, y)
+			AC_Click(305, 75, 955, 175)
 			AcademyDone := 1
 			Settimer, AcademyClock, -900000 
 			sleep 1500
@@ -1734,16 +1730,14 @@ else if LDplayerCheck
 	if (DormSub and Living_AreaCheck and Formation and WeighAnchor and DormDone<1)  ;後宅
 	{
 		sleep 500
-		Random, x, 501, 624
-		Random, y, 713, 738
-		C_Click(x, y)
+		AC_Click(501, 713, 624, 738)
 		Loop
 		{
-			if (Find(x, y, 403, 472, 503, 532, WaitingforAcademy)) ;等待進入學院/後宅選單
+			if (Find(n, m, 403, 472, 503, 532, WaitingforAcademy)) ;等待進入學院/後宅選單
 				break
 			sleep 500
 		}
-		sleep 500
+		sleep 1200
 		if (Find(x, y, 907, 238, 1007, 298, DormIco)) ;
 		{
 			LogShow("執行後宅任務！")
@@ -1751,9 +1745,7 @@ else if LDplayerCheck
 		}
 		else 
 		{
-			Random, x, 570, 680
-			Random, y, 285, 500
-			C_Click(x, y)
+			AC_Click(305, 75, 955, 175)
 			sleep 1500
 			DormDone := 1
 			Settimer, DormClock, -900000
@@ -1764,9 +1756,7 @@ else if LDplayerCheck
 	if (TechacademySub and TechacademyCheck and Formation and WeighAnchor and TechacademyDone<1)
 	{
 		sleep 500
-		Random, x, 660, 775
-		Random, y, 713, 738
-		C_Click(x, y)
+		AC_Click(660, 713, 775, 738)
 		sleep 1000
 		Loop
 		{
@@ -1774,9 +1764,7 @@ else if LDplayerCheck
 				break ;等待進入科研選單
 			if Find(x, y, 716, 683, 816, 743, MainPage_ResearchDeptDone) 
 			{
-				Random, x, 660, 775
-				Random, y, 713, 738
-				C_Click(x, y)
+				AC_Click(660, 713, 775, 738)
 			}
 		}
 		gosub, TechacademySub
@@ -6334,6 +6322,7 @@ Battle()
 				sleep 1000
 				if !(Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 				{
+					Guicontrol, ,starttext, 目前狀態：敵艦討伐結束。
 					Break
 				}
 			}
@@ -6446,19 +6435,25 @@ Battle()
 						if (GdipImageSearch(x, y, "img/battle/LowHP.png", Hp_Variation, 8, DetectHP_Pos[1], DetectHP_Pos[2], DetectHP_Pos[3], DetectHP_Pos[4]))
 						{
 							NowHP := Ceil((x-10)/85*100)
+							SufferHP := OriginalHP-NowHP
+							if (SufferHP>=0)
+							{
+								Guicontrol, ,starttext, 目前狀態：戰鬥中，目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
+							}
+							else if (SufferHP<0)
+							{
+								SufferHP := Abs(SufferHP)
+								Guicontrol, ,starttext, 目前狀態：戰鬥中，目前HP: %NowHP%`%，維修HP: %SufferHP%`%。
+							}
 							if (debugMode)
 							{
 								HpdebugMode++
 								if (HpdebugMode=5)
 								{
-									SufferHP := OriginalHP-NowHP
 									if (SufferHP>=0)
 										Message = 目前HP: %NowHP%`%，消耗HP: %SufferHP%`%。
-									else if (SufferHP<0)
-									{
-										SufferHP := Abs(SufferHP)
+									else if (SufferHP<0)	
 										Message = 目前HP: %NowHP%`%，維修HP: %SufferHP%`%。
-									}	
 									LogShow(Message)
 									HpdebugMode := VarSetCapacity
 								}
@@ -6572,7 +6567,7 @@ Battle()
 				}
 				sleep 100
 			}
-		} 
+		}
 		battletime := VarSetCapacity
 	}
 }
@@ -6662,6 +6657,21 @@ Ld_Click(PosX,PosY) {
 	sleep %randomsleep%
 	Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
 	sleep 500
+}
+
+AC_Click(PosX1, PosY1, PosX2, PosY2)
+{
+	sleep 100
+	Random, x, PosX1, PosX2
+	Random, y, PosY1, PosY2
+	if (SendfromAHK){
+		ControlClick, x%x% y%y%, ahk_id %UniqueID%,,,, NA 
+		sleep 800
+	} else if (SendfromADB){
+		y := y - 36
+		Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
+		sleep 600
+	}
 }
 
 C_Click(PosX, PosY) {
