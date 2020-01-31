@@ -537,7 +537,7 @@ Gui, Add, Text, x200 y%Tab_Y% w80 h20 , 次後撤退
 
 Gui, Tab, 學　院
 Tab_Y := 90 ;///////////學院///////////////
-iniread, AcademySub, settings.ini, Academy, AcademySub
+iniread, AcademySub, settings.ini, Academy, AcademySub, 0
 Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gAcademysettings vAcademySub checked%AcademySub% +c4400FF, 啟動自動學院
 Tab_Y +=30
 iniread, AcademyOil, settings.ini, Academy, AcademyOil, 1
@@ -586,7 +586,7 @@ Gui, Add, CheckBox, x50 y%Tab_Y% w120 h20 gAcademysettings vItem_Ex4_Box checked
 
 Gui, Tab, 後　宅
 Tab_Y :=90 ;////////////後宅//////////////
-iniread, DormSub, settings.ini, Dorm, DormSub
+iniread, DormSub, settings.ini, Dorm, DormSub, 0
 Gui, Add, CheckBox, x30 y%Tab_Y% w150 h20 gDormsettings vDormSub checked%DormSub% +c4400FF, 啟動自動後宅
 Tab_Y +=30
 iniread, DormCoin, settings.ini, Dorm, DormCoin, 1
@@ -1340,6 +1340,9 @@ WindowName = Azur Lane - %title%
 wingetpos, azur_x, azur_y,, WindowName
 iniwrite, %azur_x%, settings.ini, Winposition, azur_x
 iniwrite, %azur_y%, settings.ini, Winposition, azur_y
+if (substr(A_osversion, 1, 1)=7) {
+	DllCall("dwmapi\DwmEnableComposition", "uint", 1)
+}
 exitapp
 Critical, off
 return
@@ -1381,6 +1384,9 @@ if GuiHideX {
 	wingetpos, azur_x, azur_y,, WindowName
 	iniwrite, %azur_x%, settings.ini, Winposition, azur_x
 	iniwrite, %azur_y%, settings.ini, Winposition, azur_y
+	if (substr(A_osversion, 1, 1)=7) {
+		DllCall("dwmapi\DwmEnableComposition", "uint", 1)
+	}
 	ExitApp
 }
 return
@@ -1402,6 +1408,10 @@ Guicontrol, disable, NoxPlayer5
 return
 
 Start:
+if (substr(A_osversion, 1, 1)=7) {
+	LogShow("偵測到系統為Windows7，關閉AERO")
+	DllCall("dwmapi\DwmEnableComposition", "uint", 0)
+}
 gosub, TabFunc
 gosub, guicontrols
 IfWinNotExist , %title%
