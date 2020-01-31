@@ -743,12 +743,12 @@ if (Ldplayer3) {
 	if (ldplayer="") {
 		RegRead, ldplayer, HKEY_CURRENT_USER, Software\Changzhi\LDPlayer, InstallDir ; Ldplayer 3.77以上版本
 	}
-	Consolefile = "dnconsole.exe"
+	Consolefile = dnconsole.exe
 } else if (Ldplayer4) {
 	EmulatorResolution_W := 1322  ; 雷電4.0 1322 夜神 1284
 	EmulatorResolution_H := 758 ;夜神 754
 	RegRead, ldplayer, HKEY_CURRENT_USER, Software\XuanZhi\LDPlayer, InstallDir ; Ldplayer 4.0+ version
-	Consolefile = "dnconsole.exe"
+	Consolefile = dnconsole.exe
 } else if (NoxPlayer5) {
 	EmulatorResolution_W := 1284  ; 雷電4.0 1322 夜神 1284
 	EmulatorResolution_H := 754 ;夜神 754
@@ -758,7 +758,7 @@ if (Ldplayer3) {
 		InputBox, ldplayer, 設定精靈, 請輸入夜神模擬器的路徑`n`n例如: C:\Program Files\Nox\bin
 		iniwrite, %ldplayer%, settings.ini, NoxInstallDir, NoxInstallDir
 	}
-	Consolefile = "NoxConsole.exe"
+	Consolefile = NoxConsole.exe
 }
 Global EmulatorResolution_W, EmulatorResolution_H, Consolefile
 
@@ -1298,12 +1298,27 @@ Iniwrite, %Ldplayer3%, settings.ini, EmulatorSub, Ldplayer3
 Iniwrite, %Ldplayer4%, settings.ini, EmulatorSub, Ldplayer4
 Iniwrite, %NoxPlayer5%, settings.ini, EmulatorSub, NoxPlayer5
 Global Ldplayer3, Ldplayer4, NoxPlayer5
-if (NoxPlayer5)
+if (Ldplayer4 or NoxPlayer5)
 {
-	Text = 使用夜神模擬器將導致自動重啟及ADB點擊功能失效
-	MsgBoxEx(Text, "注意", "OK", 5, "", "-SysMenu AlwaysOnTop", WinExist("A"), 0, "s11 c0x000000", "Segoe UI")
+	IniRead, EmCheckText, settings.ini, EmCheckText, EmCheckText
+	if (EmCheckText!=1)
+	{
+		Text := "如使用雷電4.0或夜神模擬器遇到問題，`n`n"
+		. "作者並不會特別進行維護，`n`n"
+		. "有興趣的人可以研究兼容各模擬器的版本或方式。`n`n"
+		. "另請注意:`n`n"
+		. "1. 因為雷電4.0有偷偷減少繪圖bits以提高流暢度，`n"
+		. "　故一定要調整文字/背景容許誤差，否則必定卡住。`n`n"
+		. "2. 使用夜神模擬器將導致自動重啟及ADB點擊功能失效。"
+		EmCheckText := "不再提示"
+		MsgBoxEx(Text, "提示", "OK", 5, EmCheckText, "", 0, 0, "s11 c0x000000", "Segoe UI")
+	}
+	If (EmCheckText=1)
+	{
+		IniWrite, 1, settings.ini, EmCheckText, EmCheckText
+	}
 }
-Text = 切換模擬器版本，自動重啟。
+Text := "切換模擬器版本，等待自動重啟。"
 MsgBoxEx(Text, "設定精靈", "", [229, "imageres.dll"], "", "-SysMenu AlwaysOnTop", WinExist("A"), 2, "s11 c0x000000", "Segoe UI")
 reload
 return
@@ -6627,7 +6642,7 @@ C_Click(PosX, PosY) {
 		sleep 800
 	} else if (SendfromADB){
 		y := y - 36
-		Runwait, ld.exe -s %emulastoradb% input tap %x% %y%, %ldplayer%, Hide
+		Runwait, ld.exe -s %emulatoradb% input tap %x% %y%, %ldplayer%, Hide
 		sleep 600
 	}
 }
