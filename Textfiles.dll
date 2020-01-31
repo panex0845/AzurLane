@@ -1,6 +1,7 @@
 ﻿
 ;////////雷電模擬器///////////
 LdPlayerLogo := "|<>*102$21.zkTzk0Tw01z007k00Q0s1UTkA7b00ts0C/U1kQ0DbU1xs4DS0zzU8A031U0MA071U1sA0zU"
+NoxPlayerLogo := "|<>*69$30.kS3VkUA1UUbbsw7DbwyDDbySDDrySTDnySDDnwyDDtsw7Ds1UUDy7XsU"
 
 
 ;///////一些按鈕/////////
@@ -13,13 +14,13 @@ global MainPage_Btn_WeighAnchor
 
 ;//////////學院//////////////
 
-WaitingforAcademy := "|<>*212$71.z0Q30D02007zy3sDkS04007zw0U60w0800Dzs0C01sMETkTzk0Qk3k0XzXzz0A1k7U1Dzzzy0830D03007zy0E60S2400Dzw1000w0800TzsTzz1s0M01zzU0003k1zzzzy00003U3k03zw0000702003zs0000C0400DzkDzzlw4A00zzy000Ts8Ty3zzw000zkEwA7zzs003zUVsMDzzzzUDz33UkTzzzz0zy071Uzzs0001w0A71zzU0000s0sC3zz00003k3kQ7zzzzUTzUT1s3zzy01zz1y3k3z" ;"學院"
+WaitingforAcademy := "|<>*215$29.kT1y3UA0k701k0C0Ha0Q1UC0s10M1k20k3UA0U73zzwA0000M000000000000031zzyDk003zU007zUy0Tzzw1zzzs7z010Bw000000000Tzw3zzk0DzzU0zz" ;"學院" / 後宅 選單
 
 AcademyDoneIco := "|<>*180$5.zCAMlX6AMvz6Azk" ;左邊驚嘆號
 
 AcademyDoneIco2 := "|<>*182$5.zaAMlX6AMvz6ATk"
 
-AcademyPage_Academy := "|<>*140$54.k420S0DUzk000S0001ksFkS0000k0k0S4000k420S40zUkw3kS40zlk000S4Q03k1t0S0Q03U000S0Q03U000C0Q07U000C0TzzVzzsC4000U000C4000w001y4000w001y4001zzk7y4A4D0000C4A4D0000C0AAD0000C0QADzz1zy0MA8zz3zy1kQ8zk3zy7kw0zk3zy7Vy0zk7zy7bz1U" ;左上方學院
+AcademyPage_Academy := "|<>*141$26.k420w10U70001ksFkQ0A070E81kw3kQ000707Y1U000M00020000Vzzs80003k007w001zzw1w0000000000003zw7zzz3zzw0zzz0Dzzk7zs" ;左上方學院
 
 AcademyPage_Shop := "|<>*140$44.Xz0znwDsTk7sT3z7wFyDkTzz277sHzDknnCCTUQNtlXXsE0C0FsCAF3UAw3U4Mw6C1k16DVzzw403nbzy04Es0Tr016C000s0FXXkQD600zv7Xll4Dm1swQFXk0SD74Ms07Xll4A1VkwQF77wQD7Alzz7bU"
 
@@ -41,6 +42,10 @@ Academy_In_Academy := "|<>*154$54.zzy8zkkzzU828Tkk01U02ATUk01W1WAT1k21U06AS303zU
 外觀裝備箱:="|<>*110$70.vxzrTziyzvrTbnw00SvvziQyTDwWQtD7yU0kAzn9nUU3nXDCHy8UDnnzSQxvDueQkDjt00bgTW8HYwT77wAkzPXCu0QQDS78w2Qndzw01wQnYM3AXzkQrtnw0kS00DQ0TDDt7/z4txnBwwzUAjksDrArbnyFqyLlzQ0MzDs2Pz9XxrB7wzU3XsDXrRbzzzzzzzzzxzs"
 
 通用部件T3 :="|<>*105$91.z07rrrnArn03wzyTU1s03taHlCTyTzDrQw01yn/kbDzDz8M0Syys04sTbzby7BrDTTTznTDnzny3aNbb7DztbY07tzsn03k07U4vnwzwzyNitvvvnmRtyTyTzArQtxxtt0wzDzDza/gwyywwUyTbzblUEzgzTS0HzDnznw2y06TgD79zbtzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzs0zzzzzzzzzzzzzU07zzzzzzzzzzzz000zzzzzzzzzzzz0087zzzzzzzzzzy0011zzzzzzzzzzy0000Tzzzzzzzzzz40007zzzzzzzzzz00003zzzzzzzzzk"
+
+supply := "|<>*130$40.w0zzw1zU7zzs3w0zzzk7U7zzzUA0zyTz0E7zkzy0Uzy1zw77zk3zsyzy07zrzzk0Dzzzy00Tzzzk00zzzz0M3zzzy3kzzyzwTXzbVzvzTwC3zyTzUE7zkzy0UDy1zU70Tk3y0y0y07k7s1k0A0zk3U1k7zU70C0zz0C1k7y"
+
+科技箱T4 := "|<>*188$8.kM61UE410G4V8E71wDnXsM"
 
 global Academy_BTN_Confirm
 
@@ -198,7 +203,7 @@ Formation_Upp := "|<>*98$71.VkwCRxwCwDRzTCvAPlwxniPyyxmMbfvvjQLxxvVlD3rrSuDvtbPZ
 Formation_Tank := "|<>*166$22.0zy03zs3zzyDzzszzzXzzyzjzzQTzssTzkkk7Vk0DVU1z50Dy11zw0Dzk0Tz01rs06DzwszzzXzzy1zy2" ;左下角那台小坦克
 
 Battle_Victory := "|<>*111$34.zzzzzvzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzzzzzDzzzztzxzzzDznzztzzbzzDzzDztzzyTzDzzwztzzztzDzzzntzzzzbDzzzz9zzzzyTzzzU"
-Battle_Touch_to_Continue := "|<>*200$24.zzyzaNyzjxyzfpyzjpyzjxy0jhy0jxyzU1yzyTyzyTyzk1yzyDU1yTbtyTjtU0jtzzjtzvjtphjtxhjtjyU1jzU1zzjtU"
+Battle_Touch_to_Continue := "|<>*129$24.U0wTWEwTWEwTUEwTU4w0UAw0aAwTU0wTU1wTyTwTU1wTU1U1yTU1y0bt00btU/btxdbtZdbtYYbtYY01AbU1DzbtU"
 
 Battle_End := "|<>*175$41.zzzzzzz0000006000000ANa0000MnA0000laM0001W8U00030000006000000ATzzzzyMzzzzzwlzzzzztXU0lzzn600003aA00007AM0000CMk0000QlzzzzztXzzzzzn7zzzzzaDzwzzzAM01zbyM"
 
