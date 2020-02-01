@@ -227,6 +227,10 @@ Switch_NoParty := "|<>*147$11.wDsTtzzzzzDwDkTUz1y3w7sDkTUz1y3w7sDkTkzrs"
 
 BTN_Pause := "|<>*172$32.zzzzzzzzzzzk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3z07s0zk1y0Dw0TU3s"
 
+View_Detail := "|<>*184$17.zzjzkDk0DsyzVsz3lyDs003lyz00S7ksDXYD6MyDlwTXsz7ly03wTbzzzzzzzzzzzU00U"
+
+Lock_Party := "|<>*92$7.0SSSQ00zzzzy2QTDbpm3"
+
 global Battle_Victory, Battle_Touch_to_Continue, Battle_End, Formation_Tank, Battle_BackAttack, SkipBtn, UnknowWife, Battle_BossIco
 global Battle_Exit_Battle, Battle_Defensive, Battle_Weigh, Switch_NoParty, BTN_Pause, Battle_Map
 
