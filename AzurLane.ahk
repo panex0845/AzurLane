@@ -2149,7 +2149,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 	MapX1 := 130, MapY1 := 130, MapX2 :=1260, MapY2 := 670 ; //////////檢查敵方艦隊的範圍//////////
 	;Mainfleet := 4287894561 ; ARGB 主力艦隊
 	;~ FinalBoss := 4294920522 ; ARGB BOSS艦隊
-	if (DwmCheckcolor(1186, 565, 5418619) and DwmCheckcolor(1228, 565, 5418619) and DwmCheckcolor(1273, 565, 5418619))
+	if (Find(x, y, 1138, 517, 1238, 577, Lock_Party))
 	{ ;陣容鎖定已被開啟
 		LogShow("關閉陣容鎖定")
 		Random, x, 1197, 1257
@@ -2255,7 +2255,7 @@ if (Find(x, y, 750, 682, 850, 742, Battle_Map))
 		{
 			Random, SearchDirection, 1, 8
 		}
-		if (DwmCheckcolor(1102, 480, 16768842))
+		if (Find(x, y, 1169, 386, 1269, 446, View_Detail))
 		{
 			LogShow("關閉陣型列表")
 			C_Click(1071, 476)
@@ -5486,16 +5486,21 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 
 DelegationMission2()
 {
-Loop, 30  ;等待選單開啟
+	BTN_Advice := "|<>*210$32.w7kMMz0A7w7k0001U00sTz1sC7zkS3Vzw70s/z00C0Dk0001w60E9s1sC7y0S3UzU7UsTs1sC6T0S3U3w7U00T1sA3zkS3Vzw7UsTz1sC7wUS3VXU7UsMQ1s003Uy3zzsDUzzs"
+	Ico_Oil := "|<>*137$29.zzzzzzzyTzzzszzzyEzzzslrzzkU7zUlUDy1V0zwF37ztn3Tzna7zzUCzzzUTzzzVzzzzzzzzzzzzs"
+	Ico_Gem := "|<>*124$47.0000010000000M10000000zk00000Dzk00603zzU0000zzz00003zzz02U01zzwzw0tlzzs00TXszzc07z7wzyS1zyTwzzy7zszzTzw3znzyzzsXzjztzzl1zzsDzzU0zs0zzy00w01zzwE1UU1zzsc0A03zzXU3s17zs007w2Tzc00Tw0zySA0zwHzsz41zw7zl"
+	Party_OK := "|<>*110$24.zwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDz0000000000000000zwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzU"
+	Spend_Oil_Confirm := "|<>*185$31.xzkTVw0000MDzzs07zzw43zzsC3zzsD1zzs7l0003zzsDzzzw7zzzy3zzwD1xzy1UwTz1kQ3zUs01zkw7zzsS3zzsD1zzw3Uzzy0kTzy60Dzz7U007Xk003Xw003XzU01k"
+	Loop, 30  ;等待選單開啟
 	{
 		sleep 300
-		if (DwmCheckcolor(992, 365, 16777215) and DwmCheckcolor(1149, 366, 16777215))
+		if (Find(x, y, 870, 352, 970, 412, BTN_Advice))
 		{
 			loopcount := VarSetCapacity
 			break
 		}
 		loopcount++
-		if (loopcount>20)
+		if (loopcount>30)
 		{
 			;~ Logshow("未能成功進入軍事任務選單")
 			e := 3
@@ -5504,16 +5509,17 @@ Loop, 30  ;等待選單開啟
 		}
 	}
 	;~ LogShow("成功進入")
-	if (DwmCheckcolor(1138, 338, 4870499) or DwmCheckcolor(1108, 166, 16729459) or DwmCheckcolor(772, 165, 3748921) or DwmCheckcolor(771, 166, 3224625)) ;如果耗油是個位數 或 出現寶石 或 出現油田
+	if (DwmCheckcolor(1138, 338, 4870499) or Find(x, y, 729, 154, 829, 214, Ico_Oil) or Find(x, y, 1060, 151, 1160, 211, Ico_Gem)) ;如果耗油是個位數 或 出現寶石 或 出現油田
 	{
 		C_Click(931, 380)
-		if (DwmCheckcolor(1149, 386, 15709770)) ;如果成功推薦角色
+		sleep 300
+		if !(Find(x, y, 730, 350, 830, 410, Party_OK)) ;如果成功推薦角色
 		{
 			C_Click(1096, 385) ;開始
 			sleep 1000
-			if (DwmCheckcolor(329, 209, 16777215) and DwmCheckcolor(375, 232, 16777215)) ;如果有花費油
+			if (Find(x, y, 763, 524, 863, 584, Spend_Oil_Confirm)) ;如果有花費油
 			{
-				C_Click(788, 546) ;確認
+				C_Click(787, 546) ;確認
 				sleep 1000
 			}
 			C_Click(1227, 172) ;離開介面
@@ -6479,6 +6485,7 @@ Battle()
 							LogShow(Message)
 							Message = 旗艦消耗高於%Retreat_LowHpBar%`%，%Retreat_LowHpDo%
 							LogShow(Message)
+							Guicontrol, ,starttext, 目前狀態：旗艦消耗高於 %Retreat_LowHpBar% `%，%Retreat_LowHpDo%
 							Loop, 300
 							{
 								if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause)) ;點擊暫停按紐
