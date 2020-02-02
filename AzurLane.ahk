@@ -345,7 +345,7 @@ Gui, Add, CheckBox, x210 y%Tab2_Y% w80 h20 gAnchorsettings vIndex2 checked%Index
 Gui, Add, CheckBox, x290 y%Tab2_Y% w50 h20 gAnchorsettings vIndex3 checked%Index3% , 驅逐
 Gui, Add, CheckBox, x340 y%Tab2_Y% w50 h20 gAnchorsettings vIndex4 checked%Index4% , 輕巡
 Gui, Add, CheckBox, x390 y%Tab2_Y% w50 h20 gAnchorsettings vIndex5 checked%Index5% , 重巡
-Tab2_Y+=30
+Tab2_Y+=25
 Gui, Add, CheckBox, x80 y%Tab2_Y% w50 h20 gAnchorsettings vIndex6 checked%Index6% , 戰列
 Gui, Add, CheckBox, x130 y%Tab2_Y% w50 h20 gAnchorsettings vIndex7 checked%Index7% , 航母
 Gui, Add, CheckBox, x180 y%Tab2_Y% w50 h20 gAnchorsettings vIndex8 checked%Index8% , 維修
@@ -359,7 +359,7 @@ iniread, Camp4, settings.ini, Battle, Camp4 ;鐵血
 iniread, Camp5, settings.ini, Battle, Camp5 ;東煌
 iniread, Camp6, settings.ini, Battle, Camp6 ;北方聯合
 iniread, Camp7, settings.ini, Battle, Camp7 ;其他
-Tab2_Y+=33
+Tab2_Y+=30
 Gui, Add, text, x30 y%Tab2_Y% w50 h20  , 陣　營
 Tab2_Y-=3
 Gui, Add, CheckBox, x80 y%Tab2_Y% w50 h20 gAnchorsettings vCampAll checked%CampAll% , 全部
@@ -378,7 +378,7 @@ iniread, Rarity1, settings.ini, Battle, Rarity1, 1 ;普通
 iniread, Rarity2, settings.ini, Battle, Rarity2, 1 ;稀有
 iniread, Rarity3, settings.ini, Battle, Rarity3, 0 ;精銳
 iniread, Rarity4, settings.ini, Battle, Rarity4, 0 ;超稀有
-Tab2_Y+=33
+Tab2_Y+=30
 Gui, Add, text, x30 y%Tab2_Y% w75 h20  , 稀有度：
 Tab2_Y-=3
 Gui, Add, CheckBox, x80 y%Tab2_Y% w50 h20 gAnchorsettings vRarityAll checked%RarityAll% , 全部
@@ -391,7 +391,7 @@ Guicontrol, disable, Rarity4
 
 iniread, DailyGoalSub, settings.ini, Battle, DailyGoalSub
 ;~ Gui, Add, GroupBox, x11 y280 w457 h75, ` 
-Tab2_Y+=43 ;270
+Tab2_Y+=33 ;270
 Gui, Add, CheckBox, x30 y%Tab2_Y% w200 h20 gAnchorsettings vDailyGoalSub checked%DailyGoalSub% , 自動執行每日任務：指派：
 Tab2_Y-=2 ;268
 iniread, DailyParty, settings.ini, Battle, DailyParty, 第一艦隊
@@ -451,8 +451,22 @@ else
 Tab2_Y-=2
 Gui, Add, button, x355 y%Tab2_Y% w100 h24 gResetOperationSub vResetOperation, 重置演習 
 
-iniread, Leave_Operatio, settings.ini, Battle, Leave_Operatio
 Tab2_Y+=30
+IniRead, ResetOperationTime, settings.ini, Battle, ResetOperationTime, 1
+IniRead, ResetOperationTime2, settings.ini, Battle, ResetOperationTime2, 1201, 1801, 0001
+Gui, Add, CheckBox, x50 y%Tab2_Y% w120 h20 gAnchorsettings vResetOperationTime checked%ResetOperationTime% , 自動重置時間
+Gui, Add, Edit, x170 y%Tab2_Y% w285 h20 gAnchorsettings vResetOperationTime2 , %ResetOperationTime2%
+Tab2_Y+=28
+IniRead, Operation_Only, settings.ini, Battle, Operation_Only, 0
+IniRead, Operation_OnlyNum, settings.ini, Battle, Operation_OnlyNum, 5
+Gui, Add, CheckBox, x70 y%Tab2_Y% w100 h20 gAnchorsettings vOperation_Only checked%Operation_Only% , 每次只執行
+Tab2_Y-=2
+Gui, Add, DropDownList, x+5 y%Tab2_Y% w40 h200 gAnchorsettings vOperation_OnlyNum choose%Operation_OnlyNum%, 1|2|3|4|5|6|7|8|9|
+Tab2_Y+=5
+Gui, Add, Text, x+10 y%Tab2_Y% w20 h20, 場
+
+Tab2_Y+=25
+iniread, Leave_Operatio, settings.ini, Battle, Leave_Operatio
 Gui, Add, CheckBox, x50 y%Tab2_Y% w100 h20 gAnchorsettings vLeave_Operatio checked%Leave_Operatio% , 我方血量＜
 IniRead, OperatioMyHpBar, settings.ini, Battle, OperatioMyHpBar, 25
 Gui, Add, Slider, x140 y%Tab2_Y% w50 h30 gAnchorsettings vOperatioMyHpBar range20-50 +ToolTip , %OperatioMyHpBar%
@@ -466,11 +480,6 @@ Tab2_Y+=2
 Gui, Add, Text, x360 y%Tab2_Y% w20 h20 vOperatioEnHpBarUpdate , %OperatioEnHpBar% 
 Gui, Add, Text, x380 y%Tab2_Y% w80 h20 vOperatioEnHpBarPercent, `%，時撤退
 
-Tab2_Y+=30
-IniRead, ResetOperationTime, settings.ini, Battle, ResetOperationTime, 1
-IniRead, ResetOperationTime2, settings.ini, Battle, ResetOperationTime2, 1050, 2250
-Gui, Add, CheckBox, x50 y%Tab2_Y% w120 h20 gAnchorsettings vResetOperationTime checked%ResetOperationTime% , 自動重置時間
-Gui, Add, Edit, x170 y%Tab2_Y% w120 h20 gAnchorsettings vResetOperationTime2 , %ResetOperationTime2%
 
 
 Gui, Tab, 出擊３
@@ -1069,6 +1078,8 @@ Guicontrolget, OperatioEnHpBar
 Guicontrolget, OperatioEnHpBarUpdate
 Guicontrolget, ResetOperationTime
 Guicontrolget, ResetOperationTime2
+Guicontrolget, Operation_Only
+Guicontrolget, Operation_OnlyNum
 Iniwrite, %IndexAll%, settings.ini, Battle, IndexAll ;全部
 Iniwrite, %Index1%, settings.ini, Battle, Index1 ;前排先鋒
 Iniwrite, %Index2%, settings.ini, Battle, Index2 ;後排主力
@@ -1108,9 +1119,11 @@ Iniwrite, %OperatioMyHpBar%, settings.ini, Battle, OperatioMyHpBar ;演習時的
 Iniwrite, %OperatioEnHpBar%, settings.ini, Battle, OperatioEnHpBar ;演習時的敵方血量
 Iniwrite, %ResetOperationTime%, settings.ini, Battle, ResetOperationTime
 Iniwrite, %ResetOperationTime2%, settings.ini, Battle, ResetOperationTime2
+Iniwrite, %Operation_Only%, settings.ini, Battle, Operation_Only 
+Iniwrite, %Operation_OnlyNum%, settings.ini, Battle, Operation_OnlyNum 
 Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
 Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
-Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar
+Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar, Operation_Only, Operation_OnlyNum
 Critical, off
 return
 
@@ -1291,6 +1304,7 @@ Critical, off
 return
 
 Emulatorsettings:
+GuiControl, disable, start
 Guicontrolget, Ldplayer3
 Guicontrolget, Ldplayer4
 Guicontrolget, NoxPlayer5
@@ -3904,6 +3918,8 @@ return
 
 OperationSub:
 LogShow("開始演習。")
+OperationFightCount := 0
+Global OperationFightCount
 Loop
 {
 	sleep 300
@@ -3914,7 +3930,15 @@ Loop
 			C_Click(1239, 72) ;回到首頁
 			break
 	}
-	if (Find(x, y, 99, 35, 199, 95, Operation_Upp))  ;演習介面隨機
+	if (Operation_Only and Operation_OnlyNum=OperationFightCount and Find(x, y, 99, 35, 199, 95, Operation_Upp))
+	{
+		message = 已經執行演習%OperationFightCount%次，演習結束！
+		LogShow(message)
+		Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
+		C_Click(1239, 72) ;回到首頁
+		break
+	}
+	else if (Find(x, y, 99, 35, 199, 95, Operation_Upp))  ;演習介面隨機
 	{
 		if (Operationenemy="最弱的")
 		{
@@ -4012,6 +4036,7 @@ Loop
 			C_Click(1239, 72) ;回到首頁
 			break
 		}
+		OperationFightCount++
 	}
 	else if (Find(x, y, 101, 33, 201, 93, Operation_Shop)) ;誤點商店
 	{
@@ -4039,6 +4064,7 @@ Loop
 		AutoLoginIn()
 	}
 }
+OperationFightCount := VarSetCapacity
 return
 
 startemulatorSub:
@@ -5555,7 +5581,7 @@ DelegationMission2()
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
 	;~ Global
-	if (Find(x, y, 783, 385, 883, 445, Battle_Victory))
+	if (Find(x, y, 783, 385, 883, 445, Battle_Victory, 0.1, 0.1))
 	{	
 		if (Find(x, y, 790, 438, 870, 498, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU")) ; 有隊員倒下
 		{
@@ -5575,7 +5601,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		sleep 500
 		C_Click(x, y)
 	}
-	else if (Find(x, y, 783, 385, 883, 445, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU")) ;點擊繼續
+	else if (Find(x, y, 783, 385, 883, 445, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU"), 0.1, 0.1) ;點擊繼續
 	{
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
@@ -6168,6 +6194,7 @@ ChooseParty(Byref StopAnchor)
 
 Battle_Operation()
 {
+	Global OperationFightCount
 	if (Find(x, y, 1188, 51, 1288, 111, BTN_Pause))
 	{
 		LogShow("報告提督SAMA，艦娘航行中！")
@@ -6218,6 +6245,7 @@ Battle_Operation()
 					}
 					if (Myhp<OperatioMyHpBar and Emhp>OperatioEnHpBar)   ;再檢查一次
 					{
+						OperationFightCount--
 						LogShow("我方血量過低，自動離開戰鬥")
 						Loop, 100
 						{
@@ -6956,12 +6984,16 @@ VC(Array){
 	return DwmCheckColor(Array[1], Array[2], Array[3], Array[4])	
 }
 
-Find(byref x, byref y, x1, y1, x2, y2, text) {
+Find(byref x, byref y, x1, y1, x2, y2, text, err0=0, err1=0) {
+	if err0=0
+		err0 := Err0_V
+	if err1=0
+		err1 := Err1_V
 	WinGetPos, wx, wy, ww, wh, %title%
 	id := WinExist(title)
 	BindWindow(id)
 	xx1 := wx+x1, yy1 := wy+y1, xx2 := wx+x2, yy2 := wy+y2
-	if (ok := FindText(xx1, yy1, xx2, yy2 , Err0_V, Err1_V, text))	{
+	if (ok := FindText(xx1, yy1, xx2, yy2 , err0, err1, text))	{
 		X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
 		x := x-wx, y:=y-wy
 		return 1
