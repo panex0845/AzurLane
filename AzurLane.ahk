@@ -5581,6 +5581,7 @@ DelegationMission2()
 battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 {
 	;~ Global
+	Defeat := "|<>*105$51.000000Tzs000000zz0000003zs000000Tz0000000zs0000007z0000000Tz0000003zzk00000DzzU00000zzz000007zzy00000Tzzs00003zzzU0000Dzzz00000zzzs00007zzzU0000zzzy00003zzzs0000TzzzU0003zzzw0000Dzzzk0001zzzy0000Dzzzs0000zzzz00004"
 	if (Find(x, y, 783, 385, 883, 445, Battle_Victory, 0.1, 0.1))
 	{	
 		if (Find(x, y, 790, 438, 870, 498, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU")) ; 有隊員倒下
@@ -5601,7 +5602,7 @@ battlevictory() ;戰鬥勝利(失敗) 大獲全勝
 		sleep 500
 		C_Click(x, y)
 	}
-	else if (Find(x, y, 783, 385, 883, 445, "|<>*85$18.Tzw7zsbzllzXtz7wSDyQTz8zzlzzXzzZzzATySTwz7tzbnzlbztDzwU"), 0.1, 0.1) ;點擊繼續
+	else if (Find(x, y, 446, 69, 546, 129, Defeat)) ;點擊繼續
 	{
 		Global AnchorFailedTimes
 		AnchorFailedTimes++
