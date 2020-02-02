@@ -5543,7 +5543,7 @@ DelegationMission3() ;自動接收軍事任務 . 0=接受失敗 . 1=接受成功
 DelegationMission2()
 {
 	BTN_Advice := "|<>*210$32.w7kMMz0A7w7k0001U00sTz1sC7zkS3Vzw70s/z00C0Dk0001w60E9s1sC7y0S3UzU7UsTs1sC6T0S3U3w7U00T1sA3zkS3Vzw7UsTz1sC7wUS3VXU7UsMQ1s003Uy3zzsDUzzs"
-	Ico_Oil := "|<>*137$29.zzzzzzzyTzzzszzzyEzzzslrzzkU7zUlUDy1V0zwF37ztn3Tzna7zzUCzzzUTzzzVzzzzzzzzzzzzs"
+	Ico_Oil := "|<>*135$20.zzTzzXzzMTzX7zsEa6600kUE4AAtVDCMTl7Dy1zzUTzyTzy"
 	Ico_Gem := "|<>*124$47.0000010000000M10000000zk00000Dzk00603zzU0000zzz00003zzz02U01zzwzw0tlzzs00TXszzc07z7wzyS1zyTwzzy7zszzTzw3znzyzzsXzjztzzl1zzsDzzU0zs0zzy00w01zzwE1UU1zzsc0A03zzXU3s17zs007w2Tzc00Tw0zySA0zwHzsz41zw7zl"
 	Party_OK := "|<>*110$24.zwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDz0000000000000000zwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzzwDzU"
 	Spend_Oil_Confirm := "|<>*185$31.xzkTVw0000MDzzs07zzw43zzsC3zzsD1zzs7l0003zzsDzzzw7zzzy3zzwD1xzy1UwTz1kQ3zUs01zkw7zzsS3zzsD1zzw3Uzzy0kTzy60Dzz7U007Xk003Xw003XzU01k"
