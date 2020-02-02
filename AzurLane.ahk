@@ -464,6 +464,10 @@ Tab2_Y-=2
 Gui, Add, DropDownList, x+5 y%Tab2_Y% w40 h200 gAnchorsettings vOperation_OnlyNum choose%Operation_OnlyNum%, 1|2|3|4|5|6|7|8|9|
 Tab2_Y+=5
 Gui, Add, Text, x+10 y%Tab2_Y% w20 h20, 場
+Tab2_Y-=3
+;~ IniRead, Operation_ReLogin, settings.ini, Battle, Operation_ReLogin, 0
+;~ Gui, Add, CheckBox, x+10 y%Tab2_Y% w120 h20 gAnchorsettings vOperation_ReLogin checked%Operation_ReLogin% , 執行前先重登
+
 
 Tab2_Y+=25
 iniread, Leave_Operatio, settings.ini, Battle, Leave_Operatio
@@ -1080,6 +1084,7 @@ Guicontrolget, ResetOperationTime
 Guicontrolget, ResetOperationTime2
 Guicontrolget, Operation_Only
 Guicontrolget, Operation_OnlyNum
+;~ Guicontrolget, Operation_ReLogin
 Iniwrite, %IndexAll%, settings.ini, Battle, IndexAll ;全部
 Iniwrite, %Index1%, settings.ini, Battle, Index1 ;前排先鋒
 Iniwrite, %Index2%, settings.ini, Battle, Index2 ;後排主力
@@ -1121,6 +1126,7 @@ Iniwrite, %ResetOperationTime%, settings.ini, Battle, ResetOperationTime
 Iniwrite, %ResetOperationTime2%, settings.ini, Battle, ResetOperationTime2
 Iniwrite, %Operation_Only%, settings.ini, Battle, Operation_Only 
 Iniwrite, %Operation_OnlyNum%, settings.ini, Battle, Operation_OnlyNum 
+;~ Iniwrite, %Operation_ReLogin%, settings.ini, Battle, Operation_ReLogin
 Guicontrol, ,OperatioMyHpBarUpdate, %OperatioMyHpBar%
 Guicontrol, ,OperatioEnHpBarUpdate, %OperatioEnHpBar%
 Global IndexAll, Index1, Index2, Index3, Index4, Index5, Index6, Index7, Index8, Index9, CampAll, Camp1,Camp2, Camp3, Camp4, Camp5, Camp6, Camp7, Camp8, Camp9, RarityAll, Rarity1, Rarity2, Rarity3, Rarity4, DailyParty, Leave_Operatio, OperatioMyHpBar, OperatioEnHpBar, Operation_Only, Operation_OnlyNum
@@ -1685,17 +1691,41 @@ else if LDplayerCheck
 		ResetOperationTime3 := StrSplit(ResetOperationTime2, ",")
 		for k, Resettime in ResetOperationTime3
 		{
-			if (NowTime=Resettime)
+			Resettime2 := Resettime+1
+			if (NowTime=Resettime or Nowtime=Resettime2)
 			{
 				OperationDone := VarSetCapacity  ;重置演習判斷
 				iniread, OperationYesterday, settings.ini, Battle, OperationYesterday
-					if (OperationYesterday>=1)
-					{
-						LogShow("自動重置演習。")
-					}
+				if (OperationYesterday>=1) {
+					LogShow("自動重置演習。")
+				}
 				iniWrite, 0, settings.ini, Battle, OperationYesterday
 				ResetOperationDone := 1
-				Settimer, ResetOperationClock, -61000
+				Settimer, ResetOperationClock, -121000
+				;~ if (Operation_ReLogin) {
+					;~ LogShow("演習前重登。")
+					;~ runwait, %Consolefile% killapp --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
+					;~ Loop
+					;~ {
+						;~ if (Find(x, y, 389, 85, 489, 145, LDDesktop))
+							;~ break
+						;~ sleep 500
+					;~ }
+					;~ sleep 1500
+					;~ runwait, %Consolefile% runapp --index %emulatoradb% --packagename "com.hkmanjuu.azurlane.gp" , %ldplayer%, Hide
+					;~ Loop
+					;~ {
+						;~ if (Find(x, y, 1197, 704, 1297, 764, CRIWare)) ;登入伺服器選擇頁面
+						;~ {
+							;~ sleep 3000
+							;~ AC_Click( 231, 70, 1051, 507) ;隨機點擊登入
+							;~ sleep 3000
+							;~ if !(Find(x, y, 1197, 704, 1297, 764, CRIWare))
+								;~ break
+						;~ }
+						;~ sleep 500
+					;~ }
+				;~ }
 				if (Find(x, y, 734, 401, 834, 461, MainPage_Btn_Formation))
 				{
 					C_Click(1080, 403)
@@ -3932,7 +3962,7 @@ Loop
 	}
 	if (Operation_Only and Operation_OnlyNum=OperationFightCount and Find(x, y, 99, 35, 199, 95, Operation_Upp))
 	{
-		message = 已經執行演習%OperationFightCount%次，演習結束！
+		message = 已經執行演習 %OperationFightCount% 次，演習結束！
 		LogShow(message)
 		Iniwrite, %OperationToday%, settings.ini, Battle, OperationYesterday
 		C_Click(1239, 72) ;回到首頁

@@ -2,7 +2,9 @@
 ;////////雷電模擬器///////////
 LdPlayerLogo := "|<>*102$21.zkTzk0Tw01z007k00Q0s1UTkA7b00ts0C/U1kQ0DbU1xs4DS0zzU8A031U0MA071U1sA0zU"
 NoxPlayerLogo := "|<>*69$30.kS3VkUA1UUbbsw7DbwyDDbySDDrySTDnySDDnwyDDtsw7Ds1UUDy7XsU"
+LDDesktop := "|<>*97$24.3zzz0zzz0Dzz03zz01zz00Tz007z001z000T000D00030001000000E10083024D062z0A3z0MDz0sTz1lzz3zzz7zzzDzzzTzzzU"
 
+Global LdPlayerLogo, NoxPlayerLogo, LDDesktop
 
 ;///////一些按鈕/////////
 
